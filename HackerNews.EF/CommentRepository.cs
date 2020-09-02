@@ -17,26 +17,29 @@ namespace HackerNews.EF
 			_context = context;
 		}
 
-		public void AddComment(Comment comment)
+		public async Task AddCommentAsync(Comment comment)
 		{
-			_context.Comments.Add(comment);
+			await _context.Comments.AddAsync(comment);
 		}
 
-		public void DeleteComment(int id)
+		public async Task DeleteCommentAsync(int id)
 		{
 			// We don't want to actually delete comments. Instead, we just modify the deleted property.
-			var comment = _context.Comments.Find(id);
+			var comment = await _context.Comments.FindAsync(id);
 			comment.Deleted = true;
-			UpdateComment(id, comment);
+			await UpdateCommentAsync(id, comment);
 		}
 
 
-		public void UpdateComment(int id, Comment updatedComment)
+		public async Task UpdateCommentAsync(int id, Comment updatedComment)
 		{
 			try
 			{
-				updatedComment.Id = id;
-				_context.Entry(updatedComment).State = EntityState.Modified;
+				await Task.Run(() =>
+				{
+					updatedComment.Id = id;
+					_context.Entry(updatedComment).State = EntityState.Modified;
+				});
 			}
 			catch (Exception e)
 			{

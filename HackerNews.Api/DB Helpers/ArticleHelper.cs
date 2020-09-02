@@ -21,7 +21,7 @@ namespace HackerNews.Api.DB_Helpers
 			_mapper = mapper;
 		}
 
-		public async Task<List<GetArticleModel>> GetAllArticleModels()
+		public async Task<List<GetArticleModel>> GetAllArticleModelsAsync()
 		{
 			try
 			{
@@ -38,7 +38,7 @@ namespace HackerNews.Api.DB_Helpers
 			}
 		}
 
-		public async Task<GetArticleModel> GetArticleModel(int id)
+		public async Task<GetArticleModel> GetArticleModelAsync(int id)
 		{
 			var article = (await _articleRepository.GetArticleAsync(id));
 			TrimArticle(article);
@@ -46,19 +46,20 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetArticleModel>(article);
 		}
 
-		public async void PostArticleModel(PostArticleModel articleModel)
+		public async Task PostArticleModelAsync(PostArticleModel articleModel)
 		{
 			Article article = _mapper.Map<Article>(articleModel);
-			_articleRepository.AddArticle(article);
+
+			await _articleRepository.AddArticleAsync(article);
 			await _articleRepository.SaveChangesAsync();
 		}
 
-		public async Task<GetArticleModel> PutArticleModel(int id, PostArticleModel articleModel)
+		public async Task<GetArticleModel> PutArticleModelAsync(int id, PostArticleModel articleModel)
 		{
 			var article = await _articleRepository.GetArticleAsync(id);
 			UpdateArticleProperties(articleModel, article);
 
-			_articleRepository.UpdateArticle(id, article);
+			await _articleRepository.UpdateArticleAsync(id, article);
 			await _articleRepository.SaveChangesAsync();
 
 			article = await _articleRepository.GetArticleAsync(id);
@@ -67,20 +68,20 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetArticleModel>(article);
 		}
 
-		public async void DeleteArticle(int id)
+		public async Task DeleteArticleAsync(int id)
 		{
-			_articleRepository.DeleteArticle(id);
+			await _articleRepository.DeleteArticleAsync(id);
 			await _articleRepository.SaveChangesAsync();
 		}
 
-		public async void VoteArticle(int id, bool upvote)
+		public async Task VoteArticleAsync(int id, bool upvote)
 		{
 			var article = await _articleRepository.GetArticleAsync(id);
 			article.Karma = upvote
 				? article.Karma + 1
 				: article.Karma - 1;
 
-			_articleRepository.UpdateArticle(id, article);
+			await _articleRepository.UpdateArticleAsync(id, article);
 			await _articleRepository.SaveChangesAsync();
 		}
 

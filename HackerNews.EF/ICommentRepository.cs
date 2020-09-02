@@ -12,7 +12,7 @@ namespace HackerNews.EF
 		/// Add a comment as is.
 		/// </summary>
 		/// <param name="Comment"></param>
-		void AddComment(Comment Comment);
+		Task AddCommentAsync(Comment Comment);
 
 		/// <summary>
 		/// Get all comments including their children. Children will reference parents, so circular 
@@ -33,13 +33,13 @@ namespace HackerNews.EF
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="updatedComment"></param>
-		void UpdateComment(int id, Comment updatedComment);
+		Task UpdateCommentAsync(int id, Comment updatedComment);
 
 		/// <summary>
 		/// Mark the <see cref="Comment.Deleted"/> property as true. Will not actually delete the comment from the database.
 		/// </summary>
 		/// <param name="id"></param>
-		void DeleteComment(int id);
+		Task DeleteCommentAsync(int id);
 
 		/// <summary>
 		/// Propogate changes throughout the database. Will save for the entire context, not just comments.

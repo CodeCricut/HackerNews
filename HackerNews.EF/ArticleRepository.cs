@@ -17,17 +17,17 @@ namespace HackerNews.EF
 			_context = context;
 		}
 
-		public void AddArticle(Article article)
+		public async Task AddArticleAsync(Article article)
 		{
-			_context.Articles.Add(article);
+			await _context.Articles.AddAsync(article);
 		}
 
-		public void DeleteArticle(int id)
+		public async Task DeleteArticleAsync(int id)
 		{
 			// We don't want to actually delete articles. Instead, we just modify the deleted property.
-			var article = _context.Articles.Find(id);
+			var article = await _context.Articles.FindAsync(id);
 			article.Deleted = true;
-			UpdateArticle(id, article);
+			await UpdateArticleAsync(id, article);
 		}
 
 		public async Task<Article> GetArticleAsync(int id)
@@ -39,14 +39,13 @@ namespace HackerNews.EF
 			return article;
 		}
 
-		// just... bad async
-		public Task<IEnumerable<Article>> GetArticlesAsync()
+		public async Task<IEnumerable<Article>> GetArticlesAsync()
 		{
-			var articles = _context.Articles
+			var articles = await _context.Articles
 				.Include(a => a.Comments)
-				.ToList();
+				.ToListAsync();
 
-			return Task.Factory.StartNew(() => articles.AsEnumerable());
+			return articles;
 		}
 
 		public async Task<bool> SaveChangesAsync()
@@ -61,13 +60,15 @@ namespace HackerNews.EF
 			}
 		}
 
-		public void UpdateArticle(int id, Article updatedArticle)
+		public async Task UpdateArticleAsync(int id, Article updatedArticle)
 		{
 			try
 			{
-				updatedArticle.Id = id;
-				_context.Entry(updatedArticle).State = EntityState.Modified;
-
+				await Task.Run(() =>
+				{
+					updatedArticle.Id = id;
+					_context.Entry(updatedArticle).State = EntityState.Modified;
+				});
 			}
 			catch (Exception e)
 			{

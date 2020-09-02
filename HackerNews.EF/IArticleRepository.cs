@@ -12,7 +12,7 @@ namespace HackerNews.EF
 		/// Add an article as is.
 		/// </summary>
 		/// <param name="article"></param>
-		void AddArticle(Article article);
+		Task AddArticleAsync(Article article);
 
 		/// <summary>
 		/// Get all articles including their children. Children will reference parents, so circular 
@@ -33,13 +33,13 @@ namespace HackerNews.EF
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="updatedArticle"></param>
-		void UpdateArticle(int id, Article updatedArticle);
+		Task UpdateArticleAsync(int id, Article updatedArticle);
 
 		/// <summary>
 		/// Mark the <see cref="Article.Deleted"/> property as true. Will not actually delete the article from the database.
 		/// </summary>
 		/// <param name="id"></param>
-		void DeleteArticle(int id);
+		Task DeleteArticleAsync(int id);
 
 		/// <summary>
 		/// Propogate changes throughout the database. Will save for the entire context, not just articles.

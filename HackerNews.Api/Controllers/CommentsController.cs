@@ -23,12 +23,11 @@ namespace HackerNews.Api.Controllers
 			_commentHelper = commentHelper;
 		}
 
-		// add include children bool param
-		public async Task<IActionResult> Get()
+		public async Task<IActionResult> GetCommentsAsync()
 		{
 			try
 			{
-				var commentModels = await _commentHelper.GetAllCommentModels();
+				var commentModels = await _commentHelper.GetAllCommentModelsAsync();
 
 				return Ok(commentModels);
 			}
@@ -39,11 +38,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpGet("{id:int}")]
-		public async Task<IActionResult> Get(int id)
+		public async Task<IActionResult> GetCommentAsync(int id)
 		{
 			try
 			{
-				var commentModel = await _commentHelper.GetCommentModel(id);
+				var commentModel = await _commentHelper.GetCommentModelAsync(id);
 
 				return Ok(commentModel);
 			}
@@ -54,13 +53,13 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> PostComment([FromBody] PostCommentModel commentModel)
+		public async Task<IActionResult> PostCommentAsync([FromBody] PostCommentModel commentModel)
 		{
 			try
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				await _commentHelper.PostCommentModel(commentModel);
+				await _commentHelper.PostCommentModelAsync(commentModel);
 				
 				return Ok();
 			}
@@ -73,13 +72,13 @@ namespace HackerNews.Api.Controllers
 
 
 		[HttpPut("{id:int}")]
-		public async Task<IActionResult> PutComment(int id, [FromBody] PostCommentModel commentModel)
+		public async Task<IActionResult> PutCommentAsync(int id, [FromBody] PostCommentModel commentModel)
 		{
 			try
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				var updatedModel = await _commentHelper.PutCommentModel(id, commentModel);
+				var updatedModel = await _commentHelper.PutCommentModelAsync(id, commentModel);
 
 				return Ok(updatedModel);
 			}
@@ -90,11 +89,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteComment(int id)
+		public async Task<IActionResult> DeleteCommentAsync(int id)
 		{
 			try
 			{
-				await _commentHelper.DeleteComment(id);
+				await _commentHelper.DeleteCommentAsync(id);
 				
 				return Ok();
 			}
@@ -105,11 +104,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote/{commentId:int}")]
-		public async Task<IActionResult> VoteComment(int commentId, [FromBody] bool upvote)
+		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
 			try
 			{
-				await _commentHelper.VoteComment(commentId, upvote);
+				await _commentHelper.VoteCommentAsync(commentId, upvote);
 
 				return Ok();
 			}

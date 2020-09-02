@@ -24,11 +24,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 
-		public async Task<IActionResult> Get()
+		public async Task<IActionResult> GetArticlesAsync()
 		{
 			try
 			{
-				var articleModels = await _articleHelper.GetAllArticleModels();
+				var articleModels = await _articleHelper.GetAllArticleModelsAsync();
 				return Ok(articleModels);
 			}
 			catch (Exception e)
@@ -38,11 +38,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpGet("{id:int}")]
-		public async Task<IActionResult> Get(int id)
+		public async Task<IActionResult> GetArticleAsync(int id)
 		{
 			try
 			{
-				var articleModel = await _articleHelper.GetArticleModel(id);
+				var articleModel = await _articleHelper.GetArticleModelAsync(id);
 
 				return Ok(articleModel);
 			}
@@ -55,13 +55,13 @@ namespace HackerNews.Api.Controllers
 
 
 		[HttpPost]
-		public IActionResult PostArticle([FromBody] PostArticleModel articleModel)
+		public async Task<IActionResult> PostArticleAsync([FromBody] PostArticleModel articleModel)
 		{
 			try
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				_articleHelper.PostArticleModel(articleModel);
+				await _articleHelper.PostArticleModelAsync(articleModel);
 
 				return Ok();
 			}
@@ -74,13 +74,13 @@ namespace HackerNews.Api.Controllers
 
 		// deletes comments for some reason...
 		[HttpPut("{id:int}")]
-		public async Task<IActionResult> PutArticle(int id, [FromBody] PostArticleModel articleModel)
+		public async Task<IActionResult> PutArticleAsync(int id, [FromBody] PostArticleModel articleModel)
 		{
 			try
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				var updatedArticleModel = await _articleHelper.PutArticleModel(id, articleModel);
+				var updatedArticleModel = await _articleHelper.PutArticleModelAsync(id, articleModel);
 
 				return Ok(updatedArticleModel);
 			}
@@ -91,11 +91,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public IActionResult DeleteArticle(int id)
+		public async Task<IActionResult> DeleteArticleAsync(int id)
 		{
 			try
 			{
-				_articleHelper.DeleteArticle(id);
+				await _articleHelper.DeleteArticleAsync(id);
 
 				return Ok();
 			}
@@ -106,11 +106,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote/{articleId:int}")]
-		public IActionResult VoteArticle(int articleId, [FromBody] bool upvote)
+		public async Task<IActionResult> VoteArticleAsync(int articleId, [FromBody] bool upvote)
 		{
 			try
 			{
-				_articleHelper.VoteArticle(articleId, upvote);
+				await _articleHelper.VoteArticleAsync(articleId, upvote);
 
 				return Ok();
 			}

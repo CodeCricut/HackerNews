@@ -23,7 +23,7 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpOptions]
-		public async Task<IActionResult> DeleteAllData()
+		public async Task<IActionResult> DeleteAllDataAsync()
 		{
 			try
 			{
@@ -33,7 +33,7 @@ namespace HackerNews.Api.Controllers
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);
 
-				_context.SaveChanges();
+				await _context.SaveChangesAsync();
 
 				return Ok();
 			}
