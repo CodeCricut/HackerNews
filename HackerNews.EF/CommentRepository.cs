@@ -19,8 +19,16 @@ namespace HackerNews.EF
 
 		public async Task<Comment> AddCommentAsync(Comment comment)
 		{
-			var addedComment = (await _context.Comments.AddAsync(comment)).Entity;
+			Comment addedComment = null;
+			await Task.Run(() => {
+				addedComment = _context.Comments.Add(comment).Entity;
+			});
 			return addedComment;
+		}
+
+		public async Task AddCommentsAsync(List<Comment> comments)
+		{
+			await Task.Run(() => _context.Comments.AddRange(comments));
 		}
 
 		public async Task DeleteCommentAsync(int id)

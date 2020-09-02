@@ -30,6 +30,12 @@ namespace HackerNews.Api.DB_Helpers
 		public Task<GetArticleModel> PostArticleModelAsync(PostArticleModel articleModel);
 
 		/// <summary>
+		/// Map the models to articles and add all to the DB. Should any models be invalid, all will fail to be added.
+		/// </summary>
+		/// <param name="articleModel"></param>
+		public Task PostArticleModelsAsync(List<PostArticleModel> articleModels);
+
+		/// <summary>
 		/// Update the article with the given <paramref name="id"/> using the properties of the <paramref name="articleModel"/>.
 		/// </summary>
 		/// <param name="id"></param>

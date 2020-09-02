@@ -17,7 +17,7 @@ namespace HackerNews.Api.DB_Helpers
 		private readonly IMapper _mapper;
 
 		public CommentHelper(
-			ICommentRepository commentRepository, 
+			ICommentRepository commentRepository,
 			IArticleRepository articleRepository,
 			IMapper mapper)
 		{
@@ -47,20 +47,48 @@ namespace HackerNews.Api.DB_Helpers
 
 		public async Task<GetCommentModel> PostCommentModelAsync(PostCommentModel commentModel)
 		{
-			Comment comment = _mapper.Map<Comment>(commentModel);
 
-			// add potential parent relationships
-			await Task.WhenAll(
-				TryAddParentCommentAsync(commentModel.ParentCommentId, comment), 
-				TryAddParentArticleAsync(commentModel.ParentArticleId, comment));
+			Comment comment = await ConvertCommentAsync(commentModel);
 
 			var addedComment = (await _commentRepository.AddCommentAsync(comment));
 
 			await Task.WhenAll(
-				_commentRepository.SaveChangesAsync(), 
+				_commentRepository.SaveChangesAsync(),
 				_articleRepository.SaveChangesAsync());
 
 			return _mapper.Map<GetCommentModel>(addedComment);
+		}
+
+		private async Task AddParentRelationships(PostCommentModel commentModel, Comment comment)
+		{
+			// add potential parent relationships
+			await Task.WhenAll(
+				TryAddParentCommentAsync(commentModel.ParentCommentId, comment),
+				TryAddParentArticleAsync(commentModel.ParentArticleId, comment));
+		}
+
+		public async Task PostCommentModelsAsync(List<PostCommentModel> commentModels)
+		{
+			var commentConversionTasks = new List<Task<Comment>>();
+			foreach (var commentModel in commentModels)
+			{
+				commentConversionTasks.Add(ConvertCommentAsync(commentModel));
+			};
+
+			List<Comment> convertedComments = (await Task.WhenAll(commentConversionTasks)).ToList();
+
+			await _commentRepository.AddCommentsAsync(convertedComments);
+
+			await Task.WhenAll(
+				_commentRepository.SaveChangesAsync(),
+				_articleRepository.SaveChangesAsync());
+		}
+
+		private async Task<Comment> ConvertCommentAsync(PostCommentModel commentModel)
+		{
+			var comment = _mapper.Map<Comment>(commentModel);
+			await AddParentRelationships(commentModel, comment);
+			return comment;
 		}
 
 		public async Task<GetCommentModel> PutCommentModelAsync(int id, PostCommentModel commentModel)

@@ -30,6 +30,13 @@ namespace HackerNews.Api.DB_Helpers
 		public Task<GetCommentModel> PostCommentModelAsync(PostCommentModel commentModel);
 
 		/// <summary>
+		/// Map the models to comments and add all to the DB. Should any models be invalid, all will fail to be added.
+		/// </summary>
+		/// <param name="commentModels"></param>
+		/// <returns></returns>
+		public Task PostCommentModelsAsync(List<PostCommentModel> commentModels);
+
+		/// <summary>
 		/// Update the comment with the given <paramref name="id"/> using the properties of the <paramref name="commentModel"/>.
 		/// </summary>
 		/// <param name="id"></param>

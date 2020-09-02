@@ -1,15 +1,10 @@
-﻿using AutoMapper;
-using HackerNews.Domain.Models;
-using HackerNews.EF;
+﻿using HackerNews.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using HackerNews.Domain;
 using Microsoft.AspNetCore.Http;
-using HackerNews.Api.Profiles;
 using HackerNews.Api.DB_Helpers;
+using System.Collections.Generic;
 
 namespace HackerNews.Api.Controllers
 {
@@ -62,6 +57,23 @@ namespace HackerNews.Api.Controllers
 				var addedModel = await _commentHelper.PostCommentModelAsync(commentModel);
 				
 				return Ok(addedModel);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		[HttpPost("range")]
+		public async Task<IActionResult> PostCommentsAsync([FromBody] List<PostCommentModel> commentModels)
+		{
+			try
+			{
+				if (!ModelState.IsValid) throw new Exception("Model invalid");
+
+				await _commentHelper.PostCommentModelsAsync(commentModels);
+
+				return Ok();
 			}
 			catch (Exception e)
 			{

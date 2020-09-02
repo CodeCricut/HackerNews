@@ -71,6 +71,23 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
+		[HttpPost("range")]
+		public async Task<IActionResult> PostArticlesAsync([FromBody] List<PostArticleModel> articleModels)
+		{
+			try
+			{
+				if (!ModelState.IsValid) throw new Exception("Model invalid");
+
+				await _articleHelper.PostArticleModelsAsync(articleModels);
+
+				return Ok();
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
 
 		// deletes comments for some reason...
 		[HttpPut("{id:int}")]

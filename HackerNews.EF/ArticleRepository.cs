@@ -19,8 +19,22 @@ namespace HackerNews.EF
 
 		public async Task<Article> AddArticleAsync(Article article)
 		{
-			var addedArticle = (await _context.Articles.AddAsync(article)).Entity;
+			var addedArticle = await Task.Run(() => (_context.Articles.Add(article)).Entity);
 			return addedArticle;
+		}
+
+		public async Task<List<Article>> AddArticlesAsync(List<Article> articles)
+		{
+			_context.Articles.AddRange(articles);
+			//List<Task<Article>> tasks = new List<Task<Article>>();
+
+			//foreach(var article in articles)
+			//{
+			//	tasks.Add(AddArticleAsync(article));
+			//}
+
+			//return (await Task.WhenAll(tasks)).ToList();
+			return articles;
 		}
 
 		public async Task DeleteArticleAsync(int id)

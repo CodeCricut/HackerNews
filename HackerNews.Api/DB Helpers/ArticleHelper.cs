@@ -56,6 +56,13 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetArticleModel>(addedArticle);
 		}
 
+		public async Task PostArticleModelsAsync(List<PostArticleModel> articleModels)
+		{
+			var articles = _mapper.Map<List<Article>>(articleModels);
+			await _articleRepository.AddArticlesAsync(articles);
+			await _articleRepository.SaveChangesAsync();
+		}
+
 		public async Task<GetArticleModel> PutArticleModelAsync(int id, PostArticleModel articleModel)
 		{
 			var article = await _articleRepository.GetArticleAsync(id);
@@ -109,5 +116,6 @@ namespace HackerNews.Api.DB_Helpers
 			article.Type = (ArticleType)Enum.Parse(typeof(ArticleType), articleModel.Type);
 			article.AuthorName = articleModel.AuthorName;
 		}
+
 	}
 }

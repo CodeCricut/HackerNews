@@ -15,6 +15,13 @@ namespace HackerNews.EF
 		Task<Article> AddArticleAsync(Article article);
 
 		/// <summary>
+		/// Add articles as is.
+		/// </summary>
+		/// <param name="articles"></param>
+		/// <returns></returns>
+		Task<List<Article>> AddArticlesAsync(List<Article> articles);
+
+		/// <summary>
 		/// Get all articles including their children. Children will reference parents, so circular 
 		/// dependendies must be resolved downstream before presenting in JSON, for example.
 		/// </summary>
