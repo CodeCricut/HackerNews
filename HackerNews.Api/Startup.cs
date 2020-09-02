@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +34,8 @@ namespace HackerNews.Api
 				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
 			services.AddScoped<IArticleRepository, ArticleRepository>();
 			services.AddScoped<ICommentRepository, CommentRepository>();
+			services.AddScoped<IArticleHelper, ArticleHelper>();
+			services.AddScoped<ICommentHelper, CommentHelper>();
 
 			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));

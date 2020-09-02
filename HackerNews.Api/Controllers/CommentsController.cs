@@ -9,23 +9,18 @@ using System.Threading.Tasks;
 using HackerNews.Domain;
 using Microsoft.AspNetCore.Http;
 using HackerNews.Api.Profiles;
+using HackerNews.Api.DB_Helpers;
 
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
 	public class CommentsController : ControllerBase
 	{
-		private readonly ICommentRepository _commentRepository;
-		private readonly IArticleRepository _articleRepository;
-		private readonly IMapper _mapper;
+		private readonly ICommentHelper _commentHelper;
 
-		public CommentsController(ICommentRepository commentRepository, 
-								IArticleRepository articleRepository, 
-								IMapper mapper)
+		public CommentsController(ICommentHelper commentHelper)
 		{
-			_commentRepository = commentRepository;
-			_articleRepository = articleRepository;
-			_mapper = mapper;
+			_commentHelper = commentHelper;
 		}
 
 		// add include children bool param
@@ -33,30 +28,9 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				// results in circular dependency
-				//var comments = await _artCommRepository.GetCommentsWithParentsAsync(includeChildren: false);
+				var commentModels = await _commentHelper.GetAllCommentModels();
 
-				var comments = (await _commentRepository.GetCommentsAsync(true)).ToList();
-
-				// in order to avoid altering the actual references (such as children comments), we must deep clone the list
-				var cloneComments = comments.ConvertAll(c => new Comment(c));
-
-				//for(int i = 0; i < comments.Count(); i++)
-				//{
-				//	var comment = comments[i];
-				//	comment = EntityTrimmer.GetNewTrimmedComment(comment, trimParents: false, trimChildren: false);
-				//}
-
-				for (int i = 0; i < cloneComments.Count(); i++)
-				{
-					var comment = cloneComments[i];
-					comment = EntityTrimmer.GetNewTrimmedComment(comment, trimParents: false, trimChildren: false);
-				}
-
-				// TODO: not always mapping parents to IDs
-				var models = _mapper.Map<IEnumerable<GetCommentModel>>(cloneComments);
-				
-				return Ok(models);
+				return Ok(commentModels);
 			}
 			catch (Exception e)
 			{
@@ -69,13 +43,9 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				//var comment = await _artCommRepository.GetCommentWithParentAsync(id, includeChildren: true);
+				var commentModel = await _commentHelper.GetCommentModel(id);
 
-				var comment = await _commentRepository.GetCommentAsync(id, true);
-				comment = EntityTrimmer.GetNewTrimmedComment(comment, false, false);
-				var model = _mapper.Map<GetCommentModel>(comment);
-				
-				return Ok(model);
+				return Ok(commentModel);
 			}
 			catch (Exception e)
 			{
@@ -90,27 +60,7 @@ namespace HackerNews.Api.Controllers
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				Comment comment = _mapper.Map<Comment>(commentModel);
-
-				Article parentArticle = null;
-				Comment parentComment = null;
-				
-				
-				// if there is a parent comment given
-				if (commentModel.ParentCommentId >= 1)
-				{
-					parentComment = await AddChildToComment(commentModel.ParentCommentId, comment);
-				}
-				if (commentModel.ParentArticleId >= 1)
-				{
-					parentArticle = await AddChildToArticle(commentModel.ParentArticleId, comment);
-				}
-
-
-				_commentRepository.AddComment(comment);
-
-				await _commentRepository.SaveChangesAsync();
-				await _articleRepository.SaveChangesAsync();
+				await _commentHelper.PostCommentModel(commentModel);
 				
 				return Ok();
 			}
@@ -120,45 +70,7 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
-		private async Task<Article> AddChildToArticle(int articleId, Comment childComment)
-		{
-			Article parentArticle =
-				await _articleRepository.GetArticleAsync(articleId);
-				//await _artCommRepository.GetArticleWithChildrenAsync(articleId);
-			
-			// add parent to child
-			childComment.ParentArticle = parentArticle;
 
-			await _commentRepository.SaveChangesAsync();
-
-			// add child to parent
-			//parentArticle.Comments.Add(childComment);
-			//_articleRepository.UpdateArticle(parentArticle.Id, parentArticle);
-
-
-			parentArticle = await _articleRepository.GetArticleAsync(articleId);
-			return parentArticle;
-		}
-
-		private async Task<Comment> AddChildToComment(int parentId, Comment childComment)
-		{
-			Comment parentComment =
-				await _commentRepository.GetCommentAsync(parentId, true);
-				// await _artCommRepository.GetCommentWithParentAsync(parentId, includeChildren: true);
-
-			// add the parent reference to the child
-			childComment.ParentComment = parentComment;
-
-			// add the child reference to the parent
-			//parentComment.Comments.Add(childComment);
-			//_commentRepository.UpdateComment(childComment.Id, childComment);
-
-			await _commentRepository.SaveChangesAsync();
-
-			parentComment = await _commentRepository.GetCommentAsync(parentId, true);
-
-			return parentComment;
-		}
 
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> PutComment(int id, [FromBody] PostCommentModel commentModel)
@@ -167,25 +79,9 @@ namespace HackerNews.Api.Controllers
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				var comment =
-					await _commentRepository.GetCommentAsync(id, true);
-					//await _artCommRepository.GetCommentWithParentAsync(id, includeChildren: true);
-				
-				// this is messy, but a quick fix
-				comment.AuthorName = commentModel.AuthorName;
-				comment.Text = commentModel.Text;
+				var updatedModel = await _commentHelper.PutCommentModel(id, commentModel);
 
-				// not gonna support rebasing comments...
-				// comment.ParentComment = parentComment;
-			    // comment.ParentArticle = parentArticle;
-
-				_commentRepository.UpdateComment(id, comment);
-				await _commentRepository.SaveChangesAsync();
-
-				comment =
-					await _commentRepository.GetCommentAsync(id, true);
-					//await _artCommRepository.GetCommentWithParentAsync(id, includeChildren: true);
-				return Ok(comment);
+				return Ok(updatedModel);
 			}
 			catch (Exception e)
 			{
@@ -194,12 +90,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteArticle(int id)
+		public async Task<IActionResult> DeleteComment(int id)
 		{
 			try
 			{
-				_commentRepository.DeleteComment(id);
-				await _commentRepository.SaveChangesAsync();
+				await _commentHelper.DeleteComment(id);
 				
 				return Ok();
 			}
@@ -210,20 +105,12 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote/{commentId:int}")]
-		public async Task<IActionResult> VoteArticle(int commentId, [FromBody] bool upvote)
+		public async Task<IActionResult> VoteComment(int commentId, [FromBody] bool upvote)
 		{
 			try
 			{
-				var comment =
-					await _commentRepository.GetCommentAsync(commentId, true);
-					//await _artCommRepository.GetCommentWithParentAsync(commentId, includeChildren: true);
+				await _commentHelper.VoteComment(commentId, upvote);
 
-				if (upvote)
-					comment.Karma++;
-				else comment.Karma--;
-				
-				_commentRepository.UpdateComment(commentId, comment);
-				await _commentRepository.SaveChangesAsync();
 				return Ok();
 			}
 			catch (Exception)

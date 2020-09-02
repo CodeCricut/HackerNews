@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.Api.Profiles;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
@@ -15,13 +16,11 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class ArticlesController : ControllerBase
 	{
-		private readonly IArticleRepository _articleRepository;
-		private readonly IMapper _mapper;
+		private readonly IArticleHelper _articleHelper;
 
-		public ArticlesController(IArticleRepository articleRepository, IMapper mapper)
+		public ArticlesController(IArticleHelper articleHelper)
 		{
-			_articleRepository = articleRepository;
-			_mapper = mapper;
+			_articleHelper = articleHelper;
 		}
 
 
@@ -29,18 +28,8 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				// actually gets with children
-				var articles = (await _articleRepository.GetArticlesAsync()).ToList();
-
-				for (int i = 0; i < articles.Count; i++)
-				{
-					var article = articles[i];
-					article = EntityTrimmer.GetNewTrimmedArticle(article, false);
-				}
-
-				var models = _mapper.Map<List<GetArticleModel>>(articles);
-
-				return Ok(articles);
+				var articleModels = await _articleHelper.GetAllArticleModels();
+				return Ok(articleModels);
 			}
 			catch (Exception e)
 			{
@@ -53,13 +42,9 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				//var article = await _artCommRepository.GetArticleWithChildrenAsync(id);
+				var articleModel = await _articleHelper.GetArticleModel(id);
 
-				var article = (await _articleRepository.GetArticleAsync(id));
-				article = EntityTrimmer.GetNewTrimmedArticle(article, false);
-				var model = _mapper.Map<GetArticleModel>(article);
-
-				return Ok(model);
+				return Ok(articleModel);
 			}
 			catch (Exception e)
 			{
@@ -70,15 +55,14 @@ namespace HackerNews.Api.Controllers
 
 
 		[HttpPost]
-		public async Task<IActionResult> PostArticle([FromBody] PostArticleModel articleModel)
+		public IActionResult PostArticle([FromBody] PostArticleModel articleModel)
 		{
 			try
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				Article article = _mapper.Map<Article>(articleModel);
-				_articleRepository.AddArticle(article);
-				await _articleRepository.SaveChangesAsync();
+				_articleHelper.PostArticleModel(articleModel);
+
 				return Ok();
 			}
 			catch (Exception e)
@@ -96,34 +80,9 @@ namespace HackerNews.Api.Controllers
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				//var article = await _artCommRepository.GetArticleWithChildrenAsync(id); 
-				//// this is messy, but a quick fix
-				//article.Title = articleModel.Title;
-				//article.Text = articleModel.Text;
-				//article.Type = (ArticleType) Enum.Parse(typeof(ArticleType), articleModel.Type);
-				//article.AuthorName = articleModel.AuthorName;
+				var updatedArticleModel = await _articleHelper.PutArticleModel(id, articleModel);
 
-
-				//_articleRepository.UpdateArticle(id, article);
-				//await _articleRepository.SaveChangesAsync();
-				//article = await _artCommRepository.GetArticleWithChildrenAsync(id);
-
-				// doesn't include comments comments, don't know if that is good
-				var article = await _articleRepository.GetArticleAsync(id);
-				// this is messy, but a quick fix
-				article.Title = articleModel.Title;
-				article.Text = articleModel.Text;
-				article.Type = (ArticleType) Enum.Parse(typeof(ArticleType), articleModel.Type);
-				article.AuthorName = articleModel.AuthorName;
-
-				_articleRepository.UpdateArticle(id, article);
-				await _articleRepository.SaveChangesAsync();
-
-				article = await _articleRepository.GetArticleAsync(id);
-				article = EntityTrimmer.GetNewTrimmedArticle(article, false);
-				var model = _mapper.Map<GetArticleModel>(article);
-
-				return Ok(model);
+				return Ok(updatedArticleModel);
 			}
 			catch (Exception e)
 			{
@@ -132,12 +91,12 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteArticle(int id)
+		public IActionResult DeleteArticle(int id)
 		{
 			try
 			{
-				_articleRepository.DeleteArticle(id);
-				await _articleRepository.SaveChangesAsync();
+				_articleHelper.DeleteArticle(id);
+
 				return Ok();
 			}
 			catch (Exception)
@@ -147,18 +106,12 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote/{articleId:int}")]
-		public async Task<IActionResult> VoteArticle(int articleId, [FromBody] bool upvote)
+		public IActionResult VoteArticle(int articleId, [FromBody] bool upvote)
 		{
 			try
 			{
-				//var article = await _artCommRepository.GetArticleWithChildrenAsync(articleId); 
-				var article = await _articleRepository.GetArticleAsync(articleId);
-				if (upvote)
-					article.Karma++;
-				else article.Karma--;
+				_articleHelper.VoteArticle(articleId, upvote);
 
-				_articleRepository.UpdateArticle(articleId, article);
-				await _articleRepository.SaveChangesAsync();
 				return Ok();
 			}
 			catch (Exception e)

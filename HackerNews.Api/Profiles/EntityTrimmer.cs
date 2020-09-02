@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Profiles
 {
+	// TODO: make this implement an interface as to support multiple implementations
 	public class EntityTrimmer
 	{
 		/// <summary>
