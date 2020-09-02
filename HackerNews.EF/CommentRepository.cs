@@ -24,7 +24,7 @@ namespace HackerNews.EF
 
 		public void DeleteComment(int id)
 		{
-			// we don't want to actually delete comments. Instead, we just modify the deleted property.
+			// We don't want to actually delete comments. Instead, we just modify the deleted property.
 			var comment = _context.Comments.Find(id);
 			comment.Deleted = true;
 			UpdateComment(id, comment);
@@ -56,75 +56,29 @@ namespace HackerNews.EF
 			}
 		}
 
-	
 
-		public async Task<IEnumerable<Comment>> GetCommentsWithoutParentAsync(bool includeChildren)
+
+		public async Task<IEnumerable<Comment>> GetCommentsAsync(bool includeChildren)
 		{
-			var comments =  _context.Comments
-					.ToList();
-
-			for(int i = 0; i < comments.Count; i++)
-			{
-				comments[i] = await GetCommentWithoutParentAsync(comments[i].Id, includeChildren);
-			}
+			var comments = await _context.Comments
+				.Include(c => c.Comments)
+				.Include(c => c.ParentArticle)
+				.Include(c => c.ParentComment)
+					.ToListAsync();
 
 			return comments;
-			
+
 		}
 
-		public async Task<Comment> GetCommentWithoutParentAsync(int id, bool includeChildren)
+		public async Task<Comment> GetCommentAsync(int id, bool includeChildren)
 		{
 			var comment = await _context.Comments
-				// .Include(c => c.ParentComment)
+				.Include(c => c.ParentComment)
 				.Include(c => c.Comments)
+				.Include(c => c.ParentArticle)
 				.SingleOrDefaultAsync(c => c.Id == id);
-			if (includeChildren)
-			{
-				for(int i = 0; i < comment.Comments.Count; i++)
-				{
-					comment.Comments[i] = 
-						await GetCommentWithoutParentAsync(comment.Comments[i].Id, includeChildren: true);
-				}
-			} else
-			{
-				comment.Comments = null;
-			}
-
-			// just in case...
-			comment.ParentArticle = null;
-			comment.ParentComment = null;
 
 			return comment;
 		}
-
-	
-		/*
-		public Task<IEnumerable<Comment>> GetArticlesComments(int articleId)
-		{
-			return Task.Factory.StartNew(() => _context.Comments.Where(c => c.ParentArticle.Id == articleId)
-			.Select(c => new Comment { 
-				AuthorName = c.AuthorName,
-				Deleted = c.Deleted,
-				Id = c.Id,
-				Karma = c.Karma,
-				Text = c.Text,
-				Url = c.Url
-			}).AsEnumerable());
-		}
-
-		public Task<IEnumerable<Comment>> GetCommentsComments(int commentId)
-		{
-			return Task.Factory.StartNew(() => _context.Comments.Where(c => c.ParentComment.Id == commentId)
-			.Select(c => new Comment
-			{
-				AuthorName = c.AuthorName,
-				Deleted = c.Deleted,
-				Id = c.Id,
-				Karma = c.Karma,
-				Text = c.Text,
-				Url = c.Url
-			}).AsEnumerable());
-		}
-		*/
 	}
 }

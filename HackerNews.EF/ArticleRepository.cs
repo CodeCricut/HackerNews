@@ -24,30 +24,27 @@ namespace HackerNews.EF
 
 		public void DeleteArticle(int id)
 		{
-			// we don't want to actually delete articles. Instead, we just modify the deleted property.
+			// We don't want to actually delete articles. Instead, we just modify the deleted property.
 			var article = _context.Articles.Find(id);
 			article.Deleted = true;
 			UpdateArticle(id, article);
 		}
 
-		public async Task<Article> GetArticleWithoutChildrenAsync(int id)
+		public async Task<Article> GetArticleAsync(int id)
 		{
 			var article = await _context.Articles
+					.Include(a => a.Comments)
 					.SingleOrDefaultAsync(a => a.Id == id);
-			// this is removing all comments from the article in the repo TODO: very bad
-				article.Comments = null;
-				return article;
+			
+			return article;
 		}
 
 		// just... bad async
-		public  Task<IEnumerable<Article>> GetArticlesWithoutChildrenAsync()
+		public Task<IEnumerable<Article>> GetArticlesAsync()
 		{
-			var articles =  _context.Articles.ToList();
-			
-				for(int i = 0; i < articles.Count; i++)
-				{
-				articles[i].Comments = null;
-				}
+			var articles = _context.Articles
+				.Include(a => a.Comments)
+				.ToList();
 
 			return Task.Factory.StartNew(() => articles.AsEnumerable());
 		}

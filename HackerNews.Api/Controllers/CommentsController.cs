@@ -17,17 +17,14 @@ namespace HackerNews.Api.Controllers
 	{
 		private readonly ICommentRepository _commentRepository;
 		private readonly IArticleRepository _articleRepository;
-		private readonly IArticleCommentRepository _artCommRepository;
 		private readonly IMapper _mapper;
 
 		public CommentsController(ICommentRepository commentRepository, 
 								IArticleRepository articleRepository, 
-								IArticleCommentRepository artCommRepository, 
 								IMapper mapper)
 		{
 			_commentRepository = commentRepository;
 			_articleRepository = articleRepository;
-			_artCommRepository = artCommRepository;
 			_mapper = mapper;
 		}
 
@@ -39,7 +36,7 @@ namespace HackerNews.Api.Controllers
 				// results in circular dependency
 				//var comments = await _artCommRepository.GetCommentsWithParentsAsync(includeChildren: false);
 
-				var comments = (await _commentRepository.GetCommentsWithoutParentAsync(true)).ToList();
+				var comments = (await _commentRepository.GetCommentsAsync(true)).ToList();
 
 				// in order to avoid altering the actual references (such as children comments), we must deep clone the list
 				var cloneComments = comments.ConvertAll(c => new Comment(c));
@@ -74,7 +71,7 @@ namespace HackerNews.Api.Controllers
 			{
 				//var comment = await _artCommRepository.GetCommentWithParentAsync(id, includeChildren: true);
 
-				var comment = await _commentRepository.GetCommentWithoutParentAsync(id, true);
+				var comment = await _commentRepository.GetCommentAsync(id, true);
 				comment = EntityTrimmer.GetNewTrimmedComment(comment, false, false);
 				var model = _mapper.Map<GetCommentModel>(comment);
 				
@@ -126,7 +123,7 @@ namespace HackerNews.Api.Controllers
 		private async Task<Article> AddChildToArticle(int articleId, Comment childComment)
 		{
 			Article parentArticle =
-				await _articleRepository.GetArticleWithoutChildrenAsync(articleId);
+				await _articleRepository.GetArticleAsync(articleId);
 				//await _artCommRepository.GetArticleWithChildrenAsync(articleId);
 			
 			// add parent to child
@@ -139,14 +136,14 @@ namespace HackerNews.Api.Controllers
 			//_articleRepository.UpdateArticle(parentArticle.Id, parentArticle);
 
 
-			parentArticle = await _articleRepository.GetArticleWithoutChildrenAsync(articleId);
+			parentArticle = await _articleRepository.GetArticleAsync(articleId);
 			return parentArticle;
 		}
 
 		private async Task<Comment> AddChildToComment(int parentId, Comment childComment)
 		{
 			Comment parentComment =
-				await _commentRepository.GetCommentWithoutParentAsync(parentId, true);
+				await _commentRepository.GetCommentAsync(parentId, true);
 				// await _artCommRepository.GetCommentWithParentAsync(parentId, includeChildren: true);
 
 			// add the parent reference to the child
@@ -158,7 +155,7 @@ namespace HackerNews.Api.Controllers
 
 			await _commentRepository.SaveChangesAsync();
 
-			parentComment = await _commentRepository.GetCommentWithoutParentAsync(parentId, true);
+			parentComment = await _commentRepository.GetCommentAsync(parentId, true);
 
 			return parentComment;
 		}
@@ -171,7 +168,7 @@ namespace HackerNews.Api.Controllers
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
 				var comment =
-					await _commentRepository.GetCommentWithoutParentAsync(id, true);
+					await _commentRepository.GetCommentAsync(id, true);
 					//await _artCommRepository.GetCommentWithParentAsync(id, includeChildren: true);
 				
 				// this is messy, but a quick fix
@@ -186,7 +183,7 @@ namespace HackerNews.Api.Controllers
 				await _commentRepository.SaveChangesAsync();
 
 				comment =
-					await _commentRepository.GetCommentWithoutParentAsync(id, true);
+					await _commentRepository.GetCommentAsync(id, true);
 					//await _artCommRepository.GetCommentWithParentAsync(id, includeChildren: true);
 				return Ok(comment);
 			}
@@ -218,7 +215,7 @@ namespace HackerNews.Api.Controllers
 			try
 			{
 				var comment =
-					await _commentRepository.GetCommentWithoutParentAsync(commentId, true);
+					await _commentRepository.GetCommentAsync(commentId, true);
 					//await _artCommRepository.GetCommentWithParentAsync(commentId, includeChildren: true);
 
 				if (upvote)

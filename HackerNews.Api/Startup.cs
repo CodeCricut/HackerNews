@@ -31,9 +31,8 @@ namespace HackerNews.Api
 			services.AddDbContext<HackerNewsContext>(options =>
 				// connections strings are configured in appsettings.json
 				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
-			services.AddScoped<IArticleRepository, TestArticleRepository>();
-			services.AddScoped<ICommentRepository, TestCommentRepository>();
-			services.AddScoped<IArticleCommentRepository, ArticleCommentRepository>();
+			services.AddScoped<IArticleRepository, ArticleRepository>();
+			services.AddScoped<ICommentRepository, CommentRepository>();
 
 			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));

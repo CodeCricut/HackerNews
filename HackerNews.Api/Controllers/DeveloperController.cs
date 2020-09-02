@@ -27,8 +27,8 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				var articles = await _articleRepository.GetArticlesWithoutChildrenAsync();
-				var comments = await _commentRepository.GetCommentsWithoutParentAsync(true);
+				var articles = await _articleRepository.GetArticlesAsync();
+				var comments = await _commentRepository.GetCommentsAsync(true);
 
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);

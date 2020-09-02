@@ -16,29 +16,21 @@ namespace HackerNews.Api.Controllers
 	public class ArticlesController : ControllerBase
 	{
 		private readonly IArticleRepository _articleRepository;
-		// private readonly IArticleCommentRepository _artCommRepository;
 		private readonly IMapper _mapper;
 
-		public ArticlesController(IArticleRepository articleRepository, IArticleCommentRepository artCommRepository, IMapper mapper)
+		public ArticlesController(IArticleRepository articleRepository, IMapper mapper)
 		{
 			_articleRepository = articleRepository;
-			// _artCommRepository = artCommRepository;
 			_mapper = mapper;
 		}
 
 
-		// good
 		public async Task<IActionResult> Get()
 		{
 			try
 			{
-				//var articles = (await _artCommRepository.GetArticlesWithChildrenAsync()).ToList();
-				//var models = _mapper.Map<IEnumerable<GetArticleModel>>(articles);
-
-				//return Ok(models);
-
 				// actually gets with children
-				var articles = (await _articleRepository.GetArticlesWithoutChildrenAsync()).ToList();
+				var articles = (await _articleRepository.GetArticlesAsync()).ToList();
 
 				for (int i = 0; i < articles.Count; i++)
 				{
@@ -56,7 +48,6 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
-		// good
 		[HttpGet("{id:int}")]
 		public async Task<IActionResult> Get(int id)
 		{
@@ -64,7 +55,7 @@ namespace HackerNews.Api.Controllers
 			{
 				//var article = await _artCommRepository.GetArticleWithChildrenAsync(id);
 
-				var article = (await _articleRepository.GetArticleWithoutChildrenAsync(id));
+				var article = (await _articleRepository.GetArticleAsync(id));
 				article = EntityTrimmer.GetNewTrimmedArticle(article, false);
 				var model = _mapper.Map<GetArticleModel>(article);
 
@@ -97,7 +88,6 @@ namespace HackerNews.Api.Controllers
 		}
 
 
-		// good?
 		// deletes comments for some reason...
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> PutArticle(int id, [FromBody] PostArticleModel articleModel)
@@ -119,7 +109,7 @@ namespace HackerNews.Api.Controllers
 				//article = await _artCommRepository.GetArticleWithChildrenAsync(id);
 
 				// doesn't include comments comments, don't know if that is good
-				var article = await _articleRepository.GetArticleWithoutChildrenAsync(id);
+				var article = await _articleRepository.GetArticleAsync(id);
 				// this is messy, but a quick fix
 				article.Title = articleModel.Title;
 				article.Text = articleModel.Text;
@@ -129,7 +119,7 @@ namespace HackerNews.Api.Controllers
 				_articleRepository.UpdateArticle(id, article);
 				await _articleRepository.SaveChangesAsync();
 
-				article = await _articleRepository.GetArticleWithoutChildrenAsync(id);
+				article = await _articleRepository.GetArticleAsync(id);
 				article = EntityTrimmer.GetNewTrimmedArticle(article, false);
 				var model = _mapper.Map<GetArticleModel>(article);
 
@@ -141,7 +131,6 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
-		// good
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteArticle(int id)
 		{
@@ -157,14 +146,13 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
-
 		[HttpPost("vote/{articleId:int}")]
 		public async Task<IActionResult> VoteArticle(int articleId, [FromBody] bool upvote)
 		{
 			try
 			{
 				//var article = await _artCommRepository.GetArticleWithChildrenAsync(articleId); 
-				var article = await _articleRepository.GetArticleWithoutChildrenAsync(articleId);
+				var article = await _articleRepository.GetArticleAsync(articleId);
 				if (upvote)
 					article.Karma++;
 				else article.Karma--;
