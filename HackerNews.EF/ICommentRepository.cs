@@ -12,7 +12,7 @@ namespace HackerNews.EF
 		/// Add a comment as is.
 		/// </summary>
 		/// <param name="Comment"></param>
-		Task AddCommentAsync(Comment Comment);
+		Task<Comment> AddCommentAsync(Comment Comment);
 
 		/// <summary>
 		/// Get all comments including their children. Children will reference parents, so circular 

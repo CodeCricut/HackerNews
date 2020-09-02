@@ -45,7 +45,7 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetCommentModel>(comment);
 		}
 
-		public async Task PostCommentModelAsync(PostCommentModel commentModel)
+		public async Task<GetCommentModel> PostCommentModelAsync(PostCommentModel commentModel)
 		{
 			Comment comment = _mapper.Map<Comment>(commentModel);
 
@@ -54,11 +54,13 @@ namespace HackerNews.Api.DB_Helpers
 				TryAddParentCommentAsync(commentModel.ParentCommentId, comment), 
 				TryAddParentArticleAsync(commentModel.ParentArticleId, comment));
 
-			await _commentRepository.AddCommentAsync(comment);
+			var addedComment = (await _commentRepository.AddCommentAsync(comment));
 
 			await Task.WhenAll(
 				_commentRepository.SaveChangesAsync(), 
 				_articleRepository.SaveChangesAsync());
+
+			return _mapper.Map<GetCommentModel>(addedComment);
 		}
 
 		public async Task<GetCommentModel> PutCommentModelAsync(int id, PostCommentModel commentModel)

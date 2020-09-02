@@ -46,12 +46,14 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetArticleModel>(article);
 		}
 
-		public async Task PostArticleModelAsync(PostArticleModel articleModel)
+		public async Task<GetArticleModel> PostArticleModelAsync(PostArticleModel articleModel)
 		{
 			Article article = _mapper.Map<Article>(articleModel);
 
-			await _articleRepository.AddArticleAsync(article);
+			var addedArticle = await _articleRepository.AddArticleAsync(article);
 			await _articleRepository.SaveChangesAsync();
+
+			return _mapper.Map<GetArticleModel>(addedArticle);
 		}
 
 		public async Task<GetArticleModel> PutArticleModelAsync(int id, PostArticleModel articleModel)

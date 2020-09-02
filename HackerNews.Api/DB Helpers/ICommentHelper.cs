@@ -26,8 +26,8 @@ namespace HackerNews.Api.DB_Helpers
 		/// Map the <paramref name="commentModel"/> to a comment and add it to the DB.
 		/// </summary>
 		/// <param name="commentModel"></param>
-		/// <returns></returns>
-		public Task PostCommentModelAsync(PostCommentModel commentModel);
+		/// <returns>The added comment model.</returns>
+		public Task<GetCommentModel> PostCommentModelAsync(PostCommentModel commentModel);
 
 		/// <summary>
 		/// Update the comment with the given <paramref name="id"/> using the properties of the <paramref name="commentModel"/>.

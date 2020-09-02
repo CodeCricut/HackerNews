@@ -25,8 +25,9 @@ namespace HackerNews.Api.DB_Helpers
 		/// <summary>
 		/// Map the model to an article and add it to the DB.
 		/// </summary>
+		/// <returns>The added article model.</returns>
 		/// <param name="articleModel"></param>
-		public Task PostArticleModelAsync(PostArticleModel articleModel);
+		public Task<GetArticleModel> PostArticleModelAsync(PostArticleModel articleModel);
 
 		/// <summary>
 		/// Update the article with the given <paramref name="id"/> using the properties of the <paramref name="articleModel"/>.

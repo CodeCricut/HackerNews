@@ -12,7 +12,7 @@ namespace HackerNews.EF
 		/// Add an article as is.
 		/// </summary>
 		/// <param name="article"></param>
-		Task AddArticleAsync(Article article);
+		Task<Article> AddArticleAsync(Article article);
 
 		/// <summary>
 		/// Get all articles including their children. Children will reference parents, so circular 

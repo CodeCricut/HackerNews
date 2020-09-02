@@ -61,9 +61,9 @@ namespace HackerNews.Api.Controllers
 			{
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
-				await _articleHelper.PostArticleModelAsync(articleModel);
+				var addedModel = await _articleHelper.PostArticleModelAsync(articleModel);
 
-				return Ok();
+				return Ok(addedModel);
 			}
 			catch (Exception e)
 			{
