@@ -17,6 +17,7 @@ namespace HackerNews.EF
 			_context = context;
 		}
 
+		#region Create
 		public async Task<Article> AddArticleAsync(Article article)
 		{
 			var addedArticle = await Task.Run(() => (_context.Articles.Add(article)).Entity);
@@ -25,64 +26,35 @@ namespace HackerNews.EF
 
 		public async Task<List<Article>> AddArticlesAsync(List<Article> articles)
 		{
-			_context.Articles.AddRange(articles);
-			//List<Task<Article>> tasks = new List<Task<Article>>();
-
-			//foreach(var article in articles)
-			//{
-			//	tasks.Add(AddArticleAsync(article));
-			//}
-
-			//return (await Task.WhenAll(tasks)).ToList();
-			return articles;
+			return await Task.Factory.StartNew(() =>
+			{
+				_context.Articles.AddRange(articles);
+				return articles;
+			});
 		}
+		#endregion
 
-		public async Task DeleteArticleAsync(int id)
-		{
-			// We don't want to actually delete articles. Instead, we just modify the deleted property.
-			var article = await _context.Articles.FindAsync(id);
-			article.Deleted = true;
-			await UpdateArticleAsync(id, article);
-		}
-
+		#region Read
 		public async Task<Article> GetArticleAsync(int id)
 		{
 			var article = await _context.Articles
 					.Include(a => a.Comments)
 					.SingleOrDefaultAsync(a => a.Id == id);
-			
+
 			return article;
-		}
-
-		public async Task<IEnumerable<Article>> GetArticlesAsync(Func<Article, bool> articleFilter)
-		{
-			var articles = await Task.Factory.StartNew(() => 
-			_context.Articles
-				.Include(a => a.Comments)
-				.Where(articleFilter));
-
-			return articles;
 		}
 
 		public async Task<IEnumerable<Article>> GetArticlesAsync()
 		{
-			var articles = await GetArticlesAsync(a => true);
+			var articles = await Task.Factory.StartNew(() =>
+				_context.Articles
+					.Include(a => a.Comments));
 
 			return articles;
 		}
+		#endregion
 
-		public async Task<bool> SaveChangesAsync()
-		{
-			try
-			{
-				return (await _context.SaveChangesAsync()) > 0;
-			}
-			catch (Exception e)
-			{
-				return false;
-			}
-		}
-
+		#region Update
 		public async Task UpdateArticleAsync(int id, Article updatedArticle)
 		{
 			try
@@ -98,6 +70,30 @@ namespace HackerNews.EF
 				throw;
 			}
 		}
+		#endregion
 
+		#region Delete
+		public async Task DeleteArticleAsync(int id)
+		{
+			// We don't want to actually delete articles. Instead, we just modify the deleted property.
+			var article = await _context.Articles.FindAsync(id);
+			article.Deleted = true;
+			await UpdateArticleAsync(id, article);
+		}
+		#endregion
+
+		#region Save
+		public async Task<bool> SaveChangesAsync()
+		{
+			try
+			{
+				return (await _context.SaveChangesAsync()) > 0;
+			}
+			catch (Exception e)
+			{
+				return false;
+			}
+		}
+		#endregion
 	}
 }

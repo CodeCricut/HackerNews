@@ -21,31 +21,7 @@ namespace HackerNews.Api.DB_Helpers
 			_mapper = mapper;
 		}
 
-		public async Task<List<GetArticleModel>> GetAllArticleModelsAsync()
-		{
-			try
-			{
-				// actually gets with children
-				var articles = (await _articleRepository.GetArticlesAsync()).ToList();
-				TrimArticles(articles);
-
-				return _mapper.Map<List<GetArticleModel>>(articles);
-			}
-			catch (Exception e)
-			{
-				// TODO: throw unique exceptions
-				throw;
-			}
-		}
-
-		public async Task<GetArticleModel> GetArticleModelAsync(int id)
-		{
-			var article = (await _articleRepository.GetArticleAsync(id));
-			TrimArticle(article);
-			
-			return _mapper.Map<GetArticleModel>(article);
-		}
-
+		#region Create
 		public async Task<GetArticleModel> PostArticleModelAsync(PostArticleModel articleModel)
 		{
 			Article article = _mapper.Map<Article>(articleModel);
@@ -62,7 +38,36 @@ namespace HackerNews.Api.DB_Helpers
 			await _articleRepository.AddArticlesAsync(articles);
 			await _articleRepository.SaveChangesAsync();
 		}
+		#endregion
 
+		#region Read
+		public async Task<GetArticleModel> GetArticleModelAsync(int id)
+		{
+			var article = (await _articleRepository.GetArticleAsync(id));
+			TrimArticle(article);
+
+			return _mapper.Map<GetArticleModel>(article);
+		}
+
+		public async Task<List<GetArticleModel>> GetAllArticleModelsAsync()
+		{
+			try
+			{
+				// actually gets with children
+				var articles = (await _articleRepository.GetArticlesAsync()).ToList();
+				TrimArticles(articles);
+
+				return _mapper.Map<List<GetArticleModel>>(articles);
+			}
+			catch (Exception e)
+			{
+				// TODO: throw unique exceptions
+				throw;
+			}
+		}
+		#endregion
+
+		#region Update
 		public async Task<GetArticleModel> PutArticleModelAsync(int id, PostArticleModel articleModel)
 		{
 			var article = await _articleRepository.GetArticleAsync(id);
@@ -77,12 +82,6 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetArticleModel>(article);
 		}
 
-		public async Task DeleteArticleAsync(int id)
-		{
-			await _articleRepository.DeleteArticleAsync(id);
-			await _articleRepository.SaveChangesAsync();
-		}
-
 		public async Task VoteArticleAsync(int id, bool upvote)
 		{
 			var article = await _articleRepository.GetArticleAsync(id);
@@ -93,6 +92,15 @@ namespace HackerNews.Api.DB_Helpers
 			await _articleRepository.UpdateArticleAsync(id, article);
 			await _articleRepository.SaveChangesAsync();
 		}
+		#endregion
+
+		#region Delete
+		public async Task DeleteArticleAsync(int id)
+		{
+			await _articleRepository.DeleteArticleAsync(id);
+			await _articleRepository.SaveChangesAsync();
+		}
+		#endregion
 
 		private static void TrimArticle(Article article)
 		{
@@ -116,6 +124,5 @@ namespace HackerNews.Api.DB_Helpers
 			article.Type = (ArticleType)Enum.Parse(typeof(ArticleType), articleModel.Type);
 			article.AuthorName = articleModel.AuthorName;
 		}
-
 	}
 }

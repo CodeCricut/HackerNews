@@ -22,6 +22,16 @@ namespace HackerNews.Api.Controllers
 			_context = context;
 		}
 
+		#region Create
+		#endregion
+
+		#region Read
+		#endregion
+
+		#region Update
+		#endregion
+
+		#region Delete
 		[HttpOptions]
 		public async Task<IActionResult> DeleteAllDataAsync()
 		{
@@ -41,7 +51,8 @@ namespace HackerNews.Api.Controllers
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
-			
+
 		}
+		#endregion
 	}
 }

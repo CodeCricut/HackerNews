@@ -17,6 +17,7 @@ namespace HackerNews.EF
 			_context = context;
 		}
 
+		#region Create
 		public async Task<Comment> AddCommentAsync(Comment comment)
 		{
 			Comment addedComment = null;
@@ -30,16 +31,34 @@ namespace HackerNews.EF
 		{
 			await Task.Run(() => _context.Comments.AddRange(comments));
 		}
+		#endregion
 
-		public async Task DeleteCommentAsync(int id)
+		#region Read
+		public async Task<Comment> GetCommentAsync(int id, bool includeChildren)
 		{
-			// We don't want to actually delete comments. Instead, we just modify the deleted property.
-			var comment = await _context.Comments.FindAsync(id);
-			comment.Deleted = true;
-			await UpdateCommentAsync(id, comment);
+			var comment = await _context.Comments
+				.Include(c => c.ParentComment)
+				.Include(c => c.Comments)
+				.Include(c => c.ParentArticle)
+				.SingleOrDefaultAsync(c => c.Id == id);
+
+			return comment;
 		}
 
+		public async Task<IEnumerable<Comment>> GetCommentsAsync(bool includeChildren)
+		{
+			var comments = await _context.Comments
+				.Include(c => c.Comments)
+				.Include(c => c.ParentArticle)
+				.Include(c => c.ParentComment)
+					.ToListAsync();
 
+			return comments;
+
+		}
+		#endregion
+
+		#region Update
 		public async Task UpdateCommentAsync(int id, Comment updatedComment)
 		{
 			try
@@ -55,7 +74,19 @@ namespace HackerNews.EF
 				throw;
 			}
 		}
+		#endregion
 
+		#region Delete
+		public async Task DeleteCommentAsync(int id)
+		{
+			// We don't want to actually delete comments. Instead, we just modify the deleted property.
+			var comment = await _context.Comments.FindAsync(id);
+			comment.Deleted = true;
+			await UpdateCommentAsync(id, comment);
+		}
+		#endregion
+
+		#region Save
 		public async Task<bool> SaveChangesAsync()
 		{
 			try
@@ -67,30 +98,6 @@ namespace HackerNews.EF
 				return false;
 			}
 		}
-
-
-
-		public async Task<IEnumerable<Comment>> GetCommentsAsync(bool includeChildren)
-		{
-			var comments = await _context.Comments
-				.Include(c => c.Comments)
-				.Include(c => c.ParentArticle)
-				.Include(c => c.ParentComment)
-					.ToListAsync();
-
-			return comments;
-
-		}
-
-		public async Task<Comment> GetCommentAsync(int id, bool includeChildren)
-		{
-			var comment = await _context.Comments
-				.Include(c => c.ParentComment)
-				.Include(c => c.Comments)
-				.Include(c => c.ParentArticle)
-				.SingleOrDefaultAsync(c => c.Id == id);
-
-			return comment;
-		}
+		#endregion
 	}
 }

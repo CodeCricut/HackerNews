@@ -26,25 +26,7 @@ namespace HackerNews.Api.DB_Helpers
 			_mapper = mapper;
 		}
 
-		public async Task<List<GetCommentModel>> GetAllCommentModelsAsync()
-		{
-			var comments = (await _commentRepository.GetCommentsAsync(true)).ToList();
-
-			// in order to avoid altering the actual references (such as children comments), we must deep clone the list
-			var cloneComments = comments.ConvertAll(c => new Comment(c));
-			TrimComments(cloneComments);
-
-			return _mapper.Map<IEnumerable<GetCommentModel>>(cloneComments).ToList();
-		}
-
-		public async Task<GetCommentModel> GetCommentModelAsync(int id)
-		{
-			var comment = await _commentRepository.GetCommentAsync(id, true);
-			TrimComment(comment);
-
-			return _mapper.Map<GetCommentModel>(comment);
-		}
-
+		#region Create
 		public async Task<GetCommentModel> PostCommentModelAsync(PostCommentModel commentModel)
 		{
 
@@ -57,14 +39,6 @@ namespace HackerNews.Api.DB_Helpers
 				_articleRepository.SaveChangesAsync());
 
 			return _mapper.Map<GetCommentModel>(addedComment);
-		}
-
-		private async Task AddParentRelationships(PostCommentModel commentModel, Comment comment)
-		{
-			// add potential parent relationships
-			await Task.WhenAll(
-				TryAddParentCommentAsync(commentModel.ParentCommentId, comment),
-				TryAddParentArticleAsync(commentModel.ParentArticleId, comment));
 		}
 
 		public async Task PostCommentModelsAsync(List<PostCommentModel> commentModels)
@@ -83,14 +57,30 @@ namespace HackerNews.Api.DB_Helpers
 				_commentRepository.SaveChangesAsync(),
 				_articleRepository.SaveChangesAsync());
 		}
+		#endregion
 
-		private async Task<Comment> ConvertCommentAsync(PostCommentModel commentModel)
+		#region Read
+		public async Task<GetCommentModel> GetCommentModelAsync(int id)
 		{
-			var comment = _mapper.Map<Comment>(commentModel);
-			await AddParentRelationships(commentModel, comment);
-			return comment;
+			var comment = await _commentRepository.GetCommentAsync(id, true);
+			TrimComment(comment);
+
+			return _mapper.Map<GetCommentModel>(comment);
 		}
 
+		public async Task<List<GetCommentModel>> GetAllCommentModelsAsync()
+		{
+			var comments = (await _commentRepository.GetCommentsAsync(true)).ToList();
+
+			// in order to avoid altering the actual references (such as children comments), we must deep clone the list
+			var cloneComments = comments.ConvertAll(c => new Comment(c));
+			TrimComments(cloneComments);
+
+			return _mapper.Map<IEnumerable<GetCommentModel>>(cloneComments).ToList();
+		}
+		#endregion
+
+		#region Update
 		public async Task<GetCommentModel> PutCommentModelAsync(int id, PostCommentModel commentModel)
 		{
 			var comment = await _commentRepository.GetCommentAsync(id, true);
@@ -103,17 +93,11 @@ namespace HackerNews.Api.DB_Helpers
 			return _mapper.Map<GetCommentModel>(comment);
 		}
 
-		public async Task DeleteCommentAsync(int id)
-		{
-			await _commentRepository.DeleteCommentAsync(id);
-			await _commentRepository.SaveChangesAsync();
-		}
-
 		public async Task VoteCommentAsync(int commentId, bool upvote)
 		{
 			var comment = await _commentRepository.GetCommentAsync(commentId, true);
 
-			comment.Karma = upvote ? comment.Karma + 1 : comment.Karma - 1; 
+			comment.Karma = upvote ? comment.Karma + 1 : comment.Karma - 1;
 
 			await _commentRepository.UpdateCommentAsync(commentId, comment);
 			await _commentRepository.SaveChangesAsync();
@@ -142,6 +126,15 @@ namespace HackerNews.Api.DB_Helpers
 			childComment.ParentComment = parentComment;
 			await _commentRepository.SaveChangesAsync();
 		}
+		#endregion
+
+		#region Delete
+		public async Task DeleteCommentAsync(int id)
+		{
+			await _commentRepository.DeleteCommentAsync(id);
+			await _commentRepository.SaveChangesAsync();
+		}
+		#endregion
 
 		private static void TrimComment(Comment comment)
 		{
@@ -162,6 +155,27 @@ namespace HackerNews.Api.DB_Helpers
 			// this is messy, but a quick fix
 			comment.AuthorName = commentModel.AuthorName;
 			comment.Text = commentModel.Text;
+		}
+
+		// Add both the comment and article parents
+		private async Task AddParentRelationships(PostCommentModel commentModel, Comment comment)
+		{
+			// add potential parent relationships
+			await Task.WhenAll(
+				TryAddParentCommentAsync(commentModel.ParentCommentId, comment),
+				TryAddParentArticleAsync(commentModel.ParentArticleId, comment));
+		}
+
+		/// <summary>
+		/// Convert a <see cref="PostCommentModel"/> to a <see cref="Comment"/> and add possible parent relationships.
+		/// </summary>
+		/// <param name="commentModel"></param>
+		/// <returns></returns>
+		private async Task<Comment> ConvertCommentAsync(PostCommentModel commentModel)
+		{
+			var comment = _mapper.Map<Comment>(commentModel);
+			await AddParentRelationships(commentModel, comment);
+			return comment;
 		}
 	}
 }

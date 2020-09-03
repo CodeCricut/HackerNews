@@ -19,36 +19,7 @@ namespace HackerNews.Api.Controllers
 			_commentHelper = commentHelper;
 		}
 
-		[EnableQuery]
-		public async Task<IActionResult> GetCommentsAsync()
-		{
-			try
-			{
-				var commentModels = await _commentHelper.GetAllCommentModelsAsync();
-
-				return Ok(commentModels);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
-		}
-
-		[EnableQuery]
-		public async Task<IActionResult> GetCommentAsync(int key)
-		{
-			try
-			{
-				var commentModel = await _commentHelper.GetCommentModelAsync(key);
-
-				return Ok(commentModel);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
-		}
-
+		#region Create
 		[HttpPost]
 		public async Task<IActionResult> PostCommentAsync([FromBody] PostCommentModel commentModel)
 		{
@@ -57,7 +28,7 @@ namespace HackerNews.Api.Controllers
 				if (!ModelState.IsValid) throw new Exception("Model invalid");
 
 				var addedModel = await _commentHelper.PostCommentModelAsync(commentModel);
-				
+
 				return Ok(addedModel);
 			}
 			catch (Exception e)
@@ -82,9 +53,41 @@ namespace HackerNews.Api.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
+		#endregion
 
+		#region Read
+		[EnableQuery]
+		public async Task<IActionResult> GetCommentAsync(int key)
+		{
+			try
+			{
+				var commentModel = await _commentHelper.GetCommentModelAsync(key);
 
+				return Ok(commentModel);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
 
+		[EnableQuery]
+		public async Task<IActionResult> GetCommentsAsync()
+		{
+			try
+			{
+				var commentModels = await _commentHelper.GetAllCommentModelsAsync();
+
+				return Ok(commentModels);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+		#endregion
+
+		#region Update
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> PutCommentAsync(int id, [FromBody] PostCommentModel commentModel)
 		{
@@ -97,21 +100,6 @@ namespace HackerNews.Api.Controllers
 				return Ok(updatedModel);
 			}
 			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
-		}
-
-		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteCommentAsync(int id)
-		{
-			try
-			{
-				await _commentHelper.DeleteCommentAsync(id);
-				
-				return Ok();
-			}
-			catch (Exception)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
@@ -131,5 +119,23 @@ namespace HackerNews.Api.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
+		#endregion
+
+		#region Delete
+		[HttpDelete("{id:int}")]
+		public async Task<IActionResult> DeleteCommentAsync(int id)
+		{
+			try
+			{
+				await _commentHelper.DeleteCommentAsync(id);
+
+				return Ok();
+			}
+			catch (Exception)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+		#endregion
 	}
 }
