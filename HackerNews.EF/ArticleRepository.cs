@@ -54,11 +54,19 @@ namespace HackerNews.EF
 			return article;
 		}
 
+		public async Task<IEnumerable<Article>> GetArticlesAsync(Func<Article, bool> articleFilter)
+		{
+			var articles = await Task.Factory.StartNew(() => 
+			_context.Articles
+				.Include(a => a.Comments)
+				.Where(articleFilter));
+
+			return articles;
+		}
+
 		public async Task<IEnumerable<Article>> GetArticlesAsync()
 		{
-			var articles = await _context.Articles
-				.Include(a => a.Comments)
-				.ToListAsync();
+			var articles = await GetArticlesAsync(a => true);
 
 			return articles;
 		}
@@ -90,5 +98,6 @@ namespace HackerNews.EF
 				throw;
 			}
 		}
+
 	}
 }

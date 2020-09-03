@@ -1,14 +1,9 @@
-﻿using AutoMapper;
-using HackerNews.Api.DB_Helpers;
-using HackerNews.Api.Profiles;
-using HackerNews.Domain;
+﻿using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain.Models;
-using HackerNews.EF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -22,7 +17,6 @@ namespace HackerNews.Api.Controllers
 		{
 			_articleHelper = articleHelper;
 		}
-
 
 		public async Task<IActionResult> GetArticlesAsync()
 		{
