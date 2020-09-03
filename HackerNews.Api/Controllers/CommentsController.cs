@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using HackerNews.Api.DB_Helpers;
 using System.Collections.Generic;
+using Microsoft.AspNet.OData;
 
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
-	public class CommentsController : ControllerBase
+	public class CommentsController : ODataController 
 	{
 		private readonly ICommentHelper _commentHelper;
 
@@ -18,6 +19,7 @@ namespace HackerNews.Api.Controllers
 			_commentHelper = commentHelper;
 		}
 
+		[EnableQuery]
 		public async Task<IActionResult> GetCommentsAsync()
 		{
 			try
@@ -32,12 +34,12 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
-		[HttpGet("{id:int}")]
-		public async Task<IActionResult> GetCommentAsync(int id)
+		[EnableQuery]
+		public async Task<IActionResult> GetCommentAsync(int key)
 		{
 			try
 			{
-				var commentModel = await _commentHelper.GetCommentModelAsync(id);
+				var commentModel = await _commentHelper.GetCommentModelAsync(key);
 
 				return Ok(commentModel);
 			}
