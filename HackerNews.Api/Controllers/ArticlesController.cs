@@ -1,5 +1,7 @@
 ﻿using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain.Models;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
 {
+	// template for non-odata routes
 	[Route("api/[controller]")]
-	public class ArticlesController : ControllerBase
+	public class ArticlesController : ODataController
 	{
 		private readonly IArticleHelper _articleHelper;
 
@@ -18,6 +21,7 @@ namespace HackerNews.Api.Controllers
 			_articleHelper = articleHelper;
 		}
 
+		[EnableQuery]
 		public async Task<IActionResult> GetArticlesAsync()
 		{
 			try
@@ -31,12 +35,12 @@ namespace HackerNews.Api.Controllers
 			}
 		}
 
-		[HttpGet("{id:int}")]
-		public async Task<IActionResult> GetArticleAsync(int id)
+		[EnableQuery]
+		public async Task<IActionResult> GetArticleAsync(int key)
 		{
 			try
 			{
-				var articleModel = await _articleHelper.GetArticleModelAsync(id);
+				var articleModel = await _articleHelper.GetArticleModelAsync(key);
 
 				return Ok(articleModel);
 			}
@@ -83,7 +87,6 @@ namespace HackerNews.Api.Controllers
 		}
 
 
-		// deletes comments for some reason...
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> PutArticleAsync(int id, [FromBody] PostArticleModel articleModel)
 		{
@@ -102,11 +105,11 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpDelete("{id:int}")]
-		public async Task<IActionResult> DeleteArticleAsync(int id)
+		public async Task<IActionResult> DeleteArticleAsync(int key)
 		{
 			try
 			{
-				await _articleHelper.DeleteArticleAsync(id);
+				await _articleHelper.DeleteArticleAsync(key);
 
 				return Ok();
 			}
