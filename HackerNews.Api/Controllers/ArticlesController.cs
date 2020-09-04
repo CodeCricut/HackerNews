@@ -1,4 +1,6 @@
 ﻿using HackerNews.Api.DB_Helpers;
+using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using Microsoft.AspNet.OData;
@@ -15,9 +17,9 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class ArticlesController : ODataController
 	{
-		private readonly IArticleHelper _articleHelper;
+		private readonly ArticleHelper _articleHelper;
 
-		public ArticlesController(IArticleHelper articleHelper)
+		public ArticlesController(ArticleHelper articleHelper)
 		{
 			_articleHelper = articleHelper;
 		}
@@ -28,7 +30,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var addedModel = await _articleHelper.PostArticleModelAsync(articleModel);
+			var addedModel = await _articleHelper.PostEntityModelAsync(articleModel);
 
 			return Ok(addedModel);
 		}
@@ -38,7 +40,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			await _articleHelper.PostArticleModelsAsync(articleModels);
+			await _articleHelper.PostEntityModelsAsync(articleModels);
 
 			return Ok();
 		}
@@ -48,14 +50,14 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetArticlesAsync()
 		{
-			var articleModels = await _articleHelper.GetAllArticleModelsAsync();
+			var articleModels = await _articleHelper.GetAllEntityModelsAsync();
 			return Ok(articleModels);
 		}
 
 		[EnableQuery]
 		public async Task<IActionResult> GetArticleAsync(int key)  
 		{
-				var articleModel = await _articleHelper.GetArticleModelAsync(key);
+				var articleModel = await _articleHelper.GetEntityModelAsync(key);
 
 				return Ok(articleModel);
 		}
@@ -67,7 +69,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var updatedArticleModel = await _articleHelper.PutArticleModelAsync(id, articleModel);
+			var updatedArticleModel = await _articleHelper.PutEntityModelAsync(id, articleModel);
 
 			return Ok(updatedArticleModel);
 		}
@@ -78,7 +80,7 @@ namespace HackerNews.Api.Controllers
 			// verify article exists to throw custom exception if null
 			await GetArticleAsync(articleId);
 
-			await _articleHelper.VoteArticleAsync(articleId, upvote);
+			await _articleHelper.VoteEntityAsync(articleId, upvote);
 
 			return Ok();
 		}
@@ -88,7 +90,7 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteArticleAsync(int key)
 		{
-			await _articleHelper.DeleteArticleAsync(key);
+			await _articleHelper.SoftDeleteEntityAsync(key);
 
 			return Ok();
 		}

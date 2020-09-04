@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HackerNews.Domain.Models
 {
-	public class GetCommentModel
+	public class GetCommentModel : GetEntityModel
 	{
 		public int Id { get; set; }
 		public bool Deleted { get; set; }

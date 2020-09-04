@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using HackerNews.Api.DB_Helpers;
+using HackerNews.Api.Converters;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
+using HackerNews.Domain.Models;
 using HackerNews.EF;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
@@ -13,13 +15,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OData.Edm;
 using Newtonsoft.Json;
 
@@ -40,14 +39,19 @@ namespace HackerNews.Api
 			services.AddDbContext<HackerNewsContext>(options =>
 				// connections strings are configured in appsettings.json
 				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
-			services.AddScoped<IArticleRepository, ArticleRepository>();
-			services.AddScoped<ICommentRepository, CommentRepository>();
-			services.AddScoped<IArticleHelper, ArticleHelper>();
-			services.AddScoped<ICommentHelper, CommentHelper>();
 
 			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));
 
+			services.AddScoped<ArticleConverter>();
+			services.AddScoped<CommentConverter>();
+
+			services.AddScoped<EntityRepository<Article>, ArticleRepository>();
+			services.AddScoped<EntityRepository<Comment>, CommentRepository>();
+
+			services.AddScoped<ArticleHelper>();
+			services.AddScoped<CommentHelper>();
+			
 			// used for querying actions
 			services.AddOData();
 			//services.AddMvc();

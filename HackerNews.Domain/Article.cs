@@ -13,8 +13,6 @@ namespace HackerNews.Domain
 
 	public class Article : DomainEntity
 	{
-		public int Id { get; set; }
-		public bool Deleted { get; set; }
 		public ArticleType Type { get; set; }
 		public string AuthorName { get; set; }
 		public string Text { get; set; }

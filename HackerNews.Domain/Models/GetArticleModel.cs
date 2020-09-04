@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HackerNews.Domain.Models
 {
-	public class GetArticleModel
+	public class GetArticleModel : GetEntityModel
 	{
 		public int Id { get; set; }
 		public bool Deleted { get; set; }

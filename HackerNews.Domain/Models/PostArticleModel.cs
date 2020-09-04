@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HackerNews.Domain.Models
 {
-	public class PostArticleModel
+	public class PostArticleModel : PostEntityModel
 	{
 		[Required]
 		public string Type { get; set; }

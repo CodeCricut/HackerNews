@@ -12,11 +12,11 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class DeveloperController : ControllerBase
 	{
-		private readonly IArticleRepository _articleRepository;
-		private readonly ICommentRepository _commentRepository;
+		private readonly ArticleRepository _articleRepository;
+		private readonly CommentRepository _commentRepository;
 		private readonly HackerNewsContext _context;
 
-		public DeveloperController(IArticleRepository articleRepository, ICommentRepository commentRepository, HackerNewsContext context)
+		public DeveloperController(ArticleRepository articleRepository, CommentRepository commentRepository, HackerNewsContext context)
 		{
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
@@ -28,8 +28,8 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				var articles = await _articleRepository.GetArticlesAsync();
-				var comments = await _commentRepository.GetCommentsAsync(true);
+				var articles = await _articleRepository.GetEntitiesAsync();
+				var comments = await _commentRepository.GetEntitiesAsync();
 
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);
@@ -38,7 +38,7 @@ namespace HackerNews.Api.Controllers
 
 				return Ok();
 			}
-			catch (Exception e)
+			catch 
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
@@ -50,8 +50,6 @@ namespace HackerNews.Api.Controllers
 		
 		{
 			throw new InvalidPostException(ModelState);
-
-			return Ok();
 		}
 	}
 }

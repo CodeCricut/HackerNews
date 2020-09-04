@@ -7,15 +7,16 @@ using HackerNews.Api.DB_Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNet.OData;
 using HackerNews.Domain.Errors;
+using HackerNews.Api.Helpers.EntityHelpers;
 
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
 	public class CommentsController : ODataController 
 	{
-		private readonly ICommentHelper _commentHelper;
+		private readonly CommentHelper _commentHelper;
 
-		public CommentsController(ICommentHelper commentHelper)
+		public CommentsController(CommentHelper commentHelper)
 		{
 			_commentHelper = commentHelper;
 		}
@@ -26,7 +27,7 @@ namespace HackerNews.Api.Controllers
 		{
 				if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-				var addedModel = await _commentHelper.PostCommentModelAsync(commentModel);
+				var addedModel = await _commentHelper.PostEntityModelAsync(commentModel);
 
 				return Ok(addedModel);
 		}
@@ -36,7 +37,7 @@ namespace HackerNews.Api.Controllers
 		{
 				if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-				await _commentHelper.PostCommentModelsAsync(commentModels);
+				await _commentHelper.PostEntityModelsAsync(commentModels);
 
 				return Ok();
 		}
@@ -46,7 +47,7 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetCommentAsync(int key)
 		{
-				var commentModel = await _commentHelper.GetCommentModelAsync(key);
+				var commentModel = await _commentHelper.GetEntityModelAsync(key);
 
 				return Ok(commentModel);
 		}
@@ -54,7 +55,7 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetCommentsAsync()
 		{
-				var commentModels = await _commentHelper.GetAllCommentModelsAsync();
+				var commentModels = await _commentHelper.GetAllEntityModelsAsync();
 
 				return Ok(commentModels);
 		}
@@ -66,7 +67,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-				var updatedModel = await _commentHelper.PutCommentModelAsync(id, commentModel);
+				var updatedModel = await _commentHelper.PutEntityModelAsync(id, commentModel);
 
 				return Ok(updatedModel);
 		}
@@ -74,7 +75,7 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("vote/{commentId:int}")]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
-				await _commentHelper.VoteCommentAsync(commentId, upvote);
+				await _commentHelper.VoteEntityAsync(commentId, upvote);
 
 				return Ok();
 		}
@@ -84,7 +85,7 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteCommentAsync(int id)
 		{
-				await _commentHelper.DeleteCommentAsync(id);
+				await _commentHelper.SoftDeleteEntityAsync(id);
 
 				return Ok();
 		}
