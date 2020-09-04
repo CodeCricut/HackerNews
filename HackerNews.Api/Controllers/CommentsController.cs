@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using HackerNews.Api.DB_Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNet.OData;
+using HackerNews.Domain.Errors;
 
 namespace HackerNews.Api.Controllers
 {
@@ -23,35 +24,21 @@ namespace HackerNews.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> PostCommentAsync([FromBody] PostCommentModel commentModel)
 		{
-			try
-			{
-				if (!ModelState.IsValid) throw new Exception("Model invalid");
+				if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 				var addedModel = await _commentHelper.PostCommentModelAsync(commentModel);
 
 				return Ok(addedModel);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 
 		[HttpPost("range")]
 		public async Task<IActionResult> PostCommentsAsync([FromBody] List<PostCommentModel> commentModels)
 		{
-			try
-			{
-				if (!ModelState.IsValid) throw new Exception("Model invalid");
+				if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 				await _commentHelper.PostCommentModelsAsync(commentModels);
 
 				return Ok();
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 		#endregion
 
@@ -59,31 +46,17 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetCommentAsync(int key)
 		{
-			try
-			{
 				var commentModel = await _commentHelper.GetCommentModelAsync(key);
 
 				return Ok(commentModel);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 
 		[EnableQuery]
 		public async Task<IActionResult> GetCommentsAsync()
 		{
-			try
-			{
 				var commentModels = await _commentHelper.GetAllCommentModelsAsync();
 
 				return Ok(commentModels);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 		#endregion
 
@@ -91,33 +64,19 @@ namespace HackerNews.Api.Controllers
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> PutCommentAsync(int id, [FromBody] PostCommentModel commentModel)
 		{
-			try
-			{
-				if (!ModelState.IsValid) throw new Exception("Model invalid");
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 				var updatedModel = await _commentHelper.PutCommentModelAsync(id, commentModel);
 
 				return Ok(updatedModel);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 
 		[HttpPost("vote/{commentId:int}")]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
-			try
-			{
 				await _commentHelper.VoteCommentAsync(commentId, upvote);
 
 				return Ok();
-			}
-			catch (Exception)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 		#endregion
 
@@ -125,16 +84,9 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteCommentAsync(int id)
 		{
-			try
-			{
 				await _commentHelper.DeleteCommentAsync(id);
 
 				return Ok();
-			}
-			catch (Exception)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 		#endregion
 	}

@@ -1,4 +1,5 @@
-﻿using HackerNews.EF;
+﻿using HackerNews.Domain.Errors;
+using HackerNews.EF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,16 +23,6 @@ namespace HackerNews.Api.Controllers
 			_context = context;
 		}
 
-		#region Create
-		#endregion
-
-		#region Read
-		#endregion
-
-		#region Update
-		#endregion
-
-		#region Delete
 		[HttpOptions]
 		public async Task<IActionResult> DeleteAllDataAsync()
 		{
@@ -53,6 +44,14 @@ namespace HackerNews.Api.Controllers
 			}
 
 		}
-		#endregion
+
+		[HttpGet]
+		public IActionResult ThrowError()
+		
+		{
+			throw new InvalidPostException(ModelState);
+
+			return Ok();
+		}
 	}
 }

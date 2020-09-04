@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HackerNews.Domain.Models
 {
-	public class PostCommentModel
+	public class PostCommentModel : PostEntityModel
 	{
 		[Required]
 		public string AuthorName { get; set; }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HackerNews.Api.Profiles;
 using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using HackerNews.EF;
 using System;
@@ -43,13 +44,7 @@ namespace HackerNews.Api.DB_Helpers
 
 		public async Task PostCommentModelsAsync(List<PostCommentModel> commentModels)
 		{
-			var commentConversionTasks = new List<Task<Comment>>();
-			foreach (var commentModel in commentModels)
-			{
-				commentConversionTasks.Add(ConvertCommentAsync(commentModel));
-			};
-
-			List<Comment> convertedComments = (await Task.WhenAll(commentConversionTasks)).ToList();
+			List<Comment> convertedComments = await ConvertCommentsAsync(commentModels);
 
 			await _commentRepository.AddCommentsAsync(convertedComments);
 
@@ -62,7 +57,7 @@ namespace HackerNews.Api.DB_Helpers
 		#region Read
 		public async Task<GetCommentModel> GetCommentModelAsync(int id)
 		{
-			var comment = await _commentRepository.GetCommentAsync(id, true);
+			Comment comment = await GetCommentAsync(id);
 			TrimComment(comment);
 
 			return _mapper.Map<GetCommentModel>(comment);
@@ -83,19 +78,19 @@ namespace HackerNews.Api.DB_Helpers
 		#region Update
 		public async Task<GetCommentModel> PutCommentModelAsync(int id, PostCommentModel commentModel)
 		{
-			var comment = await _commentRepository.GetCommentAsync(id, true);
+			var comment = await GetCommentAsync(id);
 			UpdateCommentProperties(commentModel, comment);
 
 			await _commentRepository.UpdateCommentAsync(id, comment);
 			await _commentRepository.SaveChangesAsync();
 
-			comment = await _commentRepository.GetCommentAsync(id, true);
+			comment = await GetCommentAsync(id);
 			return _mapper.Map<GetCommentModel>(comment);
 		}
 
 		public async Task VoteCommentAsync(int commentId, bool upvote)
 		{
-			var comment = await _commentRepository.GetCommentAsync(commentId, true);
+			var comment = await GetCommentAsync(commentId);
 
 			comment.Karma = upvote ? comment.Karma + 1 : comment.Karma - 1;
 
@@ -107,8 +102,7 @@ namespace HackerNews.Api.DB_Helpers
 		{
 			// if no parent article given
 			if (articleId < 1) return;
-
-			Article parentArticle = await _articleRepository.GetArticleAsync(articleId);
+			Article parentArticle = await GetArticleAsync(articleId);
 
 			// add parent to child
 			childComment.ParentArticle = parentArticle;
@@ -120,7 +114,7 @@ namespace HackerNews.Api.DB_Helpers
 			// if no parent comment given
 			if (parentId < 1) return;
 
-			Comment parentComment = await _commentRepository.GetCommentAsync(parentId, true);
+			Comment parentComment = await GetCommentAsync(parentId);
 
 			// add the parent reference to the child
 			childComment.ParentComment = parentComment;
@@ -131,6 +125,9 @@ namespace HackerNews.Api.DB_Helpers
 		#region Delete
 		public async Task DeleteCommentAsync(int id)
 		{
+			// verify the comment exists
+			await GetCommentAsync(id);
+
 			await _commentRepository.DeleteCommentAsync(id);
 			await _commentRepository.SaveChangesAsync();
 		}
@@ -158,7 +155,7 @@ namespace HackerNews.Api.DB_Helpers
 		}
 
 		// Add both the comment and article parents
-		private async Task AddParentRelationships(PostCommentModel commentModel, Comment comment)
+		private async Task AddParentRelationshipsAsync(PostCommentModel commentModel, Comment comment)
 		{
 			// add potential parent relationships
 			await Task.WhenAll(
@@ -173,9 +170,43 @@ namespace HackerNews.Api.DB_Helpers
 		/// <returns></returns>
 		private async Task<Comment> ConvertCommentAsync(PostCommentModel commentModel)
 		{
-			var comment = _mapper.Map<Comment>(commentModel);
-			await AddParentRelationships(commentModel, comment);
+			try
+			{
+				var comment = _mapper.Map<Comment>(commentModel);
+				await AddParentRelationshipsAsync(commentModel, comment);
+				return comment;
+			}
+			catch (AutoMapperMappingException e)
+			{
+				throw new InvalidPostException(e.Message);
+			}
+		}
+
+		private async Task<List<Comment>> ConvertCommentsAsync(List<PostCommentModel> commentModels)
+		{
+			var commentConversionTasks = new List<Task<Comment>>();
+			foreach (var commentModel in commentModels)
+			{
+				commentConversionTasks.Add(ConvertCommentAsync(commentModel));
+			};
+
+			List<Comment> convertedComments = (await Task.WhenAll(commentConversionTasks)).ToList();
+			return convertedComments;
+		}
+
+		private async Task<Comment> GetCommentAsync(int id)
+		{
+			var comment = await _commentRepository.GetCommentAsync(id, true);
+			if (comment == null) throw new NotFoundException("The comment with the given ID could not be found. Pleasue ensure that the ID is valid.");
+
 			return comment;
+		}
+
+		private async Task<Article> GetArticleAsync(int articleId)
+		{
+			var article = await _articleRepository.GetArticleAsync(articleId);
+			if (article == null) throw new NotFoundException();
+			return article;
 		}
 	}
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.EF
 {
-	public interface ICommentRepository
+	public interface ICommentRepository : IEntityRepository
 	{
 		/// <summary>
 		/// Add a comment as is.

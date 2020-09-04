@@ -1,4 +1,5 @@
 ﻿using HackerNews.Api.DB_Helpers;
+using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
@@ -25,35 +26,21 @@ namespace HackerNews.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> PostArticleAsync([FromBody] PostArticleModel articleModel)
 		{
-			try
-			{
-				if (!ModelState.IsValid) throw new Exception("Model invalid");
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-				var addedModel = await _articleHelper.PostArticleModelAsync(articleModel);
+			var addedModel = await _articleHelper.PostArticleModelAsync(articleModel);
 
-				return Ok(addedModel);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
+			return Ok(addedModel);
 		}
 
 		[HttpPost("range")]
 		public async Task<IActionResult> PostArticlesAsync([FromBody] List<PostArticleModel> articleModels)
 		{
-			try
-			{
-				if (!ModelState.IsValid) throw new Exception("Model invalid");
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-				await _articleHelper.PostArticleModelsAsync(articleModels);
+			await _articleHelper.PostArticleModelsAsync(articleModels);
 
-				return Ok();
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
+			return Ok();
 		}
 		#endregion
 
@@ -61,31 +48,16 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetArticlesAsync()
 		{
-			try
-			{
-				var articleModels = await _articleHelper.GetAllArticleModelsAsync();
-				return Ok(articleModels);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
+			var articleModels = await _articleHelper.GetAllArticleModelsAsync();
+			return Ok(articleModels);
 		}
 
 		[EnableQuery]
-		public async Task<IActionResult> GetArticleAsync(int key)
+		public async Task<IActionResult> GetArticleAsync(int key)  
 		{
-			try
-			{
 				var articleModel = await _articleHelper.GetArticleModelAsync(key);
 
 				return Ok(articleModel);
-			}
-			catch (Exception e)
-			{
-				// TODO: add invalid id exception
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
 		}
 		#endregion
 
@@ -93,33 +65,22 @@ namespace HackerNews.Api.Controllers
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> PutArticleAsync(int id, [FromBody] PostArticleModel articleModel)
 		{
-			try
-			{
-				if (!ModelState.IsValid) throw new Exception("Model invalid");
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-				var updatedArticleModel = await _articleHelper.PutArticleModelAsync(id, articleModel);
+			var updatedArticleModel = await _articleHelper.PutArticleModelAsync(id, articleModel);
 
-				return Ok(updatedArticleModel);
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
+			return Ok(updatedArticleModel);
 		}
 
 		[HttpPost("vote/{articleId:int}")]
 		public async Task<IActionResult> VoteArticleAsync(int articleId, [FromBody] bool upvote)
 		{
-			try
-			{
-				await _articleHelper.VoteArticleAsync(articleId, upvote);
+			// verify article exists to throw custom exception if null
+			await GetArticleAsync(articleId);
 
-				return Ok();
-			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
+			await _articleHelper.VoteArticleAsync(articleId, upvote);
+
+			return Ok();
 		}
 		#endregion
 
@@ -127,16 +88,9 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteArticleAsync(int key)
 		{
-			try
-			{
-				await _articleHelper.DeleteArticleAsync(key);
+			await _articleHelper.DeleteArticleAsync(key);
 
-				return Ok();
-			}
-			catch (Exception)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError);
-			}
+			return Ok();
 		}
 		#endregion
 	}

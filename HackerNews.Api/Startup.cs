@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.EF;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OData.Edm;
+using Newtonsoft.Json;
 
 namespace HackerNews.Api
 {
@@ -54,9 +58,26 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			app.UseExceptionHandler(a => a.Run(async context => 
+			{
+				var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
+				var exception = exceptionHandlerPathFeature.Error; // Your exception
+				var code = 500; // Internal Server Error by default
+
+				if (exception is NotFoundException) code = 404; // Not Found
+				else if (exception is UnauthorizedException) code = 401; // Unauthorized
+				else if (exception is InvalidPostException) code = 400; // Bad Request
+
+				var result = JsonConvert.SerializeObject(new ErrorResponse(exception));
+
+				context.Response.StatusCode = code;
+				context.Response.ContentType = "application/json";
+				await context.Response.WriteAsync(result);
+			}));
+
 			if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
+				//app.UseDeveloperExceptionPage();
 			}
 
 			app.UseHttpsRedirection();
