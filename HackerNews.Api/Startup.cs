@@ -43,11 +43,11 @@ namespace HackerNews.Api
 			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));
 
-			services.AddScoped<ArticleConverter>();
-			services.AddScoped<CommentConverter>();
-
 			services.AddScoped<EntityRepository<Article>, ArticleRepository>();
 			services.AddScoped<EntityRepository<Comment>, CommentRepository>();
+
+			services.AddScoped<ArticleConverter>();
+			services.AddScoped<CommentConverter>();
 
 			services.AddScoped<ArticleHelper>();
 			services.AddScoped<CommentHelper>();

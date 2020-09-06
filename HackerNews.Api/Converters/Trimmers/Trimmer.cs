@@ -25,7 +25,7 @@ namespace HackerNews.Api.Converters.Trimmers
 				for (int i = 0; i < article.Comments.Count; i++)
 				{
 					var comment = article.Comments[i];
-					comment = GetNewTrimmedComment(comment, trimParents: true, trimChildren: false);
+					comment = GetNewTrimmedComment(comment, trimParents: false, trimChildren: false);
 				}
 			}
 			return article;
