@@ -25,6 +25,7 @@ namespace HackerNews.Api.Converters
 			return await Task.Factory.StartNew(() => _mapper.Map<DestinationT>(entity));
 		}
 
+
 		public override async Task<Comment> ConvertEntityModelAsync(PostCommentModel entityModel)
 		{
 			var comment = _mapper.Map<Comment>(entityModel);

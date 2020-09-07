@@ -60,7 +60,7 @@ namespace HackerNews.Api
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HackerNewsContext dbContext)
 		{
 			app.UseExceptionHandler(a => a.Run(async context => 
 			{
@@ -82,6 +82,9 @@ namespace HackerNews.Api
 			if (env.IsDevelopment())
 			{
 				//app.UseDeveloperExceptionPage();
+
+				// create the db if it doesn't exist
+				dbContext.Database.EnsureCreated();
 			}
 
 			app.UseHttpsRedirection();
