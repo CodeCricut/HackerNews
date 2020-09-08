@@ -24,6 +24,8 @@ namespace HackerNews.UnitTests
 			var getModel = await converter.ConvertEntityAsync<GetArticleModel>(article);
 
 			Assert.IsType<GetArticleModel>(getModel);
+
+			mockMapper.Verify(m => m.Map<GetArticleModel>(It.IsAny<Article>()), Times.Once);
 		}
 
 		[Fact]
@@ -41,6 +43,9 @@ namespace HackerNews.UnitTests
 			var getModels = await converter.ConvertEntitiesAsync<GetArticleModel>(articles);
 
 			Assert.IsType<List<GetArticleModel>>(getModels);
+
+			mockMapper.Verify(m => m.Map<GetArticleModel>(It.IsAny<Article>()), Times.Once);
+
 		}
 
 		[Fact]
@@ -54,13 +59,18 @@ namespace HackerNews.UnitTests
 			var entity = await converter.ConvertEntityModelAsync(postModel);
 
 			Assert.IsType<Article>(entity);
+
+			mockMapper.Verify(m => m.Map<Article>(It.IsAny<PostArticleModel>()), Times.Once);
+
 		}
 
 		[Fact]
 		public async Task ConvertPostModelsAsync_Returns_Entities()
 		{
+			const int numOfModels = 3;
+
 			var postModels = new List<PostArticleModel>();
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < numOfModels; i++)
 			{
 				postModels.Add(new PostArticleModel());
 			}
@@ -71,6 +81,8 @@ namespace HackerNews.UnitTests
 			var entities = await converter.ConvertEntityModelsAsync(postModels);
 
 			Assert.IsType<List<Article>>(entities);
+
+			mockMapper.Verify(m => m.Map<Article>(It.IsAny<PostArticleModel>()), Times.Exactly(numOfModels));
 		}
 	}
 }
