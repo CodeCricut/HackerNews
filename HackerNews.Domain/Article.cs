@@ -25,5 +25,26 @@ namespace HackerNews.Domain
 		{
 			Comments = new List<Comment>();
 		}
+
+		/// <summary>
+		/// Shallow copy the given <paramref name="articleToClone"/> but add a reference to the given <paramref name="comments"/>.
+		/// </summary>
+		/// <param name="articleToClone"></param>
+		public Article(Article articleToClone, List<Comment> comments)
+		{
+			Type = articleToClone.Type;
+			AuthorName = articleToClone.AuthorName;
+			Text = articleToClone.Text;
+			Comments = comments;
+			Url = articleToClone.Url;
+			Karma = articleToClone.Karma;
+			Title = articleToClone.Title;
+		}
+
+		/// <summary>
+		/// Shallow copy the given <paramref name="articleToClone"/>.
+		/// </summary>
+		/// <param name="articleToClone"></param>
+		public Article(Article articleToClone) : this(articleToClone, articleToClone.Comments) { }
 	}
 }

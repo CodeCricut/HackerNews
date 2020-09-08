@@ -1,4 +1,5 @@
 ﻿using HackerNews.Api.DB_Helpers;
+using HackerNews.Api.Helpers.Objects;
 using HackerNews.Domain;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,18 @@ namespace HackerNews.Api.Converters.Trimmers
 		/// <returns></returns>
 		public static Article GetNewTrimmedArticle(Article article, bool trimChildren)
 		{
-			if (trimChildren) article.Comments = null;
+			var newArticle = article.Copy();
+
+			if (trimChildren) newArticle.Comments.Clear();
 			else
 			{
-				for (int i = 0; i < article.Comments.Count; i++)
+				for (int i = 0; i < newArticle.Comments.Count; i++)
 				{
-					var comment = article.Comments[i];
-					comment = GetNewTrimmedComment(comment, trimParents: false, trimChildren: false);
+					var comment = newArticle.Comments[i];
+					newArticle.Comments[i] = GetNewTrimmedComment(comment, trimParents: true, trimChildren: false);
 				}
 			}
-			return article;
+			return newArticle;
 		}
 
 		public static async Task<List<Article>> GetNewTrimmedArticlesAsync(List<Article> articles, bool trimChildren)
@@ -46,36 +49,40 @@ namespace HackerNews.Api.Converters.Trimmers
 		/// of trimming parents on children.</param>
 		public static Comment GetNewTrimmedComment(Comment comment, bool trimParents, bool trimChildren)
 		{
+			var newComment = comment.Copy();
 			if (trimParents)
 			{
-				comment.ParentArticle = null;
-				comment.ParentComment = null;
+				newComment.ParentArticle = null;
+				newComment.ParentComment = null;
 			}
 			else
 			{
-				if (comment.ParentArticle != null)
+				if (newComment.ParentArticle != null)
 				{
-					/////////
-					comment.ParentArticle = GetNewTrimmedArticle(comment.ParentArticle, false);
+					newComment.ParentArticle = GetNewTrimmedArticle(newComment.ParentArticle, true);
+				}
+				if (newComment.ParentComment != null)
+				{
+					newComment.ParentComment = GetNewTrimmedComment(newComment.ParentComment, trimParents: false, trimChildren: true);
 				}
 			}
 
 			if (trimChildren)
 			{
-				comment.Comments = null;
+				newComment.Comments.Clear();
 			}
 			else
 			{
-				for (int i = 0; i < comment.Comments.Count; i++)
+				for (int i = 0; i < newComment.Comments.Count; i++)
 				{
 					// rename to childComment
-					var childComment = comment.Comments[i];
-					childComment = GetNewTrimmedComment(childComment, trimParents: true, trimChildren: false);
+					var childComment = newComment.Comments[i];
+					newComment.Comments[i] = GetNewTrimmedComment(childComment, trimParents: true, trimChildren: false);
 					// check to see if the assignment changed the actual comment reference
 				}
 			}
 
-			return comment;
+			return newComment;
 		}
 
 		public static async Task<List<Comment>> GetNewTrimmedCommentsAsync(List<Comment> comments, bool trimParents, bool trimChildren)
