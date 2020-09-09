@@ -25,6 +25,8 @@ namespace HackerNews.Api.Converters
 			return await Task.Factory.StartNew(() => _mapper.Map<DestinationT>(entity));
 		}
 
+		// I believe most of this could be done in the mapping profile, but I am not comfortable enough with AutoMapper to implement it.
+		// Essentially, we are fetching the parents from the database and referencing them in the returned entity.
 		public override async Task<Comment> ConvertEntityModelAsync(PostCommentModel entityModel)
 		{
 			var comment = _mapper.Map<Comment>(entityModel);
@@ -44,7 +46,6 @@ namespace HackerNews.Api.Converters
 
 			// add the parent reference to the child
 			childComment.ParentComment = parentComment;
-			// await _commentRepository.SaveChangesAsync();
 		}
 
 
@@ -57,8 +58,6 @@ namespace HackerNews.Api.Converters
 
 			// add parent to child
 			childComment.ParentArticle = parentArticle;
-			// await _commentRepository.SaveChangesAsync();
 		}
-
 	}
 }

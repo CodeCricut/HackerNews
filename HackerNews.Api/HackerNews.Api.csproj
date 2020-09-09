@@ -20,5 +20,9 @@
     <ProjectReference Include="..\HackerNews.EF\HackerNews.EF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
 
 </Project>

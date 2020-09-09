@@ -2,9 +2,7 @@
 using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Converters
@@ -21,15 +19,45 @@ namespace HackerNews.Api.Converters
 			_mapper = mapper;
 		}
 
+		/// <summary>
+		/// Try to map the given <typeparamref name="PostModelT"/> to the <typeparamref name="EntityT"/>. If there is not profile given for 
+		/// the mapping behavior (which is how AutoMapper knows how to map things), then an <see cref="AutoMapper.AutoMapperMappingException"/> 
+		/// will be thrown.
+		/// </summary>
+		/// <param name="entityModel"></param>
+		/// <returns></returns>
 		public abstract  Task<EntityT> ConvertEntityModelAsync(PostModelT entityModel);
-		public  async Task<List<EntityT>> ConvertEntityModelsAsync(List<PostModelT> entityModels)
+
+		/// <summary>
+		/// Try to map the each member in <paramref name="entityModels"/> to the destination in the list of <typeparamref name="EntityT"/>. If there is not profile given for 
+		/// the mapping behavior (which is how AutoMapper knows how to map things), then an <see cref="AutoMapper.AutoMapperMappingException"/> 
+		/// will be thrown.
+		/// </summary>
+		/// <param name="entityModel"></param>
+		/// <returns></returns>
+		public async Task<List<EntityT>> ConvertEntityModelsAsync(List<PostModelT> entityModels)
 		{
 			return await TaskHelper.RunConcurrentTasksAsync(entityModels, 
 				entityModel => ConvertEntityModelAsync(entityModel));
 		}
 
+		/// <summary>
+		/// Try to map the given <typeparamref name="EntityT"/> to the <typeparamref name="DestinationT"/>. If there is not profile given for 
+		/// the mapping behavior (which is how AutoMapper knows how to map things), then an <see cref="AutoMapper.AutoMapperMappingException"/> 
+		/// will be thrown.
+		/// </summary>
+		/// <param name="entityModel"></param>
+		/// <returns></returns>
 		public abstract Task<DestinationT> ConvertEntityAsync<DestinationT>(EntityT entity);
-		public  async Task<List<DestinationT>> ConvertEntitiesAsync<DestinationT>(List<EntityT> entities)
+
+		/// <summary>
+		/// Try to map the each member in <paramref name="entities"/> to the destination in the list of <typeparamref name="DestinationT"/>. If there is not profile given for 
+		/// the mapping behavior (which is how AutoMapper knows how to map things), then an <see cref="AutoMapper.AutoMapperMappingException"/> 
+		/// will be thrown.
+		/// </summary>
+		/// <param name="entityModel"></param>
+		/// <returns></returns>
+		public async Task<List<DestinationT>> ConvertEntitiesAsync<DestinationT>(List<EntityT> entities)
 		{
 			return await TaskHelper.RunConcurrentTasksAsync(entities,
 				entity => ConvertEntityAsync<DestinationT>(entity));
