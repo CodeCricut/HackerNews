@@ -44,7 +44,7 @@ namespace HackerNews.Api.Converters
 
 			// add the parent reference to the child
 			childComment.ParentComment = parentComment;
-			await _commentRepository.SaveChangesAsync();
+			// await _commentRepository.SaveChangesAsync();
 		}
 
 
@@ -57,7 +57,7 @@ namespace HackerNews.Api.Converters
 
 			// add parent to child
 			childComment.ParentArticle = parentArticle;
-			await _commentRepository.SaveChangesAsync();
+			// await _commentRepository.SaveChangesAsync();
 		}
 
 	}
