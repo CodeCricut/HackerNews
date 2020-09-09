@@ -51,7 +51,9 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetCommentAsync(int key)
 		{
-				var commentModel = await _commentHelper.GetEntityModelAsync(key);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+
+			var commentModel = await _commentHelper.GetEntityModelAsync(key);
 
 				return Ok(commentModel);
 		}
@@ -79,7 +81,9 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("vote/{commentId:int}")]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
-				await _commentVoter.VoteEntityAsync(commentId, upvote);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+
+			await _commentVoter.VoteEntityAsync(commentId, upvote);
 
 				return Ok();
 		}
@@ -89,7 +93,9 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteCommentAsync(int id)
 		{
-				await _commentHelper.SoftDeleteEntityAsync(id);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+
+			await _commentHelper.SoftDeleteEntityAsync(id);
 
 				return Ok();
 		}
