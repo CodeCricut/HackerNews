@@ -8,17 +8,21 @@ using System.Collections.Generic;
 using Microsoft.AspNet.OData;
 using HackerNews.Domain.Errors;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Domain;
 
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
 	public class CommentsController : ODataController 
 	{
-		private readonly CommentHelper _commentHelper;
+		private readonly IEntityHelper<Comment, PostCommentModel, GetCommentModel> _commentHelper;
+		private readonly IVoteableEntityHelper<Comment> _commentVoter;
 
-		public CommentsController(CommentHelper commentHelper)
+		public CommentsController(IEntityHelper<Comment, PostCommentModel, GetCommentModel> commentHelper, 
+			IVoteableEntityHelper<Comment> commentVoter)
 		{
 			_commentHelper = commentHelper;
+			_commentVoter = commentVoter;
 		}
 
 		#region Create
@@ -75,7 +79,7 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("vote/{commentId:int}")]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
-				await _commentHelper.VoteEntityAsync(commentId, upvote);
+				await _commentVoter.VoteEntityAsync(commentId, upvote);
 
 				return Ok();
 		}

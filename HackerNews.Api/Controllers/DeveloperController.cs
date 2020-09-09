@@ -1,10 +1,9 @@
-﻿using HackerNews.Domain.Errors;
+﻿using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.EF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -12,12 +11,12 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class DeveloperController : ControllerBase
 	{
-		private readonly ArticleRepository _articleRepository;
-		private readonly CommentRepository _commentRepository;
-		private readonly HackerNewsContext _context;
+		private readonly EntityRepository<Article> _articleRepository;
+		private readonly EntityRepository<Comment> _commentRepository;
+		private readonly DbContext _context;
 
-		public DeveloperController(ArticleRepository articleRepository, CommentRepository commentRepository, HackerNewsContext context)
-		{
+		public DeveloperController(EntityRepository<Article> articleRepository, EntityRepository<Comment> commentRepository, DbContext context)
+		{						   
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
 			_context = context;
@@ -47,7 +46,6 @@ namespace HackerNews.Api.Controllers
 
 		[HttpGet]
 		public IActionResult ThrowError()
-		
 		{
 			throw new InvalidPostException(ModelState);
 		}

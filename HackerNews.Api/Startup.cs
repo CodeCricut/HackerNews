@@ -49,8 +49,11 @@ namespace HackerNews.Api
 			services.AddScoped<ArticleConverter>();
 			services.AddScoped<CommentConverter>();
 
-			services.AddScoped<ArticleHelper>();
-			services.AddScoped<CommentHelper>();
+			services.AddScoped< IEntityHelper < Article, PostArticleModel, GetArticleModel > , ArticleHelper >();
+			services.AddScoped< IEntityHelper < Comment, PostCommentModel, GetCommentModel > , CommentHelper >();
+
+			services.AddScoped<IVoteableEntityHelper<Article>, ArticleHelper>();
+			services.AddScoped<IVoteableEntityHelper<Comment>, CommentHelper>();
 			
 			// used for querying actions
 			services.AddOData();

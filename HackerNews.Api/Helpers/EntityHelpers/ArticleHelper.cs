@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>
+	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>, IVoteableEntityHelper<Article>
 	{
 		public ArticleHelper(EntityRepository<Article> entityRepository, ArticleConverter articleConverter) 
 			: base(entityRepository, articleConverter)
 		{
 		}
 
-		internal override void UpdateEntityProperties(Article article, PostArticleModel articleModel)
+		public override void UpdateEntityProperties(Article article, PostArticleModel articleModel)
 		{
 			// this is messy, but a quick fix
 			article.Title = articleModel.Title;
@@ -48,11 +48,16 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public override async Task<List<GetArticleModel>> GetAllEntityModelsAsync()
 		{
-			List<Article> articles = (await _entityRepository.GetEntitiesAsync()).ToList();
-
-			articles = await Trimmer.GetNewTrimmedArticlesAsync(articles, false);
+			var articles = await GetAllEntitiesAsync();
 
 			return await _entityConverter.ConvertEntitiesAsync<GetArticleModel>(articles);
+		}
+
+		public override async Task<List<Article>> GetAllEntitiesAsync()
+		{
+			List<Article> articles = (await _entityRepository.GetEntitiesAsync()).ToList();
+
+			return await Trimmer.GetNewTrimmedArticlesAsync(articles, false);
 		}
 	}
 }

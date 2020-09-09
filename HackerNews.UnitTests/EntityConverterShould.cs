@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HackerNews.Api.Converters;
+using HackerNews.Api.Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
 using HackerNews.EF;
@@ -42,14 +43,14 @@ namespace HackerNews.UnitTests
 			_parentArticle = new Article();
 			_parentComment = new Comment();
 
-			_articles = CreateListOfType<Article>(5);
-			_comments = CreateListOfType<Comment>(5);
+			_articles = ListHelper.CreateListOfType<Article>(5);
+			_comments = ListHelper.CreateListOfType<Comment>(5);
 
 			_postArticleModel = new PostArticleModel();
-			_postArticleModels = CreateListOfType<PostArticleModel>(5);
+			_postArticleModels = ListHelper.CreateListOfType<PostArticleModel>(5);
 
 			_postCommentModel = new PostCommentModel();
-			_postCommentModels = CreateListOfType<PostCommentModel>(5);
+			_postCommentModels = ListHelper.CreateListOfType<PostCommentModel>(5);
 
 			_mockMapper = new Mock<IMapper>();
 
@@ -62,15 +63,7 @@ namespace HackerNews.UnitTests
 			SetupDefaultMockMapperBehavior(_mockMapper);
 		}
 
-		private static List<T> CreateListOfType<T>(int number) where T : new()
-		{
-			List<T> list = new List<T>();
-			for (int i = 0; i < number; i++)
-			{
-				list.Add(new T());
-			}
-			return list;
-		}
+		
 
 		private static void SetupDefaultMockMapperBehavior(Mock<IMapper> mockMapper)
 		{

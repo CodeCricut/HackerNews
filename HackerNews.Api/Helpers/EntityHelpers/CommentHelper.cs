@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>
+	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>, IVoteableEntityHelper<Comment>
 	{
 		public CommentHelper(EntityRepository<Comment> entityRepository, CommentConverter commentConverter) 
 			: base(entityRepository, commentConverter)
 		{
 		}
 
-		internal override void UpdateEntityProperties(Comment comment, PostCommentModel commentModel)
+		public override void UpdateEntityProperties(Comment comment, PostCommentModel commentModel)
 		{
 			// this is messy, but a quick fix
 			comment.AuthorName = commentModel.AuthorName;
@@ -45,11 +45,15 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public override async Task<List<GetCommentModel>> GetAllEntityModelsAsync()
 		{
+			var comments = await GetAllEntitiesAsync();
+			return await _entityConverter.ConvertEntitiesAsync<GetCommentModel>(comments);
+		}
+
+		public override async Task<List<Comment>> GetAllEntitiesAsync()
+		{
 			List<Comment> comments = (await _entityRepository.GetEntitiesAsync()).ToList();
 
-			comments = await Trimmer.GetNewTrimmedCommentsAsync(comments, false, false);
-
-			return await _entityConverter.ConvertEntitiesAsync<GetCommentModel>(comments);
+			return await Trimmer.GetNewTrimmedCommentsAsync(comments, false, false);
 		}
 	}
 }

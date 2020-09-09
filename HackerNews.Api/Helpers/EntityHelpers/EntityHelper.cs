@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public abstract class EntityHelper<EntityT, PostModelT, GetModelT>
+	public abstract class EntityHelper<EntityT, PostModelT, GetModelT> : IEntityHelper<EntityT, PostModelT, GetModelT>
 		where EntityT : DomainEntity
 		where PostModelT : PostEntityModel
 		where GetModelT : GetEntityModel
@@ -74,7 +74,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			await _entityRepository.SaveChangesAsync();
 		}
 
-		protected async Task<EntityT> GetEntityAsync(int id)
+		public async Task<EntityT> GetEntityAsync(int id)
 		{
 			var entity = await _entityRepository.GetEntityAsync(id);
 			if (entity == null) throw new NotFoundException("An entity with the given ID could not be found.");
@@ -82,6 +82,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			return entity;
 		}
 
-		internal abstract void UpdateEntityProperties(EntityT entity, PostModelT entityModel);
+		public abstract void UpdateEntityProperties(EntityT entity, PostModelT entityModel);
+
+		public abstract Task<List<EntityT>> GetAllEntitiesAsync();
 	}
 }
