@@ -1,8 +1,8 @@
 ﻿using HackerNews.Api.Converters;
-using HackerNews.Api.Converters.Trimmers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
 using HackerNews.EF;
+using HackerNews.EF.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,16 +11,16 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>, IVoteableEntityHelper<Comment>
 	{
-		public CommentHelper(EntityRepository<Comment> entityRepository, CommentConverter commentConverter) 
+		public CommentHelper(IEntityRepository<Comment> entityRepository, IEntityConverter<Comment, PostCommentModel, GetCommentModel> commentConverter) 
 			: base(entityRepository, commentConverter)
 		{
 		}
 
-		public override void UpdateEntityProperties(Comment comment, PostCommentModel commentModel)
+		public override void UpdateEntityProperties(Comment comment, Comment newComment)
 		{
 			// this is messy, but a quick fix
-			comment.AuthorName = commentModel.AuthorName;
-			comment.Text = commentModel.Text;
+			comment.AuthorName = newComment.AuthorName;
+			comment.Text = newComment.Text;
 		}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
@@ -41,12 +41,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			comment = Trimmer.GetNewTrimmedComment(comment, false, false);
 
 			return await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
-		}
-
-		public override async Task<List<GetCommentModel>> GetAllEntityModelsAsync()
-		{
-			var comments = await GetAllEntitiesAsync();
-			return await _entityConverter.ConvertEntitiesAsync<GetCommentModel>(comments);
 		}
 
 		public override async Task<List<Comment>> GetAllEntitiesAsync()

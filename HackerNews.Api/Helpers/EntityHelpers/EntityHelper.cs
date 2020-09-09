@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using HackerNews.Api.Converters;
-using HackerNews.Api.Converters.Trimmers;
+﻿using HackerNews.Api.Converters;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
-using HackerNews.EF;
-using System;
+using HackerNews.EF.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
@@ -17,12 +13,12 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		where PostModelT : PostEntityModel
 		where GetModelT : GetEntityModel
 	{
-		protected readonly EntityRepository<EntityT> _entityRepository;
-		protected readonly EntityConverter<EntityT, PostModelT, GetModelT> _entityConverter;
+		protected readonly IEntityRepository<EntityT> _entityRepository;
+		protected readonly IEntityConverter<EntityT, PostModelT, GetModelT> _entityConverter;
 
 		public EntityHelper(
-			EntityRepository<EntityT> entityRepository,
-			EntityConverter<EntityT, PostModelT, GetModelT> entityConverter)
+			IEntityRepository<EntityT> entityRepository,
+			IEntityConverter<EntityT, PostModelT, GetModelT> entityConverter)
 		{
 			_entityRepository = entityRepository;
 			_entityConverter = entityConverter;
@@ -45,15 +41,12 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			await _entityRepository.SaveChangesAsync();
 		}
 
-		public abstract Task<GetModelT> GetEntityModelAsync(int id);
-
-		public abstract Task<List<GetModelT>> GetAllEntityModelsAsync();
-
 		public async Task<GetModelT> PutEntityModelAsync(int id, PostModelT entityModel)
 		{
 			var entity = await GetEntityAsync(id);
+			var convertedModel = await _entityConverter.ConvertEntityModelAsync(entityModel);
 
-			UpdateEntityProperties(entity, entityModel);
+			UpdateEntityProperties(entity, convertedModel);
 
 			await _entityRepository.UpdateEntityAsync(id, entity);
 			await _entityRepository.SaveChangesAsync();
@@ -61,9 +54,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 			return await GetEntityModelAsync(id);
 		}
-
-		// this should only be implemented in some helpes, such as comments and articles. I am leaving it hear simply to remember.
-		// public abstract Task VoteEntityAsync(int it, bool upvote);
 
 		public async Task SoftDeleteEntityAsync(int id)
 		{
@@ -82,8 +72,19 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			return entity;
 		}
 
-		public abstract void UpdateEntityProperties(EntityT entity, PostModelT entityModel);
+		public abstract void UpdateEntityProperties(EntityT entity, EntityT newEntity);
 
 		public abstract Task<List<EntityT>> GetAllEntitiesAsync();
+
+
+		public abstract Task<GetModelT> GetEntityModelAsync(int id);
+
+		// TODO: I believe we need to trim the entities before converting them.
+		public async Task<List<GetModelT>> GetAllEntityModelsAsync()
+		{
+			var entities = await GetAllEntitiesAsync();
+
+			return await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
+		}
 	}
 }

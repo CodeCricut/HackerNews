@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Converters
 {
-	public abstract class EntityConverter<EntityT, PostModelT, GetModelT>
+	public abstract class EntityConverter<EntityT, PostModelT, GetModelT> : IEntityConverter<EntityT, PostModelT, GetModelT> 
 		where EntityT : DomainEntity
 		where PostModelT : PostEntityModel
 		where GetModelT : GetEntityModel
@@ -26,7 +26,7 @@ namespace HackerNews.Api.Converters
 		/// </summary>
 		/// <param name="entityModel"></param>
 		/// <returns></returns>
-		public abstract  Task<EntityT> ConvertEntityModelAsync(PostModelT entityModel);
+		public abstract Task<EntityT> ConvertEntityModelAsync(PostModelT entityModel);
 
 		/// <summary>
 		/// Try to map the each member in <paramref name="entityModels"/> to the destination in the list of <typeparamref name="EntityT"/>. If there is not profile given for 
@@ -37,7 +37,7 @@ namespace HackerNews.Api.Converters
 		/// <returns></returns>
 		public async Task<List<EntityT>> ConvertEntityModelsAsync(List<PostModelT> entityModels)
 		{
-			return await TaskHelper.RunConcurrentTasksAsync(entityModels, 
+			return await TaskHelper.RunConcurrentTasksAsync(entityModels,
 				entityModel => ConvertEntityModelAsync(entityModel));
 		}
 
@@ -48,7 +48,7 @@ namespace HackerNews.Api.Converters
 		/// </summary>
 		/// <param name="entityModel"></param>
 		/// <returns></returns>
-		public abstract Task<DestinationT> ConvertEntityAsync<DestinationT>(EntityT entity);
+		public abstract Task<GetModelT> ConvertEntityAsync<GetModelT>(EntityT entity);
 
 		/// <summary>
 		/// Try to map the each member in <paramref name="entities"/> to the destination in the list of <typeparamref name="DestinationT"/>. If there is not profile given for 
@@ -57,10 +57,10 @@ namespace HackerNews.Api.Converters
 		/// </summary>
 		/// <param name="entityModel"></param>
 		/// <returns></returns>
-		public async Task<List<DestinationT>> ConvertEntitiesAsync<DestinationT>(List<EntityT> entities)
+		public async Task<List<GetModelT>> ConvertEntitiesAsync<GetModelT>(List<EntityT> entities)
 		{
 			return await TaskHelper.RunConcurrentTasksAsync(entities,
-				entity => ConvertEntityAsync<DestinationT>(entity));
+				entity => ConvertEntityAsync<GetModelT>(entity));
 		}
 	}
 }

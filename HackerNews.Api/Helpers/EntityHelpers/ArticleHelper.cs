@@ -1,9 +1,7 @@
 ﻿using HackerNews.Api.Converters;
-using HackerNews.Api.Converters.Trimmers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using HackerNews.EF;
-using System;
+using HackerNews.EF.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,18 +10,18 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>, IVoteableEntityHelper<Article>
 	{
-		public ArticleHelper(EntityRepository<Article> entityRepository, ArticleConverter articleConverter) 
+		public ArticleHelper(IEntityRepository<Article> entityRepository, IEntityConverter<Article, PostArticleModel, GetArticleModel> articleConverter) 
 			: base(entityRepository, articleConverter)
 		{
 		}
 
-		public override void UpdateEntityProperties(Article article, PostArticleModel articleModel)
+		public override void UpdateEntityProperties(Article article, Article newArticle)
 		{
 			// this is messy, but a quick fix
-			article.Title = articleModel.Title;
-			article.Text = articleModel.Text;
-			article.Type = (ArticleType)Enum.Parse(typeof(ArticleType), articleModel.Type);
-			article.AuthorName = articleModel.AuthorName;
+			article.Title = newArticle.Title;
+			article.Text = newArticle.Text;
+			article.Type = newArticle.Type;
+			article.AuthorName = newArticle.AuthorName;
 		}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
@@ -44,13 +42,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			article = Trimmer.GetNewTrimmedArticle(article, false);
 
 			return await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
-		}
-
-		public override async Task<List<GetArticleModel>> GetAllEntityModelsAsync()
-		{
-			var articles = await GetAllEntitiesAsync();
-
-			return await _entityConverter.ConvertEntitiesAsync<GetArticleModel>(articles);
 		}
 
 		public override async Task<List<Article>> GetAllEntitiesAsync()

@@ -1,4 +1,5 @@
 ﻿using HackerNews.Domain;
+using HackerNews.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace HackerNews.EF
 {
-	public abstract class EntityRepository<EntityT> where EntityT : DomainEntity
+	public abstract class EntityRepository<EntityT> : IEntityRepository<EntityT>
+		where EntityT : DomainEntity
 	{
 		protected readonly HackerNewsContext _context;
 
