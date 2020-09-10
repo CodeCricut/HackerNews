@@ -1,4 +1,5 @@
-﻿using HackerNews.Api.Converters;
+﻿using AutoMapper;
+using HackerNews.Api.Converters;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
 using HackerNews.EF.Repositories;
@@ -10,18 +11,19 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>, IVoteableEntityHelper<Article>
 	{
-		public ArticleHelper(IEntityRepository<Article> entityRepository, IEntityConverter<Article, PostArticleModel, GetArticleModel> articleConverter) 
-			: base(entityRepository, articleConverter)
+		public ArticleHelper(IEntityRepository<Article> entityRepository, IMapper mapper) 
+			: base(entityRepository, mapper)
 		{
 		}
 
 		public override void UpdateEntityProperties(Article article, Article newArticle)
 		{
+			article = _mapper.Map<Article, Article>(newArticle);
 			// this is messy, but a quick fix
-			article.Title = newArticle.Title;
-			article.Text = newArticle.Text;
-			article.Type = newArticle.Type;
-			article.AuthorName = newArticle.AuthorName;
+			//article.Title = newArticle.Title;
+			//article.Text = newArticle.Text;
+			//article.Type = newArticle.Type;
+			//article.AuthorName = newArticle.AuthorName;
 		}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
@@ -39,16 +41,18 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		{
 			Article article = await GetEntityAsync(id);
 
-			article = Trimmer.GetNewTrimmedArticle(article, false);
+			//article = Trimmer.GetNewTrimmedArticle(article, false);
 
-			return await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
+			return _mapper.Map<GetArticleModel>(article);
+				//await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
 		}
 
 		public override async Task<List<Article>> GetAllEntitiesAsync()
 		{
 			List<Article> articles = (await _entityRepository.GetEntitiesAsync()).ToList();
 
-			return await Trimmer.GetNewTrimmedArticlesAsync(articles, false);
+			return articles;
+				// await Trimmer.GetNewTrimmedArticlesAsync(articles, false);
 		}
 	}
 }

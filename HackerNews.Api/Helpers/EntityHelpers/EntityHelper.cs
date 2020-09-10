@@ -1,4 +1,5 @@
-﻿using HackerNews.Api.Converters;
+﻿using AutoMapper;
+using HackerNews.Api.Converters;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
@@ -14,29 +15,30 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		where GetModelT : GetEntityModel
 	{
 		protected readonly IEntityRepository<EntityT> _entityRepository;
-		protected readonly IEntityConverter<EntityT, PostModelT, GetModelT> _entityConverter;
+		protected readonly IMapper _mapper;
 
-		public EntityHelper(
-			IEntityRepository<EntityT> entityRepository,
-			IEntityConverter<EntityT, PostModelT, GetModelT> entityConverter)
+		public EntityHelper(IEntityRepository<EntityT> entityRepository, IMapper mapper)
 		{
 			_entityRepository = entityRepository;
-			_entityConverter = entityConverter;
+			_mapper = mapper;
 		}
 
 		public async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
 		{
-			EntityT entity = await _entityConverter.ConvertEntityModelAsync(entityModel);
+			EntityT entity = _mapper.Map<EntityT>(entityModel);
+				//_entityConverter.ConvertEntityModelAsync(entityModel);
 
 			var addedEntity = await _entityRepository.AddEntityAsync(entity);
 			await _entityRepository.SaveChangesAsync();
 
-			return await _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
+			return _mapper.Map<GetModelT>(addedEntity); 
+				// _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
 		}
 
 		public async Task PostEntityModelsAsync(List<PostModelT> entityModels)
 		{
-			List<EntityT> entities = await _entityConverter.ConvertEntityModelsAsync(entityModels);
+			List<EntityT> entities = _mapper.Map<List<EntityT>>(entityModels);
+				//_entityConverter.ConvertEntityModelsAsync(entityModels);
 			await _entityRepository.AddEntititesAsync(entities);
 			await _entityRepository.SaveChangesAsync();
 		}
@@ -44,7 +46,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public async Task<GetModelT> PutEntityModelAsync(int id, PostModelT entityModel)
 		{
 			var entity = await GetEntityAsync(id);
-			var convertedModel = await _entityConverter.ConvertEntityModelAsync(entityModel);
+			var convertedModel = _mapper.Map<EntityT>(entityModel);
+				// await _entityConverter.ConvertEntityModelAsync(entityModel);
 
 			UpdateEntityProperties(entity, convertedModel);
 
@@ -84,7 +87,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		{
 			var entities = await GetAllEntitiesAsync();
 
-			return await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
+			return _mapper.Map<List<GetModelT>>(entities);
+				//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
 		}
 	}
 }

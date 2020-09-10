@@ -1,4 +1,5 @@
-﻿using HackerNews.Api.Converters;
+﻿using AutoMapper;
+using HackerNews.Api.Converters;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
 using HackerNews.EF;
@@ -11,16 +12,17 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>, IVoteableEntityHelper<Comment>
 	{
-		public CommentHelper(IEntityRepository<Comment> entityRepository, IEntityConverter<Comment, PostCommentModel, GetCommentModel> commentConverter) 
-			: base(entityRepository, commentConverter)
+		public CommentHelper(IEntityRepository<Comment> entityRepository, IMapper mapper) 
+			: base(entityRepository, mapper)
 		{
 		}
 
 		public override void UpdateEntityProperties(Comment comment, Comment newComment)
 		{
+			comment = _mapper.Map<Comment, Comment>(newComment);
 			// this is messy, but a quick fix
-			comment.AuthorName = newComment.AuthorName;
-			comment.Text = newComment.Text;
+			//.AuthorName = newComment.AuthorName;
+			//comment.Text = newComment.Text;
 		}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
@@ -38,16 +40,18 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		{
 			var comment = await GetEntityAsync(id);
 
-			comment = Trimmer.GetNewTrimmedComment(comment, false, false);
+			// comment = Trimmer.GetNewTrimmedComment(comment, false, false);
 
-			return await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
+			return _mapper.Map<GetCommentModel>(comment);
+				// await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
 		}
 
 		public override async Task<List<Comment>> GetAllEntitiesAsync()
 		{
 			List<Comment> comments = (await _entityRepository.GetEntitiesAsync()).ToList();
 
-			return await Trimmer.GetNewTrimmedCommentsAsync(comments, false, false);
+			return comments;
+				// await Trimmer.GetNewTrimmedCommentsAsync(comments, false, false);
 		}
 	}
 }

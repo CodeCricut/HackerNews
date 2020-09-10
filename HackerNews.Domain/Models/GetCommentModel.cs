@@ -13,7 +13,7 @@ namespace HackerNews.Domain.Models
 		public string Text { get; set; }
 		public string Url { get; set; }
 		public int Karma { get; set; }
-		public List<Comment> Comments { get; set; }
+		public List<int> CommentIds { get; set; }
 		public int ParentCommentId { get; set; }
 		public int ParentArticleId { get; set; }
 	}

@@ -16,6 +16,19 @@ namespace HackerNews.EF
 		{
 		}
 
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Article>()
+				.HasMany(a => a.Comments)
+				.WithOne(c => c.ParentArticle)
+				.OnDelete(DeleteBehavior.SetNull);
+
+			modelBuilder.Entity<Comment>()
+				.HasMany(c => c.Comments)
+				.WithOne(c => c.ParentComment)
+				.OnDelete(DeleteBehavior.SetNull);
+
+		}
 
 
 		// this is what we would do if we weren't injecting our context options

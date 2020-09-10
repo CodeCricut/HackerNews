@@ -47,6 +47,9 @@ namespace HackerNews.Api
 			services.AddScoped<IEntityRepository<Article>, ArticleRepository>();
 			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
 
+			services.AddScoped<IEntityConverter<Article, PostArticleModel, GetArticleModel>, ArticleConverter>();
+			services.AddScoped<IEntityConverter<Comment, PostCommentModel, GetCommentModel>, CommentConverter>();
+
 			services.AddScoped< IEntityHelper < Article, PostArticleModel, GetArticleModel > , ArticleHelper >();
 			services.AddScoped< IEntityHelper < Comment, PostCommentModel, GetCommentModel > , CommentHelper >();
 
