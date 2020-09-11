@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using HackerNews.Api.Converters;
 using HackerNews.Domain;
-using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using HackerNews.EF.Repositories;
 using System.Collections.Generic;
@@ -45,15 +43,12 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public async Task<GetModelT> PutEntityModelAsync(int id, PostModelT entityModel)
 		{
-			var entity = await GetEntityAsync(id);
 			var convertedModel = _mapper.Map<EntityT>(entityModel);
-				// await _entityConverter.ConvertEntityModelAsync(entityModel);
 
-			UpdateEntityProperties(entity, convertedModel);
+			var entity = _mapper.Map<EntityT, EntityT>(convertedModel);
 
 			await _entityRepository.UpdateEntityAsync(id, entity);
 			await _entityRepository.SaveChangesAsync();
-
 
 			return await GetEntityModelAsync(id);
 		}
@@ -61,23 +56,23 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public async Task SoftDeleteEntityAsync(int id)
 		{
 			// code smell: verify the entity exists in the DB
-			await GetEntityAsync(id);
+			// await GetEntityAsync(id);
 
 			await _entityRepository.SoftDeleteEntityAsync(id);
 			await _entityRepository.SaveChangesAsync();
 		}
 
-		public async Task<EntityT> GetEntityAsync(int id)
-		{
-			var entity = await _entityRepository.GetEntityAsync(id);
-			if (entity == null) throw new NotFoundException("An entity with the given ID could not be found.");
+		//public async Task<EntityT> GetEntityAsync(int id)
+		//{
+		//	var entity = await _entityRepository.GetEntityAsync(id);
+		//	if (entity == null) throw new NotFoundException("An entity with the given ID could not be found.");
 
-			return entity;
-		}
+		//	return entity;
+		//}
 
-		public abstract void UpdateEntityProperties(EntityT entity, EntityT newEntity);
+		// public abstract void UpdateEntityProperties(EntityT entity, EntityT newEntity);
 
-		public abstract Task<List<EntityT>> GetAllEntitiesAsync();
+		// public abstract Task<List<EntityT>> GetAllEntitiesAsync();
 
 
 		public abstract Task<GetModelT> GetEntityModelAsync(int id);
@@ -85,7 +80,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		// TODO: I believe we need to trim the entities before converting them.
 		public async Task<List<GetModelT>> GetAllEntityModelsAsync()
 		{
-			var entities = await GetAllEntitiesAsync();
+			var entities = await _entityRepository.GetEntitiesAsync();
+			// var entities = await GetAllEntitiesAsync();
 
 			return _mapper.Map<List<GetModelT>>(entities);
 				//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);

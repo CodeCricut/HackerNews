@@ -16,19 +16,20 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		{
 		}
 
-		public override void UpdateEntityProperties(Article article, Article newArticle)
-		{
-			article = _mapper.Map<Article, Article>(newArticle);
-			// this is messy, but a quick fix
-			//article.Title = newArticle.Title;
-			//article.Text = newArticle.Text;
-			//article.Type = newArticle.Type;
-			//article.AuthorName = newArticle.AuthorName;
-		}
+		//public override void UpdateEntityProperties(Article article, Article newArticle)
+		//{
+		//	article = _mapper.Map<Article, Article>(newArticle);
+		//	// this is messy, but a quick fix
+		//	//article.Title = newArticle.Title;
+		//	//article.Text = newArticle.Text;
+		//	//article.Type = newArticle.Type;
+		//	//article.AuthorName = newArticle.AuthorName;
+		//}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
 		{
-			var article = await GetEntityAsync(id);
+			var article = await _entityRepository.GetEntityAsync(id);
+				// await GetEntityAsync(id);
 			article.Karma = upvote
 				? article.Karma + 1
 				: article.Karma - 1;
@@ -39,20 +40,13 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public override async Task<GetArticleModel> GetEntityModelAsync(int id)
 		{
-			Article article = await GetEntityAsync(id);
+			Article article = await _entityRepository.GetEntityAsync(id);
+				// GetEntityAsync(id);
 
 			//article = Trimmer.GetNewTrimmedArticle(article, false);
 
 			return _mapper.Map<GetArticleModel>(article);
 				//await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
-		}
-
-		public override async Task<List<Article>> GetAllEntitiesAsync()
-		{
-			List<Article> articles = (await _entityRepository.GetEntitiesAsync()).ToList();
-
-			return articles;
-				// await Trimmer.GetNewTrimmedArticlesAsync(articles, false);
 		}
 	}
 }

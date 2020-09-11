@@ -1,13 +1,9 @@
-﻿using HackerNews.Api.DB_Helpers;
-using HackerNews.Api.Helpers.EntityHelpers;
+﻿using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Routing;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

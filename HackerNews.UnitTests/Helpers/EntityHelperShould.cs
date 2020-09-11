@@ -1,93 +1,126 @@
-﻿//using HackerNews.Api.Converters;
-//using HackerNews.Api.Helpers;
-//using HackerNews.Api.Helpers.EntityHelpers;
-//using HackerNews.Domain;
-//using HackerNews.Domain.Models;
-//using HackerNews.EF.Repositories;
-//using Moq;
-//using System;
-//using System.Collections.Generic;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Xunit;
+﻿using AutoMapper;
+using HackerNews.Api.Helpers;
+using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Domain;
+using HackerNews.Domain.Models;
+using HackerNews.EF.Repositories;
+using Moq;
+using System.Collections.Generic;
 
-//namespace HackerNews.UnitTests.Helpers
-//{
-//	public abstract class EntityHelperShould
-//	{
-//		public Mock<IEntityRepository<Article>> _mockArticleRepository;
-//		//public Mock<IEntityConverter<Article, PostArticleModel, GetArticleModel>> _mockArticleConverter;
+namespace HackerNews.UnitTests.Helpers
+{
+	public abstract class EntityHelperShould
+	{
+		public Article _article;
+		public List<Article> _articles;
 
-//		public ArticleHelper _articleHelper;
+		public Comment _comment;
+		public List<Comment> _comments;
 
-//		public Article _article;
-//		public List<Article> _articles;
+		public PostArticleModel _postArticleModel;
+		public List<PostArticleModel> _postArticleModels;
 
-//		public PostArticleModel _postArticleModel;
-//		public List<PostArticleModel> _postArticleModels;
+		public PostCommentModel _postCommentModel;
+		public List<PostCommentModel> _postCommentModels;
 
-//		public GetArticleModel _getArticleModel;
-//		public List<GetArticleModel> _getArticleModels;
+		public GetArticleModel _getArticleModel;
+		public List<GetArticleModel> _getArticleModels;
 
+		public GetCommentModel _getCommentModel;
+		public List<GetCommentModel> _getCommentModels;
 
-//		public Mock<IEntityRepository<Comment>> _mockCommentRepository;
-//		//public Mock<IEntityConverter<Comment, PostCommentModel, GetCommentModel>> _mockCommentConverter;
+		public Mock<IEntityRepository<Article>> _mockArticleRepository;
+		public Mock<IEntityRepository<Comment>> _mockCommentRepository;
 
-//		public CommentHelper _commentHelper;
+		public Mock<IMapper> _mockMapper;
 
-//		public Comment _comment;
-//		public List<Comment> _comments;
+		public ArticleHelper _articleHelper;
+		public CommentHelper _commentHelper;
 
-//		public PostCommentModel _postCommentModel;
-//		public List<PostCommentModel> _postCommentModels;
+		public EntityHelperShould()
+        {
+            SetupArticleObjects();
+            SetupCommentObjects();
 
-//		public GetCommentModel _getCommentModel;
-//		public List<GetCommentModel> _getCommentModels;
+            _mockArticleRepository = new Mock<IEntityRepository<Article>>();
+            _mockCommentRepository = new Mock<IEntityRepository<Comment>>();
 
-//		public EntityHelperShould()
-//		{
-//			_mockArticleRepository = new Mock<IEntityRepository<Article>>();
-//			//_mockArticleConverter = new Mock<IEntityConverter<Article, PostArticleModel, GetArticleModel>>();
+            _mockMapper = new Mock<IMapper>();
 
-//			_articleHelper = new ArticleHelper(_mockArticleRepository.Object, _mockArticleConverter.Object);
+            _articleHelper = new ArticleHelper(_mockArticleRepository.Object, _mockMapper.Object);
+            _commentHelper = new CommentHelper(_mockCommentRepository.Object, _mockMapper.Object);
 
-//			_article = new Article
-//			{
-//				AuthorName = "author name",
-//				Id = 0,
-//				Text = "text",
-//				Title = "title",
-//				Url = "url",
-//				Type = ArticleType.Meta
-//			};
-//			_articles = ListHelper.CreateListOfClones(_article, 5);
+            SetupMockArticleRepo();
+            SetupMockCommentRepo();
+            SetupMockMapper();
+        }
 
-//			_postArticleModel = new PostArticleModel();
-//			_postArticleModels = ListHelper.CreateListOfType<PostArticleModel>(5);
+        private void SetupMockMapper()
+        {
+            _mockMapper.Setup(m => m.Map<Article>(It.IsAny<Article>())).Returns(_article);
+            _mockMapper.Setup(m => m.Map<Article>(It.IsAny<PostArticleModel>())).Returns(_article);
+            _mockMapper.Setup(m => m.Map<GetArticleModel>(It.IsAny<Article>())).Returns(_getArticleModel);
 
-//			_getArticleModel = new GetArticleModel();
-//			_getArticleModels = ListHelper.CreateListOfType<GetArticleModel>(5);
+            _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<Comment>())).Returns(_comment);
+            _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<PostCommentModel>())).Returns(_comment);
+            _mockMapper.Setup(m => m.Map<GetCommentModel>(It.IsAny<Comment>())).Returns(_getCommentModel);
 
+            _mockMapper.Setup(m => m.Map<List<Article>>(It.IsAny<List<Article>>())).Returns(_articles);
+            _mockMapper.Setup(m => m.Map<List<Article>>(It.IsAny<List<PostArticleModel>>())).Returns(_articles);
+            _mockMapper.Setup(m => m.Map<List<GetArticleModel>>(It.IsAny<List<Article>>())).Returns(_getArticleModels);
 
+            _mockMapper.Setup(m => m.Map<List<Comment>>(It.IsAny<List<Comment>>())).Returns(_comments);
+            _mockMapper.Setup(m => m.Map<List<Comment>>(It.IsAny<List<PostCommentModel>>())).Returns(_comments);
+            _mockMapper.Setup(m => m.Map<List<GetCommentModel>>(It.IsAny<List<Comment>>())).Returns(_getCommentModels);
+        }
 
-//			_mockCommentRepository = new Mock<IEntityRepository<Comment>>();
-//			//_mockCommentConverter = new Mock<IEntityConverter<Comment, PostCommentModel, GetCommentModel>>();
+        private void SetupMockCommentRepo()
+        {
+            _mockCommentRepository.Setup(r => r.GetEntityAsync(It.IsAny<int>())).ReturnsAsync(_comment);
+            _mockCommentRepository.Setup(r => r.GetEntitiesAsync()).ReturnsAsync(_comments);
+        }
 
-//			_commentHelper = new CommentHelper(_mockCommentRepository.Object, _mockCommentConverter.Object);
+        private void SetupMockArticleRepo()
+        {
+            _mockArticleRepository.Setup(r => r.GetEntityAsync(It.IsAny<int>())).ReturnsAsync(_article);
+            _mockArticleRepository.Setup(r => r.GetEntitiesAsync()).ReturnsAsync(_articles);
+        }
 
-//			_comment = new Comment
-//			{
-//				AuthorName = "Author name",
-//				Text = "text",
-//				Url = "url"
-//			};
-//			_comments = ListHelper.CreateListOfClones(_comment, 5);
+        private void SetupCommentObjects()
+        {
+            _comment = new Comment
+            {
+                AuthorName = "Author name",
+                Text = "text",
+                Url = "url"
+            };
+            _comments = ListHelper.CreateListOfClones(_comment, 5);
 
-//			_postCommentModel = new PostCommentModel();
-//			_postCommentModels = ListHelper.CreateListOfType<PostCommentModel>(5);
+            _postCommentModel = new PostCommentModel();
+            _postCommentModels = ListHelper.CreateListOfType<PostCommentModel>(5);
 
-//			_getCommentModel = new GetCommentModel();
-//			_getCommentModels = ListHelper.CreateListOfType<GetCommentModel>(5);
-//		}
-//	}
-//}
+            _getCommentModel = new GetCommentModel();
+            _getCommentModels = ListHelper.CreateListOfType<GetCommentModel>(5);
+        }
+
+        private void SetupArticleObjects()
+        {
+            _article = new Article
+            {
+                AuthorName = "author name",
+                Id = 0,
+                Text = "text",
+                Title = "title",
+                Url = "url",
+                Type = ArticleType.Meta
+            };
+            _articles = ListHelper.CreateListOfClones(_article, 5);
+
+            _postArticleModel = new PostArticleModel();
+            _postArticleModels = ListHelper.CreateListOfType<PostArticleModel>(5);
+
+            _getArticleModel = new GetArticleModel();
+            _getArticleModels = ListHelper.CreateListOfType<GetArticleModel>(5);
+        }
+    }
+}

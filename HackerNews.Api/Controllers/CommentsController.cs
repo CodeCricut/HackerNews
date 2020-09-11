@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using HackerNews.Api.DB_Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNet.OData;
 using HackerNews.Domain.Errors;

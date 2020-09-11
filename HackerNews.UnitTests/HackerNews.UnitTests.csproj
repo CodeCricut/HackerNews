@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -17,6 +17,10 @@
   <ItemGroup>
     <ProjectReference Include="..\HackerNews.Api\HackerNews.Api.csproj" />
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
 
 </Project>
