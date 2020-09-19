@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNews.Domain
 {
@@ -8,13 +9,23 @@ namespace HackerNews.Domain
 		public string Text { get; set; }
 		public string  Url { get; set; }
 		public int Karma { get; set; }
-		public List<Comment> Comments { get; set; }
-		public Comment? ParentComment { get; set; }
-		public Article? ParentArticle { get; set; }
+
+		[ForeignKey("Comment")]
+		public int? ParentCommentId { get; set; }
+		public virtual Comment ParentComment { get; set; }
+
+
+		// not sure exactly what it does, but it is necessary because the children are of the same type as the parent
+		[InverseProperty("ParentComment")]
+		public virtual List<Comment> ChildComments { get; set; }
+
+		[ForeignKey("Article")]
+		public virtual int? ParentArticleId { get; set; }
+		public virtual Article ParentArticle { get; set; }
 
 		public Comment()
 		{
-			Comments = new List<Comment>();
+			ChildComments = new List<Comment>();
 		}
 
 		public Comment(Comment commentToClone)
@@ -25,7 +36,7 @@ namespace HackerNews.Domain
 			Text = commentToClone.Text;
 			Url = commentToClone.Url;
 			Karma = commentToClone.Karma;
-			Comments = commentToClone.Comments;
+			ChildComments = commentToClone.ChildComments;
 			ParentComment = commentToClone.ParentComment;
 			ParentArticle = commentToClone.ParentArticle;
 		}

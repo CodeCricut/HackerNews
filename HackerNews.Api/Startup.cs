@@ -9,6 +9,7 @@ using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using HackerNews.EF;
+using HackerNews.EF.Repositories;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -43,14 +44,14 @@ namespace HackerNews.Api
 			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));
 
-			services.AddScoped<EntityRepository<Article>, ArticleRepository>();
-			services.AddScoped<EntityRepository<Comment>, CommentRepository>();
+			services.AddScoped<IEntityRepository<Article>, ArticleRepository>();
+			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
 
-			services.AddScoped<ArticleConverter>();
-			services.AddScoped<CommentConverter>();
+			services.AddScoped< IEntityHelper < Article, PostArticleModel, GetArticleModel > , ArticleHelper >();
+			services.AddScoped< IEntityHelper < Comment, PostCommentModel, GetCommentModel > , CommentHelper >();
 
-			services.AddScoped<ArticleHelper>();
-			services.AddScoped<CommentHelper>();
+			services.AddScoped<IVoteableEntityHelper<Article>, ArticleHelper>();
+			services.AddScoped<IVoteableEntityHelper<Comment>, CommentHelper>();
 			
 			// used for querying actions
 			services.AddOData();

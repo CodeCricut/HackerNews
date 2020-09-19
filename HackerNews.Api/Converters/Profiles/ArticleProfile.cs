@@ -12,11 +12,12 @@ namespace HackerNews.Api.Converters.Profiles
 	{
 		public ArticleProfile()
 		{
-			CreateMap<Article, PostArticleModel>();
+			CreateMap<Article, Article>();
+
 			CreateMap<PostArticleModel, Article>();
 
-			CreateMap<Article, GetArticleModel>();
-			CreateMap<GetArticleModel, Article>();
+			CreateMap<Article, GetArticleModel>()
+				.ForMember(model => model.CommentIds, article => article.MapFrom(a => a.Comments.Select(a => a.Id)));
 		}
 	}
 }

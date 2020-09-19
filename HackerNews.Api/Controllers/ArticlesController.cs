@@ -1,13 +1,9 @@
-﻿using HackerNews.Api.DB_Helpers;
-using HackerNews.Api.Helpers.EntityHelpers;
+﻿using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Routing;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,11 +13,14 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class ArticlesController : ODataController
 	{
-		private readonly ArticleHelper _articleHelper;
+		private readonly IEntityHelper<Article, PostArticleModel, GetArticleModel> _articleHelper;
+		private readonly IVoteableEntityHelper<Article> _articleVoter;
 
-		public ArticlesController(ArticleHelper articleHelper)
+		public ArticlesController(IEntityHelper<Article, PostArticleModel, GetArticleModel> articleHelper,
+			IVoteableEntityHelper<Article> articleVoter)
 		{
 			_articleHelper = articleHelper;
+			_articleVoter = articleVoter;
 		}
 
 		#region Create
@@ -57,9 +56,9 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetArticleAsync(int key)  
 		{
-				var articleModel = await _articleHelper.GetEntityModelAsync(key);
+			var articleModel = await _articleHelper.GetEntityModelAsync(key);
 
-				return Ok(articleModel);
+			return Ok(articleModel);
 		}
 		#endregion
 
@@ -77,10 +76,11 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("vote/{articleId:int}")]
 		public async Task<IActionResult> VoteArticleAsync(int articleId, [FromBody] bool upvote)
 		{
-			// verify article exists to throw custom exception if null
-			await GetArticleAsync(articleId);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+			// TODO: verify article exists to throw custom exception if null
+			// await GetArticleAsync(articleId);
 
-			await _articleHelper.VoteEntityAsync(articleId, upvote);
+			await _articleVoter.VoteEntityAsync(articleId, upvote);
 
 			return Ok();
 		}
@@ -90,6 +90,7 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteArticleAsync(int key)
 		{
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 			await _articleHelper.SoftDeleteEntityAsync(key);
 
 			return Ok();

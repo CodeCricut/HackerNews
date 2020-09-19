@@ -1,31 +1,22 @@
-﻿using HackerNews.Api.Converters;
-using HackerNews.Api.Converters.Trimmers;
+﻿using AutoMapper;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using HackerNews.EF;
-using System.Collections.Generic;
-using System.Linq;
+using HackerNews.EF.Repositories;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>
+	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>, IVoteableEntityHelper<Comment>
 	{
-		public CommentHelper(EntityRepository<Comment> entityRepository, CommentConverter commentConverter) 
-			: base(entityRepository, commentConverter)
+		public CommentHelper(IEntityRepository<Comment> entityRepository, IMapper mapper) 
+			: base(entityRepository, mapper)
 		{
-		}
-
-		internal override void UpdateEntityProperties(Comment comment, PostCommentModel commentModel)
-		{
-			// this is messy, but a quick fix
-			comment.AuthorName = commentModel.AuthorName;
-			comment.Text = commentModel.Text;
 		}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
 		{
-			var comment = await GetEntityAsync(id);
+			var comment = await _entityRepository.GetEntityAsync(id);
+				// GetEntityAsync(id);
 			comment.Karma = upvote
 				? comment.Karma + 1
 				: comment.Karma - 1;
@@ -36,20 +27,13 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public override async Task<GetCommentModel> GetEntityModelAsync(int id)
 		{
-			var comment = await GetEntityAsync(id);
+			var comment = await _entityRepository.GetEntityAsync(id);
+				// GetEntityAsync(id);
 
-			comment = Trimmer.GetNewTrimmedComment(comment, false, false);
+			// comment = Trimmer.GetNewTrimmedComment(comment, false, false);
 
-			return await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
-		}
-
-		public override async Task<List<GetCommentModel>> GetAllEntityModelsAsync()
-		{
-			List<Comment> comments = (await _entityRepository.GetEntitiesAsync()).ToList();
-
-			comments = await Trimmer.GetNewTrimmedCommentsAsync(comments, false, false);
-
-			return await _entityConverter.ConvertEntitiesAsync<GetCommentModel>(comments);
+			return _mapper.Map<GetCommentModel>(comment);
+				// await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
 		}
 	}
 }

@@ -1,10 +1,10 @@
-﻿using HackerNews.Domain.Errors;
+﻿using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.EF;
+using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -12,18 +12,18 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class DeveloperController : ControllerBase
 	{
-		private readonly ArticleRepository _articleRepository;
-		private readonly CommentRepository _commentRepository;
+		private readonly IEntityRepository<Article> _articleRepository;
+		private readonly IEntityRepository<Comment> _commentRepository;
 		private readonly HackerNewsContext _context;
 
-		public DeveloperController(ArticleRepository articleRepository, CommentRepository commentRepository, HackerNewsContext context)
-		{
+		public DeveloperController(IEntityRepository<Article> articleRepository, IEntityRepository<Comment> commentRepository, HackerNewsContext context)
+		{						   
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
 			_context = context;
 		}
 
-		[HttpOptions]
+		[HttpOptions("delete-all")]
 		public async Task<IActionResult> DeleteAllDataAsync()
 		{
 			try
@@ -47,7 +47,6 @@ namespace HackerNews.Api.Controllers
 
 		[HttpGet]
 		public IActionResult ThrowError()
-		
 		{
 			throw new InvalidPostException(ModelState);
 		}

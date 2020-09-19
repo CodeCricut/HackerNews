@@ -1,87 +1,91 @@
 ﻿using AutoMapper;
-using HackerNews.Api.Converters;
-using HackerNews.Api.Converters.Trimmers;
 using HackerNews.Domain;
-using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
-using HackerNews.EF;
-using System;
+using HackerNews.EF.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public abstract class EntityHelper<EntityT, PostModelT, GetModelT>
+	public abstract class EntityHelper<EntityT, PostModelT, GetModelT> : IEntityHelper<EntityT, PostModelT, GetModelT>
 		where EntityT : DomainEntity
 		where PostModelT : PostEntityModel
 		where GetModelT : GetEntityModel
 	{
-		protected readonly EntityRepository<EntityT> _entityRepository;
-		protected readonly EntityConverter<EntityT, PostModelT, GetModelT> _entityConverter;
+		protected readonly IEntityRepository<EntityT> _entityRepository;
+		protected readonly IMapper _mapper;
 
-		public EntityHelper(
-			EntityRepository<EntityT> entityRepository,
-			EntityConverter<EntityT, PostModelT, GetModelT> entityConverter)
+		public EntityHelper(IEntityRepository<EntityT> entityRepository, IMapper mapper)
 		{
 			_entityRepository = entityRepository;
-			_entityConverter = entityConverter;
+			_mapper = mapper;
 		}
 
-		public async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
+		// TODO: we still need to check parents exist on an entity basis...
+		public virtual async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
 		{
-			EntityT entity = await _entityConverter.ConvertEntityModelAsync(entityModel);
+			EntityT entity = _mapper.Map<EntityT>(entityModel);
+				//_entityConverter.ConvertEntityModelAsync(entityModel);
 
 			var addedEntity = await _entityRepository.AddEntityAsync(entity);
 			await _entityRepository.SaveChangesAsync();
 
-			return await _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
+			return _mapper.Map<GetModelT>(addedEntity); 
+				// _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
 		}
 
 		public async Task PostEntityModelsAsync(List<PostModelT> entityModels)
 		{
-			List<EntityT> entities = await _entityConverter.ConvertEntityModelsAsync(entityModels);
+			List<EntityT> entities = _mapper.Map<List<EntityT>>(entityModels);
+				//_entityConverter.ConvertEntityModelsAsync(entityModels);
 			await _entityRepository.AddEntititesAsync(entities);
 			await _entityRepository.SaveChangesAsync();
 		}
 
-		public abstract Task<GetModelT> GetEntityModelAsync(int id);
-
-		public abstract Task<List<GetModelT>> GetAllEntityModelsAsync();
-
 		public async Task<GetModelT> PutEntityModelAsync(int id, PostModelT entityModel)
 		{
-			var entity = await GetEntityAsync(id);
+			var convertedModel = _mapper.Map<EntityT>(entityModel);
 
-			UpdateEntityProperties(entity, entityModel);
+			var entity = _mapper.Map<EntityT, EntityT>(convertedModel);
 
 			await _entityRepository.UpdateEntityAsync(id, entity);
 			await _entityRepository.SaveChangesAsync();
 
-
 			return await GetEntityModelAsync(id);
 		}
-
-		// this should only be implemented in some helpes, such as comments and articles. I am leaving it hear simply to remember.
-		// public abstract Task VoteEntityAsync(int it, bool upvote);
 
 		public async Task SoftDeleteEntityAsync(int id)
 		{
 			// code smell: verify the entity exists in the DB
-			await GetEntityAsync(id);
+			// await GetEntityAsync(id);
 
 			await _entityRepository.SoftDeleteEntityAsync(id);
 			await _entityRepository.SaveChangesAsync();
 		}
 
-		protected async Task<EntityT> GetEntityAsync(int id)
+		//public async Task<EntityT> GetEntityAsync(int id)
+		//{
+		//	var entity = await _entityRepository.GetEntityAsync(id);
+		//	if (entity == null) throw new NotFoundException("An entity with the given ID could not be found.");
+
+		//	return entity;
+		//}
+
+		// public abstract void UpdateEntityProperties(EntityT entity, EntityT newEntity);
+
+		// public abstract Task<List<EntityT>> GetAllEntitiesAsync();
+
+
+		public abstract Task<GetModelT> GetEntityModelAsync(int id);
+
+		// TODO: I believe we need to trim the entities before converting them.
+		public async Task<List<GetModelT>> GetAllEntityModelsAsync()
 		{
-			var entity = await _entityRepository.GetEntityAsync(id);
-			if (entity == null) throw new NotFoundException("An entity with the given ID could not be found.");
+			var entities = await _entityRepository.GetEntitiesAsync();
+			// var entities = await GetAllEntitiesAsync();
 
-			return entity;
+			return _mapper.Map<List<GetModelT>>(entities);
+				//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
 		}
-
-		internal abstract void UpdateEntityProperties(EntityT entity, PostModelT entityModel);
 	}
 }

@@ -2,23 +2,25 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using HackerNews.Api.DB_Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNet.OData;
 using HackerNews.Domain.Errors;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Domain;
 
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
 	public class CommentsController : ODataController 
 	{
-		private readonly CommentHelper _commentHelper;
+		private readonly IEntityHelper<Comment, PostCommentModel, GetCommentModel> _commentHelper;
+		private readonly IVoteableEntityHelper<Comment> _commentVoter;
 
-		public CommentsController(CommentHelper commentHelper)
+		public CommentsController(IEntityHelper<Comment, PostCommentModel, GetCommentModel> commentHelper, 
+			IVoteableEntityHelper<Comment> commentVoter)
 		{
 			_commentHelper = commentHelper;
+			_commentVoter = commentVoter;
 		}
 
 		#region Create
@@ -47,7 +49,9 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetCommentAsync(int key)
 		{
-				var commentModel = await _commentHelper.GetEntityModelAsync(key);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+
+			var commentModel = await _commentHelper.GetEntityModelAsync(key);
 
 				return Ok(commentModel);
 		}
@@ -75,7 +79,9 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("vote/{commentId:int}")]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
-				await _commentHelper.VoteEntityAsync(commentId, upvote);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+
+			await _commentVoter.VoteEntityAsync(commentId, upvote);
 
 				return Ok();
 		}
@@ -85,7 +91,9 @@ namespace HackerNews.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteCommentAsync(int id)
 		{
-				await _commentHelper.SoftDeleteEntityAsync(id);
+			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
+
+			await _commentHelper.SoftDeleteEntityAsync(id);
 
 				return Ok();
 		}

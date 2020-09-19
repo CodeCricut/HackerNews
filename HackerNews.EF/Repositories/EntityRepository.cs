@@ -1,4 +1,5 @@
 ﻿using HackerNews.Domain;
+using HackerNews.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace HackerNews.EF
 {
-	public abstract class EntityRepository<EntityT> where EntityT : DomainEntity
+	public abstract class EntityRepository<EntityT> : IEntityRepository<EntityT>
+		where EntityT : DomainEntity
 	{
 		protected readonly HackerNewsContext _context;
 
@@ -18,8 +20,16 @@ namespace HackerNews.EF
 
 		public async Task<EntityT> AddEntityAsync(EntityT entity)
 		{
-			var addedEntity = (await Task.Run(() => _context.Set<EntityT>().Add(entity))).Entity;
-			return addedEntity;
+			// delete try blcok
+            try
+            {
+				var addedEntity = (await Task.Run(() => _context.Set<EntityT>().Add(entity))).Entity;
+				return addedEntity;
+			}
+            catch (Exception e)
+            {
+                throw;
+            }
 		}
 
 		public async Task<List<EntityT>> AddEntititesAsync(List<EntityT> entities)
@@ -57,7 +67,7 @@ namespace HackerNews.EF
 			{
 				return (await _context.SaveChangesAsync()) > 0;
 			}
-			catch
+			catch (Exception e)
 			{
 				return false;
 			}

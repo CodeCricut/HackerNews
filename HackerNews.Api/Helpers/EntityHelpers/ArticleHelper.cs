@@ -1,34 +1,35 @@
-﻿using HackerNews.Api.Converters;
-using HackerNews.Api.Converters.Trimmers;
+﻿using AutoMapper;
+using HackerNews.Api.Converters;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using HackerNews.EF;
-using System;
+using HackerNews.EF.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>
+	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>, IVoteableEntityHelper<Article>
 	{
-		public ArticleHelper(EntityRepository<Article> entityRepository, ArticleConverter articleConverter) 
-			: base(entityRepository, articleConverter)
+		public ArticleHelper(IEntityRepository<Article> entityRepository, IMapper mapper) 
+			: base(entityRepository, mapper)
 		{
 		}
 
-		internal override void UpdateEntityProperties(Article article, PostArticleModel articleModel)
-		{
-			// this is messy, but a quick fix
-			article.Title = articleModel.Title;
-			article.Text = articleModel.Text;
-			article.Type = (ArticleType)Enum.Parse(typeof(ArticleType), articleModel.Type);
-			article.AuthorName = articleModel.AuthorName;
-		}
+		//public override void UpdateEntityProperties(Article article, Article newArticle)
+		//{
+		//	article = _mapper.Map<Article, Article>(newArticle);
+		//	// this is messy, but a quick fix
+		//	//article.Title = newArticle.Title;
+		//	//article.Text = newArticle.Text;
+		//	//article.Type = newArticle.Type;
+		//	//article.AuthorName = newArticle.AuthorName;
+		//}
 
 		public async Task VoteEntityAsync(int id, bool upvote)
 		{
-			var article = await GetEntityAsync(id);
+			var article = await _entityRepository.GetEntityAsync(id);
+				// await GetEntityAsync(id);
 			article.Karma = upvote
 				? article.Karma + 1
 				: article.Karma - 1;
@@ -39,20 +40,13 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public override async Task<GetArticleModel> GetEntityModelAsync(int id)
 		{
-			Article article = await GetEntityAsync(id);
+			Article article = await _entityRepository.GetEntityAsync(id);
+				// GetEntityAsync(id);
 
-			article = Trimmer.GetNewTrimmedArticle(article, false);
+			//article = Trimmer.GetNewTrimmedArticle(article, false);
 
-			return await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
-		}
-
-		public override async Task<List<GetArticleModel>> GetAllEntityModelsAsync()
-		{
-			List<Article> articles = (await _entityRepository.GetEntitiesAsync()).ToList();
-
-			articles = await Trimmer.GetNewTrimmedArticlesAsync(articles, false);
-
-			return await _entityConverter.ConvertEntitiesAsync<GetArticleModel>(articles);
+			return _mapper.Map<GetArticleModel>(article);
+				//await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
 		}
 	}
 }
