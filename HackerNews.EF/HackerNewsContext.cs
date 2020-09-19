@@ -18,16 +18,26 @@ namespace HackerNews.EF
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Article>()
-				.HasMany(a => a.Comments)
-				.WithOne(c => c.ParentArticle)
-				.OnDelete(DeleteBehavior.SetNull);
+			//modelBuilder.Entity<Article>().HasKey(a => a.Id);
+			////	.HasMany(a => a.Comments)
+			////	.WithOne(c => c.ParentArticle)
+			////	.OnDelete(DeleteBehavior.SetNull);
 
-			modelBuilder.Entity<Comment>()
-				.HasMany(c => c.Comments)
-				.WithOne(c => c.ParentComment)
-				.OnDelete(DeleteBehavior.SetNull);
+			//modelBuilder.Entity<Comment>().HasKey(c => c.Id);
 
+			//modelBuilder.Entity<Comment>()
+			//	.HasOne(c => c.ParentArticle).WithMany(a => a.Comments)
+			//	.HasForeignKey(childComment => childComment.ParentArticleId).IsRequired(false);
+
+			//modelBuilder.Entity<Comment>()
+			//	.HasOne(c => c.ParentComment).WithMany(pc => pc.ChildComments); 
+				//.HasForeignKey(childComment => childComment.ParentCommentId).IsRequired(false);
+
+				//.HasMany(c => c.Comments)
+				//.WithOne(c => c.ParentComment)
+				//.OnDelete(DeleteBehavior.SetNull)
+				//.HasForeignKey(c => c.ParentCommentId)
+				//.HasForeignKey(c => c.ParentArticleId);
 		}
 
 

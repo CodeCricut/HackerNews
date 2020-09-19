@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNews.Domain
 {
@@ -16,6 +17,7 @@ namespace HackerNews.Domain
 		public ArticleType Type { get; set; }
 		public string AuthorName { get; set; }
 		public string Text { get; set; }
+		[InverseProperty("ParentArticle")]
 		public List<Comment> Comments { get; set; }
 		public string Url { get; set; }
 		public int Karma { get; set; }

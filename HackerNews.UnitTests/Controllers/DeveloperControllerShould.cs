@@ -23,7 +23,7 @@ namespace HackerNews.UnitTests.Controllers
 		[Fact]
 		public async Task FetchAndRemoveAllEntities_On_DeleteAllDataAsync()
 		{
-			var mockContext = new Mock<DbContext>();
+			var mockContext = new Mock<HackerNewsContext>();
 			var mockArticleRepo = new Mock<EntityRepository<Article>>(null);
 			var mockCommentRepo = new Mock<EntityRepository<Comment>>(null);
 

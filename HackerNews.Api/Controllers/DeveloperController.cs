@@ -1,6 +1,7 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.EF;
+using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,18 +12,18 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class DeveloperController : ControllerBase
 	{
-		private readonly EntityRepository<Article> _articleRepository;
-		private readonly EntityRepository<Comment> _commentRepository;
-		private readonly DbContext _context;
+		private readonly IEntityRepository<Article> _articleRepository;
+		private readonly IEntityRepository<Comment> _commentRepository;
+		private readonly HackerNewsContext _context;
 
-		public DeveloperController(EntityRepository<Article> articleRepository, EntityRepository<Comment> commentRepository, DbContext context)
+		public DeveloperController(IEntityRepository<Article> articleRepository, IEntityRepository<Comment> commentRepository, HackerNewsContext context)
 		{						   
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
 			_context = context;
 		}
 
-		[HttpOptions]
+		[HttpOptions("delete-all")]
 		public async Task<IActionResult> DeleteAllDataAsync()
 		{
 			try

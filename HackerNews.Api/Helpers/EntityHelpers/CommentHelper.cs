@@ -13,14 +13,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		{
 		}
 
-		//public override void UpdateEntityProperties(Comment comment, Comment newComment)
-		//{
-		//	comment = _mapper.Map<Comment, Comment>(newComment);
-		//	// this is messy, but a quick fix
-		//	//.AuthorName = newComment.AuthorName;
-		//	//comment.Text = newComment.Text;
-		//}
-
 		public async Task VoteEntityAsync(int id, bool upvote)
 		{
 			var comment = await _entityRepository.GetEntityAsync(id);
@@ -43,13 +35,5 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			return _mapper.Map<GetCommentModel>(comment);
 				// await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
 		}
-
-		//public override async Task<List<Comment>> GetAllEntitiesAsync()
-		//{
-		//	List<Comment> comments = (await _entityRepository.GetEntitiesAsync()).ToList();
-
-		//	return comments;
-		//		// await Trimmer.GetNewTrimmedCommentsAsync(comments, false, false);
-		//}
 	}
 }

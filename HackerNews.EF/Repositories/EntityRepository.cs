@@ -20,8 +20,16 @@ namespace HackerNews.EF
 
 		public async Task<EntityT> AddEntityAsync(EntityT entity)
 		{
-			var addedEntity = (await Task.Run(() => _context.Set<EntityT>().Add(entity))).Entity;
-			return addedEntity;
+			// delete try blcok
+            try
+            {
+				var addedEntity = (await Task.Run(() => _context.Set<EntityT>().Add(entity))).Entity;
+				return addedEntity;
+			}
+            catch (Exception e)
+            {
+                throw;
+            }
 		}
 
 		public async Task<List<EntityT>> AddEntititesAsync(List<EntityT> entities)
@@ -59,7 +67,7 @@ namespace HackerNews.EF
 			{
 				return (await _context.SaveChangesAsync()) > 0;
 			}
-			catch
+			catch (Exception e)
 			{
 				return false;
 			}

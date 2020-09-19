@@ -21,7 +21,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			_mapper = mapper;
 		}
 
-		public async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
+		// TODO: we still need to check parents exist on an entity basis...
+		public virtual async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
 		{
 			EntityT entity = _mapper.Map<EntityT>(entityModel);
 				//_entityConverter.ConvertEntityModelAsync(entityModel);

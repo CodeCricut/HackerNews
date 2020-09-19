@@ -1,38 +1,32 @@
 ﻿using AutoMapper;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using HackerNews.EF.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HackerNews.Api.Converters.Profiles
 {
 	public class CommentProfile : Profile
 	{
-		private readonly IEntityRepository<Comment> _commentRepository;
-		private readonly IEntityRepository<Article> _articleRepository;
-
-		public CommentProfile(IEntityRepository<Comment> commentRepository,
-			IEntityRepository<Article> articleRepository)
+		public CommentProfile()
 		{
-			_commentRepository = commentRepository;
-			_articleRepository = articleRepository;
-
 			CreateMap<Comment, Comment>();
 
 			CreateMap<PostCommentModel, Comment>()
-				.ForMember(c => c.ParentArticle, opt => opt.MapFrom(model => _articleRepository.GetEntityAsync(model.ParentArticleId)))
-				.ForMember(c => c.ParentComment, opt => opt.MapFrom(model => _commentRepository.GetEntityAsync(model.ParentCommentId)));
+				.ForMember(c => c.ParentArticleId, opt => opt
+					.MapFrom(model => model.ParentArticleId != 0 ? model.ParentArticleId : (int?) null))
+				.ForMember(c => c.ParentCommentId, opt => opt
+					.MapFrom(model => model.ParentCommentId != 0 ? model.ParentCommentId : (int?) null));
+				//.ForMember(c => c.ParentArticleId, opt => opt.MapFrom(model => model.ParentArticleId))
+				//.ForMember(c => c.ParentArticle.Id, opt => opt.MapFrom(model => model.ParentArticleId))
+				//.ForMember(c => c.ParentComment.Id, opt => opt.MapFrom(model => model.ParentCommentId));
 
 			CreateMap<Comment, GetCommentModel>()
-				.ForMember(cm => cm.ParentArticleId,
-							o => o.MapFrom(c => c.ParentArticle.Id))
-				.ForMember(cm => cm.ParentCommentId,
-							o => o.MapFrom(c => c.ParentComment.Id))
+				//.ForMember(cm => cm.ParentArticleId,
+				//			o => o.MapFrom(c => c.ParentArticle.Id))
+				//.ForMember(cm => cm.ParentCommentId,
+				//			o => o.MapFrom(c => c.ParentComment.Id))
 				.ForMember(cm => cm.CommentIds,
-							o => o.MapFrom(c => c.Comments.Select(c => c.Id))
+							o => o.MapFrom(c => c.ChildComments.Select(c => c.Id))
 						);
 		}
 	}
