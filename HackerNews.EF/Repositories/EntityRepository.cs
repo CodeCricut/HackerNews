@@ -1,4 +1,5 @@
 ﻿using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -57,6 +58,7 @@ namespace HackerNews.EF
 		public async Task SoftDeleteEntityAsync(int id)
 		{
 			var entity = await _context.Set<EntityT>().FindAsync(id);
+			if (entity == null) throw new NotFoundException();
 			entity.Deleted = true;
 			await UpdateEntityAsync(id, entity);
 		}
