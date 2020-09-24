@@ -13,12 +13,12 @@ namespace HackerNews.Api.Converters.Profiles
 
 			CreateMap<PostCommentModel, Comment>()
 				.ForMember(c => c.ParentArticleId, opt => opt
-					.MapFrom(model => model.ParentArticleId != 0 ? model.ParentArticleId : (int?) null))
+					.MapFrom(model => model.ParentArticleId != 0 ? model.ParentArticleId : (int?)null))
 				.ForMember(c => c.ParentCommentId, opt => opt
-					.MapFrom(model => model.ParentCommentId != 0 ? model.ParentCommentId : (int?) null));
-				//.ForMember(c => c.ParentArticleId, opt => opt.MapFrom(model => model.ParentArticleId))
-				//.ForMember(c => c.ParentArticle.Id, opt => opt.MapFrom(model => model.ParentArticleId))
-				//.ForMember(c => c.ParentComment.Id, opt => opt.MapFrom(model => model.ParentCommentId));
+					.MapFrom(model => model.ParentCommentId != 0 ? model.ParentCommentId : (int?)null));
+			//.ForMember(c => c.ParentArticleId, opt => opt.MapFrom(model => model.ParentArticleId))
+			//.ForMember(c => c.ParentArticle.Id, opt => opt.MapFrom(model => model.ParentArticleId))
+			//.ForMember(c => c.ParentComment.Id, opt => opt.MapFrom(model => model.ParentCommentId));
 
 			CreateMap<Comment, GetCommentModel>()
 				//.ForMember(cm => cm.ParentArticleId,

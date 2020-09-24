@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using HackerNews.Api.Converters;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
@@ -22,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace HackerNews.Api
 {
@@ -47,12 +43,12 @@ namespace HackerNews.Api
 			services.AddScoped<IEntityRepository<Article>, ArticleRepository>();
 			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
 
-			services.AddScoped< IEntityHelper < Article, PostArticleModel, GetArticleModel > , ArticleHelper >();
-			services.AddScoped< IEntityHelper < Comment, PostCommentModel, GetCommentModel > , CommentHelper >();
+			services.AddScoped<IEntityHelper<Article, PostArticleModel, GetArticleModel>, ArticleHelper>();
+			services.AddScoped<IEntityHelper<Comment, PostCommentModel, GetCommentModel>, CommentHelper>();
 
 			services.AddScoped<IVoteableEntityHelper<Article>, ArticleHelper>();
 			services.AddScoped<IVoteableEntityHelper<Comment>, CommentHelper>();
-			
+
 			// used for querying actions
 			services.AddOData();
 			//services.AddMvc();
@@ -63,7 +59,7 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HackerNewsContext dbContext)
 		{
-			app.UseExceptionHandler(a => a.Run(async context => 
+			app.UseExceptionHandler(a => a.Run(async context =>
 			{
 				var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
 				var exception = exceptionHandlerPathFeature.Error; // Your exception

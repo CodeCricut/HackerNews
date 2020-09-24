@@ -1,5 +1,4 @@
 ﻿using HackerNews.Domain;
-using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using Moq;
 using System.Collections.Generic;

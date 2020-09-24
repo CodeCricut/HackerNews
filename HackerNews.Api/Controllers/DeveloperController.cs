@@ -4,7 +4,6 @@ using HackerNews.EF;
 using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -17,7 +16,7 @@ namespace HackerNews.Api.Controllers
 		private readonly HackerNewsContext _context;
 
 		public DeveloperController(IEntityRepository<Article> articleRepository, IEntityRepository<Comment> commentRepository, HackerNewsContext context)
-		{						   
+		{
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
 			_context = context;
@@ -38,7 +37,7 @@ namespace HackerNews.Api.Controllers
 
 				return Ok();
 			}
-			catch 
+			catch
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}

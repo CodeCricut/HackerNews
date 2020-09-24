@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using HackerNews.Api.Converters;
 using HackerNews.Domain;
 using HackerNews.Domain.Models;
 using HackerNews.EF.Repositories;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public class ArticleHelper : EntityHelper<Article, PostArticleModel, GetArticleModel>, IVoteableEntityHelper<Article>
 	{
-		public ArticleHelper(IEntityRepository<Article> entityRepository, IMapper mapper) 
+		public ArticleHelper(IEntityRepository<Article> entityRepository, IMapper mapper)
 			: base(entityRepository, mapper)
 		{
 		}
@@ -29,7 +26,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public async Task VoteEntityAsync(int id, bool upvote)
 		{
 			var article = await _entityRepository.GetEntityAsync(id);
-				// await GetEntityAsync(id);
+			// await GetEntityAsync(id);
 			article.Karma = upvote
 				? article.Karma + 1
 				: article.Karma - 1;
@@ -41,12 +38,12 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public override async Task<GetArticleModel> GetEntityModelAsync(int id)
 		{
 			Article article = await _entityRepository.GetEntityAsync(id);
-				// GetEntityAsync(id);
+			// GetEntityAsync(id);
 
 			//article = Trimmer.GetNewTrimmedArticle(article, false);
 
 			return _mapper.Map<GetArticleModel>(article);
-				//await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
+			//await _entityConverter.ConvertEntityAsync<GetArticleModel>(article);
 		}
 	}
 }

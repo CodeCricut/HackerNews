@@ -8,7 +8,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public class CommentHelper : EntityHelper<Comment, PostCommentModel, GetCommentModel>, IVoteableEntityHelper<Comment>
 	{
-		public CommentHelper(IEntityRepository<Comment> entityRepository, IMapper mapper) 
+		public CommentHelper(IEntityRepository<Comment> entityRepository, IMapper mapper)
 			: base(entityRepository, mapper)
 		{
 		}
@@ -16,7 +16,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public async Task VoteEntityAsync(int id, bool upvote)
 		{
 			var comment = await _entityRepository.GetEntityAsync(id);
-				// GetEntityAsync(id);
+			// GetEntityAsync(id);
 			comment.Karma = upvote
 				? comment.Karma + 1
 				: comment.Karma - 1;
@@ -28,12 +28,12 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public override async Task<GetCommentModel> GetEntityModelAsync(int id)
 		{
 			var comment = await _entityRepository.GetEntityAsync(id);
-				// GetEntityAsync(id);
+			// GetEntityAsync(id);
 
 			// comment = Trimmer.GetNewTrimmedComment(comment, false, false);
 
 			return _mapper.Map<GetCommentModel>(comment);
-				// await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
+			// await _entityConverter.ConvertEntityAsync<GetCommentModel>(comment);
 		}
 	}
 }

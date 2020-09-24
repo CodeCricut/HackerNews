@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.Domain.Errors
+﻿namespace HackerNews.Domain.Errors
 {
 	public class NotFoundException : ApiException
 	{

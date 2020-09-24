@@ -4,7 +4,6 @@ using HackerNews.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.EF
@@ -22,15 +21,15 @@ namespace HackerNews.EF
 		public async Task<EntityT> AddEntityAsync(EntityT entity)
 		{
 			// delete try blcok
-            try
-            {
+			try
+			{
 				var addedEntity = (await Task.Run(() => _context.Set<EntityT>().Add(entity))).Entity;
 				return addedEntity;
 			}
-            catch (Exception e)
-            {
-                throw;
-            }
+			catch (Exception e)
+			{
+				throw;
+			}
 		}
 
 		public async Task<List<EntityT>> AddEntititesAsync(List<EntityT> entities)

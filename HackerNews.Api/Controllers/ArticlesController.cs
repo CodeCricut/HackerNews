@@ -54,7 +54,7 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[EnableQuery]
-		public async Task<IActionResult> GetArticleAsync(int key)  
+		public async Task<IActionResult> GetArticleAsync(int key)
 		{
 			var articleModel = await _articleHelper.GetEntityModelAsync(key);
 

@@ -25,19 +25,19 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public virtual async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
 		{
 			EntityT entity = _mapper.Map<EntityT>(entityModel);
-				//_entityConverter.ConvertEntityModelAsync(entityModel);
+			//_entityConverter.ConvertEntityModelAsync(entityModel);
 
 			var addedEntity = await _entityRepository.AddEntityAsync(entity);
 			await _entityRepository.SaveChangesAsync();
 
-			return _mapper.Map<GetModelT>(addedEntity); 
-				// _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
+			return _mapper.Map<GetModelT>(addedEntity);
+			// _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
 		}
 
 		public async Task PostEntityModelsAsync(List<PostModelT> entityModels)
 		{
 			List<EntityT> entities = _mapper.Map<List<EntityT>>(entityModels);
-				//_entityConverter.ConvertEntityModelsAsync(entityModels);
+			//_entityConverter.ConvertEntityModelsAsync(entityModels);
 			await _entityRepository.AddEntititesAsync(entities);
 			await _entityRepository.SaveChangesAsync();
 		}
@@ -85,7 +85,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			// var entities = await GetAllEntitiesAsync();
 
 			return _mapper.Map<List<GetModelT>>(entities);
-				//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
+			//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
 		}
 	}
 }
