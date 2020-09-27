@@ -14,7 +14,10 @@ namespace HackerNews.Domain
 	public class Article : DomainEntity
 	{
 		public ArticleType Type { get; set; }
+
+		public int UserId { get; set; }
 		public User User { get; set; }
+
 		public string Text { get; set; }
 		[InverseProperty("ParentArticle")]
 		public List<Comment> Comments { get; set; }

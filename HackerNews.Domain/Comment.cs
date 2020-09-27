@@ -5,6 +5,7 @@ namespace HackerNews.Domain
 {
 	public class Comment : DomainEntity
 	{
+		public int UserId { get; set; }
 		public User User { get; set; }
 		public string Text { get; set; }
 		public string Url { get; set; }
