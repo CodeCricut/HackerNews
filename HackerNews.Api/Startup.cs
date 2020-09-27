@@ -1,5 +1,6 @@
 using AutoMapper;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
@@ -40,14 +41,20 @@ namespace HackerNews.Api
 			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));
 
+			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
 			services.AddScoped<IEntityRepository<Article>, ArticleRepository>();
 			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
+			services.AddScoped<IEntityRepository<User>, UserRepository>();
 
 			services.AddScoped<IEntityHelper<Article, PostArticleModel, GetArticleModel>, ArticleHelper>();
 			services.AddScoped<IEntityHelper<Comment, PostCommentModel, GetCommentModel>, CommentHelper>();
+			services.AddScoped<IEntityHelper<User, RegisterUserModel, GetPublicUserModel>, UserHelper>();
 
 			services.AddScoped<IVoteableEntityHelper<Article>, ArticleHelper>();
 			services.AddScoped<IVoteableEntityHelper<Comment>, CommentHelper>();
+
+			services.AddScoped<IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel>, UserHelper>();
 
 			// used for querying actions
 			services.AddOData();
@@ -88,7 +95,7 @@ namespace HackerNews.Api
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+			app.UseMiddleware<JwtMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{

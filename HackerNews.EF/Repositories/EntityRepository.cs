@@ -4,6 +4,7 @@ using HackerNews.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.EF
@@ -47,11 +48,11 @@ namespace HackerNews.EF
 
 		public async Task UpdateEntityAsync(int id, EntityT updatedEntity)
 		{
-			await Task.Run(() =>
-			{
-				updatedEntity.Id = id;
-				_context.Entry(updatedEntity).State = EntityState.Modified;
-			});
+			var local = _context.Set<EntityT>().Local.FirstOrDefault(x => x.Id == id);
+			if (local != null) _context.Entry(local).State = EntityState.Detached;
+
+			updatedEntity.Id = id;
+			_context.Entry(updatedEntity).State = EntityState.Modified;
 		}
 
 		public async Task SoftDeleteEntityAsync(int id)

@@ -16,7 +16,7 @@ namespace HackerNews.UnitTests.Controllers
 		[Fact]
 		public void ThrowError_For_ThrowError()
 		{
-			var controller = new DeveloperController(null, null, null);
+			var controller = new DeveloperController(null, null, null, null);
 			Assert.ThrowsAny<Exception>(() => controller.ThrowError());
 		}
 
@@ -26,14 +26,17 @@ namespace HackerNews.UnitTests.Controllers
 			var mockContext = new Mock<HackerNewsContext>(new DbContextOptions<HackerNewsContext>());
 			var mockArticleRepo = new Mock<EntityRepository<Article>>(null);
 			var mockCommentRepo = new Mock<EntityRepository<Comment>>(null);
+			var mockUserRepo = new Mock<EntityRepository<User>>(null);
 
 			var allArticles = new List<Article> { new Article() };
 			var allComments = new List<Comment> { new Comment() };
+			var allUsers = new List<User> { new User() };
 
 			mockArticleRepo.Setup(ar => ar.GetEntitiesAsync()).ReturnsAsync(allArticles);
 			mockCommentRepo.Setup(cr => cr.GetEntitiesAsync()).ReturnsAsync(allComments);
+			mockUserRepo.Setup(ur => ur.GetEntitiesAsync()).ReturnsAsync(allUsers);
 
-			var controller = new DeveloperController(mockArticleRepo.Object, mockCommentRepo.Object, mockContext.Object);
+			var controller = new DeveloperController(mockArticleRepo.Object, mockCommentRepo.Object, mockUserRepo.Object, mockContext.Object);
 			await controller.DeleteAllDataAsync();
 
 			mockContext.Verify(c => c.RemoveRange(allArticles), Times.Once);

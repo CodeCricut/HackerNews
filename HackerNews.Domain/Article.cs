@@ -14,7 +14,7 @@ namespace HackerNews.Domain
 	public class Article : DomainEntity
 	{
 		public ArticleType Type { get; set; }
-		public User Author { get; set; }
+		public User User { get; set; }
 		public string Text { get; set; }
 		[InverseProperty("ParentArticle")]
 		public List<Comment> Comments { get; set; }
@@ -34,7 +34,7 @@ namespace HackerNews.Domain
 		public Article(Article articleToClone, List<Comment> comments)
 		{
 			Type = articleToClone.Type;
-			Author = articleToClone.Author;
+			User = articleToClone.User;
 			Text = articleToClone.Text;
 			Comments = comments;
 			Url = articleToClone.Url;

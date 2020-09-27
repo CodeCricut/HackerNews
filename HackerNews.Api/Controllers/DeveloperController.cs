@@ -13,12 +13,18 @@ namespace HackerNews.Api.Controllers
 	{
 		private readonly IEntityRepository<Article> _articleRepository;
 		private readonly IEntityRepository<Comment> _commentRepository;
+		private readonly IEntityRepository<User> _userRepository;
 		private readonly HackerNewsContext _context;
 
-		public DeveloperController(IEntityRepository<Article> articleRepository, IEntityRepository<Comment> commentRepository, HackerNewsContext context)
+		public DeveloperController(
+			IEntityRepository<Article> articleRepository, 
+			IEntityRepository<Comment> commentRepository, 
+			IEntityRepository<User> userRepository,			
+			HackerNewsContext context)
 		{
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
+			_userRepository = userRepository;
 			_context = context;
 		}
 
@@ -29,9 +35,11 @@ namespace HackerNews.Api.Controllers
 			{
 				var articles = await _articleRepository.GetEntitiesAsync();
 				var comments = await _commentRepository.GetEntitiesAsync();
+				var users = await _userRepository.GetEntitiesAsync();
 
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);
+				_context.RemoveRange(users);
 
 				await _context.SaveChangesAsync();
 

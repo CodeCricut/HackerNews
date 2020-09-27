@@ -17,10 +17,10 @@ namespace HackerNews.EF
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Article>()
-				.HasOne<User>().WithMany(u => u.Articles);
+				.HasOne(a => a.User).WithMany(u => u.Articles);
 
 			modelBuilder.Entity<Comment>()
-				.HasOne<User>().WithMany(u => u.Comments);
+				.HasOne(c => c.User).WithMany(u => u.Comments);
 		}
 	}
 }

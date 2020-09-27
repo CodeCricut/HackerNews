@@ -46,9 +46,9 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		{
 			var convertedModel = _mapper.Map<EntityT>(entityModel);
 
-			var entity = _mapper.Map<EntityT, EntityT>(convertedModel);
+			// var entity = _mapper.Map<EntityT, EntityT>(convertedModel);
 
-			await _entityRepository.UpdateEntityAsync(id, entity);
+			await _entityRepository.UpdateEntityAsync(id, convertedModel);
 			await _entityRepository.SaveChangesAsync();
 
 			return await GetEntityModelAsync(id);
@@ -76,7 +76,12 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		// public abstract Task<List<EntityT>> GetAllEntitiesAsync();
 
 
-		public abstract Task<GetModelT> GetEntityModelAsync(int id);
+		public virtual async Task<GetModelT> GetEntityModelAsync(int id)
+		{
+			EntityT entity = await _entityRepository.GetEntityAsync(id);
+
+			return _mapper.Map<GetModelT>(entity);
+		}
 
 		// TODO: I believe we need to trim the entities before converting them.
 		public async Task<List<GetModelT>> GetAllEntityModelsAsync()
