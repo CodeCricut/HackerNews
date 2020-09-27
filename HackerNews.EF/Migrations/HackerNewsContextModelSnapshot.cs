@@ -26,8 +26,8 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
@@ -47,7 +47,14 @@ namespace HackerNews.EF.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Articles");
                 });
@@ -59,8 +66,8 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
@@ -80,24 +87,80 @@ namespace HackerNews.EF.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("ParentArticleId");
 
                     b.HasIndex("ParentCommentId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("HackerNews.Domain.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Karma")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("HackerNews.Domain.Article", b =>
+                {
+                    b.HasOne("HackerNews.Domain.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("HackerNews.Domain.User", null)
+                        .WithMany("Articles")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("HackerNews.Domain.Comment", b =>
                 {
+                    b.HasOne("HackerNews.Domain.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("HackerNews.Domain.Article", "ParentArticle")
                         .WithMany("Comments")
                         .HasForeignKey("ParentArticleId");
 
                     b.HasOne("HackerNews.Domain.Comment", "ParentComment")
-                        .WithMany("Comments")
+                        .WithMany("ChildComments")
                         .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("HackerNews.Domain.User", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

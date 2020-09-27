@@ -90,7 +90,7 @@ namespace HackerNews.UnitTests.Helpers
 		{
 			_comment = new Comment
 			{
-				AuthorName = "Author name",
+				//AuthorName = "Author name",
 				Text = "text",
 				Url = "url"
 			};
@@ -107,7 +107,7 @@ namespace HackerNews.UnitTests.Helpers
 		{
 			_article = new Article
 			{
-				AuthorName = "author name",
+				//AuthorName = "author name",
 				Id = 0,
 				Text = "text",
 				Title = "title",

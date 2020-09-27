@@ -5,7 +5,7 @@ namespace HackerNews.Domain
 {
 	public class Comment : DomainEntity
 	{
-		public string AuthorName { get; set; }
+		public User Author { get; set; }
 		public string Text { get; set; }
 		public string Url { get; set; }
 		public int Karma { get; set; }
@@ -32,7 +32,7 @@ namespace HackerNews.Domain
 		{
 			Id = commentToClone.Id;
 			Deleted = commentToClone.Deleted;
-			AuthorName = commentToClone.AuthorName;
+			Author = commentToClone.Author;
 			Text = commentToClone.Text;
 			Url = commentToClone.Url;
 			Karma = commentToClone.Karma;

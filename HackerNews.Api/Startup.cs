@@ -115,6 +115,7 @@ namespace HackerNews.Api
 			var builder = new ODataConventionModelBuilder();
 			builder.EntitySet<Article>("Articles");
 			builder.EntitySet<Comment>("Comments");
+			builder.EntitySet<User>("Users");
 
 			return builder.GetEdmModel();
 		}

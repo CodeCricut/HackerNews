@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200927165216_initia.cs" />
+    <Compile Remove="Migrations\20200927165216_initia.Designer.cs" />
+    <Compile Remove="Migrations\20200927165601_UserRelationships.cs" />
+    <Compile Remove="Migrations\20200927165601_UserRelationships.Designer.cs" />
+    <Compile Remove="Migrations\20200927170408_UserRelationships.cs" />
+    <Compile Remove="Migrations\20200927170408_UserRelationships.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

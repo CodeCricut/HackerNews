@@ -6,7 +6,7 @@ namespace HackerNews.Domain.Models
 	{
 		public int Id { get; set; }
 		public bool Deleted { get; set; }
-		public string AuthorName { get; set; }
+		public int AuthorId { get; set; }
 		public string Text { get; set; }
 		public string Url { get; set; }
 		public int Karma { get; set; }

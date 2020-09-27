@@ -39,7 +39,7 @@ namespace HackerNews.UnitTests.Controllers
 
 			_postArticleModel = new PostArticleModel()
 			{
-				AuthorName = "Valid name",
+				//AuthorName = "Valid name",
 				Text = "valid text",
 				Title = "valid title"
 			};

@@ -21,9 +21,9 @@ namespace HackerNews.Api.IntegrationTests
 		{
 			get => new List<Comment>
 				{
-					new Comment { Id = 1, AuthorName = "valid author 0", Karma = 0, Text = "valid text 0"},
-					new Comment { Id = 2, AuthorName = "valid author 1", Karma = 1, Text = "valid text 1"},
-					new Comment { Id = 3, AuthorName = "valid author 2", Karma = 2, Text = "valid text 2"}
+					new Comment { Id = 1, /* AuthorName = "valid author 0",*/ Karma = 0, Text = "valid text 0"},
+					new Comment { Id = 2, /* AuthorName = "valid author 1",*/ Karma = 1, Text = "valid text 1"},
+					new Comment { Id = 3, /* AuthorName = "valid author 2",*/ Karma = 2, Text = "valid text 2"}
 				};
 		}
 

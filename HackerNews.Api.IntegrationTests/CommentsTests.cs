@@ -80,13 +80,13 @@ namespace HackerNews.Api.IntegrationTests
 
 		private PostCommentModel Get_PostCommentModel_WithoutParents() => new PostCommentModel
 		{
-			AuthorName = "valid author name",
+			//AuthorName = "valid author name",
 			Text = "valid text"
 		};
 
 		private PostCommentModel Get_PostCommentModel_WithParents() => new PostCommentModel
 		{
-			AuthorName = "valid author name",
+			//AuthorName = "valid author name",
 			Text = "valid text",
 			ParentArticleId = DatabaseHelper.Articles.FirstOrDefault().Id,
 			ParentCommentId = DatabaseHelper.Comments.FirstOrDefault().Id

@@ -158,7 +158,7 @@ namespace HackerNews.Api.IntegrationTests
 			var oldModel = _mapper.Map<Article, GetArticleModel>(DatabaseHelper.Articles.First());
 			var updatedPostModel = new PostArticleModel
 			{
-				AuthorName = "Updated name",
+				//AuthorName = "Updated name",
 				Text = "updated text",
 				Title = "valid title",
 				Type = ArticleType.Opinion.ToString()
@@ -243,7 +243,7 @@ namespace HackerNews.Api.IntegrationTests
 
 		private static PostArticleModel GetValid_PostArticleModel() => new PostArticleModel
 		{
-			AuthorName = "valid name",
+			//AuthorName = "valid name",
 			Text = "valid text",
 			Title = "valid title",
 			Type = ArticleType.Meta.ToString()

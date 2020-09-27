@@ -7,7 +7,7 @@ namespace HackerNews.Domain.Models
 		[Required]
 		public string Type { get; set; }
 		[Required]
-		public string AuthorName { get; set; }
+		public int AuthorId { get; set; }
 		[Required]
 		public string Text { get; set; }
 		[Required]
