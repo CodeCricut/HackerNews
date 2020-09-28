@@ -15,6 +15,9 @@ namespace HackerNews.Domain
 		public List<Article> Articles { get; set; }
 		public List<Comment> Comments { get; set; }
 
+		public List<UserArticle> SavedArticles { get; set; }
+		public List<UserComment> SavedComments { get; set; }
+
 		public User()
 		{
 			Articles = new List<Article>();

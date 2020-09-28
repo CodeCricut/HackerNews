@@ -3,7 +3,7 @@ using HackerNews.Api.Helpers;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;

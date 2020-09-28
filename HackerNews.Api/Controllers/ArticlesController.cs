@@ -1,7 +1,7 @@
 ﻿using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Articles;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

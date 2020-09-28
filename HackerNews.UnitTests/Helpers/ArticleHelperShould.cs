@@ -1,5 +1,5 @@
 ﻿using HackerNews.Domain;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Articles;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;

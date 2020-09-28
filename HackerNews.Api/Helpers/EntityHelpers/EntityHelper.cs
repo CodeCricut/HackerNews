@@ -3,6 +3,7 @@ using HackerNews.Domain;
 using HackerNews.Domain.Models;
 using HackerNews.EF.Repositories;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
@@ -86,11 +87,20 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		// TODO: I believe we need to trim the entities before converting them.
 		public async Task<List<GetModelT>> GetAllEntityModelsAsync()
 		{
-			var entities = await _entityRepository.GetEntitiesAsync();
-			// var entities = await GetAllEntitiesAsync();
+			try
+			{
+				List<EntityT> entities = (await _entityRepository.GetEntitiesAsync()).ToList();
+				// var entities = await GetAllEntitiesAsync();
 
-			return _mapper.Map<List<GetModelT>>(entities);
-			//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
+				return _mapper.Map<List<GetModelT>>(entities);
+				//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
+			}
+			catch (System.Exception e)
+			{
+
+				throw;
+			}
+			
 		}
 	}
 }

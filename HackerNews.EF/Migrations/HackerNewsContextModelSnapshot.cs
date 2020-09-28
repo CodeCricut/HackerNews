@@ -26,9 +26,6 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
@@ -36,9 +33,11 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
@@ -47,12 +46,10 @@ namespace HackerNews.EF.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.HasIndex("UserId");
 
@@ -65,9 +62,6 @@ namespace HackerNews.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
@@ -82,17 +76,16 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.HasIndex("ParentArticleId");
 
@@ -114,18 +107,22 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Karma")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -133,23 +130,47 @@ namespace HackerNews.EF.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("HackerNews.Domain.UserArticle", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ArticleId");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("UserArticle");
+                });
+
+            modelBuilder.Entity("HackerNews.Domain.UserComment", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "CommentId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("UserComment");
+                });
+
             modelBuilder.Entity("HackerNews.Domain.Article", b =>
                 {
-                    b.HasOne("HackerNews.Domain.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
-                    b.HasOne("HackerNews.Domain.User", null)
+                    b.HasOne("HackerNews.Domain.User", "User")
                         .WithMany("Articles")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HackerNews.Domain.Comment", b =>
                 {
-                    b.HasOne("HackerNews.Domain.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
                     b.HasOne("HackerNews.Domain.Article", "ParentArticle")
                         .WithMany("Comments")
                         .HasForeignKey("ParentArticleId");
@@ -158,9 +179,41 @@ namespace HackerNews.EF.Migrations
                         .WithMany("ChildComments")
                         .HasForeignKey("ParentCommentId");
 
-                    b.HasOne("HackerNews.Domain.User", null)
+                    b.HasOne("HackerNews.Domain.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HackerNews.Domain.UserArticle", b =>
+                {
+                    b.HasOne("HackerNews.Domain.Article", "Article")
+                        .WithMany("UsersSaved")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HackerNews.Domain.User", "User")
+                        .WithMany("SavedArticles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HackerNews.Domain.UserComment", b =>
+                {
+                    b.HasOne("HackerNews.Domain.Comment", "Comment")
+                        .WithMany("UsersSaved")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HackerNews.Domain.User", "User")
+                        .WithMany("SavedComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

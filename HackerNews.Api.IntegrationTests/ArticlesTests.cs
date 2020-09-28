@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DeepEqual.Syntax;
 using HackerNews.Domain;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Articles;
 using HackerNews.EF;
 using Microsoft.Extensions.DependencyInjection;
 using System;

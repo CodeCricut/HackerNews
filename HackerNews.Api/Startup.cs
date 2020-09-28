@@ -3,7 +3,10 @@ using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Auth;
+using HackerNews.Domain.Models.Comments;
+using HackerNews.Domain.Models.Users;
 using HackerNews.EF;
 using HackerNews.EF.Repositories;
 using Microsoft.AspNet.OData.Builder;
@@ -55,6 +58,8 @@ namespace HackerNews.Api
 			services.AddScoped<IVoteableEntityHelper<Comment>, CommentHelper>();
 
 			services.AddScoped<IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel>, UserHelper>();
+
+			services.AddScoped<IUserSaver, UserSaver>();
 
 			// used for querying actions
 			services.AddOData();

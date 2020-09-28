@@ -11,6 +11,8 @@ namespace HackerNews.Domain
 		public string Url { get; set; }
 		public int Karma { get; set; }
 
+		public List<UserComment> UsersSaved { get; set; }
+
 		[ForeignKey("Comment")]
 		public int? ParentCommentId { get; set; }
 		public virtual Comment ParentComment { get; set; }

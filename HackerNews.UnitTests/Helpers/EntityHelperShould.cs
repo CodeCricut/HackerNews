@@ -2,7 +2,8 @@
 using HackerNews.Api.Helpers;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Comments;
 using HackerNews.EF.Repositories;
 using Moq;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HackerNews.Domain;
-using HackerNews.Domain.Models;
+using HackerNews.Domain.Models.Comments;
 using System.Linq;
 
 namespace HackerNews.Api.Converters.Profiles

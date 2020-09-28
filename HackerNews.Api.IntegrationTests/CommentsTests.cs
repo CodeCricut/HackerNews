@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain.Models;
+﻿using HackerNews.Domain.Models.Comments;
 using HackerNews.EF;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
