@@ -9,20 +9,16 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 	{
 		private readonly IEntityRepository<Article> _articleRepo;
 		private readonly IEntityRepository<Comment> _commentRepo;
-		private readonly IEntityRepository<User> _userRepo;
 
 		public UserSaver(IEntityRepository<Article> articleRepo,
-			IEntityRepository<Comment> commentRepo,
-			IEntityRepository<User> userRepo)
+			IEntityRepository<Comment> commentRepo)
 		{
 			_articleRepo = articleRepo;
 			_commentRepo = commentRepo;
-			_userRepo = userRepo;
 		}
 
-		public async Task<User> SaveArticleToUserAsync(int userId, int articleId)
+		public async Task<User> SaveArticleToUserAsync(User user, int articleId)
 		{
-			var user = await _userRepo.GetEntityAsync(userId);
 			var article = await _articleRepo.GetEntityAsync(articleId);
 
 			if (user == null || article == null) throw new NotFoundException();
@@ -37,9 +33,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			return user;
 		}
 
-		public async Task<User> SaveCommentToUserAsync(int userId, int commentId)
+		public async Task<User> SaveCommentToUserAsync(User user, int commentId)
 		{
-			var user = await _userRepo.GetEntityAsync(userId);
 			var comment = await _commentRepo.GetEntityAsync(commentId);
 
 			if (user == null || comment == null) throw new NotFoundException();

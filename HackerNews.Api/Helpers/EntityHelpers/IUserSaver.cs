@@ -8,7 +8,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public interface IUserSaver
 	{
-		Task<User> SaveArticleToUserAsync(int userId, int articleId);
-		Task<User> SaveCommentToUserAsync(int userId, int commentId);
+		Task<User> SaveArticleToUserAsync(User currentUser, int articleId);
+		Task<User> SaveCommentToUserAsync(User currentUser, int commentId);
 	}
 }

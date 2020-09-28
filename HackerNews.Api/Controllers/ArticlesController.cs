@@ -1,7 +1,10 @@
-﻿using HackerNews.Api.Helpers.EntityHelpers;
+﻿using HackerNews.Api.Helpers.Attributes;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Auth;
+using HackerNews.Domain.Models.Users;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -15,31 +18,40 @@ namespace HackerNews.Api.Controllers
 	{
 		private readonly IEntityHelper<Article, PostArticleModel, GetArticleModel> _articleHelper;
 		private readonly IVoteableEntityHelper<Article> _articleVoter;
+		private readonly IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> _authUserHelper;
 
 		public ArticlesController(IEntityHelper<Article, PostArticleModel, GetArticleModel> articleHelper,
-			IVoteableEntityHelper<Article> articleVoter)
+			IVoteableEntityHelper<Article> articleVoter,
+			IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> authUserHelper)
 		{
 			_articleHelper = articleHelper;
 			_articleVoter = articleVoter;
+			_authUserHelper = authUserHelper;
 		}
 
 		#region Create
 		[HttpPost]
+		[Authorize]
 		public async Task<IActionResult> PostArticleAsync([FromBody] PostArticleModel articleModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var addedModel = await _articleHelper.PostEntityModelAsync(articleModel);
+			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+
+			var addedModel = await _articleHelper.PostEntityModelAsync(articleModel, user);
 
 			return Ok(addedModel);
 		}
 
 		[HttpPost("range")]
+		[Authorize]
 		public async Task<IActionResult> PostArticlesAsync([FromBody] List<PostArticleModel> articleModels)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			await _articleHelper.PostEntityModelsAsync(articleModels);
+			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+
+			await _articleHelper.PostEntityModelsAsync(articleModels, user);
 
 			return Ok();
 		}
@@ -64,23 +76,27 @@ namespace HackerNews.Api.Controllers
 
 		#region Update
 		[HttpPut("{id:int}")]
+		[Authorize]
 		public async Task<IActionResult> PutArticleAsync(int id, [FromBody] PostArticleModel articleModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var updatedArticleModel = await _articleHelper.PutEntityModelAsync(id, articleModel);
+			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+
+			var updatedArticleModel = await _articleHelper.PutEntityModelAsync(id, articleModel, user);
 
 			return Ok(updatedArticleModel);
 		}
 
 		[HttpPost("vote/{articleId:int}")]
+		[Authorize]
 		public async Task<IActionResult> VoteArticleAsync(int articleId, [FromBody] bool upvote)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-			// TODO: verify article exists to throw custom exception if null
-			// await GetArticleAsync(articleId);
 
-			await _articleVoter.VoteEntityAsync(articleId, upvote);
+			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+
+			await _articleVoter.VoteEntityAsync(articleId, upvote, user);
 
 			return Ok();
 		}
@@ -88,10 +104,14 @@ namespace HackerNews.Api.Controllers
 
 		#region Delete
 		[HttpDelete("{id:int}")]
+		[Authorize]
 		public async Task<IActionResult> DeleteArticleAsync(int key)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-			await _articleHelper.SoftDeleteEntityAsync(key);
+
+			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+
+			await _articleHelper.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}

@@ -13,5 +13,6 @@ namespace HackerNews.EF.Repositories
 		Task UpdateEntityAsync(int id, EntityT updatedEntity);
 		Task SoftDeleteEntityAsync(int id);
 		Task<bool> SaveChangesAsync();
+		Task<bool> VerifyExistsAsync(int id);
 	}
 }

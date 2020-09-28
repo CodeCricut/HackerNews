@@ -49,7 +49,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var publicResponse = await _userHelper.PostEntityModelAsync(model);
+			var publicResponse = await _userHelper.PostEntityModelAsync(model, null);
 
 			return Ok(publicResponse);
 		}
@@ -93,7 +93,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var updatedUserModel = await _userHelper.PutEntityModelAsync(key, userModel);
+			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+
+			var updatedUserModel = await _userHelper.PutEntityModelAsync(key, userModel, user);
 
 			return Ok(updatedUserModel);
 		}
@@ -102,8 +104,9 @@ namespace HackerNews.Api.Controllers
 		[Authorize]
 		public async Task<IActionResult> SaveArticleAsync(int articleId)
 		{
-			var userId = ((User)HttpContext.Items["User"]).Id;
-			var user = await _userSaver.SaveArticleToUserAsync(userId, articleId);
+			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+			
+			user = await _userSaver.SaveArticleToUserAsync(user, articleId);
 
 			return Ok(user);
 		}
@@ -112,8 +115,9 @@ namespace HackerNews.Api.Controllers
 		[Authorize]
 		public async Task<IActionResult> SaveCommentAsync(int commentId)
 		{
-			var userId = ((User)HttpContext.Items["User"]).Id;
-			var user = await _userSaver.SaveCommentToUserAsync(userId, commentId);
+			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+
+			user = await _userSaver.SaveCommentToUserAsync(user, commentId);
 
 			return Ok(user);
 		}
@@ -121,10 +125,14 @@ namespace HackerNews.Api.Controllers
 
 		#region Delete
 		[HttpDelete("{id:int}")]
+		[Authorize]
 		public async Task<IActionResult> DeleteUserAsync(int key)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-			await _userHelper.SoftDeleteEntityAsync(key);
+
+			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+
+			await _userHelper.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}

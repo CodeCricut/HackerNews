@@ -74,5 +74,10 @@ namespace HackerNews.EF
 				return false;
 			}
 		}
+
+		public async Task<bool> VerifyExistsAsync(int id)
+		{
+			return (await GetEntityAsync(id)) != null;
+		}
 	}
 }

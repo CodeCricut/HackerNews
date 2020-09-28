@@ -5,6 +5,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 {
 	public interface IVoteableEntityHelper<EntityT> where EntityT : DomainEntity
 	{
-		Task VoteEntityAsync(int id, bool upvote);
+		Task VoteEntityAsync(int id, bool upvote, User currentUser);
 	}
 }

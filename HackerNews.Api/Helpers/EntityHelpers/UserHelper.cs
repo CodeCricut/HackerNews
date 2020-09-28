@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using HackerNews.EF.Repositories;
@@ -47,8 +48,57 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 		public async Task<GetPrivateUserModel> GetAuthenticatedReturnModelAsync(HttpContext httpContext)
 		{
-			User user = await Task.Factory.StartNew(() => (User)httpContext.Items["User"]);
+			var user = await GetAuthenticatedUser(httpContext);
 			return _mapper.Map<GetPrivateUserModel>(user);
+		}
+
+		public async Task<User> GetAuthenticatedUser(HttpContext httpContext)
+		{
+			return await Task.Factory.StartNew(() => (User)httpContext.Items["User"]);
+		}
+
+		// this gets messy... userhelper shouldn't be forced to implement these
+		public override async Task<GetPublicUserModel> PostEntityModelAsync(RegisterUserModel entityModel, User currentUser)
+		{
+			var entity = _mapper.Map<User>(entityModel);
+
+			var addedEntity = await _entityRepository.AddEntityAsync(entity);
+			await _entityRepository.SaveChangesAsync();
+
+			return _mapper.Map<GetPublicUserModel>(addedEntity);
+		}
+
+		public override async Task<GetPublicUserModel> PutEntityModelAsync(int id, RegisterUserModel entityModel, User currentUser)
+		{
+			// verify entity trying to update exists
+			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
+
+			// verify user owns the entity
+			var entity = await _entityRepository.GetEntityAsync(id);
+			if (entity.Id != currentUser.Id) throw new UnauthorizedException();
+
+			var updatedEntity = _mapper.Map<User>(entityModel);
+
+			// update and save
+			await _entityRepository.UpdateEntityAsync(id, updatedEntity);
+			await _entityRepository.SaveChangesAsync();
+
+			// return updated entity
+			return await GetEntityModelAsync(id);
+		}
+
+		public override async Task SoftDeleteEntityAsync(int id, User currentUser)
+		{
+			// verify entity exists
+			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
+
+			// verify user owns the entity
+			var entity = await _entityRepository.GetEntityAsync(id);
+			if (entity.Id != currentUser.Id) throw new UnauthorizedException();
+
+			// soft delete and save
+			await _entityRepository.SoftDeleteEntityAsync(id);
+			await _entityRepository.SaveChangesAsync();
 		}
 
 		private string GenerateJwtToken(User user)

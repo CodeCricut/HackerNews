@@ -1,7 +1,10 @@
-﻿using HackerNews.Api.Helpers.EntityHelpers;
+﻿using HackerNews.Api.Helpers.Attributes;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
+using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Comments;
+using HackerNews.Domain.Models.Users;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -14,31 +17,40 @@ namespace HackerNews.Api.Controllers
 	{
 		private readonly IEntityHelper<Comment, PostCommentModel, GetCommentModel> _commentHelper;
 		private readonly IVoteableEntityHelper<Comment> _commentVoter;
+		private readonly IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> _userAuthHelper;
 
 		public CommentsController(IEntityHelper<Comment, PostCommentModel, GetCommentModel> commentHelper,
-			IVoteableEntityHelper<Comment> commentVoter)
+			IVoteableEntityHelper<Comment> commentVoter,
+			IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> userAuthHelper)
 		{
 			_commentHelper = commentHelper;
 			_commentVoter = commentVoter;
+			_userAuthHelper = userAuthHelper;
 		}
 
 		#region Create
 		[HttpPost]
+		[Authorize]
 		public async Task<IActionResult> PostCommentAsync([FromBody] PostCommentModel commentModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var addedModel = await _commentHelper.PostEntityModelAsync(commentModel);
+			var user = await _userAuthHelper.GetAuthenticatedUser(HttpContext);
+
+			var addedModel = await _commentHelper.PostEntityModelAsync(commentModel, user);
 
 			return Ok(addedModel);
 		}
 
 		[HttpPost("range")]
+		[Authorize]
 		public async Task<IActionResult> PostCommentsAsync([FromBody] List<PostCommentModel> commentModels)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			await _commentHelper.PostEntityModelsAsync(commentModels);
+			var user = await _userAuthHelper.GetAuthenticatedUser(HttpContext);
+
+			await _commentHelper.PostEntityModelsAsync(commentModels, user);
 
 			return Ok();
 		}
@@ -66,21 +78,27 @@ namespace HackerNews.Api.Controllers
 
 		#region Update
 		[HttpPut("{id:int}")]
+		[Authorize]
 		public async Task<IActionResult> PutCommentAsync(int id, [FromBody] PostCommentModel commentModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var updatedModel = await _commentHelper.PutEntityModelAsync(id, commentModel);
+			var user = await _userAuthHelper.GetAuthenticatedUser(HttpContext);
+
+			var updatedModel = await _commentHelper.PutEntityModelAsync(id, commentModel, user);
 
 			return Ok(updatedModel);
 		}
 
 		[HttpPost("vote/{commentId:int}")]
+		[Authorize]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			await _commentVoter.VoteEntityAsync(commentId, upvote);
+			var user = await _userAuthHelper.GetAuthenticatedUser(HttpContext);
+
+			await _commentVoter.VoteEntityAsync(commentId, upvote, user);
 
 			return Ok();
 		}
@@ -88,11 +106,14 @@ namespace HackerNews.Api.Controllers
 
 		#region Delete
 		[HttpDelete("{id:int}")]
+		[Authorize]
 		public async Task<IActionResult> DeleteCommentAsync(int id)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			await _commentHelper.SoftDeleteEntityAsync(id);
+			var user = await _userAuthHelper.GetAuthenticatedUser(HttpContext);
+
+			await _commentHelper.SoftDeleteEntityAsync(id, user);
 
 			return Ok();
 		}

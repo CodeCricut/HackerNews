@@ -17,6 +17,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		public Task<TAuthenticateResponse> AuthenticateAsync(TAuthenticateRequest model);
 
 		public Task<TPrivateReturnModel> GetAuthenticatedReturnModelAsync(HttpContext httpContext);
+
+		public Task<TEntity> GetAuthenticatedUser(HttpContext httpContext);
 		
 	}
 }

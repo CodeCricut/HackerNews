@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
+using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using HackerNews.EF.Repositories;
 using System.Collections.Generic;
@@ -22,60 +24,47 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			_mapper = mapper;
 		}
 
-		// TODO: we still need to check parents exist on an entity basis...
-		public virtual async Task<GetModelT> PostEntityModelAsync(PostModelT entityModel)
-		{
-			EntityT entity = _mapper.Map<EntityT>(entityModel);
-			//_entityConverter.ConvertEntityModelAsync(entityModel);
-
-			var addedEntity = await _entityRepository.AddEntityAsync(entity);
-			await _entityRepository.SaveChangesAsync();
-
-			return _mapper.Map<GetModelT>(addedEntity);
-			// _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
-		}
-
-		public async Task PostEntityModelsAsync(List<PostModelT> entityModels)
-		{
-			List<EntityT> entities = _mapper.Map<List<EntityT>>(entityModels);
-			//_entityConverter.ConvertEntityModelsAsync(entityModels);
-			await _entityRepository.AddEntititesAsync(entities);
-			await _entityRepository.SaveChangesAsync();
-		}
-
-		public async Task<GetModelT> PutEntityModelAsync(int id, PostModelT entityModel)
-		{
-			var convertedModel = _mapper.Map<EntityT>(entityModel);
-
-			// var entity = _mapper.Map<EntityT, EntityT>(convertedModel);
-
-			await _entityRepository.UpdateEntityAsync(id, convertedModel);
-			await _entityRepository.SaveChangesAsync();
-
-			return await GetEntityModelAsync(id);
-		}
-
-		public async Task SoftDeleteEntityAsync(int id)
-		{
-			// code smell: verify the entity exists in the DB
-			// await GetEntityAsync(id);
-
-			await _entityRepository.SoftDeleteEntityAsync(id);
-			await _entityRepository.SaveChangesAsync();
-		}
-
-		//public async Task<EntityT> GetEntityAsync(int id)
+		public abstract Task<GetModelT> PostEntityModelAsync(PostModelT entityModel, User currentUser);
 		//{
-		//	var entity = await _entityRepository.GetEntityAsync(id);
-		//	if (entity == null) throw new NotFoundException("An entity with the given ID could not be found.");
+		//	EntityT entity = _mapper.Map<EntityT>(entityModel);
+		//	//_entityConverter.ConvertEntityModelAsync(entityModel);
 
-		//	return entity;
+		//	var addedEntity = await _entityRepository.AddEntityAsync(entity);
+		//	await _entityRepository.SaveChangesAsync();
+
+		//	return _mapper.Map<GetModelT>(addedEntity);
+		//	// _entityConverter.ConvertEntityAsync<GetModelT>(addedEntity);
 		//}
 
-		// public abstract void UpdateEntityProperties(EntityT entity, EntityT newEntity);
+		public async Task PostEntityModelsAsync(List<PostModelT> entityModels, User currentUser)
+		{
+			// Rather slow in terms of database connection, but clean so...
+			await TaskHelper.RunConcurrentTasksAsync(entityModels, async entityModel => await PostEntityModelAsync(entityModel, currentUser));
+		}
 
-		// public abstract Task<List<EntityT>> GetAllEntitiesAsync();
+		// implement on per entkty basis. for example, you can't change the parents of an entity
+		public abstract Task<GetModelT> PutEntityModelAsync(int id, PostModelT entityModel, User currentUser);
+		//{
+		//	var convertedModel = _mapper.Map<EntityT>(entityModel);
 
+		//	// var entity = _mapper.Map<EntityT, EntityT>(convertedModel);
+
+		//	await _entityRepository.UpdateEntityAsync(id, convertedModel);
+		//	await _entityRepository.SaveChangesAsync();
+
+		//	return await GetEntityModelAsync(id);
+		//}
+
+		// have to implement on per entity basis so we can verify user owns entity
+		public abstract Task SoftDeleteEntityAsync(int id, User currentUser);
+		//{
+		//	if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
+		//	var entity = await _entityRepository.GetEntityAsync(id);
+		//	if (entity.)
+
+		//	await _entityRepository.SoftDeleteEntityAsync(id);
+		//	await _entityRepository.SaveChangesAsync();
+		//}
 
 		public virtual async Task<GetModelT> GetEntityModelAsync(int id)
 		{
@@ -84,23 +73,11 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			return _mapper.Map<GetModelT>(entity);
 		}
 
-		// TODO: I believe we need to trim the entities before converting them.
-		public async Task<List<GetModelT>> GetAllEntityModelsAsync()
+		public virtual async Task<List<GetModelT>> GetAllEntityModelsAsync()
 		{
-			try
-			{
-				List<EntityT> entities = (await _entityRepository.GetEntitiesAsync()).ToList();
-				// var entities = await GetAllEntitiesAsync();
+			List<EntityT> entities = (await _entityRepository.GetEntitiesAsync()).ToList();
 
-				return _mapper.Map<List<GetModelT>>(entities);
-				//await _entityConverter.ConvertEntitiesAsync<GetModelT>(entities);
-			}
-			catch (System.Exception e)
-			{
-
-				throw;
-			}
-			
+			return _mapper.Map<List<GetModelT>>(entities);
 		}
 	}
 }
