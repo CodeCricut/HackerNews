@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNews.Domain
@@ -29,6 +30,8 @@ namespace HackerNews.Domain
 
 		public List<UserArticleLikes> UsersLiked { get; set; }
 		public List<UserArticleDislikes> UsersDisliked { get; set; }
+
+		public DateTime PostDate { get; set; }
 
 		public Article()
 		{

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNews.Domain
@@ -15,6 +16,9 @@ namespace HackerNews.Domain
 
 		public List<UserCommentLikes> UsersLiked { get; set; }
 		public List<UserCommentDislikes> UsersDisliked { get; set; }
+
+		public DateTime PostDate { get; set; }
+
 
 		[ForeignKey("Comment")]
 		public int? ParentCommentId { get; set; }

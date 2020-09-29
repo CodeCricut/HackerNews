@@ -22,5 +22,7 @@ namespace HackerNews.Domain.Models.Users
 
 		public List<int> LikedArticles { get; set; }
 		public List<int> LikedComments { get; set; }
+
+		public DateTime JoinDate { get; set; }
 	}
 }

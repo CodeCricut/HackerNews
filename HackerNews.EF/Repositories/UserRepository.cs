@@ -33,5 +33,14 @@ namespace HackerNews.EF.Repositories
 		{
 			return (await GetEntitiesAsync()).FirstOrDefault(u => u.Id == id);
 		}
+
+		public override async Task<User> AddEntityAsync(User entity)
+		{
+			var currentDate = DateTime.UtcNow;
+			entity.JoinDate = currentDate;
+
+			var addedEntity = (await Task.Run(() => _context.Set<User>().Add(entity))).Entity;
+			return addedEntity;
+		}
 	}
 }

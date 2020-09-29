@@ -1,5 +1,6 @@
 ﻿using HackerNews.Domain;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +27,15 @@ namespace HackerNews.EF
 		public override async Task<Comment> GetEntityAsync(int id)
 		{
 			return (await GetEntitiesAsync()).FirstOrDefault(c => c.Id == id);
+		}
+
+		public override async Task<Comment> AddEntityAsync(Comment entity)
+		{
+			var currentDate = DateTime.UtcNow;
+			entity.PostDate = currentDate;
+
+			var addedEntity = (await Task.Run(() => _context.Set<Comment>().Add(entity))).Entity;
+			return addedEntity;
 		}
 	}
 }

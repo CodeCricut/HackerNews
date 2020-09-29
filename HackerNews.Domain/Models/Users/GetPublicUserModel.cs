@@ -13,5 +13,7 @@ namespace HackerNews.Domain.Models.Users
 
 		public List<int> ArticleIds { get; set; }
 		public List<int> CommentIds { get; set; }
+
+		public DateTime JoinDate { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HackerNews.Domain.Models.Comments
 {
@@ -16,5 +17,7 @@ namespace HackerNews.Domain.Models.Comments
 
 		public List<int> UsersLiked { get; set; }
 		public List<int> UsersDisliked { get; set; }
+
+		public DateTime	PostDate { get; set; }
 	}
 }

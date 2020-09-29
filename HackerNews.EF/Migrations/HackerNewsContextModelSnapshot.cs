@@ -32,6 +32,9 @@ namespace HackerNews.EF.Migrations
                     b.Property<int>("Karma")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("PostDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -75,6 +78,9 @@ namespace HackerNews.EF.Migrations
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("PostDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -109,6 +115,9 @@ namespace HackerNews.EF.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Karma")
                         .HasColumnType("int");

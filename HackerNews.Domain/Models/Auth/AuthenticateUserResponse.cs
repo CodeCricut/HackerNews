@@ -13,6 +13,7 @@ namespace HackerNews.Domain.Models.Auth
 		public string Username { get; set; }
 		public int Karma { get; set; }
 		public bool Deleted { get; set; }
+		public DateTime JoinDate { get; set; }
 
 		public List<int> ArticleIds { get; set; }
 		public List<int> CommentIds { get; set; }
@@ -33,6 +34,8 @@ namespace HackerNews.Domain.Models.Auth
 			CommentIds = user.Comments.Select(c => c.Id).ToList();
 
 			Token = token;
+
+			JoinDate = user.JoinDate;
 		}
 	}
 }

@@ -24,6 +24,8 @@ namespace HackerNews.Domain
 		public List<UserArticleDislikes> DislikedArticles { get; set; }
 		public List<UserCommentDislikes> DislikedComments { get; set; }
 
+		public DateTime JoinDate { get; set; }
+
 		public User()
 		{
 			Articles = new List<Article>();

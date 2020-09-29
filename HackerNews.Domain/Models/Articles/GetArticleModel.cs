@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HackerNews.Domain.Models.Articles
 {
@@ -15,5 +16,6 @@ namespace HackerNews.Domain.Models.Articles
 		public string Title { get; set; }
 		public List<int> UsersLiked { get; set; }
 		public List<int> UsersDisliked { get; set; }
+		public DateTime PostDate { get; set; }
 	}
 }

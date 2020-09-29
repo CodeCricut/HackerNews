@@ -19,7 +19,8 @@ namespace HackerNews.EF
 			_context = context;
 		}
 
-		public async Task<EntityT> AddEntityAsync(EntityT entity)
+		// for entities which produce side effects, needs to be implented on per-entity basis
+		public virtual async Task<EntityT> AddEntityAsync(EntityT entity)
 		{
 			// delete try blcok
 			try
@@ -33,7 +34,7 @@ namespace HackerNews.EF
 			}
 		}
 
-		public async Task<List<EntityT>> AddEntititesAsync(List<EntityT> entities)
+		public virtual async Task<List<EntityT>> AddEntititesAsync(List<EntityT> entities)
 		{
 			return await Task.Factory.StartNew(() =>
 			{
@@ -46,7 +47,7 @@ namespace HackerNews.EF
 		public abstract Task<EntityT> GetEntityAsync(int id);
 		public abstract Task<IEnumerable<EntityT>> GetEntitiesAsync();
 
-		public async Task UpdateEntityAsync(int id, EntityT updatedEntity)
+		public virtual async Task UpdateEntityAsync(int id, EntityT updatedEntity)
 		{
 			var local = _context.Set<EntityT>().Local.FirstOrDefault(x => x.Id == id);
 			if (local != null) _context.Entry(local).State = EntityState.Detached;
@@ -55,7 +56,7 @@ namespace HackerNews.EF
 			_context.Entry(updatedEntity).State = EntityState.Modified;
 		}
 
-		public async Task SoftDeleteEntityAsync(int id)
+		public virtual async Task SoftDeleteEntityAsync(int id)
 		{
 			var entity = await _context.Set<EntityT>().FindAsync(id);
 			if (entity == null) throw new NotFoundException();
@@ -63,7 +64,7 @@ namespace HackerNews.EF
 			await UpdateEntityAsync(id, entity);
 		}
 
-		public async Task<bool> SaveChangesAsync()
+		public virtual async Task<bool> SaveChangesAsync()
 		{
 			try
 			{
@@ -75,7 +76,7 @@ namespace HackerNews.EF
 			}
 		}
 
-		public async Task<bool> VerifyExistsAsync(int id)
+		public virtual async Task<bool> VerifyExistsAsync(int id)
 		{
 			return (await GetEntityAsync(id)) != null;
 		}
