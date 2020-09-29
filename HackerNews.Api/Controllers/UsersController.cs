@@ -19,13 +19,13 @@ namespace HackerNews.Api.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 	public class UsersController : ODataController
 	{
-		private readonly IEntityHelper<User, RegisterUserModel, GetPublicUserModel> _userHelper;
-		private readonly IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> _userAuthenticator;
-		private readonly IUserSaver _userSaver;
+		private readonly IEntityService<User, RegisterUserModel, GetPublicUserModel> _userHelper;
+		private readonly IAuthenticatableEntityService<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> _userAuthenticator;
+		private readonly IUserSaverService _userSaver;
 
-		public UsersController(IEntityHelper<User, RegisterUserModel, GetPublicUserModel> userHelper, 
-			IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> userAuthenticator,
-			IUserSaver userSaver)
+		public UsersController(IEntityService<User, RegisterUserModel, GetPublicUserModel> userHelper, 
+			IAuthenticatableEntityService<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> userAuthenticator,
+			IUserSaverService userSaver)
 		{
 			_userHelper = userHelper;
 			_userAuthenticator = userAuthenticator;

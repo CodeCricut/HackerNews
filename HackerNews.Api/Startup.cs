@@ -1,5 +1,8 @@
 using AutoMapper;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.EntityServices;
+using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Api.Helpers.EntityServices.Default;
 using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
@@ -37,11 +40,15 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(opt =>
+			{
+				opt.AddPolicy(name: "DefaultCorsPolicy",
+					builder => builder.AllowAnyOrigin());
+			});
+
 			services.AddDbContext<HackerNewsContext>(options =>
-				// connections strings are configured in appsettings.json
 				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
 
-			// we have to add the startup type param to fix some versioning issues
 			services.AddAutoMapper(typeof(Startup));
 
 			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
@@ -50,20 +57,18 @@ namespace HackerNews.Api
 			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
 			services.AddScoped<IEntityRepository<User>, UserRepository>();
 
-			services.AddScoped<IEntityHelper<Article, PostArticleModel, GetArticleModel>, ArticleHelper>();
-			services.AddScoped<IEntityHelper<Comment, PostCommentModel, GetCommentModel>, CommentHelper>();
-			services.AddScoped<IEntityHelper<User, RegisterUserModel, GetPublicUserModel>, UserHelper>();
+			services.AddScoped<ArticleService, DefaultArticleService>();
+			services.AddScoped<CommentService, DefaultCommentService>();
+			services.AddScoped<UserService, DefaultUserService>();
 
-			services.AddScoped<IVoteableEntityHelper<Article>, ArticleHelper>();
-			services.AddScoped<IVoteableEntityHelper<Comment>, CommentHelper>();
+			services.AddScoped<IVoteableEntityService<Article>, DefaultArticleService>();
+			services.AddScoped<IVoteableEntityService<Comment>, DefaultCommentService>();
 
-			services.AddScoped<IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel>, UserHelper>();
-
-			services.AddScoped<IUserSaver, UserSaver>();
+			services.AddScoped<UserAuthService, DefaultUserAuthService>();
+			services.AddScoped<UserSaverService, DefaultUserSaverService>();
 
 			// used for querying actions
 			services.AddOData();
-			//services.AddMvc();
 
 			services.AddControllers();
 		}
@@ -90,8 +95,6 @@ namespace HackerNews.Api
 
 			if (env.IsDevelopment())
 			{
-				//app.UseDeveloperExceptionPage();
-
 				// create the db if it doesn't exist
 				dbContext.Database.EnsureCreated();
 			}
@@ -100,22 +103,18 @@ namespace HackerNews.Api
 
 			app.UseRouting();
 
+			app.UseCors("DefaultCorsPolicy");
+
 			app.UseMiddleware<JwtMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
 
-				// look into this, this is a guess
 				endpoints.MapODataRoute("odata", "api", GetEdmModel());
 				// enable the OData functionality we want
 				endpoints.Expand().Select().Filter().Count().OrderBy();
 			});
-
-			//app.UseMvc(b =>
-			//{
-			//	b.MapODataServiceRoute("odata", "odata", GetEdmModel());
-			//});
 		}
 
 		/* The Entity Data Model (EDM) is a set of concepts 

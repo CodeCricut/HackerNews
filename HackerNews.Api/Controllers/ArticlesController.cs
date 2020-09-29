@@ -1,5 +1,7 @@
 ﻿using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.EntityServices;
+using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
@@ -16,17 +18,18 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class ArticlesController : ODataController
 	{
-		private readonly IEntityHelper<Article, PostArticleModel, GetArticleModel> _articleHelper;
-		private readonly IVoteableEntityHelper<Article> _articleVoter;
-		private readonly IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> _authUserHelper;
+		private readonly ArticleService _articleService;
+		private readonly IVoteableEntityService<Article> _articleVoter;
+		private readonly UserAuthService _userAuthService;
 
-		public ArticlesController(IEntityHelper<Article, PostArticleModel, GetArticleModel> articleHelper,
-			IVoteableEntityHelper<Article> articleVoter,
-			IAuthenticatableEntityHelper<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> authUserHelper)
+		public ArticlesController(
+			ArticleService articleService,
+			IVoteableEntityService<Article> articleVoter,
+			UserAuthService userAuthService)
 		{
-			_articleHelper = articleHelper;
+			_articleService = articleService;
 			_articleVoter = articleVoter;
-			_authUserHelper = authUserHelper;
+			_userAuthService = userAuthService;
 		}
 
 		#region Create
@@ -36,9 +39,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var addedModel = await _articleHelper.PostEntityModelAsync(articleModel, user);
+			var addedModel = await _articleService.PostEntityModelAsync(articleModel, user);
 
 			return Ok(addedModel);
 		}
@@ -49,9 +52,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _articleHelper.PostEntityModelsAsync(articleModels, user);
+			await _articleService.PostEntityModelsAsync(articleModels, user);
 
 			return Ok();
 		}
@@ -61,14 +64,14 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetArticlesAsync()
 		{
-			var articleModels = await _articleHelper.GetAllEntityModelsAsync();
+			var articleModels = await _articleService.GetAllEntityModelsAsync();
 			return Ok(articleModels);
 		}
 
 		[EnableQuery]
 		public async Task<IActionResult> GetArticleAsync(int key)
 		{
-			var articleModel = await _articleHelper.GetEntityModelAsync(key);
+			var articleModel = await _articleService.GetEntityModelAsync(key);
 
 			return Ok(articleModel);
 		}
@@ -81,9 +84,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var updatedArticleModel = await _articleHelper.PutEntityModelAsync(id, articleModel, user);
+			var updatedArticleModel = await _articleService.PutEntityModelAsync(id, articleModel, user);
 
 			return Ok(updatedArticleModel);
 		}
@@ -94,7 +97,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
 			await _articleVoter.VoteEntityAsync(articleId, upvote, user);
 
@@ -109,9 +112,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _authUserHelper.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _articleHelper.SoftDeleteEntityAsync(key, user);
+			await _articleService.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}
