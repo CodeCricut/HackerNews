@@ -19,5 +19,8 @@ namespace HackerNews.Domain.Models.Users
 
 		public List<int> SavedArticles { get; set; }
 		public List<int> SavedComments { get; set; }
+
+		public List<int> LikedArticles { get; set; }
+		public List<int> LikedComments { get; set; }
 	}
 }

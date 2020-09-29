@@ -17,7 +17,10 @@ namespace HackerNews.EF
 			return await Task.Factory.StartNew(() => _context.Comments
 					.Include(c => c.ChildComments)
 					.Include(c => c.ParentArticle)
-					.Include(c => c.ParentComment));
+					.Include(c => c.ParentComment)
+					.Include(a => a.UsersLiked)
+					.Include(a => a.UsersDisliked)
+					);
 		}
 
 		public override async Task<Comment> GetEntityAsync(int id)

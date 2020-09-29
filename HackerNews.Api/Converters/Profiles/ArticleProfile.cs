@@ -14,7 +14,10 @@ namespace HackerNews.Api.Converters.Profiles
 			CreateMap<PostArticleModel, Article>();
 
 			CreateMap<Article, GetArticleModel>()
-				.ForMember(model => model.CommentIds, article => article.MapFrom(a => a.Comments.Select(a => a.Id)));
+				.ForMember(model => model.CommentIds, article => article.MapFrom(a => a.Comments.Select(a => a.Id)))
+				
+				.ForMember(model => model.UsersLiked, article => article.MapFrom(a => a.UsersLiked.Select(ul => ul.UserId)))
+				.ForMember(model => model.UsersDisliked, article => article.MapFrom(a => a.UsersDisliked.Select(ud => ud.UserId)));
 		}
 	}
 }

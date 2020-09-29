@@ -64,6 +64,50 @@ namespace HackerNews.EF
 				.HasOne(uc => uc.Comment)
 				.WithMany(a => a.UsersSaved)
 				.HasForeignKey(uc => uc.CommentId);
+
+			modelBuilder.Entity<UserArticleLikes>()
+				.HasKey(ual => new { ual.UserId, ual.ArticleId });
+			modelBuilder.Entity<UserArticleLikes>()
+				.HasOne(ual => ual.User)
+				.WithMany(u => u.LikedArticles)
+				.HasForeignKey(ual => ual.UserId);
+			modelBuilder.Entity<UserArticleLikes>()
+				.HasOne(ual => ual.Article)
+				.WithMany(a => a.UsersLiked)
+				.HasForeignKey(ual => ual.ArticleId);
+
+			modelBuilder.Entity<UserArticleDislikes>()
+				.HasKey(uad => new { uad.UserId, uad.ArticleId });
+			modelBuilder.Entity<UserArticleDislikes>()
+				.HasOne(uad => uad.User)
+				.WithMany(u => u.DislikedArticles)
+				.HasForeignKey(uad => uad.UserId);
+			modelBuilder.Entity<UserArticleDislikes>()
+				.HasOne(uad => uad.Article)
+				.WithMany(a => a.UsersDisliked)
+				.HasForeignKey(uad => uad.ArticleId);
+
+			modelBuilder.Entity<UserCommentLikes>()
+				.HasKey(ucl => new { ucl.UserId, ucl.CommentId });
+			modelBuilder.Entity<UserCommentLikes>()
+				.HasOne(ucl => ucl.User)
+				.WithMany(u => u.LikedComments)
+				.HasForeignKey(ual => ual.UserId);
+			modelBuilder.Entity<UserCommentLikes>()
+				.HasOne(ucl => ucl.Comment)
+				.WithMany(a => a.UsersLiked)
+				.HasForeignKey(ucl => ucl.CommentId);
+
+			modelBuilder.Entity<UserCommentDislikes>()
+				.HasKey(ucd => new { ucd.UserId, ucd.CommentId });
+			modelBuilder.Entity<UserCommentDislikes>()
+				.HasOne(ucd => ucd.User)
+				.WithMany(u => u.DislikedComments)
+				.HasForeignKey(ucd => ucd.UserId);
+			modelBuilder.Entity<UserCommentDislikes>()
+				.HasOne(ucd => ucd.Comment)
+				.WithMany(a => a.UsersDisliked)
+				.HasForeignKey(ucd => ucd.CommentId);
 		}
 	}
 }

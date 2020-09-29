@@ -13,5 +13,7 @@ namespace HackerNews.Domain.Models.Articles
 		public string Url { get; set; }
 		public int Karma { get; set; }
 		public string Title { get; set; }
+		public List<int> UsersLiked { get; set; }
+		public List<int> UsersDisliked { get; set; }
 	}
 }

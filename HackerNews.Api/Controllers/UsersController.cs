@@ -1,5 +1,6 @@
 ﻿using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Auth;
@@ -19,23 +20,25 @@ namespace HackerNews.Api.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 	public class UsersController : ODataController
 	{
-		private readonly IEntityService<User, RegisterUserModel, GetPublicUserModel> _userHelper;
-		private readonly IAuthenticatableEntityService<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> _userAuthenticator;
-		private readonly IUserSaverService _userSaver;
+		private readonly UserService _userService;
+		private readonly UserAuthService _userAuthService;
+		private readonly UserSaverService _userSaverService;
 
-		public UsersController(IEntityService<User, RegisterUserModel, GetPublicUserModel> userHelper, 
-			IAuthenticatableEntityService<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel> userAuthenticator,
-			IUserSaverService userSaver)
+		public UsersController(
+			UserService userService,
+			UserAuthService userAuthService,
+			UserSaverService userSaverService)
 		{
-			_userHelper = userHelper;
-			_userAuthenticator = userAuthenticator;
-			_userSaver = userSaver;
+			_userService = userService;
+			_userAuthService = userAuthService;
+			_userSaverService = userSaverService;
 		}
+
 		#region Authenticate
 		[HttpPost]
 		public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticateUserRequest model)
 		{
-			var response = await _userAuthenticator.AuthenticateAsync(model);
+			var response = await _userAuthService.AuthenticateAsync(model);
 
 			if (response == null) throw new NotFoundException("Username or password is incorrect.");
 
@@ -49,7 +52,7 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var publicResponse = await _userHelper.PostEntityModelAsync(model, null);
+			var publicResponse = await _userService.PostEntityModelAsync(model, null);
 
 			return Ok(publicResponse);
 		}
@@ -60,7 +63,7 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetUserAsync(int key)
 		{
-			GetPublicUserModel publicModel = await _userHelper.GetEntityModelAsync(key);
+			GetPublicUserModel publicModel = await _userService.GetEntityModelAsync(key);
 
 			if (publicModel == null) throw new NotFoundException();
 
@@ -70,7 +73,7 @@ namespace HackerNews.Api.Controllers
 		[EnableQuery]
 		public async Task<IActionResult> GetUsersAsync()
 		{
-			var publicModels = await _userHelper.GetAllEntityModelsAsync();
+			var publicModels = await _userService.GetAllEntityModelsAsync();
 			return Ok(publicModels);
 		}
 
@@ -78,7 +81,7 @@ namespace HackerNews.Api.Controllers
 		[Authorize]
 		public async Task<IActionResult> GetPrivateUserAsync()
 		{
-			var privateUser = await _userAuthenticator.GetAuthenticatedReturnModelAsync(HttpContext);
+			var privateUser = await _userAuthService.GetAuthenticatedReturnModelAsync(HttpContext);
 
 			if (privateUser == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
@@ -93,9 +96,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var updatedUserModel = await _userHelper.PutEntityModelAsync(key, userModel, user);
+			var updatedUserModel = await _userService.PutEntityModelAsync(key, userModel, user);
 
 			return Ok(updatedUserModel);
 		}
@@ -104,9 +107,9 @@ namespace HackerNews.Api.Controllers
 		[Authorize]
 		public async Task<IActionResult> SaveArticleAsync(int articleId)
 		{
-			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 			
-			user = await _userSaver.SaveArticleToUserAsync(user, articleId);
+			user = await _userSaverService.SaveArticleToUserAsync(user, articleId);
 
 			return Ok(user);
 		}
@@ -115,9 +118,9 @@ namespace HackerNews.Api.Controllers
 		[Authorize]
 		public async Task<IActionResult> SaveCommentAsync(int commentId)
 		{
-			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			user = await _userSaver.SaveCommentToUserAsync(user, commentId);
+			user = await _userSaverService.SaveCommentToUserAsync(user, commentId);
 
 			return Ok(user);
 		}
@@ -130,9 +133,9 @@ namespace HackerNews.Api.Controllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthenticator.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _userHelper.SoftDeleteEntityAsync(key, user);
+			await _userService.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}

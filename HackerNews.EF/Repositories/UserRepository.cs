@@ -20,6 +20,10 @@ namespace HackerNews.EF.Repositories
 				_context.Users
 				.Include(u => u.Articles)
 				.Include(u => u.Comments)
+				.Include(u => u.SavedArticles)
+				.Include(u => u.SavedComments)
+				.Include(u => u.LikedArticles)
+				.Include(u => u.LikedComments)
 				);
 
 			return users;

@@ -13,6 +13,9 @@ namespace HackerNews.Domain
 
 		public List<UserComment> UsersSaved { get; set; }
 
+		public List<UserCommentLikes> UsersLiked { get; set; }
+		public List<UserCommentDislikes> UsersDisliked { get; set; }
+
 		[ForeignKey("Comment")]
 		public int? ParentCommentId { get; set; }
 		public virtual Comment ParentComment { get; set; }
@@ -29,6 +32,9 @@ namespace HackerNews.Domain
 		public Comment()
 		{
 			ChildComments = new List<Comment>();
+			UsersSaved = new List<UserComment>();
+			UsersLiked = new List<UserCommentLikes>();
+			UsersDisliked = new List<UserCommentDislikes>();
 		}
 
 		public Comment(Comment commentToClone)

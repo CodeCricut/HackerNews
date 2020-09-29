@@ -15,7 +15,10 @@ namespace HackerNews.EF
 		public override async Task<IEnumerable<Article>> GetEntitiesAsync()
 		{
 			return await Task.Factory.StartNew(() => _context.Articles
-					.Include(a => a.Comments));
+					.Include(a => a.Comments)
+					.Include(a => a.UsersLiked)
+					.Include(a => a.UsersDisliked)
+					);
 		}
 
 		public override async Task<Article> GetEntityAsync(int id)

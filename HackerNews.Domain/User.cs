@@ -18,10 +18,25 @@ namespace HackerNews.Domain
 		public List<UserArticle> SavedArticles { get; set; }
 		public List<UserComment> SavedComments { get; set; }
 
+		public List<UserArticleLikes> LikedArticles { get; set; }
+		public List<UserCommentLikes> LikedComments { get; set; }
+
+		public List<UserArticleDislikes> DislikedArticles { get; set; }
+		public List<UserCommentDislikes> DislikedComments { get; set; }
+
 		public User()
 		{
 			Articles = new List<Article>();
 			Comments = new List<Comment>();
+
+			SavedArticles = new List<UserArticle>();
+			SavedComments = new List<UserComment>();
+
+			LikedArticles = new List<UserArticleLikes>();
+			LikedComments = new List<UserCommentLikes>();
+
+			DislikedArticles = new List<UserArticleDislikes>();
+			DislikedComments = new List<UserCommentDislikes>();
 		}
 	}
 }

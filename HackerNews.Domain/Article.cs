@@ -24,13 +24,18 @@ namespace HackerNews.Domain
 		public string Url { get; set; }
 		public int Karma { get; set; }
 		public string Title { get; set; }
-
-
+		
 		public List<UserArticle> UsersSaved { get; set; }
+
+		public List<UserArticleLikes> UsersLiked { get; set; }
+		public List<UserArticleDislikes> UsersDisliked { get; set; }
 
 		public Article()
 		{
 			Comments = new List<Comment>();
+			UsersSaved = new List<UserArticle>();
+			UsersLiked = new List<UserArticleLikes>();
+			UsersDisliked = new List<UserArticleDislikes>();
 		}
 
 		/// <summary>
