@@ -52,16 +52,20 @@ namespace HackerNews.Api
 			services.AddScoped<IEntityRepository<Article>, ArticleRepository>();
 			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
 			services.AddScoped<IEntityRepository<User>, UserRepository>();
+			services.AddScoped<IEntityRepository<Board>, BoardRepository>();
 
 			services.AddScoped<ArticleService, DefaultArticleService>();
 			services.AddScoped<CommentService, DefaultCommentService>();
 			services.AddScoped<UserService, DefaultUserService>();
+			services.AddScoped<BoardService, DefaultBoardService>();
 
 			services.AddScoped<IVoteableEntityService<Article>, DefaultArticleService>();
 			services.AddScoped<IVoteableEntityService<Comment>, DefaultCommentService>();
 
 			services.AddScoped<UserAuthService, DefaultUserAuthService>();
 			services.AddScoped<UserSaverService, DefaultUserSaverService>();
+
+			services.AddScoped<BoardUserManagmentService, DefaultBoardUserManagementService>();
 
 			// used for querying actions
 			services.AddOData();
@@ -123,6 +127,7 @@ namespace HackerNews.Api
 			builder.EntitySet<Article>("Articles");
 			builder.EntitySet<Comment>("Comments");
 			builder.EntitySet<User>("Users");
+			builder.EntitySet<Board>("Boards");
 
 			return builder.GetEdmModel();
 		}

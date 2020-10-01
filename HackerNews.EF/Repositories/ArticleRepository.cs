@@ -26,14 +26,5 @@ namespace HackerNews.EF
 		{
 			return (await GetEntitiesAsync()).FirstOrDefault(a => a.Id == id);
 		}
-
-		public override async Task<Article> AddEntityAsync(Article entity)
-		{
-			var currentDate = DateTime.UtcNow;
-			entity.PostDate = currentDate;
-
-			var addedEntity = (await Task.Run(() => _context.Set<Article>().Add(entity))).Entity;
-			return addedEntity;
-		}
 	}
 }

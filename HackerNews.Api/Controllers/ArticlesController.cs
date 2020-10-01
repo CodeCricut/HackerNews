@@ -1,12 +1,12 @@
-﻿using HackerNews.Api.Helpers.Attributes;
+﻿
+
+using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices;
 using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.Domain.Models.Auth;
-using HackerNews.Domain.Models.Users;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

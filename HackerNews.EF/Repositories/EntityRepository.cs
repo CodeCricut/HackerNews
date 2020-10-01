@@ -19,7 +19,6 @@ namespace HackerNews.EF
 			_context = context;
 		}
 
-		// for entities which produce side effects, needs to be implented on per-entity basis
 		public virtual async Task<EntityT> AddEntityAsync(EntityT entity)
 		{
 			// delete try blcok

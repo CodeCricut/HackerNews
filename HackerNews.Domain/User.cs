@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HackerNews.Domain.JoinEntities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,6 +25,9 @@ namespace HackerNews.Domain
 		public List<UserArticleDislikes> DislikedArticles { get; set; }
 		public List<UserCommentDislikes> DislikedComments { get; set; }
 
+		public List<BoardUserModerator> BoardsModerating { get; set; }
+		public List<BoardUserSubscriber> BoardsSubscribed { get; set; }
+
 		public DateTime JoinDate { get; set; }
 
 		public User()
@@ -39,6 +43,9 @@ namespace HackerNews.Domain
 
 			DislikedArticles = new List<UserArticleDislikes>();
 			DislikedComments = new List<UserCommentDislikes>();
+
+			BoardsModerating = new List<BoardUserModerator>();
+			BoardsSubscribed = new List<BoardUserSubscriber>();
 		}
 	}
 }

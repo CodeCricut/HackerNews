@@ -6,6 +6,8 @@ namespace HackerNews.Domain.Models.Comments
 	{
 		[Required]
 		public string Text { get; set; }
+		[Required]
+		public int BoardId { get; set; }
 		public int ParentCommentId { get; set; }
 		public int ParentArticleId { get; set; }
 

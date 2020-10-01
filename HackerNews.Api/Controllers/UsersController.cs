@@ -1,18 +1,12 @@
 ﻿using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Base;
-using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNet.OData;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers

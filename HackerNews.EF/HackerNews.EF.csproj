@@ -14,6 +14,16 @@
     <Compile Remove="Migrations\20200927165601_UserRelationships.Designer.cs" />
     <Compile Remove="Migrations\20200927170408_UserRelationships.cs" />
     <Compile Remove="Migrations\20200927170408_UserRelationships.Designer.cs" />
+    <Compile Remove="Migrations\20200929192123_boards.cs" />
+    <Compile Remove="Migrations\20200929192123_boards.Designer.cs" />
+    <Compile Remove="Migrations\20200929192521_boards.cs" />
+    <Compile Remove="Migrations\20200929192521_boards.Designer.cs" />
+    <Compile Remove="Migrations\20200929193659_boards.cs" />
+    <Compile Remove="Migrations\20200929193659_boards.Designer.cs" />
+    <Compile Remove="Migrations\20200929194009_boards.cs" />
+    <Compile Remove="Migrations\20200929194009_boards.Designer.cs" />
+    <Compile Remove="Migrations\20200929194226_boards.cs" />
+    <Compile Remove="Migrations\20200929194226_boards.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
