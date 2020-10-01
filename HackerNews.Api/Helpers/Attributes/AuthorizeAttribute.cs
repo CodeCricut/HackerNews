@@ -11,9 +11,17 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.Attributes
 {
+
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 	{
+		private readonly bool _authorize;
+
+		public AuthorizeAttribute(bool authorize = true)
+		{
+			_authorize = authorize;
+		}
+
 		/// <summary>
 		/// Authorization is performed by the OnAuthorization method which checks if there is an authenticated user 
 		/// attached to the current request (context.HttpContext.Items["User"]). An authenticated user is attached by 
@@ -25,14 +33,17 @@ namespace HackerNews.Api.Helpers.Attributes
 		/// <param name="context"></param>
 		public void OnAuthorization(AuthorizationFilterContext context)
 		{
-			var user = (User)context.HttpContext.Items["User"];
-			if (user == null)
+			if (!_authorize)
 			{
-				// the user is not yet logged in, return 401
+				var user = (User)context.HttpContext.Items["User"];
+				if (user == null)
+				{
+					// the user is not yet logged in, return 401
 
-				// this isn't ideal, but throwing using actual exceptions causes the exception middleware to run and return the wrong exception
-				context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+					// this isn't ideal, but throwing using actual exceptions causes the exception middleware to run and return the wrong exception
+					context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 					// new JsonResult(new UnauthorizedException());
+				}
 			}
 		}
 	}

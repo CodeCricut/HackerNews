@@ -42,6 +42,7 @@ namespace HackerNews.Api.Controllers
 
 		#region Create
 		[HttpPost("register")]
+		[Authorize(false)]
 		public override async Task<IActionResult> PostEntityAsync([FromBody] RegisterUserModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
@@ -51,6 +52,7 @@ namespace HackerNews.Api.Controllers
 			return Ok(publicResponse);
 		}
 
+		[Authorize(false)]
 		public override Task<IActionResult> PostEntitiesAsync([FromBody] List<RegisterUserModel> postModels)
 		{
 			throw new UnauthorizedException("You are not authorized to register multiple users at once.");
@@ -58,21 +60,6 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Read
-		public override async Task<IActionResult> GetEntitiesAsync()
-		{
-			var publicModels = await _entityService.GetAllEntityModelsAsync();
-			return Ok(publicModels);
-		}
-
-		public override async Task<IActionResult> GetEntityAsync(int key)
-		{
-			GetPublicUserModel publicModel = await _entityService.GetEntityModelAsync(key);
-
-			if (publicModel == null) throw new NotFoundException();
-
-			return Ok(publicModel);
-		}
-
 		[HttpGet("me")]
 		[Authorize]
 		public async Task<IActionResult> GetPrivateUserAsync()
@@ -86,18 +73,6 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Update
-		[Authorize]
-		public override async Task<IActionResult> PutEntityAsync(int key, [FromBody] RegisterUserModel postModel)
-		{
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			var updatedUserModel = await _entityService.PutEntityModelAsync(key, postModel, user);
-
-			return Ok(updatedUserModel);
-		}
-
 		[HttpPost("save-article({articleId:int})")]
 		[Authorize]
 		public async Task<IActionResult> SaveArticleAsync(int articleId)
@@ -122,17 +97,6 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Delete
-		[Authorize]
-		public override async Task<IActionResult> DeleteEntityAsync(int key)
-		{
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _entityService.SoftDeleteEntityAsync(key, user);
-
-			return Ok();
-		}
 		#endregion
 	}
 }
