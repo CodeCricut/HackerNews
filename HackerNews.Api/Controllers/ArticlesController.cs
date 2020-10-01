@@ -32,70 +32,12 @@ namespace HackerNews.Api.Controllers
 
 
 		#region Create
-		[Authorize]
-		public override async Task<IActionResult> PostEntityAsync([FromBody] PostArticleModel postModel)
-		{
-			if (postModel == null) _logger.LogWarning("Post model null.");
-
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			var addedModel = await _entityService.PostEntityModelAsync(postModel, user);
-
-			return Ok(addedModel);
-		}
-
-		[Authorize]
-		public override async Task<IActionResult> PostEntitiesAsync([FromBody] List<PostArticleModel> postModels)
-		{
-			if (postModels == null) _logger.LogWarning("Post models null.");
-
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _entityService.PostEntityModelsAsync(postModels, user);
-
-			return Ok();
-		}
 		#endregion
 
 		#region Read
-		public override async Task<IActionResult> GetEntitiesAsync()
-		{
-			_logger.LogInformation("GetArticlesAsync called.");
-			var articleModels = await _entityService.GetAllEntityModelsAsync();
-			return Ok(articleModels);
-		}
-
-		public override async Task<IActionResult> GetEntityAsync(int key)
-		{
-			_logger.LogInformation("GetArticleAsync called.");
-
-			var articleModel = await _entityService.GetEntityModelAsync(key);
-
-			return Ok(articleModel);
-		}
 		#endregion
 
 		#region Update
-		[Authorize]
-		public override async Task<IActionResult> PutEntityAsync(int key, [FromBody] PostArticleModel articleModel)
-		{
-			_logger.LogInformation("PutArticleAsync called.");
-			if (key < 1) _logger.LogWarning("Invalid id provided or id didn't bind.");
-			if (articleModel == null) _logger.LogWarning("Model null.");
-
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			var updatedArticleModel = await _entityService.PutEntityModelAsync(key, articleModel, user);
-
-			return Ok(updatedArticleModel);
-		}
-
 		[HttpPost("vote/{articleId:int}")]
 		[Authorize]
 		public async Task<IActionResult> VoteArticleAsync(int articleId, [FromBody] bool upvote)
@@ -114,20 +56,6 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Delete
-		[Authorize]
-		public override async Task<IActionResult> DeleteEntityAsync(int key)
-		{
-			_logger.LogInformation("DeleteArticleAsync called.");
-			if (key < 1) _logger.LogWarning("Invalid id provided or id didn't bind.");
-
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _entityService.SoftDeleteEntityAsync(key, user);
-
-			return Ok();
-		}
 		#endregion
 	}
 }
