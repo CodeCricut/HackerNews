@@ -17,93 +17,81 @@ namespace HackerNews.Api.Controllers
 {
 	// template for non-odata routes
 	[Route("api/[controller]")]
-	public class ArticlesController : ODataController
+	public class ArticlesController : EntityCrudController<Article, PostArticleModel, GetArticleModel>
 	{
-		private readonly ArticleService _articleService;
 		private readonly IVoteableEntityService<Article> _articleVoter;
-		private readonly UserAuthService _userAuthService;
-		private readonly ILogger<ArticlesController> _logger;
 
 		public ArticlesController(
 			ArticleService articleService,
 			IVoteableEntityService<Article> articleVoter,
 			UserAuthService userAuthService,
-			ILogger<ArticlesController> logger)
+			ILogger<ArticlesController> logger) : base(articleService, userAuthService, logger)
 		{
-			_articleService = articleService;
 			_articleVoter = articleVoter;
-			_userAuthService = userAuthService;
-			_logger = logger;
 		}
 
+
 		#region Create
-		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> PostArticleAsync([FromBody] PostArticleModel articleModel)
+		public override async Task<IActionResult> PostEntityAsync([FromBody] PostArticleModel postModel)
 		{
-			_logger.LogInformation("PostArticleAsync called.");
-			if (articleModel == null) _logger.LogWarning("Post model null.");
+			if (postModel == null) _logger.LogWarning("Post model null.");
 
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var addedModel = await _articleService.PostEntityModelAsync(articleModel, user);
+			var addedModel = await _entityService.PostEntityModelAsync(postModel, user);
 
 			return Ok(addedModel);
 		}
 
-		[HttpPost("range")]
 		[Authorize]
-		public async Task<IActionResult> PostArticlesAsync([FromBody] List<PostArticleModel> articleModels)
+		public override async Task<IActionResult> PostEntitiesAsync([FromBody] List<PostArticleModel> postModels)
 		{
-			_logger.LogInformation("PostArticlesAsync called.");
-			if (articleModels == null) _logger.LogWarning("Post models null.");
+			if (postModels == null) _logger.LogWarning("Post models null.");
 
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _articleService.PostEntityModelsAsync(articleModels, user);
+			await _entityService.PostEntityModelsAsync(postModels, user);
 
 			return Ok();
 		}
 		#endregion
 
 		#region Read
-		[EnableQuery]
-		public async Task<IActionResult> GetArticlesAsync()
+		public override async Task<IActionResult> GetEntitiesAsync()
 		{
 			_logger.LogInformation("GetArticlesAsync called.");
-			var articleModels = await _articleService.GetAllEntityModelsAsync();
+			var articleModels = await _entityService.GetAllEntityModelsAsync();
 			return Ok(articleModels);
 		}
 
-		[EnableQuery]
-		public async Task<IActionResult> GetArticleAsync(int key)
+		public override async Task<IActionResult> GetEntityAsync(int key)
 		{
 			_logger.LogInformation("GetArticleAsync called.");
 
-			var articleModel = await _articleService.GetEntityModelAsync(key);
+			var articleModel = await _entityService.GetEntityModelAsync(key);
 
 			return Ok(articleModel);
 		}
 		#endregion
 
 		#region Update
-		[HttpPut("{id:int}")]
 		[Authorize]
-		public async Task<IActionResult> PutArticleAsync(int id, [FromBody] PostArticleModel articleModel)
+		public override async Task<IActionResult> PutEntityAsync(int key, [FromBody] PostArticleModel articleModel)
 		{
 			_logger.LogInformation("PutArticleAsync called.");
-			if (id < 1) _logger.LogWarning("Invalid id provided or id didn't bind.");
+			if (key < 1) _logger.LogWarning("Invalid id provided or id didn't bind.");
 			if (articleModel == null) _logger.LogWarning("Model null.");
 
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var updatedArticleModel = await _articleService.PutEntityModelAsync(id, articleModel, user);
+			var updatedArticleModel = await _entityService.PutEntityModelAsync(key, articleModel, user);
 
 			return Ok(updatedArticleModel);
 		}
@@ -126,9 +114,8 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Delete
-		[HttpDelete("{id:int}")]
 		[Authorize]
-		public async Task<IActionResult> DeleteArticleAsync(int key)
+		public override async Task<IActionResult> DeleteEntityAsync(int key)
 		{
 			_logger.LogInformation("DeleteArticleAsync called.");
 			if (key < 1) _logger.LogWarning("Invalid id provided or id didn't bind.");
@@ -137,7 +124,7 @@ namespace HackerNews.Api.Controllers
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _articleService.SoftDeleteEntityAsync(key, user);
+			await _entityService.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}

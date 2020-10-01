@@ -17,5 +17,6 @@ namespace HackerNews.Domain.Models.Articles
 		public List<int> UsersLiked { get; set; }
 		public List<int> UsersDisliked { get; set; }
 		public DateTime PostDate { get; set; }
+		public int BoardId { get; set; }
 	}
 }

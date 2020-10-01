@@ -8,86 +8,79 @@ using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
-	public class CommentsController : ODataController
+	public class CommentsController : EntityCrudController<Comment, PostCommentModel, GetCommentModel>
 	{
-		private readonly CommentService _commentService;
 		private readonly IVoteableEntityService<Comment> _commentVoter;
-		private readonly UserAuthService _userAuthService;
 
 		public CommentsController(
 			CommentService commentService,
-			IVoteableEntityService<Comment> commentVoter,
-			UserAuthService userAuthService)
+			IVoteableEntityService<Comment> commentVoter, 
+			ILogger logger,
+			UserAuthService userAuthService) : base(commentService, userAuthService, logger)
 		{
-			_commentService = commentService;
 			_commentVoter = commentVoter;
-			_userAuthService = userAuthService;
 		}
 
 		#region Create
-		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> PostCommentAsync([FromBody] PostCommentModel commentModel)
+		public override async Task<IActionResult> PostEntityAsync([FromBody] PostCommentModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var addedModel = await _commentService.PostEntityModelAsync(commentModel, user);
+			var addedModel = await _entityService.PostEntityModelAsync(postModel, user);
 
 			return Ok(addedModel);
 		}
 
-		[HttpPost("range")]
 		[Authorize]
-		public async Task<IActionResult> PostCommentsAsync([FromBody] List<PostCommentModel> commentModels)
+		public override async Task<IActionResult> PostEntitiesAsync([FromBody] List<PostCommentModel> postModels)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _commentService.PostEntityModelsAsync(commentModels, user);
+			await _entityService.PostEntityModelsAsync(postModels, user);
 
 			return Ok();
 		}
 		#endregion
 
 		#region Read
-		[EnableQuery]
-		public async Task<IActionResult> GetCommentAsync(int key)
+		public override async Task<IActionResult> GetEntitiesAsync()
+		{
+			var commentModels = await _entityService.GetAllEntityModelsAsync();
+
+			return Ok(commentModels);
+		}
+
+		public override async Task<IActionResult> GetEntityAsync(int key)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var commentModel = await _commentService.GetEntityModelAsync(key);
+			var commentModel = await _entityService.GetEntityModelAsync(key);
 
 			return Ok(commentModel);
-		}
-
-		[EnableQuery]
-		public async Task<IActionResult> GetCommentsAsync()
-		{
-			var commentModels = await _commentService.GetAllEntityModelsAsync();
-
-			return Ok(commentModels);
 		}
 		#endregion
 
 		#region Update
-		[HttpPut("{id:int}")]
 		[Authorize]
-		public async Task<IActionResult> PutCommentAsync(int id, [FromBody] PostCommentModel commentModel)
+		public override async Task<IActionResult> PutEntityAsync(int key, [FromBody] PostCommentModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var updatedModel = await _commentService.PutEntityModelAsync(id, commentModel, user);
+			var updatedModel = await _entityService.PutEntityModelAsync(key, postModel, user);
 
 			return Ok(updatedModel);
 		}
@@ -107,15 +100,14 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Delete
-		[HttpDelete("{id:int}")]
 		[Authorize]
-		public async Task<IActionResult> DeleteCommentAsync(int id)
+		public override async Task<IActionResult> DeleteEntityAsync(int key)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _commentService.SoftDeleteEntityAsync(id, user);
+			await _entityService.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}

@@ -1,30 +1,30 @@
 ﻿using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
 {
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
-	public class UsersController : ODataController
+	public class UsersController : EntityCrudController<User, RegisterUserModel, GetPublicUserModel>
 	{
-		private readonly UserService _userService;
-		private readonly UserAuthService _userAuthService;
 		private readonly UserSaverService _userSaverService;
 
 		public UsersController(
 			UserService userService,
 			UserAuthService userAuthService,
-			UserSaverService userSaverService)
+			UserSaverService userSaverService,
+			ILogger logger) : base(userService, userAuthService, logger)
 		{
-			_userService = userService;
-			_userAuthService = userAuthService;
 			_userSaverService = userSaverService;
 		}
 
@@ -42,33 +42,35 @@ namespace HackerNews.Api.Controllers
 
 		#region Create
 		[HttpPost("register")]
-		public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterUserModel model)
+		public override async Task<IActionResult> PostEntityAsync([FromBody] RegisterUserModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var publicResponse = await _userService.PostEntityModelAsync(model, null);
+			var publicResponse = await _entityService.PostEntityModelAsync(postModel, null);
 
 			return Ok(publicResponse);
 		}
 
+		public override Task<IActionResult> PostEntitiesAsync([FromBody] List<RegisterUserModel> postModels)
+		{
+			throw new UnauthorizedException("You are not authorized to register multiple users at once.");
+		}
 		#endregion
 
 		#region Read
-		[EnableQuery]
-		public async Task<IActionResult> GetUserAsync(int key)
+		public override async Task<IActionResult> GetEntitiesAsync()
 		{
-			GetPublicUserModel publicModel = await _userService.GetEntityModelAsync(key);
+			var publicModels = await _entityService.GetAllEntityModelsAsync();
+			return Ok(publicModels);
+		}
+
+		public override async Task<IActionResult> GetEntityAsync(int key)
+		{
+			GetPublicUserModel publicModel = await _entityService.GetEntityModelAsync(key);
 
 			if (publicModel == null) throw new NotFoundException();
 
 			return Ok(publicModel);
-		}
-
-		[EnableQuery]
-		public async Task<IActionResult> GetUsersAsync()
-		{
-			var publicModels = await _userService.GetAllEntityModelsAsync();
-			return Ok(publicModels);
 		}
 
 		[HttpGet("me")]
@@ -84,15 +86,14 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Update
-		[EnableQuery]
 		[Authorize]
-		public async Task<IActionResult> PutUserAsync(int key, [FromBody] RegisterUserModel userModel)
+		public override async Task<IActionResult> PutEntityAsync(int key, [FromBody] RegisterUserModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var updatedUserModel = await _userService.PutEntityModelAsync(key, userModel, user);
+			var updatedUserModel = await _entityService.PutEntityModelAsync(key, postModel, user);
 
 			return Ok(updatedUserModel);
 		}
@@ -121,15 +122,14 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Delete
-		[HttpDelete("{id:int}")]
 		[Authorize]
-		public async Task<IActionResult> DeleteUserAsync(int key)
+		public override async Task<IActionResult> DeleteEntityAsync(int key)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			await _userService.SoftDeleteEntityAsync(key, user);
+			await _entityService.SoftDeleteEntityAsync(key, user);
 
 			return Ok();
 		}

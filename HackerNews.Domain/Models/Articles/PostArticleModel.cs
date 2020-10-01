@@ -11,6 +11,7 @@ namespace HackerNews.Domain.Models.Articles
 		[Required]
 		public string Title { get; set; }
 		[Required]
+		[Range(1, int.MaxValue)]
 		public int BoardId { get; set; }
 
 		// needed for model binding
