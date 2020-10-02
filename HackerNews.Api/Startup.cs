@@ -10,9 +10,6 @@ using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.EF;
 using HackerNews.EF.Repositories;
-using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -23,14 +20,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
-using Microsoft.OData.Edm;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace HackerNews.Api
 {
 	public class Startup
 	{
+		private static string SWAGGER_DOC_NAME = "v1";
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
@@ -61,28 +63,31 @@ namespace HackerNews.Api
 					.AddUserServices()
 					.AddBoardServices();
 
-			// used for querying actions
-			services.AddOData();
-
 			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));
 
 			// Register the Swagger generator, defining 1 or more Swagger documents
-			services.AddSwaggerGen();
+			services.AddSwaggerGen(opt =>
+			{
+				opt.SwaggerDoc(SWAGGER_DOC_NAME, new OpenApiInfo
+				{
+					Version = "v1",
+					Title = "HackerNews API",
+					Description = "An API for a social app similar to Reddit.com, including support for users, article posts, comments, and boards to group like minded individuals.",
+					Contact = new OpenApiContact
+					{
+						Name = "A. Joseph Richerson",
+						Email = string.Empty
+					}
+				});
+
+				// Set the comments path for the Swagger JSON and UI.**
+				var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+				opt.IncludeXmlComments(xmlPath);
+			});
 			
 
-			services.AddMvcCore(options =>
-			{
-				// Necessary for configuring Swagger with OData.
-				foreach (var outputFormatter in options.OutputFormatters.OfType<OutputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
-				{
-					outputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
-				}
-
-				foreach (var inputFormatter in options.InputFormatters.OfType<InputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
-				{
-					inputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
-				}
-			});//.AddApiExplorer();
+			services.AddMvcCore();//.AddApiExplorer();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,19 +95,20 @@ namespace HackerNews.Api
 		{
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
-			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-			// specifying the Swagger JSON endpoint.
-			app.UseSwaggerUI(c =>
-			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "HackerNews API V1");
-			});
-
+			
 			app.UseApiExceptionHandler();
 
 			if (env.IsDevelopment())
 			{
 				// create the db if it doesn't exist
 				dbContext.Database.EnsureCreated();
+
+				// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+				// specifying the Swagger JSON endpoint.
+				app.UseSwaggerUI(c =>
+				{
+					c.SwaggerEndpoint($"/swagger/{SWAGGER_DOC_NAME}/swagger.json", "HackerNews API V1");
+				});
 			}
 
 			app.UseHttpsRedirection();
@@ -115,30 +121,7 @@ namespace HackerNews.Api
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
-
-				// Unfornately there is not an easy way to configure Swagger to work with OData.
-				// endpoints.MapODataRoute("odata", "entities", GetEdmModel());
-				
-				endpoints.EnableDependencyInjection();
-
-				// enable the OData functionality we want
-				endpoints.Expand().Select().Filter().Count().OrderBy();
 			});
-		}
-
-		/* The Entity Data Model (EDM) is a set of concepts 
-		 * that describe the structure of data, regardless of its stored form. 
-		 * The standard way of representing data is used by OData to better understand the data.
-		 */
-		private static IEdmModel GetEdmModel()
-		{
-			var builder = new ODataConventionModelBuilder();
-			builder.EntitySet<Article>("Articles");
-			builder.EntitySet<Comment>("Comments");
-			builder.EntitySet<User>("Users");
-			builder.EntitySet<Board>("Boards");
-
-			return builder.GetEdmModel();
 		}
 	}
 }

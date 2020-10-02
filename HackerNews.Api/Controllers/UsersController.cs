@@ -29,6 +29,12 @@ namespace HackerNews.Api.Controllers
 		}
 
 		#region Authenticate
+		/// <summary>
+		/// Return an <see cref="AuthenticateUserResponse"/> if the <paramref name="model"/> contains valid login information. 
+		/// The <see cref="AuthenticateUserResponse"/> will contain a JWT token valid for 7 days which can be used to make requests to authenticated endpoints.
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticateUserRequest model)
 		{
@@ -41,6 +47,11 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Create
+		/// <summary>
+		/// Register a new user and add it to the database.
+		/// </summary>
+		/// <param name="postModel"></param>
+		/// <returns></returns>
 		[HttpPost("register")]
 		[Authorize(false)]
 		public override async Task<IActionResult> Post([FromBody] RegisterUserModel postModel)
@@ -52,6 +63,11 @@ namespace HackerNews.Api.Controllers
 			return Ok(publicResponse);
 		}
 
+		/// <summary>
+		/// Adding multiple users at once is not permitted.
+		/// </summary>
+		/// <param name="postModels"></param>
+		/// <returns></returns>
 		[Authorize(false)]
 		public override Task<IActionResult> PostRange([FromBody] List<RegisterUserModel> postModels)
 		{
@@ -60,6 +76,10 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Read
+		/// <summary>
+		/// Get the <see cref="GetPrivateUserModel"/> from the database which represents the current user (stored in the necessary JWT token).
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet("me")]
 		[Authorize]
 		public async Task<IActionResult> GetPrivateUserAsync()
@@ -73,6 +93,11 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Update
+		/// <summary>
+		/// Save the article whose Id = <paramref name="articleId"/> to the current user.
+		/// </summary>
+		/// <param name="articleId"></param>
+		/// <returns></returns>
 		[HttpPost("save-article")]
 		[Authorize]
 		public async Task<IActionResult> SaveArticleAsync([FromQuery] int articleId)
@@ -84,6 +109,11 @@ namespace HackerNews.Api.Controllers
 			return Ok(privateReturnModel);
 		}
 
+		/// <summary>
+		/// Save the comment whose Id = <paramref name="commentId"/> to the current user.
+		/// </summary>
+		/// <param name="commentId"></param>
+		/// <returns></returns>
 		[HttpPost("save-comment")]
 		[Authorize]
 		public async Task<IActionResult> SaveCommentAsync([FromQuery] int commentId)

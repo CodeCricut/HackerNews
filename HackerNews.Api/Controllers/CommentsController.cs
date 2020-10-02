@@ -35,6 +35,12 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Update
+		/// <summary>
+		/// Vote on the <see cref="Comment"/> with the Id = <paramref name="commentId"/>. 
+		/// </summary>
+		/// <param name="commentId"></param>
+		/// <param name="upvote">True if upvote, false if downvote</param>
+		/// <returns></returns>
 		[HttpPost("vote/{commentId:int}")]
 		[Authorize]
 		public async Task<IActionResult> VoteCommentAsync(int commentId, [FromBody] bool upvote)
