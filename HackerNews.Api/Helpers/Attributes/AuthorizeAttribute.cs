@@ -11,7 +11,11 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.Attributes
 {
-
+	// *Filters* in ASP.NET Core allow code to be run before or after specific stages in the request processing pipeline.
+	// Filters can only indirectly affect a controller when they are explicitly used by the controller.
+	// They are run during the filter pipelien, after before and after (middleware and action selection)
+	// They run in the following stages:
+	//		Authorization, Resource, Action, Exception, Result
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 	{

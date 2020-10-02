@@ -3,6 +3,7 @@ using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices;
 using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Api.Helpers.EntityServices.Default;
+using HackerNews.Api.Helpers.Filters;
 using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Api.Helpers.StartupExtensions;
 using HackerNews.Domain;
@@ -60,7 +61,7 @@ namespace HackerNews.Api
 			// used for querying actions
 			services.AddOData();
 
-			services.AddControllers();
+			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
