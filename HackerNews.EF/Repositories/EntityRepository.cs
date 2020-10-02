@@ -1,5 +1,6 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Errors;
+using HackerNews.Domain.Parameters;
 using HackerNews.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,7 +34,7 @@ namespace HackerNews.EF
 			}
 		}
 
-		public virtual async Task<List<EntityT>> AddEntititesAsync(List<EntityT> entities)
+		public virtual async Task<IEnumerable<EntityT>> AddEntititesAsync(List<EntityT> entities)
 		{
 			return await Task.Factory.StartNew(() =>
 			{
@@ -42,9 +43,6 @@ namespace HackerNews.EF
 			});
 		}
 
-		// need to be implemented on a per-entity bases in order to include all properties
-		public abstract Task<EntityT> GetEntityAsync(int id);
-		public abstract Task<IEnumerable<EntityT>> GetEntitiesAsync();
 
 		public virtual async Task UpdateEntityAsync(int id, EntityT updatedEntity)
 		{
@@ -79,5 +77,29 @@ namespace HackerNews.EF
 		{
 			return (await GetEntityAsync(id)) != null;
 		}
+
+		public virtual async Task<EntityT> GetEntityAsync(int id)
+		{
+			return await Task.Factory.StartNew(() =>
+			{
+				var withoutChildren = _context.Set<EntityT>().AsQueryable();
+				var withChildren = IncludeChildren(withoutChildren);
+				return withChildren.FirstOrDefault(a => a.Id == id);
+			}); ;
+		}
+
+
+		public virtual async Task<PagedList<EntityT>> GetEntitiesAsync(PagingParams pagingParams)
+		{
+			return await Task.Factory.StartNew(() =>
+			{
+
+				var withoutChildren = _context.Set<EntityT>().AsQueryable();
+				var withChildren = IncludeChildren(withoutChildren);
+				return PagedList<EntityT>.Create(withChildren, pagingParams);
+			});
+		}
+
+		public abstract IQueryable<EntityT> IncludeChildren(IQueryable<EntityT> queryable);
 	}
 }

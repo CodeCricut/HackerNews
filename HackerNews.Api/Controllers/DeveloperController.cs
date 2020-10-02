@@ -53,10 +53,11 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				var articles = await _articleRepository.GetEntitiesAsync();
-				var comments = await _commentRepository.GetEntitiesAsync();
-				var users = await _userRepository.GetEntitiesAsync();
-				var boards = await _boardRepository.GetEntitiesAsync();
+
+				var articles = _context.Articles.ToList();
+				var comments = _context.Comments.ToList();
+				var users = _context.Users.ToList();
+				var boards = _context.Boards.ToList();
 
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);
@@ -77,10 +78,15 @@ namespace HackerNews.Api.Controllers
 		[HttpOptions("get-all")]
 		public async Task<IActionResult> GetAll()
 		{
-			var articles = await _articleService.GetAllEntityModelsAsync();
-			var comments = await _commentService.GetAllEntityModelsAsync();
-			var users = await _userService.GetAllEntityModelsAsync();
-			var boards = await _boardService.GetAllEntityModelsAsync();
+			var articles = _context.Articles.ToList();
+			var comments = _context.Comments.ToList();
+			var users = _context.Users.ToList();
+			var boards = _context.Boards.ToList();
+
+			//var articles = await _articleService.GetAllEntityModelsAsync();
+			//var comments = await _commentService.GetAllEntityModelsAsync();
+			//var users = await _userService.GetAllEntityModelsAsync();
+			//var boards = await _boardService.GetAllEntityModelsAsync();
 
 			var dictionary = new Dictionary<string, object>();
 			dictionary.Add("articles", articles);

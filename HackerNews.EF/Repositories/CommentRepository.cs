@@ -1,4 +1,6 @@
 ﻿using HackerNews.Domain;
+using HackerNews.Domain.Helpers;
+using HackerNews.Domain.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,20 +15,14 @@ namespace HackerNews.EF
 		{
 		}
 
-		public override async Task<IEnumerable<Comment>> GetEntitiesAsync()
+		public override IQueryable<Comment> IncludeChildren(IQueryable<Comment> queryable)
 		{
-			return await Task.Factory.StartNew(() => _context.Comments
-					.Include(c => c.ChildComments)
+			return queryable
+				.Include(c => c.ChildComments)
 					.Include(c => c.ParentArticle)
 					.Include(c => c.ParentComment)
 					.Include(a => a.UsersLiked)
-					.Include(a => a.UsersDisliked)
-					);
-		}
-
-		public override async Task<Comment> GetEntityAsync(int id)
-		{
-			return (await GetEntitiesAsync()).FirstOrDefault(c => c.Id == id);
+					.Include(a => a.UsersDisliked);
 		}
 	}
 }

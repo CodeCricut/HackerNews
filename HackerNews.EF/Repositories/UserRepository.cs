@@ -1,4 +1,6 @@
 ﻿using HackerNews.Domain;
+using HackerNews.Domain.Helpers;
+using HackerNews.Domain.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,39 +10,32 @@ using System.Threading.Tasks;
 
 namespace HackerNews.EF.Repositories
 {
-	public class UserRepository : EntityRepository<User>
+	public class UserRepository : EntityRepository<User>, IUserRepository
 	{
 		public UserRepository(HackerNewsContext context) : base(context)
 		{
 		}
 
-		public override async Task<IEnumerable<User>> GetEntitiesAsync()
+		public async Task<User> GetUserByCredentialsAsync(string username, string password)
 		{
-			var users = await Task.Factory.StartNew(() => 
-				_context.Users
+			return await Task.Factory.StartNew(() =>
+			{
+				var withoutChildren = _context.Users.AsQueryable();
+				var withChildren = IncludeChildren(withoutChildren);
+
+				return withChildren.FirstOrDefault(u => u.Username == username && u.Password == password);
+			});
+		}
+
+		public override IQueryable<User> IncludeChildren(IQueryable<User> queryable)
+		{
+			return queryable
 				.Include(u => u.Articles)
 				.Include(u => u.Comments)
 				.Include(u => u.SavedArticles)
 				.Include(u => u.SavedComments)
 				.Include(u => u.LikedArticles)
-				.Include(u => u.LikedComments)
-				);
-
-			return users;
-		}
-
-		public override async Task<User> GetEntityAsync(int id)
-		{
-			return (await GetEntitiesAsync()).FirstOrDefault(u => u.Id == id);
-		}
-
-		public override async Task<User> AddEntityAsync(User entity)
-		{
-			var currentDate = DateTime.UtcNow;
-			entity.JoinDate = currentDate;
-
-			var addedEntity = (await Task.Run(() => _context.Set<User>().Add(entity))).Entity;
-			return addedEntity;
+				.Include(u => u.LikedComments);
 		}
 	}
 }
