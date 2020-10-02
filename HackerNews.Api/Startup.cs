@@ -4,6 +4,7 @@ using HackerNews.Api.Helpers.EntityServices;
 using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Api.Helpers.EntityServices.Default;
 using HackerNews.Api.Helpers.Middleware;
+using HackerNews.Api.Helpers.StartupExtensions;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.EF;
@@ -49,23 +50,12 @@ namespace HackerNews.Api
 
 			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-			services.AddScoped<IEntityRepository<Article>, ArticleRepository>();
-			services.AddScoped<IEntityRepository<Comment>, CommentRepository>();
-			services.AddScoped<IEntityRepository<User>, UserRepository>();
-			services.AddScoped<IEntityRepository<Board>, BoardRepository>();
-
-			services.AddScoped<ArticleService, DefaultArticleService>();
-			services.AddScoped<CommentService, DefaultCommentService>();
-			services.AddScoped<UserService, DefaultUserService>();
-			services.AddScoped<BoardService, DefaultBoardService>();
-
-			services.AddScoped<IVoteableEntityService<Article>, DefaultArticleService>();
-			services.AddScoped<IVoteableEntityService<Comment>, DefaultCommentService>();
-
-			services.AddScoped<UserAuthService, DefaultUserAuthService>();
-			services.AddScoped<UserSaverService, DefaultUserSaverService>();
-
-			services.AddScoped<BoardUserManagmentService, DefaultBoardUserManagementService>();
+			// Entity-related services.
+			services.AddEntityRepositories()
+					.AddEntityServices()
+					.AddVoteableEntityServices()
+					.AddUserServices()
+					.AddBoardServices();
 
 			// used for querying actions
 			services.AddOData();
@@ -76,22 +66,7 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HackerNewsContext dbContext)
 		{
-			app.UseExceptionHandler(a => a.Run(async context =>
-			{
-				var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
-				var exception = exceptionHandlerPathFeature.Error; // Your exception
-				var code = 500; // Internal Server Error by default
-
-				if (exception is NotFoundException) code = 404; // Not Found
-				else if (exception is UnauthorizedException) code = 401; // Unauthorized
-				else if (exception is InvalidPostException) code = 400; // Bad Request
-
-				var result = JsonConvert.SerializeObject(new ErrorResponse(exception));
-
-				context.Response.StatusCode = code;
-				context.Response.ContentType = "application/json";
-				await context.Response.WriteAsync(result);
-			}));
+			app.UseApiExceptionHandler();
 
 			if (env.IsDevelopment())
 			{
@@ -100,18 +75,19 @@ namespace HackerNews.Api
 			}
 
 			app.UseHttpsRedirection();
-
 			app.UseRouting();
-
 			app.UseCors("DefaultCorsPolicy");
 
 			app.UseMiddleware<JwtMiddleware>();
+			app.UseMiddleware<DeveloperMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
 
-				endpoints.MapODataRoute("odata", "api", GetEdmModel());
+				endpoints.MapODataRoute("odata", "entities", GetEdmModel());
+				endpoints.EnableDependencyInjection();
+
 				// enable the OData functionality we want
 				endpoints.Expand().Select().Filter().Count().OrderBy();
 			});

@@ -23,7 +23,7 @@ namespace HackerNews.Api.Controllers
 			UserService userService,
 			UserAuthService userAuthService,
 			UserSaverService userSaverService,
-			ILogger logger) : base(userService, userAuthService, logger)
+			ILogger<UsersController> logger) : base(userService, userAuthService, logger)
 		{
 			_userSaverService = userSaverService;
 		}
@@ -43,7 +43,7 @@ namespace HackerNews.Api.Controllers
 		#region Create
 		[HttpPost("register")]
 		[Authorize(false)]
-		public override async Task<IActionResult> PostEntityAsync([FromBody] RegisterUserModel postModel)
+		public override async Task<IActionResult> Post([FromBody] RegisterUserModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
@@ -53,7 +53,7 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[Authorize(false)]
-		public override Task<IActionResult> PostEntitiesAsync([FromBody] List<RegisterUserModel> postModels)
+		public override Task<IActionResult> Post([FromBody] List<RegisterUserModel> postModels)
 		{
 			throw new UnauthorizedException("You are not authorized to register multiple users at once.");
 		}
@@ -73,26 +73,26 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Update
-		[HttpPost("save-article({articleId:int})")]
+		[HttpPost("save-article")]
 		[Authorize]
-		public async Task<IActionResult> SaveArticleAsync(int articleId)
+		public async Task<IActionResult> SaveArticleAsync([FromQuery] int articleId)
 		{
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 			
-			user = await _userSaverService.SaveArticleToUserAsync(user, articleId);
+			var privateReturnModel = await _userSaverService.SaveArticleToUserAsync(user, articleId);
 
-			return Ok(user);
+			return Ok(privateReturnModel);
 		}
 
-		[HttpPost("save-comment({commentId:int})")]
+		[HttpPost("save-comment")]
 		[Authorize]
-		public async Task<IActionResult> SaveCommentAsync(int commentId)
+		public async Task<IActionResult> SaveCommentAsync([FromQuery] int commentId)
 		{
 			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			user = await _userSaverService.SaveCommentToUserAsync(user, commentId);
+			var privateReturnModel = await _userSaverService.SaveCommentToUserAsync(user, commentId);
 
-			return Ok(user);
+			return Ok(privateReturnModel);
 		}
 		#endregion
 

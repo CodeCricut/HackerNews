@@ -22,7 +22,7 @@ namespace HackerNews.Api.Controllers
 		public CommentsController(
 			CommentService commentService,
 			IVoteableEntityService<Comment> commentVoter, 
-			ILogger logger,
+			ILogger<CommentsController> logger,
 			UserAuthService userAuthService) : base(commentService, userAuthService, logger)
 		{
 			_commentVoter = commentVoter;

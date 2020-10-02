@@ -33,7 +33,7 @@ namespace HackerNews.Api.Helpers.Attributes
 		/// <param name="context"></param>
 		public void OnAuthorization(AuthorizationFilterContext context)
 		{
-			if (!_authorize)
+			if (_authorize)
 			{
 				var user = (User)context.HttpContext.Items["User"];
 				if (user == null)

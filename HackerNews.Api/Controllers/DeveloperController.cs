@@ -1,9 +1,14 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.EntityServices;
+using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.EF;
 using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -14,17 +19,32 @@ namespace HackerNews.Api.Controllers
 		private readonly IEntityRepository<Article> _articleRepository;
 		private readonly IEntityRepository<Comment> _commentRepository;
 		private readonly IEntityRepository<User> _userRepository;
+		private readonly IEntityRepository<Board> _boardRepository;
+		private readonly ArticleService _articleService;
+		private readonly CommentService _commentService;
+		private readonly BoardService _boardService;
+		private readonly UserService _userService;
 		private readonly HackerNewsContext _context;
 
 		public DeveloperController(
 			IEntityRepository<Article> articleRepository, 
 			IEntityRepository<Comment> commentRepository, 
-			IEntityRepository<User> userRepository,			
+			IEntityRepository<User> userRepository,		
+			IEntityRepository<Board> boardRepository,
+			ArticleService articleService,
+			CommentService commentService,
+			BoardService boardService,
+			UserService userService,
 			HackerNewsContext context)
 		{
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
 			_userRepository = userRepository;
+			_boardRepository = boardRepository;
+			_articleService = articleService;
+			_commentService = commentService;
+			_boardService = boardService;
+			_userService = userService;
 			_context = context;
 		}
 
@@ -36,10 +56,12 @@ namespace HackerNews.Api.Controllers
 				var articles = await _articleRepository.GetEntitiesAsync();
 				var comments = await _commentRepository.GetEntitiesAsync();
 				var users = await _userRepository.GetEntitiesAsync();
+				var boards = await _boardRepository.GetEntitiesAsync();
 
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);
 				_context.RemoveRange(users);
+				_context.RemoveRange(boards);
 
 				await _context.SaveChangesAsync();
 
@@ -50,6 +72,23 @@ namespace HackerNews.Api.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 
+		}
+
+		[HttpOptions("get-all")]
+		public async Task<IActionResult> GetAll()
+		{
+			var articles = await _articleService.GetAllEntityModelsAsync();
+			var comments = await _commentService.GetAllEntityModelsAsync();
+			var users = await _userService.GetAllEntityModelsAsync();
+			var boards = await _boardService.GetAllEntityModelsAsync();
+
+			var dictionary = new Dictionary<string, object>();
+			dictionary.Add("articles", articles);
+			dictionary.Add("comments", comments);
+			dictionary.Add("users", users);
+			dictionary.Add("boards", boards);
+
+			return Ok(dictionary);
 		}
 
 		[HttpGet]
