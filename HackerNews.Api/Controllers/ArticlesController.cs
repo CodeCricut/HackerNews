@@ -7,6 +7,7 @@ using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Parameters;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,6 @@ namespace HackerNews.Api.Controllers
 		{
 			_articleVoter = articleVoter;
 		}
-
 
 		#region Create
 		#endregion

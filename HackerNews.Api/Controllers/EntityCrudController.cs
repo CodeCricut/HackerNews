@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
 {
-	public abstract class EntityCrudController<TEntity, TPostEntityModel, TGetEntityModel> : ODataController
+	public abstract class EntityCrudController<TEntity, TPostEntityModel, TGetEntityModel> : ControllerBase
 		where TEntity : DomainEntity
 		where TPostEntityModel : PostEntityModel
 		where TGetEntityModel : GetEntityModel
@@ -49,7 +49,7 @@ namespace HackerNews.Api.Controllers
 
 		[HttpPost("range")]
 		[Authorize]
-		public virtual async Task<IActionResult> Post([FromBody] List<TPostEntityModel> postModels)
+		public virtual async Task<IActionResult> PostRange([FromBody] List<TPostEntityModel> postModels)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
@@ -62,7 +62,6 @@ namespace HackerNews.Api.Controllers
 		#endregion
 
 		#region Read
-		[EnableQuery]
 		[HttpGet]
 		public virtual async Task<IActionResult> Get([FromQuery] PagingParams pagingParams)
 		{
@@ -72,7 +71,7 @@ namespace HackerNews.Api.Controllers
 
 		// For some reason, putting [EnableQuery] results in an ambiguous match exception (even though OData should be able to distinguish due to the key param)
 		[HttpGet("{key:int}")]
-		public virtual async Task<IActionResult> Get(int key)
+		public virtual async Task<IActionResult> GetById(int key)
 		{
 			var model = await _entityService.GetEntityModelAsync(key);
 

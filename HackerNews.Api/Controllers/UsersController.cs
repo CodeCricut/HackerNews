@@ -53,7 +53,7 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[Authorize(false)]
-		public override Task<IActionResult> Post([FromBody] List<RegisterUserModel> postModels)
+		public override Task<IActionResult> PostRange([FromBody] List<RegisterUserModel> postModels)
 		{
 			throw new UnauthorizedException("You are not authorized to register multiple users at once.");
 		}
