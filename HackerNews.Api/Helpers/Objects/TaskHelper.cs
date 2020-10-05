@@ -16,7 +16,7 @@ namespace HackerNews.Api.DB_Helpers
 		/// <param name="items"></param>
 		/// <param name="func"></param>
 		/// <returns></returns>
-		public static async Task<List<OutputT>> RunConcurrentFuncsAsync<InputT, OutputT>(List<InputT> items, Func<InputT, OutputT> func)
+		public static async Task<IEnumerable<OutputT>> RunConcurrentFuncsAsync<InputT, OutputT>(IEnumerable<InputT> items, Func<InputT, OutputT> func)
 		{
 			List<Task<OutputT>> tasks = new List<Task<OutputT>>();
 
@@ -26,7 +26,7 @@ namespace HackerNews.Api.DB_Helpers
 			return (await Task.WhenAll(tasks)).ToList();
 		}
 
-		public static async Task<List<OutputT>> RunConcurrentTasksAsync<InputT, OutputT>(List<InputT> items, Func<InputT, Task<OutputT>> task)
+		public static async Task<IEnumerable<OutputT>> RunConcurrentTasksAsync<InputT, OutputT>(IEnumerable<InputT> items, Func<InputT, Task<OutputT>> task)
 		{
 			List<Task<OutputT>> tasks = new List<Task<OutputT>>();
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Domain.Models.Users
 {
@@ -8,7 +7,7 @@ namespace HackerNews.Domain.Models.Users
 	{
 		public GetPrivateUserModel()
 		{
-				
+
 		}
 
 		public GetPrivateUserModel(string jwtToken)

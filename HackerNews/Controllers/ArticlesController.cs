@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HackerNews.Domain;
-using HackerNews.Domain.Models.Articles;
+﻿using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Parameters;
 using HackerNews.Helpers;
 using HackerNews.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HackerNews.Controllers
 {
@@ -46,7 +42,7 @@ namespace HackerNews.Controllers
 		[HttpPost]
 		public async Task<ActionResult> Post(PostArticleModel article)
 		{
-			GetArticleModel model = (GetArticleModel) await _articleConsumer.PostEndpointAsync(articleEndpoint, article);
+			GetArticleModel model = (GetArticleModel)await _articleConsumer.PostEndpointAsync(articleEndpoint, article);
 
 			return RedirectToAction("Details", new { model.Id });
 		}

@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.EF.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {

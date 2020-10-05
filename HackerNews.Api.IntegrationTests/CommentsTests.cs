@@ -2,9 +2,6 @@
 using HackerNews.EF;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -59,7 +56,7 @@ namespace HackerNews.Api.IntegrationTests
 			using (var scope = _factory.Services.CreateScope())
 			{
 				var ctx = scope.ServiceProvider.GetRequiredService<HackerNewsContext>();
-			
+
 				// Assert parents were added to comment child
 				var postedComment = ctx.Comments.Find(returnedModel.Id);
 

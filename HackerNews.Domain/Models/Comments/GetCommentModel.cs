@@ -18,7 +18,7 @@ namespace HackerNews.Domain.Models.Comments
 		public List<int> UsersLiked { get; set; }
 		public List<int> UsersDisliked { get; set; }
 
-		public DateTime	PostDate { get; set; }
+		public DateTime PostDate { get; set; }
 
 		public int BoardId { get; set; }
 	}

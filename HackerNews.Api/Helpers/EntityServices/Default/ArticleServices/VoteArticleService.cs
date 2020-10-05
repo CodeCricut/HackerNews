@@ -1,14 +1,7 @@
 ﻿using AutoMapper;
-using HackerNews.Api.DB_Helpers;
-using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices.Base;
-using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Articles;
 using HackerNews.EF.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

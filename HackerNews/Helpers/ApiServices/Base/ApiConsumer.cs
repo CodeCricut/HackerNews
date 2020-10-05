@@ -1,18 +1,14 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Parameters;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace HackerNews.Helpers
 {

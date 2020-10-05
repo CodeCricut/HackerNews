@@ -4,7 +4,6 @@ using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Board;
 using HackerNews.EF.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,7 +53,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 
 			// return updated entity
 			// TODO: see if ldkalkfj
-			return  _mapper.Map<GetBoardModel>(updatedEntity);
+			return _mapper.Map<GetBoardModel>(updatedEntity);
 		}
 
 		public override async Task SoftDeleteEntityAsync(int id, User currentUser)

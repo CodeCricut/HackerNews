@@ -5,8 +5,6 @@ using HackerNews.Domain.Errors;
 using HackerNews.Domain.JoinEntities;
 using HackerNews.Domain.Models.Board;
 using HackerNews.EF.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -90,7 +88,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 
 			await _boardRepo.SaveChangesAsync();
 
-			return _mapper.Map < GetBoardModel > (board);
+			return _mapper.Map<GetBoardModel>(board);
 		}
 	}
 }

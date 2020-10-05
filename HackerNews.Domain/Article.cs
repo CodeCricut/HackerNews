@@ -25,7 +25,7 @@ namespace HackerNews.Domain
 		public string Url { get; set; }
 		public int Karma { get; set; }
 		public string Title { get; set; }
-		
+
 		public List<UserArticle> UsersSaved { get; set; }
 
 		public List<UserArticleLikes> UsersLiked { get; set; }

@@ -1,15 +1,12 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Models;
-using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Parameters;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Helpers
 {
-	interface IApiConsumer<TEntity, TPostEntityModel, TGetEntityModel> 
+	interface IApiConsumer<TEntity, TPostEntityModel, TGetEntityModel>
 		where TEntity : DomainEntity
 		where TPostEntityModel : PostEntityModel
 		where TGetEntityModel : GetEntityModel

@@ -1,11 +1,9 @@
-﻿using HackerNews.Domain.Models;
-using Microsoft.AspNet.OData;
+﻿using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -36,14 +34,14 @@ namespace HackerNews.Api.Helpers.Middleware
 					.Where(t => typeof(ControllerBase).IsAssignableFrom(t));
 
 				// Log controller names, actions, and action params
-				foreach(Type t in controllerTypes)
+				foreach (Type t in controllerTypes)
 				{
 					_logger.LogInformation($"\t{t.Name}");
 
 					// MethodInfo is a built in type similar to Type for methods
 					var controllerActions = t.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes()
 						.Any(attr => attr is HttpMethodAttribute || attr is EnableQueryAttribute));
-					foreach(var controllerAction in controllerActions)
+					foreach (var controllerAction in controllerActions)
 					{
 						_logger.LogInformation($"\t\t{controllerAction.Name}");
 						var arguments = controllerAction.GetParameters();
@@ -51,7 +49,7 @@ namespace HackerNews.Api.Helpers.Middleware
 					}
 				}
 			}
-			else 
+			else
 				await _next(context);
 		}
 	}

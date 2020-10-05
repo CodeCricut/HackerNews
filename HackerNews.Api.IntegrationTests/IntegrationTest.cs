@@ -39,8 +39,8 @@ namespace HackerNews.Api.IntegrationTests
 
 				// add in memory db
 				services.AddDbContext<HackerNewsContext>(opt => { opt.UseInMemoryDatabase("HackerNewsInMemory"); }
-					// ensure each instance of this class uses a new in memory DB
-					//, DatabaseRoot)
+				// ensure each instance of this class uses a new in memory DB
+				//, DatabaseRoot)
 				);
 
 				// create a temporary service provider using current configuration

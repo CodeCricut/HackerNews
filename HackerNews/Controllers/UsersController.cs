@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HackerNews.Domain.Models.Auth;
+﻿using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HackerNews.Controllers
 {

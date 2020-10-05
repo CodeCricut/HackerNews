@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HackerNews.Helpers
 {
@@ -31,9 +29,9 @@ namespace HackerNews.Helpers
 				cookieValue = _httpContext.Request.Cookies[key];
 
 			return cookieValue;
-			}
+		}
 
-			public void Remove(string key)
+		public void Remove(string key)
 		{
 			_httpContext.Response.Cookies.Delete(key);
 		}

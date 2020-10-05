@@ -1,30 +1,17 @@
 using AutoMapper;
-using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices;
-using HackerNews.Api.Helpers.EntityServices.Base;
-using HackerNews.Api.Helpers.EntityServices.Default;
 using HackerNews.Api.Helpers.Filters;
 using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Api.Helpers.StartupExtensions;
-using HackerNews.Domain;
-using HackerNews.Domain.Errors;
 using HackerNews.EF;
-using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace HackerNews.Api
@@ -85,7 +72,7 @@ namespace HackerNews.Api
 				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 				opt.IncludeXmlComments(xmlPath);
 			});
-			
+
 
 			services.AddMvcCore();//.AddApiExplorer();
 		}
@@ -95,7 +82,7 @@ namespace HackerNews.Api
 		{
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
-			
+
 			app.UseApiExceptionHandler();
 
 			if (env.IsDevelopment())
