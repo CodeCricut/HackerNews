@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Users;
 using HackerNews.EF.Repositories;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityHelpers
+namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
-	public abstract class UserSaverService : IUserSaverService
+	public class UserSaverService : IUserSaverService
 	{
 		private readonly IEntityRepository<Article> _articleRepo;
 		private readonly IEntityRepository<Comment> _commentRepo;
@@ -36,7 +37,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 			await _articleRepo.SaveChangesAsync();
 
-			return _mapper.Map< GetPrivateUserModel>(user);
+			return _mapper.Map<GetPrivateUserModel>(user);
 		}
 
 		public virtual async Task<GetPrivateUserModel> SaveCommentToUserAsync(User user, int commentId)

@@ -15,9 +15,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityServices.Base
+namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
-	public class UserAuthService : IAuthenticatableEntityService<AuthenticateUserRequest, AuthenticateUserResponse, User, GetPrivateUserModel>
+	public class UserAuthService : IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>
 	{
 		private readonly IMapper _mapper;
 		private readonly IEntityRepository<User> _userRepository;
@@ -38,10 +38,10 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public virtual async Task<AuthenticateUserResponse> AuthenticateAsync(AuthenticateUserRequest model)
+		public virtual async Task<GetPrivateUserModel> AuthenticateAsync(LoginModel model)
 		{
 			// Todo: it is quite inefficient to request all entities and then sort. 
-			var user = (await _userLoginRepository.GetUserByCredentialsAsync(model.Username, model.Password));
+			var user = await _userLoginRepository.GetUserByCredentialsAsync(model.Username, model.Password);
 
 			// return null if not found
 			if (user == null) return null;
@@ -49,7 +49,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 			// generate token if user found
 			var token = GenerateJwtToken(user);
 
-			return new AuthenticateUserResponse(user, token);
+			return new GetPrivateUserModel(token);
 		}
 
 		public virtual async Task<GetPrivateUserModel> GetAuthenticatedReturnModelAsync(HttpContext httpContext)

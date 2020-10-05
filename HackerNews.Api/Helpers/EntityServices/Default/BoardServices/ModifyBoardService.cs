@@ -1,19 +1,24 @@
 ﻿using AutoMapper;
-using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Board;
 using HackerNews.EF.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityServices.Base
+namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 {
-	public abstract class BoardService : EntityService<Board, PostBoardModel, GetBoardModel>
+	public class ModifyBoardService : ModifyEntityService<Board, PostBoardModel, GetBoardModel>
 	{
-		public BoardService(IEntityRepository<Board> entityRepository, IMapper mapper) : base(entityRepository, mapper)
+		private readonly IEntityRepository<Board> _entityRepository;
+		private readonly IMapper _mapper;
+
+		public ModifyBoardService(IEntityRepository<Board> entityRepository, IMapper mapper)
 		{
+			_entityRepository = entityRepository;
+			_mapper = mapper;
 		}
 
 		public override async Task<GetBoardModel> PostEntityModelAsync(PostBoardModel entityModel, User currentUser)
@@ -38,8 +43,8 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 			// verify user has moderation privileges
 			var entity = await _entityRepository.GetEntityAsync(id);
 			if (entity.Creator.Id != currentUser.Id ||
-				entity.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null) 
-					throw new UnauthorizedException();
+				entity.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null)
+				throw new UnauthorizedException();
 
 			var updatedEntity = _mapper.Map<Board>(entityModel);
 
@@ -48,7 +53,8 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 			await _entityRepository.SaveChangesAsync();
 
 			// return updated entity
-			return await GetEntityModelAsync(id);
+			// TODO: see if ldkalkfj
+			return  _mapper.Map<GetBoardModel>(updatedEntity);
 		}
 
 		public override async Task SoftDeleteEntityAsync(int id, User currentUser)

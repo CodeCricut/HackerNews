@@ -1,72 +1,32 @@
 ﻿using AutoMapper;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.EF.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityServices
+namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {
-	public abstract class ArticleService : EntityService<Article, PostArticleModel, GetArticleModel>, IVoteableEntityService<Article>
+	public abstract class VoteArticleService :
+		VoteEntityService<Article>
 	{
-		public ArticleService(IEntityRepository<Article> entityRepository, IMapper mapper)
-			: base(entityRepository, mapper)
+		private readonly IEntityRepository<Article> _entityRepository;
+		private readonly IMapper _mapper;
+
+		public VoteArticleService(IEntityRepository<Article> entityRepository, IMapper mapper)
 		{
+			_entityRepository = entityRepository;
+			_mapper = mapper;
 		}
 
-
-		public override async Task<GetArticleModel> PostEntityModelAsync(PostArticleModel entityModel, User currentUser)
-		{
-			var entity = _mapper.Map<Article>(entityModel);
-
-			entity.UserId = currentUser.Id;
-			entity.PostDate = DateTime.UtcNow;
-
-			var addedEntity = await _entityRepository.AddEntityAsync(entity);
-			await _entityRepository.SaveChangesAsync();
-
-			return _mapper.Map<GetArticleModel>(addedEntity);
-		}
-
-		public override async Task<GetArticleModel> PutEntityModelAsync(int id, PostArticleModel entityModel, User currentUser)
-		{
-			// verify entity trying to update exists
-			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
-			// verify user owns the entity
-			var entity = await _entityRepository.GetEntityAsync(id);
-			if (entity.UserId != currentUser.Id) throw new UnauthorizedException();
-
-			// verify new board belongs to prevoius board
-			if (entityModel.BoardId != entity.BoardId) throw new UnauthorizedException();
-
-			var updatedEntity = _mapper.Map<Article>(entityModel);
-
-			// update and save
-			await _entityRepository.UpdateEntityAsync(id, updatedEntity);
-			await _entityRepository.SaveChangesAsync();
-
-			// return updated entity
-			return await GetEntityModelAsync(id);
-		}
-
-		public override async Task SoftDeleteEntityAsync(int id, User currentUser)
-		{
-			// verify entity exists
-			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
-
-			// verify user owns the entity
-			var entity = await _entityRepository.GetEntityAsync(id);
-			if (entity.UserId != currentUser.Id) throw new UnauthorizedException();
-
-			// soft delete and save
-			await _entityRepository.SoftDeleteEntityAsync(id);
-			await _entityRepository.SaveChangesAsync();
-		}
-
-		public virtual async Task VoteEntityAsync(int id, bool upvote, User currentUser)
+		public override async Task VoteEntityAsync(int id, bool upvote, User currentUser)
 		{
 			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
 

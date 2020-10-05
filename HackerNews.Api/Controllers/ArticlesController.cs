@@ -1,9 +1,10 @@
 ﻿
 
+using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices;
-using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Api.Helpers.EntityServices.Base.ArticleServices;
+using HackerNews.Api.Helpers.EntityServices.Base.UserServices;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
@@ -18,15 +19,17 @@ namespace HackerNews.Api.Controllers
 {
 	// template for non-odata routes
 	[Route("api/[controller]")]
-	public class ArticlesController : EntityCrudController<Article, PostArticleModel, GetArticleModel>
+	public class ArticlesController : IModifyEntityController<Article, PostArticleModel, GetArticleModel>
+
 	{
+
 		private readonly IVoteableEntityService<Article> _articleVoter;
 
 		public ArticlesController(
-			ArticleService articleService,
+			VoteArticleService articleService,
 			IVoteableEntityService<Article> articleVoter,
 			UserAuthService userAuthService,
-			ILogger<ArticlesController> logger) : base(articleService, userAuthService, logger)
+			ILogger<ArticlesController> logger)
 		{
 			_articleVoter = articleVoter;
 		}
@@ -63,5 +66,26 @@ namespace HackerNews.Api.Controllers
 
 		#region Delete
 		#endregion
+
+
+		public Task Delete(int key)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Task<GetArticleModel> PostAsync([FromBody] PostArticleModel postModel)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Task PostRangeAsync([FromBody] IEnumerable<PostArticleModel> postModels)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Task<GetArticleModel> Put(int key, [FromBody] PostArticleModel updateModel)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

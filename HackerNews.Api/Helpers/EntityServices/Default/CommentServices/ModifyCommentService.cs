@@ -4,15 +4,21 @@ using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.EF.Repositories;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityHelpers
+namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 {
-	public abstract class CommentService : EntityService<Comment, PostCommentModel, GetCommentModel>, IVoteableEntityService<Comment>
+	public class ModifyCommentService : ModifyEntityService<Comment, PostCommentModel, GetCommentModel>
 	{
-		public CommentService(IEntityRepository<Comment> entityRepository, IMapper mapper)
-			: base(entityRepository, mapper)
+		private readonly IEntityRepository<Comment> _entityRepository;
+		private readonly IMapper _mapper;
+
+		public ModifyCommentService(IEntityRepository<Comment> entityRepository, IMapper mapper)
 		{
+			_entityRepository = entityRepository;
+			_mapper = mapper;
 		}
 
 		public override async Task<GetCommentModel> PostEntityModelAsync(PostCommentModel entityModel, User currentUser)
@@ -48,7 +54,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			await _entityRepository.SaveChangesAsync();
 
 			// return updated entity
-			return await GetEntityModelAsync(id);
+			// TODO: ddd
+			return _mapper.Map<GetCommentModel>(updatedEntity);
 		}
 
 		public override async Task SoftDeleteEntityAsync(int id, User currentUser)
@@ -62,41 +69,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 
 			// soft delete and save
 			await _entityRepository.SoftDeleteEntityAsync(id);
-			await _entityRepository.SaveChangesAsync();
-		}
-
-		public virtual async Task VoteEntityAsync(int id, bool upvote, User currentUser)
-		{
-			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
-
-			var comment = await _entityRepository.GetEntityAsync(id);
-			
-			if (upvote)
-			{
-				var userLike = new UserCommentLikes
-				{
-					User = currentUser,
-					Comment = comment
-				};
-
-				comment.Karma++;
-
-				comment.UsersLiked.Add(userLike);
-				currentUser.LikedComments.Add(userLike);
-			} else
-			{
-				var userDislike = new UserCommentDislikes
-				{
-					User = currentUser,
-					Comment = comment
-				};
-
-				comment.Karma--;
-				comment.UsersDisliked.Add(userDislike);
-				currentUser.DislikedComments.Add(userDislike);
-			}
-
-			await _entityRepository.UpdateEntityAsync(id, comment);
 			await _entityRepository.SaveChangesAsync();
 		}
 	}

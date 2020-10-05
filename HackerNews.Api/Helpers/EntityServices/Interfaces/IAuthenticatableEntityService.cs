@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
-	public interface IAuthenticatableEntityService<TAuthenticateRequest, TAuthenticateResponse, TEntity, TPrivateReturnModel>
+	public interface IAuthenticatableEntityService<TEntity, TAuthenticateRequest, TPrivateReturnModel>
 	{
 		/// <summary>
 		/// Attempt to retrieve a user from the database based on the credentials, then return null if not found or
@@ -14,7 +14,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		public Task<TAuthenticateResponse> AuthenticateAsync(TAuthenticateRequest model);
+		public Task<TPrivateReturnModel> AuthenticateAsync(TAuthenticateRequest model);
 
 		public Task<TPrivateReturnModel> GetAuthenticatedReturnModelAsync(HttpContext httpContext);
 

@@ -1,6 +1,7 @@
 ﻿using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices;
 using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Api.Helpers.EntityServices.Base.ArticleServices;
+using HackerNews.Api.Helpers.EntityServices.Base.UserServices;
 using HackerNews.Api.Helpers.EntityServices.Default;
 using HackerNews.Domain;
 using HackerNews.EF;
@@ -26,7 +27,7 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 
 		public static IServiceCollection AddEntityServices(this IServiceCollection services)
 		{
-			return services.AddScoped<ArticleService, DefaultArticleService>()
+			return services.AddScoped<VoteArticleService, DefaultArticleService>()
 				.AddScoped<CommentService, DefaultCommentService>()
 				.AddScoped<UserService, DefaultUserService>()
 				.AddScoped<BoardService, DefaultBoardService>();

@@ -1,6 +1,5 @@
 ﻿using HackerNews.Api.Helpers.Attributes;
-using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Api.Helpers.EntityServices.Base.UserServices;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Auth;
@@ -36,7 +35,7 @@ namespace HackerNews.Api.Controllers
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticateUserRequest model)
+		public async Task<IActionResult> AuthenticateAsync([FromBody] LoginModel model)
 		{
 			var response = await _userAuthService.AuthenticateAsync(model);
 
@@ -62,7 +61,7 @@ namespace HackerNews.Api.Controllers
 
 			// TODO: very messy just for the purpose of returning a get private user model
 			await _userAuthService.AuthenticateAsync(
-				new AuthenticateUserRequest { Username = postModel.Username, Password = postModel.Password });
+				new LoginModel { Username = postModel.Username, Password = postModel.Password });
 			var privateModel = await _userAuthService.GetAuthenticatedReturnModelAsync(HttpContext);
 
 			return Ok(privateModel);

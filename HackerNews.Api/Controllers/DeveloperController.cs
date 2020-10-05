@@ -1,6 +1,6 @@
 ﻿using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices;
 using HackerNews.Api.Helpers.EntityServices.Base;
+using HackerNews.Api.Helpers.EntityServices.Base.ArticleServices;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.EF;
@@ -20,7 +20,7 @@ namespace HackerNews.Api.Controllers
 		private readonly IEntityRepository<Comment> _commentRepository;
 		private readonly IEntityRepository<User> _userRepository;
 		private readonly IEntityRepository<Board> _boardRepository;
-		private readonly ArticleService _articleService;
+		private readonly VoteArticleService _articleService;
 		private readonly CommentService _commentService;
 		private readonly BoardService _boardService;
 		private readonly UserService _userService;
@@ -31,7 +31,7 @@ namespace HackerNews.Api.Controllers
 			IEntityRepository<Comment> commentRepository, 
 			IEntityRepository<User> userRepository,		
 			IEntityRepository<Board> boardRepository,
-			ArticleService articleService,
+			VoteArticleService articleService,
 			CommentService commentService,
 			BoardService boardService,
 			UserService userService,
