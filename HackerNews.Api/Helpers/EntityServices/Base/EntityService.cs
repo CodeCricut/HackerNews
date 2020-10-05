@@ -42,12 +42,16 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			return _mapper.Map<GetModelT>(entity);
 		}
 
-		public virtual async Task<List<GetModelT>> GetAllEntityModelsAsync(PagingParams pagingParams)
+		public virtual async Task<PagedList<GetModelT>> GetAllEntityModelsAsync(PagingParams pagingParams)
 		{
-			// Instead of returning the list of entity models, as PagedList<TEntity> could be returned here.
-			List<EntityT> entities = (await _entityRepository.GetEntitiesAsync(pagingParams)).ToList();
+			var entityPagedList = (await _entityRepository.GetEntitiesAsync(pagingParams));
 
-			return _mapper.Map<List<GetModelT>>(entities);
+			// convert to list of models
+			List<EntityT> entityList = entityPagedList.ToList();
+			var entityModelList = _mapper.Map<List<GetModelT>>(entityList);
+
+			// return paged list of models
+			return new PagedList<GetModelT>(entityModelList, entityPagedList.Count, pagingParams);
 		}
 	}
 }

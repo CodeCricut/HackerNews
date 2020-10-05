@@ -20,6 +20,12 @@ namespace HackerNews.Domain.Models.Auth
 
 		public string Token { get; set; }
 
+		// TODO: for deserializing 
+		public AuthenticateUserResponse()
+		{
+
+		}
+
 		public AuthenticateUserResponse(User user, string token)
 		{
 			// could be improved with auto mapper

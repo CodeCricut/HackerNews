@@ -34,6 +34,12 @@ namespace HackerNews.Api.Controllers
 
 		#region Update
 
+		/// <summary>
+		/// Add the current user (stored in the necessary JWT token) to the board's subscribers. 
+		/// The board is found by Id = <paramref name="boardId"/>.
+		/// </summary>
+		/// <param name="boardId"></param>
+		/// <returns></returns>
 		[HttpPost("add-subscriber")]
 		[Authorize]
 		public async Task<IActionResult> AddSubscriberAsync([FromQuery] int boardId)
@@ -47,7 +53,13 @@ namespace HackerNews.Api.Controllers
 			return Ok(updatedBoardModel);
 		}
 
-		// not a great URI scheme
+		/// <summary>
+		/// If a the current user (stored in the necessary JWT token) created the board, add the given user (whose Id = <paramref name="moderatorId"/>)
+		/// to the board (whose Id = <paramref name="boardId"/>.)
+		/// </summary>
+		/// <param name="boardId"></param>
+		/// <param name="moderatorId"></param>
+		/// <returns></returns>
 		[HttpPost("add-moderator")]
 		[Authorize]
 		public async Task<IActionResult> AddModeratorAsync([FromQuery] int boardId, [FromQuery] int moderatorId)

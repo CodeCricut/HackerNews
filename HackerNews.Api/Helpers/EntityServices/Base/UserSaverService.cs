@@ -45,7 +45,6 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 			var comment = await _commentRepo.GetEntityAsync(commentId);
 
 			if (user == null || comment == null) throw new NotFoundException();
-
 			// add relationship
 			var userComment = new UserComment { Comment = comment, User = user };
 			user.SavedComments.Add(userComment);

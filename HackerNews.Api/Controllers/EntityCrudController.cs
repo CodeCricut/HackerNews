@@ -1,18 +1,13 @@
-﻿using AutoMapper;
-using HackerNews.Api.Helpers.Attributes;
+﻿using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models;
 using HackerNews.Domain.Parameters;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.OData;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -33,7 +28,9 @@ namespace HackerNews.Api.Controllers
 			_logger = logger;
 		}
 
-		
+		//TODO: most actions should return a strong type. IActionResult is only necessary when you can return multiple ActionResult types, and even then
+		// you can use generic IActionResults.
+
 		#region Create
 		/// <summary>
 		/// Add a valid <paramref name="postModel"/> to the database and return a relevant <typeparamref name="TGetEntityModel"/>.
@@ -81,7 +78,7 @@ namespace HackerNews.Api.Controllers
 		[HttpGet]
 		public virtual async Task<IActionResult> Get([FromQuery] PagingParams pagingParams)
 		{
-			var models = await _entityService.GetAllEntityModelsAsync(pagingParams);
+			PagedList<TGetEntityModel> models = await _entityService.GetAllEntityModelsAsync(pagingParams);
 			return Ok(models);
 		}
 

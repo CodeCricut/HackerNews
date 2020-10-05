@@ -51,7 +51,7 @@ namespace HackerNews.Api.Controllers
 		/// Register a new user and add it to the database.
 		/// </summary>
 		/// <param name="postModel"></param>
-		/// <returns></returns>
+		/// <returns><see cref="GetPrivateUserModel"/></returns>
 		[HttpPost("register")]
 		[Authorize(false)]
 		public override async Task<IActionResult> Post([FromBody] RegisterUserModel postModel)
@@ -60,7 +60,12 @@ namespace HackerNews.Api.Controllers
 
 			var publicResponse = await _entityService.PostEntityModelAsync(postModel, null);
 
-			return Ok(publicResponse);
+			// TODO: very messy just for the purpose of returning a get private user model
+			await _userAuthService.AuthenticateAsync(
+				new AuthenticateUserRequest { Username = postModel.Username, Password = postModel.Password });
+			var privateModel = await _userAuthService.GetAuthenticatedReturnModelAsync(HttpContext);
+
+			return Ok(privateModel);
 		}
 
 		/// <summary>

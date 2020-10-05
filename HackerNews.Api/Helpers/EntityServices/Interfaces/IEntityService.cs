@@ -16,7 +16,7 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		//
 		Task<GetModelT> GetEntityModelAsync(int id);
 		//
-		Task<List<GetModelT>> GetAllEntityModelsAsync(PagingParams pagingParams);
+		Task<PagedList<GetModelT>> GetAllEntityModelsAsync(PagingParams pagingParams);
 
 		//
 		Task SoftDeleteEntityAsync(int id, User currentUser);

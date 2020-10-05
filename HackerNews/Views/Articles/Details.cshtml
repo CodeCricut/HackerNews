@@ -1,0 +1,34 @@
+﻿@model ArticlesDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Article</h4>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Board ID</td>
+                <td>Title</td>
+                <td>Text</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.ArticleModel.Id</td>
+                <td>@Model.ArticleModel.BoardId</td>
+                <td>@Model.ArticleModel.Title</td>
+                <td>@Model.ArticleModel.Text</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
