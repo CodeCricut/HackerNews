@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base
 {
-	public abstract class BoardUserManagmentService : IBoardUserManagementService
+	public class BoardUserManagmentService : IBoardUserManagementService
 	{
 		private readonly IEntityRepository<Board> _boardRepo;
 		private readonly IEntityRepository<User> _userRepo;

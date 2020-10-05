@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityServices.Base.User
+namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
 	// TODO: the register user model is fine for updating the user for now, but should be a dedicated UpdateUserModel later
 	public class ModifyPrivateUserService : ModifyEntityService<Domain.User, RegisterUserModel, GetPrivateUserModel>

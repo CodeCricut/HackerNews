@@ -13,9 +13,9 @@ namespace HackerNews.Controllers
 	{
 		private readonly ICookieService _cookieService;
 		private readonly ArticleApiConsumer _articleApi;
-		private readonly PublicUserApiConsumer _userApi;
+		private readonly UserApiConsumer _userApi;
 
-		public UsersController(ICookieService cookieService, ArticleApiConsumer articleApi, PublicUserApiConsumer userApi)
+		public UsersController(ICookieService cookieService, ArticleApiConsumer articleApi, UserApiConsumer userApi)
 		{
 			_cookieService = cookieService;
 			_articleApi = articleApi;
@@ -36,23 +36,25 @@ namespace HackerNews.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterUserModel registerModel)
 		{
-			GetPrivateUserModel addedUser = await _userApi.PostEndpointAsync("users/register", registerModel);
+			GetPublicUserModel addedUser = await _userApi.PostEndpointAsync("users/register", registerModel);
+
+
 		}
 
 
 		public ViewResult Login()
 		{
-			return View(new AuthenticateUserRequest());
+			return View(new LoginModel());
 		}
 
 
 		[HttpPost]
-		public async Task<IActionResult> Login(AuthenticateUserRequest authRequest)
+		public async Task<IActionResult> Login(LoginModel authRequest)
 		{
-			AuthenticateUserResponse userResponse = await _userApi.GetUserByCredentialsAsync(authRequest);
+			GetPrivateUserModel userResponse = await _userApi.GetUserByCredentialsAsync(authRequest);
 
 			// TODO: refactor to JWT service
-			_cookieService.Set("JWT", userResponse.Token, 60);
+			_cookieService.Set("JWT", userResponse.JwtToken, 60);
 
 			return RedirectToAction("Me");
 		}

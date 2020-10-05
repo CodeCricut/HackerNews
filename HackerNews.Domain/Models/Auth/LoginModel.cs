@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HackerNews.Domain.Models.Auth
 {
-	public class AuthenticateUserRequest
+	public class LoginModel
 	{
 		[Required]
 		public string Username { get; set; }

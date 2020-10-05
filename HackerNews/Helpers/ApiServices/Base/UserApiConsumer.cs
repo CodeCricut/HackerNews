@@ -19,7 +19,7 @@ namespace HackerNews.Helpers
 		{
 		}
 
-		public async Task<AuthenticateUserResponse> GetUserByCredentialsAsync(AuthenticateUserRequest authUserReq)
+		public async Task<GetPrivateUserModel> GetUserByCredentialsAsync(LoginModel authUserReq)
 		{
 			var jsonContent = JsonConvert.SerializeObject(authUserReq);
 			var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -29,10 +29,10 @@ namespace HackerNews.Helpers
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<AuthenticateUserResponse>(responseJson);
+				return JsonConvert.DeserializeObject<GetPrivateUserModel>(responseJson);
 			}
 			// TODO: throw some error
-			return new AuthenticateUserResponse(null, "");
+			return new GetPrivateUserModel();
 		}
 
 		public async Task<GetPrivateUserModel> GetPrivateUserAsync(string jwtToken)

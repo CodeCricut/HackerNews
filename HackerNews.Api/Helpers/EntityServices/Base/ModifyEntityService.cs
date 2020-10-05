@@ -15,7 +15,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 		where TGetModel : GetEntityModel
 	{
 		public abstract Task<TGetModel> PostEntityModelAsync(TPostModel entityModel, Domain.User currentUser);
-		public async Task PostEntityModelsAsync(List<TPostModel> entityModels, Domain.User currentUser)
+		public virtual async Task PostEntityModelsAsync(List<TPostModel> entityModels, Domain.User currentUser)
 		{
 			await TaskHelper.RunConcurrentTasksAsync(entityModels, postModel => PostEntityModelAsync(postModel, currentUser));
 		}

@@ -15,9 +15,9 @@ namespace HackerNews.Api.Controllers.Interfaces
 		where TGetModel : GetEntityModel
 	{
 		[HttpGet]
-		Task<PagedList<TGetModel>> GetAsync([FromQuery] PagingParams pagingParams);
+		Task<ActionResult<PagedList<TGetModel>>> GetAsync([FromQuery] PagingParams pagingParams);
 
 		[HttpGet("{key:int}")]
-		Task<TGetModel> GetByIdAsync(int key);
+		Task<ActionResult<TGetModel>> GetByIdAsync(int key);
 	}
 }

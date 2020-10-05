@@ -16,18 +16,18 @@ namespace HackerNews.Api.Controllers.Interfaces
 	{
 		[HttpPost]
 		[Authorize]
-		Task<TGetModel> PostAsync([FromBody] TPostModel postModel);
+		Task<ActionResult<TGetModel>> PostAsync([FromBody] TPostModel postModel);
 
 		[HttpPost("range")]
 		[Authorize]
-		Task PostRangeAsync([FromBody] IEnumerable<TPostModel> postModels);
+		Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<TPostModel> postModels);
 
 		[HttpPut("{key:int}")]
 		[Authorize]
-		Task<TGetModel> Put(int key, [FromBody] TPostModel updateModel);
+		Task<ActionResult<TGetModel>> Put(int key, [FromBody] TPostModel updateModel);
 
 		[HttpDelete("{key:int}")]
 		[Authorize]
-		Task Delete(int key);
+		Task<ActionResult> Delete(int key);
 	}
 }

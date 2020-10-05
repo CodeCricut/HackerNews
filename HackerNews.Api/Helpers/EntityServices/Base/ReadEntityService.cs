@@ -15,8 +15,8 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 		where TEntity : DomainEntity
 		where TGetModel : GetEntityModel
 	{
-		private readonly IMapper _mapper;
-		private readonly IEntityRepository<TEntity> _entityRepository;
+		protected readonly IMapper _mapper;
+		protected readonly IEntityRepository<TEntity> _entityRepository;
 
 		public ReadEntityService(IMapper mapper, IEntityRepository<TEntity> entityRepository)
 		{

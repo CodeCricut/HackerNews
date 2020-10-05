@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Interfaces
 {
-	interface IReadEntityService<TEntity, TGetModel>
+	public interface IReadEntityService<TEntity, TGetModel>
 		where TEntity : DomainEntity
 		where TGetModel : GetEntityModel
 	{

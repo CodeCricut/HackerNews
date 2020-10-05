@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Helpers
 {
-	interface IApiConsumer<TEntity, TPostEntityModel, TGetPublicEntityModel, TGetPrivateEntityModel> 
+	interface IApiConsumer<TEntity, TPostEntityModel, TGetEntityModel> 
 		where TEntity : DomainEntity
 		where TPostEntityModel : PostEntityModel
-		where TGetPublicEntityModel : GetEntityModel
-		where TGetPrivateEntityModel : GetEntityModel
+		where TGetEntityModel : GetEntityModel
 	{
 		Task<TGetEntityModel> PostEndpointAsync(string endpoint, TPostEntityModel postModel);
 		Task<object> PostEndpointAsync(string endpoint, IEnumerable<TPostEntityModel> postModels);

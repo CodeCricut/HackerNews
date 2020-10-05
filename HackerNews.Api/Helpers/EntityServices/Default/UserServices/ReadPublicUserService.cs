@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.Api.Helpers.EntityServices.Base.User
+namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
 	public class ReadPublicUserService : ReadEntityService<Domain.User, GetPublicUserModel>
 	{

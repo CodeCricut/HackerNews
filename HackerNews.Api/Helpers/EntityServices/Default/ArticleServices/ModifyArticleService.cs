@@ -1,5 +1,4 @@
 ﻿using HackerNews.Domain.Models.Articles;
-using HackerNews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using AutoMapper;
 using HackerNews.EF.Repositories;
 using HackerNews.Domain.Errors;
 
-namespace HackerNews.Api.Helpers.EntityServices.Base.Article
+namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {
 	public class ModifyArticleService : ModifyEntityService<Domain.Article, PostArticleModel, GetArticleModel>
 	{
