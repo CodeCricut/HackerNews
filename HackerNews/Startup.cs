@@ -1,4 +1,12 @@
+using HackerNews.Domain;
+using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Auth;
+using HackerNews.Domain.Models.Comments;
+using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers;
+using HackerNews.Helpers.ApiServices.Default.ArticleServices;
+using HackerNews.Helpers.ApiServices.Default.UserServices;
+using HackerNews.Helpers.ApiServices.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,8 +36,16 @@ namespace HackerNews
 
 			services.AddHttpClient();
 
-			services.AddScoped<ArticleApiConsumer, DefaultArticleConsumer>();
-			services.AddScoped<PublicUserApiConsumer, DefaultUserConsumer>();
+			services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
+			services.AddScoped<IApiModifier<Article, PostArticleModel, GetArticleModel>, ArticleApiModifier>();
+			//services.AddScoped<IApiReader<GetCommentModel>, Commen>
+
+			services.AddScoped<IApiReader<GetPublicUserModel>, PublicUserApiReader>();
+			services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();
+			services.AddScoped<IApiModifier<User, RegisterUserModel, GetPrivateUserModel>, PrivateUserApiModifier>();
+			services.AddScoped<IApiLoginFacilitator<LoginModel, GetPrivateUserModel>, UserApiLoginFacilitator>();
+			services.AddScoped<IApiUserSaver<Article, GetPrivateUserModel>, ApiUserSaver>();
+			services.AddScoped<IApiUserSaver<Comment, GetPrivateUserModel>, ApiUserSaver>();
 
 			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddTransient<ICookieService, CookieService>();

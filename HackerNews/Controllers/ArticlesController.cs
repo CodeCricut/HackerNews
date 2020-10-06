@@ -1,6 +1,8 @@
-﻿using HackerNews.Domain.Models.Articles;
+﻿using HackerNews.Domain;
+using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Parameters;
 using HackerNews.Helpers;
+using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -9,18 +11,22 @@ namespace HackerNews.Controllers
 {
 	public class ArticlesController : Controller
 	{
-		private readonly string articleEndpoint = "articles";
-		private readonly ArticleApiConsumer _articleConsumer;
+		private static readonly string ARTICLE_ENDPOINT = "articles";
+		private readonly IApiReader<GetArticleModel> _articleReader;
+		private readonly IApiModifier<Article, PostArticleModel, GetArticleModel> _articleModifier;
 
-		public ArticlesController(ArticleApiConsumer articleConsumer)
+		public ArticlesController(
+			IApiReader<GetArticleModel> articleReader,
+			IApiModifier<Article, PostArticleModel, GetArticleModel> articleModifier)
 		{
-			_articleConsumer = articleConsumer;
+			_articleReader = articleReader;
+			_articleModifier = articleModifier;
 		}
 
 		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
 		{
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var articleModels = await _articleConsumer.GetEndpointAsync(articleEndpoint, pagingParams);
+			var articleModels = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, pagingParams);
 
 			var viewModel = new ArticlesListViewModel { ArticleModels = articleModels };
 
@@ -29,7 +35,7 @@ namespace HackerNews.Controllers
 
 		public async Task<ViewResult> Details(int id)
 		{
-			var articleModel = await _articleConsumer.GetEndpointAsync(articleEndpoint, id);
+			var articleModel = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, id);
 
 			return View(new ArticlesDetailsViewModel { ArticleModel = articleModel });
 		}
@@ -42,7 +48,7 @@ namespace HackerNews.Controllers
 		[HttpPost]
 		public async Task<ActionResult> Post(PostArticleModel article)
 		{
-			GetArticleModel model = (GetArticleModel)await _articleConsumer.PostEndpointAsync(articleEndpoint, article);
+			GetArticleModel model = await _articleModifier.PostEndpointAsync(ARTICLE_ENDPOINT, article);
 
 			return RedirectToAction("Details", new { model.Id });
 		}

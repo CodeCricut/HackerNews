@@ -1,6 +1,8 @@
-﻿using HackerNews.Domain.Models.Auth;
+﻿using HackerNews.Domain;
+using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers;
+using HackerNews.Helpers.ApiServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -8,15 +10,25 @@ namespace HackerNews.Controllers
 {
 	public class UsersController : Controller
 	{
+		private static readonly string USER_ENDPOINT = "users";
 		private readonly ICookieService _cookieService;
-		private readonly ArticleApiConsumer _articleApi;
-		private readonly UserApiConsumer _userApi;
+		private readonly IApiReader<GetPublicUserModel> _publicUserReader;
+		private readonly IApiReader<GetPrivateUserModel> _privateUserReader;
+		private readonly IApiModifier<User, RegisterUserModel, GetPrivateUserModel> _privateUserModifier;
+		private readonly IApiLoginFacilitator<LoginModel, GetPrivateUserModel> _loginFacilitator;
 
-		public UsersController(ICookieService cookieService, ArticleApiConsumer articleApi, UserApiConsumer userApi)
+		public UsersController(
+			ICookieService cookieService, 
+			IApiReader<GetPublicUserModel> publicUserReader,
+			IApiReader<GetPrivateUserModel> privateUserReader,
+			IApiModifier<User, RegisterUserModel, GetPrivateUserModel> privateUserModifier,
+			IApiLoginFacilitator<LoginModel, GetPrivateUserModel> loginFacilitator)
 		{
 			_cookieService = cookieService;
-			_articleApi = articleApi;
-			_userApi = userApi;
+			_publicUserReader = publicUserReader;
+			_privateUserReader = privateUserReader;
+			_privateUserModifier = privateUserModifier;
+			_loginFacilitator = loginFacilitator;
 		}
 
 		public IActionResult Index()
@@ -30,13 +42,12 @@ namespace HackerNews.Controllers
 			return View(new RegisterUserModel());
 		}
 
-		//[HttpPost]
-		//public async Task<IActionResult> Register(RegisterUserModel registerModel)
-		//{
-		//	GetPublicUserModel addedUser = await _userApi.PostEndpointAsync("users/register", registerModel);
-
-
-		//}
+		[HttpPost]
+		public async Task<IActionResult> Register(RegisterUserModel registerModel)
+		{
+			GetPrivateUserModel addedUser = await _privateUserModifier.PostEndpointAsync($"{USER_ENDPOINT}/register", registerModel);
+			return RedirectToAction("Login");
+		}
 
 
 		public ViewResult Login()
@@ -48,7 +59,7 @@ namespace HackerNews.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginModel authRequest)
 		{
-			GetPrivateUserModel userResponse = await _userApi.GetUserByCredentialsAsync(authRequest);
+			GetPrivateUserModel userResponse = await _loginFacilitator.GetUserByCredentialsAsync(authRequest);
 
 			// TODO: refactor to JWT service
 			_cookieService.Set("JWT", userResponse.JwtToken, 60);
@@ -58,12 +69,8 @@ namespace HackerNews.Controllers
 
 		public async Task<ViewResult> Me()
 		{
-			var jwtToken = _cookieService.Get("JWT");
-
-			var privateModel = await _userApi.GetPrivateUserAsync(jwtToken);
+			GetPrivateUserModel privateModel = await _privateUserReader.GetEndpointAsync($"{USER_ENDPOINT}/me", 0);
 			return View(privateModel);
 		}
-
-
 	}
 }
