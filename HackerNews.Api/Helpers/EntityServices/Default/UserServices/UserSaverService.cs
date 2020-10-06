@@ -25,7 +25,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 
 		public virtual async Task<GetPrivateUserModel> SaveArticleToUserAsync(User user, int articleId)
 		{
-			// TODO: if already saved, unsave
+			// TODO: this is not working
 			var article = await _articleRepo.GetEntityAsync(articleId);
 
 			if (user == null || article == null) throw new NotFoundException();
@@ -37,12 +37,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 
 			await _articleRepo.SaveChangesAsync();
 
+			var updatedArticle = await _articleRepo.GetEntityAsync(articleId);
+
+
 			return _mapper.Map<GetPrivateUserModel>(user);
 		}
 
 		public virtual async Task<GetPrivateUserModel> SaveCommentToUserAsync(User user, int commentId)
 		{
-			// TODO: if already saved, unsave
+			// TODO: this is not working
+
 			var comment = await _commentRepo.GetEntityAsync(commentId);
 
 			if (user == null || comment == null) throw new NotFoundException();
