@@ -36,6 +36,7 @@ namespace HackerNews.Domain
 		public int BoardId { get; set; }
 		public Board Board { get; set; }
 
+
 		public Article()
 		{
 			Comments = new List<Comment>();

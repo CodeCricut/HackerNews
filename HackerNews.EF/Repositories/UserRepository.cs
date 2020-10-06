@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.EF.Repositories
 {
-	public class UserRepository : EntityRepository<User>, IUserRepository
+	public class UserRepository : EntityRepository<User>, IUserLoginRepository
 	{
 		public UserRepository(HackerNewsContext context) : base(context)
 		{

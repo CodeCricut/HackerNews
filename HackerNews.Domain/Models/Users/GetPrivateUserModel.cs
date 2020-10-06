@@ -10,11 +10,6 @@ namespace HackerNews.Domain.Models.Users
 
 		}
 
-		public GetPrivateUserModel(string jwtToken)
-		{
-			JwtToken = jwtToken;
-		}
-
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

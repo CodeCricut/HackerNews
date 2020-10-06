@@ -34,8 +34,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			return _mapper.Map<GetPrivateUserModel>(addedEntity);
 		}
 
-
-		public override Task PostEntityModelsAsync(List<RegisterUserModel> entityModels, Domain.User currentUser)
+		public override Task PostEntityModelsAsync(IEnumerable<RegisterUserModel> entityModels, Domain.User currentUser)
 		{
 			throw new UnauthorizedException("Not permitted to register mutliple users at once.");
 		}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {
-	public abstract class VoteArticleService :
+	public class VoteArticleService :
 		VoteEntityService<Article>
 	{
 		private readonly IEntityRepository<Article> _entityRepository;

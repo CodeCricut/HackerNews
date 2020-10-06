@@ -12,20 +12,9 @@ namespace HackerNews.Api.Controllers.Interfaces
 		where TPostModel : PostEntityModel
 		where TGetModel : GetEntityModel
 	{
-		[HttpPost]
-		[Authorize]
 		Task<ActionResult<TGetModel>> PostAsync([FromBody] TPostModel postModel);
-
-		[HttpPost("range")]
-		[Authorize]
 		Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<TPostModel> postModels);
-
-		[HttpPut("{key:int}")]
-		[Authorize]
 		Task<ActionResult<TGetModel>> Put(int key, [FromBody] TPostModel updateModel);
-
-		[HttpDelete("{key:int}")]
-		[Authorize]
 		Task<ActionResult> Delete(int key);
 	}
 }

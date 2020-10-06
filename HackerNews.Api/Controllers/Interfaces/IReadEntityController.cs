@@ -10,10 +10,8 @@ namespace HackerNews.Api.Controllers.Interfaces
 		where TEntity : DomainEntity
 		where TGetModel : GetEntityModel
 	{
-		[HttpGet]
 		Task<ActionResult<PagedList<TGetModel>>> GetAsync([FromQuery] PagingParams pagingParams);
 
-		[HttpGet("{key:int}")]
 		Task<ActionResult<TGetModel>> GetByIdAsync(int key);
 	}
 }

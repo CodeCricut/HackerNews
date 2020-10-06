@@ -30,13 +30,13 @@ namespace HackerNews.Controllers
 			return View(new RegisterUserModel());
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Register(RegisterUserModel registerModel)
-		{
-			GetPublicUserModel addedUser = await _userApi.PostEndpointAsync("users/register", registerModel);
+		//[HttpPost]
+		//public async Task<IActionResult> Register(RegisterUserModel registerModel)
+		//{
+		//	GetPublicUserModel addedUser = await _userApi.PostEndpointAsync("users/register", registerModel);
 
 
-		}
+		//}
 
 
 		public ViewResult Login()
