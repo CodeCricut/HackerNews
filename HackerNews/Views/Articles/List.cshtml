@@ -3,11 +3,30 @@
 @{ 
     ViewData["Title"] = "List View";
 }
-@foreach(var article in Model.GetModels)
-{
-    <div>
-        <h2>@article.Id</h2>
-        <h2>@article.Title</h2>
-        <h2>@article.Text</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 col-lg-4" bgcolor="#ff6600">HackerNews</div>
     </div>
-}
+    @foreach (var article in Model.GetModels)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-6 bg-primary">
+                <span>@article.Id</span>
+                <span>@article.Title</span>    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-md-6">
+                <span class="pr-1">@article.Karma</span>
+                <span class="px-1">
+                by @Html.ActionLink($"{article.UserId}", "Details", "Users", new { id = article.UserId })
+                </span>
+                <span class="px-1">at @article.PostDate</span>
+                <span class="pl-1">
+                    | @Html.ActionLink($"{article.CommentIds.Count} comments", "Details", new {  id = article.Id  }) |
+                </span>
+            </div>
+        </div>
+    }
+</div>
