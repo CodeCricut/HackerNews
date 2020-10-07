@@ -1,10 +1,12 @@
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Auth;
+using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Default.ArticleServices;
+using HackerNews.Helpers.ApiServices.Default.BoardServices;
 using HackerNews.Helpers.ApiServices.Default.UserServices;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -33,12 +35,13 @@ namespace HackerNews
 
 			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-
 			services.AddHttpClient();
+
+			services.AddScoped<IApiReader<GetBoardModel>, BoardApiReader>();
+			services.AddScoped<IApiModifier<Board, PostBoardModel, GetBoardModel>, BoardApiModifier>();
 
 			services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
 			services.AddScoped<IApiModifier<Article, PostArticleModel, GetArticleModel>, ArticleApiModifier>();
-			//services.AddScoped<IApiReader<GetCommentModel>, Commen>
 
 			services.AddScoped<IApiReader<GetPublicUserModel>, PublicUserApiReader>();
 			services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();
