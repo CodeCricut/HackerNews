@@ -54,5 +54,6 @@ namespace HackerNews.Controllers
 
 			return RedirectToAction("Details", new { model.Id });
 		}
+
 	}
 }

@@ -1,8 +1,10 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
+using HackerNews.Domain.Parameters;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
+using HackerNews.ViewModels.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -52,7 +54,8 @@ namespace HackerNews.Controllers
 
 		public ViewResult Login()
 		{
-			return View(new LoginModel());
+			var model = new UserLoginViewModel { PostModel = new LoginModel() };
+			return View(model);
 		}
 
 
@@ -70,7 +73,26 @@ namespace HackerNews.Controllers
 		public async Task<ViewResult> Me()
 		{
 			GetPrivateUserModel privateModel = await _privateUserReader.GetEndpointAsync($"{USER_ENDPOINT}/me", 0);
-			return View(privateModel);
+			var model = new PrivateUserDetailsViewModel { GetModel = privateModel };
+
+			return View(model);
+		}
+
+		public async Task<ActionResult<PublicUserDetailsViewModel>> Details(int id)
+		{
+			var user = await _publicUserReader.GetEndpointAsync(USER_ENDPOINT, id);
+
+			var returnModel = new PublicUserDetailsViewModel { GetModel = user };
+			return View(returnModel);
+		}
+
+		public async Task<ActionResult<UsersListViewModel>> List(int pageNumber, int pageSize)
+		{
+			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
+			var users = await _publicUserReader.GetEndpointAsync(USER_ENDPOINT, pagingParams);
+
+			var returnModel = new UsersListViewModel { GetModels = users };
+			return View(returnModel);
 		}
 	}
 }
