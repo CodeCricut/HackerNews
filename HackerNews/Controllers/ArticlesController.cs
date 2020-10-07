@@ -4,6 +4,7 @@ using HackerNews.Domain.Parameters;
 using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
+using HackerNews.ViewModels.Articles;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -27,8 +28,8 @@ namespace HackerNews.Controllers
 		{
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
 			var articleModels = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, pagingParams);
-
-			var viewModel = new ArticlesListViewModel { ArticleModels = articleModels };
+		
+			var viewModel = new ArticleListViewModel { GetModels = articleModels };
 
 			return View(viewModel);
 		}
@@ -37,12 +38,13 @@ namespace HackerNews.Controllers
 		{
 			var articleModel = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, id);
 
-			return View(new ArticlesDetailsViewModel { ArticleModel = articleModel });
+			return View(new ArticleDetailsViewModel { GetModel = articleModel });
 		}
 
 		public ViewResult Create()
 		{
-			return View(new PostArticleModel());
+			var model = new ArticleCreateViewModel { PostModel = new PostArticleModel() };
+			return View(model);
 		}
 
 		[HttpPost]

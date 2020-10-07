@@ -1,4 +1,4 @@
-﻿@model ArticlesDetailsViewModel
+﻿@model ArticleDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -20,10 +20,10 @@
         </thead>
         <tbody>
             <tr>
-                <td>@Model.ArticleModel.Id</td>
-                <td>@Model.ArticleModel.BoardId</td>
-                <td>@Model.ArticleModel.Title</td>
-                <td>@Model.ArticleModel.Text</td>
+                <td>@Model.GetModel.Id</td>
+                <td>@Model.GetModel.BoardId</td>
+                <td>@Model.GetModel.Title</td>
+                <td>@Model.GetModel.Text</td>
             </tr>
         </tbody>
     </table>

@@ -1,9 +1,9 @@
-﻿@model ArticlesListViewModel
+﻿@model ArticleListViewModel
 
 @{ 
     ViewData["Title"] = "List View";
 }
-@foreach(var article in Model.ArticleModels)
+@foreach(var article in Model.GetModels)
 {
     <div>
         <h2>@article.Id</h2>

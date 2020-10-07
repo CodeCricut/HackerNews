@@ -1,4 +1,4 @@
-﻿@model HackerNews.Domain.Models.Articles.PostArticleModel
+﻿@model HackerNews.ViewModels.Articles.ArticleCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,24 +13,24 @@
         <form asp-controller="Articles" asp-action="Post" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="PostModel.Title" class="control-label"></label>
+                <input asp-for="PostModel.Title" class="form-control" />
+                <span asp-validation-for="PostModel.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
+                <label asp-for="PostModel.Text" class="control-label"></label>
+                <input asp-for="PostModel.Text" class="form-control" />
+                <span asp-validation-for="PostModel.Text" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
+                <label asp-for="PostModel.Type" class="control-label"></label>
+                <input asp-for="PostModel.Type" class="form-control" />
+                <span asp-validation-for="PostModel.Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BoardId" class="control-label"></label>
-                <input asp-for="BoardId" class="form-control" />
-                <span asp-validation-for="BoardId" class="text-danger"></span>
+                <label asp-for="PostModel.BoardId" class="control-label"></label>
+                <input asp-for="PostModel.BoardId" class="form-control" />
+                <span asp-validation-for="PostModel.BoardId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
