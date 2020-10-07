@@ -7,6 +7,7 @@ using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Default.ArticleServices;
 using HackerNews.Helpers.ApiServices.Default.BoardServices;
+using HackerNews.Helpers.ApiServices.Default.CommentServices;
 using HackerNews.Helpers.ApiServices.Default.UserServices;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,9 @@ namespace HackerNews
 			services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
 			services.AddScoped<IApiModifier<Article, PostArticleModel, GetArticleModel>, ArticleApiModifier>();
 
+			services.AddScoped<IApiReader<GetCommentModel>, CommentApiReader>();
+			services.AddScoped<IApiModifier<Comment, PostCommentModel, GetCommentModel>, CommentApiModifier>();
+
 			services.AddScoped<IApiReader<GetPublicUserModel>, PublicUserApiReader>();
 			services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();
 			services.AddScoped<IApiModifier<User, RegisterUserModel, GetPrivateUserModel>, PrivateUserApiModifier>();
@@ -52,8 +56,6 @@ namespace HackerNews
 
 			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddTransient<ICookieService, CookieService>();
-
-
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
