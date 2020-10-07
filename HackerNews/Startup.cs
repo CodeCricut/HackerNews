@@ -4,12 +4,13 @@ using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Default.ArticleServices;
 using HackerNews.Helpers.ApiServices.Default.BoardServices;
 using HackerNews.Helpers.ApiServices.Default.CommentServices;
 using HackerNews.Helpers.ApiServices.Default.UserServices;
 using HackerNews.Helpers.ApiServices.Interfaces;
+using HackerNews.Helpers.Cookies;
+using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,7 @@ namespace HackerNews
 
 			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddTransient<ICookieService, CookieService>();
+			services.AddTransient<IJwtService, JwtCookieService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

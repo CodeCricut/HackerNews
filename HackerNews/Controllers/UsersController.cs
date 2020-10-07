@@ -1,8 +1,8 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
-using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Interfaces;
+using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -11,20 +11,20 @@ namespace HackerNews.Controllers
 	public class UsersController : Controller
 	{
 		private static readonly string USER_ENDPOINT = "users";
-		private readonly ICookieService _cookieService;
+		private readonly IJwtService _jwtService;
 		private readonly IApiReader<GetPublicUserModel> _publicUserReader;
 		private readonly IApiReader<GetPrivateUserModel> _privateUserReader;
 		private readonly IApiModifier<User, RegisterUserModel, GetPrivateUserModel> _privateUserModifier;
 		private readonly IApiLoginFacilitator<LoginModel, GetPrivateUserModel> _loginFacilitator;
 
 		public UsersController(
-			ICookieService cookieService, 
+			IJwtService jwtService,
 			IApiReader<GetPublicUserModel> publicUserReader,
 			IApiReader<GetPrivateUserModel> privateUserReader,
 			IApiModifier<User, RegisterUserModel, GetPrivateUserModel> privateUserModifier,
 			IApiLoginFacilitator<LoginModel, GetPrivateUserModel> loginFacilitator)
 		{
-			_cookieService = cookieService;
+			_jwtService = jwtService;
 			_publicUserReader = publicUserReader;
 			_privateUserReader = privateUserReader;
 			_privateUserModifier = privateUserModifier;
@@ -62,7 +62,7 @@ namespace HackerNews.Controllers
 			GetPrivateUserModel userResponse = await _loginFacilitator.GetUserByCredentialsAsync(authRequest);
 
 			// TODO: refactor to JWT service
-			_cookieService.Set("JWT", userResponse.JwtToken, 60);
+			_jwtService.SetToken(userResponse.JwtToken, 60);
 
 			return RedirectToAction("Me");
 		}
