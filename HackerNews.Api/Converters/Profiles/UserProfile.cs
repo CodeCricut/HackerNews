@@ -24,7 +24,10 @@ namespace HackerNews.Api.Converters.Profiles
 				.ForMember(model => model.SavedComments, user => user.MapFrom(u => u.SavedComments.Select(sc => sc.CommentId)))
 
 				.ForMember(model => model.LikedArticles, user => user.MapFrom(u => u.LikedArticles.Select(la => la.ArticleId)))
-				.ForMember(model => model.LikedComments, user => user.MapFrom(u => u.LikedComments.Select(lc => lc.CommentId)));
+				.ForMember(model => model.LikedComments, user => user.MapFrom(u => u.LikedComments.Select(lc => lc.CommentId)))
+				
+				.ForMember(model => model.BoardsModerating, user => user.MapFrom(u => u.BoardsModerating.Select(bm => bm.BoardId)))
+				.ForMember(model => model.BoardsSubscribed, user => user.MapFrom(u => u.BoardsSubscribed.Select(bs => bs.BoardId)));
 		}
 	}
 }

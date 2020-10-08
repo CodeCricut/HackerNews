@@ -30,7 +30,9 @@ namespace HackerNews.EF.Repositories
 				.Include(u => u.SavedArticles)
 				.Include(u => u.SavedComments)
 				.Include(u => u.LikedArticles)
-				.Include(u => u.LikedComments);
+				.Include(u => u.LikedComments)
+				.Include(u => u.BoardsModerating)
+				.Include(u => u.BoardsSubscribed);
 		}
 	}
 }

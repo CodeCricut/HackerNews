@@ -30,5 +30,8 @@ namespace HackerNews.Domain.Models.Users
 		public DateTime JoinDate { get; set; }
 
 		public string JwtToken { get; set; }
+
+		public List<int> BoardsSubscribed { get; set; }
+		public List<int> BoardsModerating { get; set; }
 	}
 }
