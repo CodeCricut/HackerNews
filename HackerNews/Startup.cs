@@ -41,6 +41,7 @@ namespace HackerNews
 
 			services.AddScoped<IApiReader<GetBoardModel>, BoardApiReader>();
 			services.AddScoped<IApiModifier<Board, PostBoardModel, GetBoardModel>, BoardApiModifier>();
+			services.AddScoped<IApiBoardModeratorAdder, ApiBoardModeratorAdder>();
 
 			services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
 			services.AddScoped<IApiModifier<Article, PostArticleModel, GetArticleModel>, ArticleApiModifier>();
