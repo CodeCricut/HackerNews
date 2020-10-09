@@ -17,6 +17,7 @@ namespace HackerNews.EF.Repositories
 		Task<IEnumerable<EntityT>> AddEntititesAsync(List<EntityT> entities);
 		Task<EntityT> GetEntityAsync(int id);
 		Task<PagedList<EntityT>> GetEntitiesAsync(PagingParams pagingParams);
+		Task<IEnumerable<EntityT>> GetEntitiesAsync(IEnumerable<int> ids);
 		Task UpdateEntityAsync(int id, EntityT updatedEntity);
 		Task SoftDeleteEntityAsync(int id);
 		Task<bool> SaveChangesAsync();

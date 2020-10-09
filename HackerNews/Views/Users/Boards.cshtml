@@ -1,0 +1,43 @@
+﻿@model HackerNews.ViewModels.Users.UserBoardsView
+@{
+    ViewData["Title"] = "Boards";
+}
+
+<h2>Subscribed Boards</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BoardsSubscribed)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Moderating Boards</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BoardsModerating)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,50 @@
+﻿@model HackerNews.ViewModels.Users.UserSavedView
+@inject HackerNews.Helpers.ApiServices.Interfaces.IApiReader<HackerNews.Domain.Models.Users.GetPublicUserModel> _userReader
+
+@{
+    ViewData["Title"] = "Saved";
+}
+
+<h2>Saved Articles</h2>
+@foreach (var article in Model.SavedArticles)
+{
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-lg-6 bg-primary">
+            <span>@article.Id</span>
+            <span>@article.Title</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-md-6">
+            <span class="pr-1">@article.Karma</span>
+            <span class="px-1">
+                @{
+                    var user = await _userReader.GetEndpointAsync("Users", article.UserId);
+                }
+                by @Html.ActionLink($"{user.Username}", "Details", "Users", new { id = article.UserId })
+            </span>
+            <span class="px-1">at @article.PostDate</span>
+            <span class="pl-1">
+                | @Html.ActionLink($"{article.CommentIds.Count} comments", "Details", "Comments", new { id = article.Id }) |
+            </span>
+        </div>
+    </div>
+}
+
+<h2>Saved Comments</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SavedComments)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Text</td>
+            </tr>
+        }
+    </tbody>
+</table>

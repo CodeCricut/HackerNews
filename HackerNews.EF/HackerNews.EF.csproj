@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

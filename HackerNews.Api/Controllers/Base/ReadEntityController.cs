@@ -1,0 +1,37 @@
+﻿using HackerNews.Api.Controllers.Interfaces;
+using HackerNews.Api.Helpers.EntityServices.Interfaces;
+using HackerNews.Domain;
+using HackerNews.Domain.Models;
+using HackerNews.Domain.Parameters;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
+namespace HackerNews.Api.Controllers.Base
+{
+	public abstract class ReadEntityController<TEntity, TGetEntityModel> : ControllerBase, IReadEntityController<TEntity, TGetEntityModel>
+		where TEntity : DomainEntity
+		where TGetEntityModel : GetEntityModel
+	{
+		protected readonly IReadEntityService<TEntity, TGetEntityModel> _readService;
+
+		public ReadEntityController(IReadEntityService<TEntity, TGetEntityModel> readService)
+		{
+			_readService = readService;
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<PagedList<TGetEntityModel>>> GetAsync(PagingParams pagingParams)
+		{
+			PagedList<TGetEntityModel> models = await _readService.GetAllEntityModelsAsync(pagingParams);
+			return Ok(models);
+		}
+
+		[HttpGet("{key:int}")]
+		public async Task<ActionResult<TGetEntityModel>> GetByIdAsync(int key)
+		{
+			var model = await _readService.GetEntityModelAsync(key);
+
+			return Ok(model);
+		}
+	}
+}

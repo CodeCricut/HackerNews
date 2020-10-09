@@ -1,0 +1,54 @@
+﻿@model HackerNews.ViewModels.Boards.BoardAdminViewModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<h2>Moderators</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 col-lg-4" bgcolor="#ff6600">HackerNews</div>
+    </div>
+    @foreach (var moderator in Model.Moderators)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-6 bg-primary">
+                <span>@moderator.Id</span>
+                <span>@moderator.Username</span>
+            </div>
+        </div>
+    }
+</div>
+
+<h2>Add Moderator</h2>
+<form asp-action="AddModerator">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Board.Id" class="control-label"></label>
+        <input asp-for="Board.Id" class="form-control" />
+        <span asp-validation-for="Board.Id" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ModeratorAddedId" class="control-label"></label>
+        <input asp-for="ModeratorAddedId" class="form-control" />
+        <span asp-validation-for="ModeratorAddedId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add Moderator" class="btn btn-primary" />
+    </div>
+</form>
+
+<h2>Subscribers</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 col-lg-4" bgcolor="#ff6600">HackerNews</div>
+    </div>
+    @foreach (var subscriber in Model.Subscribers)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-lg-6 bg-primary">
+                <span>@subscriber.Id</span>
+                <span>@subscriber.Username</span>
+            </div>
+        </div>
+    }
+</div>

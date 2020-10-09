@@ -1,0 +1,22 @@
+﻿@model HackerNews.ViewModels.Users.UserCommentsListView
+@inject HackerNews.Helpers.ApiServices.Interfaces.IApiReader<HackerNews.Domain.Models.Board.GetBoardModel> _boardReader
+@{
+    ViewData["Title"] = "Comments";
+}
+
+<h2>Comments</h2>
+
+@foreach (var item in Model.GetModels)
+{
+    <tr>
+        @{ 
+            var board = await _boardReader.GetEndpointAsync("Boards", item.BoardId);
+        }
+        <td>@item.Id</td>
+        <td>@item.Text</td>
+        @*<td>
+            @board.Title
+        </td>*@
+    </tr>
+}
+

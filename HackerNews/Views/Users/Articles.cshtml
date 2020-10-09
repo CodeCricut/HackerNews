@@ -1,0 +1,26 @@
+﻿@model HackerNews.ViewModels.Users.UserArticlesListView
+
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<h2>Articles</h2>
+
+@foreach (var article in Model.GetModels)
+{
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-lg-6 bg-primary">
+            <span>@article.Id</span>
+            <span>@article.Title</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-md-6">
+            <span class="pr-1">@article.Karma</span>
+            <span class="px-1">at @article.PostDate</span>
+            <span class="pl-1">
+                | @Html.ActionLink($"{article.CommentIds.Count} comments", "Details", "Articles", new { id = article.Id }) |
+            </span>
+        </div>
+    </div>
+}

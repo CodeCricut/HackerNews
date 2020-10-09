@@ -1,4 +1,5 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Api.DB_Helpers;
+using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Parameters;
 using HackerNews.EF.Repositories;
@@ -101,5 +102,10 @@ namespace HackerNews.EF
 		}
 
 		public abstract IQueryable<EntityT> IncludeChildren(IQueryable<EntityT> queryable);
+
+		public async Task<IEnumerable<EntityT>> GetEntitiesAsync(IEnumerable<int> ids)
+		{
+			return await TaskHelper.RunConcurrentTasksAsync<int, EntityT>(ids.ToList(), id => GetEntityAsync(id));
+		}
 	}
 }

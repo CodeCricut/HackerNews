@@ -1,0 +1,23 @@
+﻿@model HackerNews.ViewModels.Users.UsersListViewModel
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1 class="h1">List</h1>
+
+<div>
+    @foreach (var item in Model.GetModels)
+    {
+        <div class="panel">
+            <div class="panel-title">
+                @Html.ActionLink($"{item.Username}", "Details", "Users", new { id = item.Id })</div>
+            <div class="panel-body">
+                @Html.ActionLink("Articles", "Articles", "Users", new { id = item.Id })
+                <div class="panel-footer">
+                    Joined @item.JoinDate | @item.Karma karma
+                </div>
+            </div>
+        </div>
+    }
+</div>

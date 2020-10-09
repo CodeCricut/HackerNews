@@ -1,0 +1,22 @@
+﻿@model HackerNews.ViewModels.Boards.BoardModeratorsListViewModel
+@{
+    ViewData["Title"] = "Moderators";
+}
+
+<h2>Moderators</h2>
+<div>
+    @foreach (var mod in Model.Moderators)
+    {
+        <div class="panel">
+            <div class="panel-title">
+                @Html.ActionLink($"{mod.Username}", "Details", "Users", new { id = mod.Id })
+            </div>
+            <div class="panel-body">
+                @Html.ActionLink("Articles", "Articles", "Users", new { id = mod.Id })
+                <div class="panel-footer">
+                    Joined @mod.JoinDate | @mod.Karma karma
+                </div>
+            </div>
+        </div>
+    }
+</div>
