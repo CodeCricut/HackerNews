@@ -1,5 +1,7 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Api.DB_Helpers;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Parameters;
 using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Interfaces;
@@ -15,13 +17,16 @@ namespace HackerNews.Controllers
 		private static readonly string ARTICLE_ENDPOINT = "articles";
 		private readonly IApiReader<GetArticleModel> _articleReader;
 		private readonly IApiModifier<Article, PostArticleModel, GetArticleModel> _articleModifier;
+		private readonly IApiReader<GetCommentModel> _commentReader;
 
 		public ArticlesController(
 			IApiReader<GetArticleModel> articleReader,
-			IApiModifier<Article, PostArticleModel, GetArticleModel> articleModifier)
+			IApiModifier<Article, PostArticleModel, GetArticleModel> articleModifier,
+			IApiReader<GetCommentModel> commentReader)
 		{
 			_articleReader = articleReader;
 			_articleModifier = articleModifier;
+			_commentReader = commentReader;
 		}
 
 		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
@@ -37,8 +42,9 @@ namespace HackerNews.Controllers
 		public async Task<ViewResult> Details(int id)
 		{
 			var articleModel = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, id);
+			var comments = await TaskHelper.RunConcurrentTasksAsync(articleModel.CommentIds, commentId => _commentReader.GetEndpointAsync("Comments", commentId));
 
-			return View(new ArticleDetailsViewModel { GetModel = articleModel });
+			return View(new ArticleDetailsViewModel { GetModel = articleModel , Comments = comments });
 		}
 
 		public ViewResult Create()
