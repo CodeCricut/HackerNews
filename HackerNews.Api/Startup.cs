@@ -1,44 +1,32 @@
 using AutoMapper;
-using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices;
-using HackerNews.Api.Helpers.EntityServices.Base;
-using HackerNews.Api.Helpers.EntityServices.Default;
 using HackerNews.Api.Helpers.Filters;
 using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Api.Helpers.StartupExtensions;
-using HackerNews.Domain;
-using HackerNews.Domain.Errors;
 using HackerNews.EF;
-using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
+using System.Web.Http;
 
 namespace HackerNews.Api
 {
 	public class Startup
 	{
 		private static string SWAGGER_DOC_NAME = "v1";
+		public IConfiguration Configuration { get; }
 
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
 
-		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -63,6 +51,8 @@ namespace HackerNews.Api
 					.AddUserServices()
 					.AddBoardServices();
 
+			services.AddJwtServices();
+
 			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));
 
 			// Register the Swagger generator, defining 1 or more Swagger documents
@@ -84,8 +74,34 @@ namespace HackerNews.Api
 				var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 				opt.IncludeXmlComments(xmlPath);
+
+				// Add JWT support to the UI
+				opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+					Name = "Authorization",
+					Type = SecuritySchemeType.ApiKey,
+					Scheme = "Bearer",
+					BearerFormat = "JWT",
+					In = ParameterLocation.Header,
+					Description = "JWT Authorization header using the Bearer scheme."
+				});
+
+				opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+				{
+					{
+						  new OpenApiSecurityScheme
+							{
+								Reference = new OpenApiReference
+								{
+									Type = ReferenceType.SecurityScheme,
+									Id = "Bearer"
+								}
+							},
+							new string[] {}
+
+					}
+				});
 			});
-			
+
 
 			services.AddMvcCore();//.AddApiExplorer();
 		}
@@ -93,9 +109,11 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HackerNewsContext dbContext)
 		{
+			
+
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
-			
+
 			app.UseApiExceptionHandler();
 
 			if (env.IsDevelopment())

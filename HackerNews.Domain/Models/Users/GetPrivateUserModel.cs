@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Domain.Models.Users
 {
 	public class GetPrivateUserModel : GetEntityModel
 	{
+		public GetPrivateUserModel()
+		{
+
+		}
+
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -24,5 +28,10 @@ namespace HackerNews.Domain.Models.Users
 		public List<int> LikedComments { get; set; }
 
 		public DateTime JoinDate { get; set; }
+
+		public string JwtToken { get; set; }
+
+		public List<int> BoardsSubscribed { get; set; }
+		public List<int> BoardsModerating { get; set; }
 	}
 }

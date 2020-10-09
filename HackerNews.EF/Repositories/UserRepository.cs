@@ -1,16 +1,11 @@
 ﻿using HackerNews.Domain;
-using HackerNews.Domain.Helpers;
-using HackerNews.Domain.Parameters;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.EF.Repositories
 {
-	public class UserRepository : EntityRepository<User>, IUserRepository
+	public class UserRepository : EntityRepository<User>, IUserLoginRepository
 	{
 		public UserRepository(HackerNewsContext context) : base(context)
 		{
@@ -35,7 +30,9 @@ namespace HackerNews.EF.Repositories
 				.Include(u => u.SavedArticles)
 				.Include(u => u.SavedComments)
 				.Include(u => u.LikedArticles)
-				.Include(u => u.LikedComments);
+				.Include(u => u.LikedComments)
+				.Include(u => u.BoardsModerating)
+				.Include(u => u.BoardsSubscribed);
 		}
 	}
 }

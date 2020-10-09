@@ -1,0 +1,45 @@
+﻿@model HackerNews.ViewModels.Articles.ArticleCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>PostArticleModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Articles" asp-action="Post" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PostModel.Title" class="control-label"></label>
+                <input asp-for="PostModel.Title" class="form-control" />
+                <span asp-validation-for="PostModel.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostModel.Text" class="control-label"></label>
+                <input asp-for="PostModel.Text" class="form-control" />
+                <span asp-validation-for="PostModel.Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostModel.Type" class="control-label"></label>
+                <input asp-for="PostModel.Type" class="form-control" />
+                <span asp-validation-for="PostModel.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostModel.BoardId" class="control-label"></label>
+                <input asp-for="PostModel.BoardId" class="form-control" />
+                <span asp-validation-for="PostModel.BoardId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

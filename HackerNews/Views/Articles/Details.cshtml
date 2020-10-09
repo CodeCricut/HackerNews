@@ -1,0 +1,52 @@
+﻿@model ArticleDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Article</h4>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Board ID</td>
+                <td>Title</td>
+                <td>Text</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.GetModel.Id</td>
+                <td>@Model.GetModel.BoardId</td>
+                <td>@Model.GetModel.Title</td>
+                <td>@Model.GetModel.Text</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<h2>Comments</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Comments)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Text</td>
+            </tr>
+        }
+    </tbody>
+</table>

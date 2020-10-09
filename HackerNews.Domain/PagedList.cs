@@ -3,7 +3,6 @@ using HackerNews.Domain.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.Domain
 {
@@ -21,7 +20,7 @@ namespace HackerNews.Domain
 			TotalCount = count;
 			PageSize = pagingParams.PageSize;
 			CurrentPage = pagingParams.PageNumber;
-			TotalPages = (int)Math.Ceiling(count / (double) pagingParams.PageSize);
+			TotalPages = (int)Math.Ceiling(count / (double)pagingParams.PageSize);
 			AddRange(items);
 		}
 

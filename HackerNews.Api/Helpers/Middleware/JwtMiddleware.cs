@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using HackerNews.Domain;
-using HackerNews.Domain.Models;
 using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
