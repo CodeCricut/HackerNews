@@ -1,16 +1,13 @@
-﻿using HackerNews.Api.DB_Helpers;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Users;
-using HackerNews.Domain.Parameters;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Boards;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Controllers

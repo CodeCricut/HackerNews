@@ -15,10 +15,8 @@ namespace HackerNews.Api.Controllers.ArticleControllers
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
 		private readonly IVoteableEntityService<Article> _articleVoter;
 
-		public VoteArticleController(IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService,
-			IVoteableEntityService<Article> articleVoter)
+		public VoteArticleController(IVoteableEntityService<Article> articleVoter)
 		{
-			_userAuthService = userAuthService;
 			_articleVoter = articleVoter;
 		}
 
@@ -26,9 +24,7 @@ namespace HackerNews.Api.Controllers.ArticleControllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _articleVoter.VoteEntityAsync(entityId, upvote, user);
+			await _articleVoter.VoteEntityAsync(entityId, upvote);
 
 			return Ok();
 		}

@@ -1,27 +1,39 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Repository;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.EF.Repositories;
+using HackerNews.Domain.Models.Auth;
+using HackerNews.Domain.Models.Users;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 {
 	public class VoteCommentService : VoteEntityService<Comment>
 	{
-		private readonly IEntityRepository<Comment> _entityRepository;
 		private readonly IMapper _mapper;
+		private readonly IWriteEntityRepository<Comment> _writeRepo;
+		private readonly IReadEntityRepository<Comment> _readRepo;
+		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 
-		public VoteCommentService(IEntityRepository<Comment> entityRepository, IMapper mapper)
+		public VoteCommentService(IMapper mapper,
+			IWriteEntityRepository<Comment> writeRepo,
+			IReadEntityRepository<Comment> readRepo,
+			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth)
 		{
-			_entityRepository = entityRepository;
 			_mapper = mapper;
+			_writeRepo = writeRepo;
+			_readRepo = readRepo;
+			_userAuth = userAuth;
 		}
 
-		public override async Task VoteEntityAsync(int id, bool upvote, User currentUser)
+		public override async Task VoteEntityAsync(int id, bool upvote)
 		{
-			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
+			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
 
-			var comment = await _entityRepository.GetEntityAsync(id);
+			var currentUser = await _userAuth.GetAuthenticatedUser();
+
+			var comment = await _readRepo.GetEntityAsync(id);
 
 			if (upvote)
 			{
@@ -49,8 +61,8 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 				currentUser.DislikedComments.Add(userDislike);
 			}
 
-			await _entityRepository.UpdateEntityAsync(id, comment);
-			await _entityRepository.SaveChangesAsync();
+			await _writeRepo.UpdateEntityAsync(id, comment);
+			await _writeRepo.SaveChangesAsync();
 		}
 	}
 }

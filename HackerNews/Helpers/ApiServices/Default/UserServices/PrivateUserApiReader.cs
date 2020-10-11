@@ -1,12 +1,8 @@
 ﻿using HackerNews.Domain.Models.Users;
-using HackerNews.Domain.Parameters;
 using HackerNews.Helpers.ApiServices.Base;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;

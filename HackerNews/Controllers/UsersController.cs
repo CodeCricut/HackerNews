@@ -1,16 +1,15 @@
-﻿using HackerNews.Api.DB_Helpers;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using HackerNews.Domain.Parameters;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using HackerNews.ViewModels.Users;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HackerNews.Controllers

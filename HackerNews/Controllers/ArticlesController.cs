@@ -1,9 +1,8 @@
-﻿using HackerNews.Api.DB_Helpers;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Comments;
-using HackerNews.Domain.Parameters;
-using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Articles;
@@ -33,7 +32,7 @@ namespace HackerNews.Controllers
 		{
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
 			var articleModels = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, pagingParams);
-		
+
 			var viewModel = new ArticleListViewModel { GetModels = articleModels };
 
 			return View(viewModel);
@@ -44,7 +43,7 @@ namespace HackerNews.Controllers
 			var articleModel = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, id);
 			var comments = await TaskHelper.RunConcurrentTasksAsync(articleModel.CommentIds, commentId => _commentReader.GetEndpointAsync("Comments", commentId));
 
-			return View(new ArticleDetailsViewModel { GetModel = articleModel , Comments = comments });
+			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments });
 		}
 
 		public ViewResult Create()

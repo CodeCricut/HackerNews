@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.EntityModelServices;
+using CleanEntityArchitecture.Repository;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Users;
-using HackerNews.EF.Repositories;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
-	public class ReadPublicUserService : ReadEntityService<Domain.User, GetPublicUserModel>
+	public class ReadPublicUserService : ReadEntityService<User, GetPublicUserModel>
 	{
-		public ReadPublicUserService(IMapper mapper, IEntityRepository<Domain.User> entityRepository) : base(mapper, entityRepository)
+		public ReadPublicUserService(IMapper mapper, IReadEntityRepository<User> readRepository) : base(mapper, readRepository)
 		{
 		}
 	}

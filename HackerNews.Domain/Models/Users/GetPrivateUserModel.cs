@@ -1,9 +1,10 @@
-﻿using System;
+﻿using CleanEntityArchitecture.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace HackerNews.Domain.Models.Users
 {
-	public class GetPrivateUserModel : GetEntityModel
+	public class GetPrivateUserModel : GetModelDto
 	{
 		public GetPrivateUserModel()
 		{

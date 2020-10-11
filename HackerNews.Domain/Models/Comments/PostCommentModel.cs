@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CleanEntityArchitecture.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace HackerNews.Domain.Models.Comments
 {
-	public class PostCommentModel : PostEntityModel
+	public class PostCommentModel : PostModelDto
 	{
 		[Required]
 		public string Text { get; set; }

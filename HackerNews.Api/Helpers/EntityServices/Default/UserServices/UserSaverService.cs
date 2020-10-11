@@ -1,32 +1,33 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Users;
-using HackerNews.EF.Repositories;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
 	public class UserSaverService : IUserSaverService
 	{
-		private readonly IEntityRepository<Article> _articleRepo;
-		private readonly IEntityRepository<Comment> _commentRepo;
 		private readonly IMapper _mapper;
+		private readonly IReadEntityRepository<Article> _readArticleRepo;
+		private readonly IReadEntityRepository<Comment> _readCommentRepo;
 
-		public UserSaverService(IEntityRepository<Article> articleRepo,
-			IEntityRepository<Comment> commentRepo,
-			IMapper mapper)
+		public UserSaverService(
+			IMapper mapper,
+			IReadEntityRepository<Article> readArticleRepo,
+			IReadEntityRepository<Comment> readCommentRepo)
 		{
-			_articleRepo = articleRepo;
-			_commentRepo = commentRepo;
 			_mapper = mapper;
+			_readArticleRepo = readArticleRepo;
+			_readCommentRepo = readCommentRepo;
 		}
 
 		public virtual async Task<GetPrivateUserModel> SaveArticleToUserAsync(User user, int articleId)
 		{
 			// TODO: this is not working
-			var article = await _articleRepo.GetEntityAsync(articleId);
+			var article = await _readArticleRepo.GetEntityAsync(articleId);
 
 			if (user == null || article == null) throw new NotFoundException();
 
@@ -35,9 +36,9 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			user.SavedArticles.Add(userArticle);
 			article.UsersSaved.Add(userArticle);
 
-			await _articleRepo.SaveChangesAsync();
+			await _readArticleRepo.SaveChangesAsync();
 
-			var updatedArticle = await _articleRepo.GetEntityAsync(articleId);
+			var updatedArticle = await _readArticleRepo.GetEntityAsync(articleId);
 
 
 			return _mapper.Map<GetPrivateUserModel>(user);
@@ -47,7 +48,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 		{
 			// TODO: this is not working
 
-			var comment = await _commentRepo.GetEntityAsync(commentId);
+			var comment = await _readCommentRepo.GetEntityAsync(commentId);
 
 			if (user == null || comment == null) throw new NotFoundException();
 			// add relationship
@@ -55,7 +56,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			user.SavedComments.Add(userComment);
 			comment.UsersSaved.Add(userComment);
 
-			await _commentRepo.SaveChangesAsync();
+			await _readCommentRepo.SaveChangesAsync();
 
 			return _mapper.Map<GetPrivateUserModel>(user);
 		}

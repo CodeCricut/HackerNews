@@ -10,4 +10,8 @@
     <None Remove="Models\RequestObjects\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj" />
+  </ItemGroup>
+
 </Project>

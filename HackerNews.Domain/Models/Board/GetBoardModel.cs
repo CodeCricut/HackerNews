@@ -1,9 +1,10 @@
-﻿using System;
+﻿using CleanEntityArchitecture.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace HackerNews.Domain.Models.Board
 {
-	public class GetBoardModel : GetEntityModel
+	public class GetBoardModel : GetModelDto
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }

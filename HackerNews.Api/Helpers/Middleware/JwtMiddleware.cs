@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Repository;
 using HackerNews.Domain;
-using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -39,17 +39,17 @@ namespace HackerNews.Api.Helpers.Middleware
 			_appSettings = appSettings.Value;
 		}
 
-		public async Task Invoke(HttpContext context, IEntityRepository<User> userService)
+		public async Task Invoke(HttpContext context, IReadEntityRepository<User> readUserRepo)
 		{
 			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
 			if (token != null)
-				await AttachAuthenticateUserResponseToContextAsync(context, userService, token);
+				await AttachAuthenticateUserResponseToContextAsync(context, readUserRepo, token);
 
 			await _next(context);
 		}
 
-		private async Task AttachAuthenticateUserResponseToContextAsync(HttpContext context, IEntityRepository<User> userService, string token)
+		private async Task AttachAuthenticateUserResponseToContextAsync(HttpContext context, IReadEntityRepository<User> readUserRepo, string token)
 		{
 			try
 			{
@@ -69,7 +69,7 @@ namespace HackerNews.Api.Helpers.Middleware
 				var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
 				// attach user to context on successful jwt validation
-				context.Items["User"] = await userService.GetEntityAsync(userId);
+				context.Items["User"] = await readUserRepo.GetEntityAsync(userId);
 			}
 			catch
 			{

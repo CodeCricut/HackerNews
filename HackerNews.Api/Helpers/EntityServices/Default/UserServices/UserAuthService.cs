@@ -14,15 +14,15 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 	{
 		private readonly IMapper _mapper;
 		private readonly IJwtHelper _jwtHelper;
-		private readonly IEntityRepository<User> _userRepository;
 		private readonly IUserLoginRepository _userLoginRepository;
+		private readonly HttpContext _httpContext;
 
-		public UserAuthService(IMapper mapper, IJwtHelper jwtHelper, IEntityRepository<User> userRepository, IUserLoginRepository userLoginRepository)
+		public UserAuthService(IMapper mapper, IJwtHelper jwtHelper, IUserLoginRepository userLoginRepository, IHttpContextAccessor contextAccessor)
 		{
 			_mapper = mapper;
 			_jwtHelper = jwtHelper;
-			_userRepository = userRepository;
 			_userLoginRepository = userLoginRepository;
+			_httpContext = contextAccessor.HttpContext;
 		}
 
 		/// <summary>
@@ -48,9 +48,9 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			return privateReturnModel;
 		}
 
-		public virtual async Task<GetPrivateUserModel> GetAuthenticatedReturnModelAsync(HttpContext httpContext)
+		public virtual async Task<GetPrivateUserModel> GetAuthenticatedReturnModelAsync()
 		{
-			var user = await GetAuthenticatedUser(httpContext);
+			var user = await GetAuthenticatedUser();
 
 			var token = _jwtHelper.GenerateJwtToken(user);
 
@@ -60,9 +60,9 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			return privateReturnModel;
 		}
 
-		public async Task<User> GetAuthenticatedUser(HttpContext httpContext)
+		public async Task<User> GetAuthenticatedUser()
 		{
-			return await Task.Factory.StartNew(() => (User)httpContext.Items["User"]);
+			return await Task.Factory.StartNew(() => (User)_httpContext.Items["User"]);
 		}
 
 	}

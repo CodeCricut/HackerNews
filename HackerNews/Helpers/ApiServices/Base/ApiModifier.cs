@@ -1,12 +1,10 @@
-﻿using HackerNews.Domain;
-using HackerNews.Domain.Models;
+﻿using CleanEntityArchitecture.Domain;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -16,8 +14,8 @@ namespace HackerNews.Helpers.ApiServices.Base
 {
 	public abstract class ApiModifier<TEntity, TPostModel, TGetModel> : IApiModifier<TEntity, TPostModel, TGetModel>
 		where TEntity : DomainEntity
-		where TPostModel : PostEntityModel
-		where TGetModel : GetEntityModel, new()
+		where TPostModel : PostModelDto
+		where TGetModel : GetModelDto, new()
 	{
 		protected readonly IJwtService _jwtService;
 		protected HttpClient _client;

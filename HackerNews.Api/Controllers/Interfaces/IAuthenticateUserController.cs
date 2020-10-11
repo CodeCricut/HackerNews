@@ -1,5 +1,4 @@
-﻿using HackerNews.Api.Helpers.Attributes;
-using HackerNews.Domain.Models.Auth;
+﻿using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

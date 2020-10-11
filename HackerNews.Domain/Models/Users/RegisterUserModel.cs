@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CleanEntityArchitecture.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace HackerNews.Domain.Models.Users
 {
-	public class RegisterUserModel : PostEntityModel
+	public class RegisterUserModel : PostModelDto
 	{
 		[Required]
 		public string FirstName { get; set; }

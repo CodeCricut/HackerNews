@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Repository;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.JoinEntities;
+using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
-using HackerNews.EF.Repositories;
+using HackerNews.Domain.Models.Users;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,25 +15,31 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 {
 	public class BoardUserManagmentService : IBoardUserManagementService
 	{
-		private readonly IEntityRepository<Board> _boardRepo;
-		private readonly IEntityRepository<User> _userRepo;
 		private readonly IMapper _mapper;
+		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
+		private readonly IReadEntityRepository<Board> _readBoardRepo;
+		private readonly IReadEntityRepository<User> _readUserRepo;
 
-		public BoardUserManagmentService(IEntityRepository<Board> boardRepo, IEntityRepository<User> userRepo, IMapper mapper)
+		public BoardUserManagmentService(IMapper mapper,
+			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
+			IReadEntityRepository<Board> readBoardRepo,
+			IReadEntityRepository<User> readUserRepo)
 		{
-			_boardRepo = boardRepo;
-			_userRepo = userRepo;
 			_mapper = mapper;
+			_userAuth = userAuth;
+			_readBoardRepo = readBoardRepo;
+			_readUserRepo = readUserRepo;
 		}
 
-		// TODO: refactor
-		public virtual async Task<GetBoardModel> AddBoardModeratorAsync(int boardId, User currentUser, int moderatorId)
+		public async Task<GetBoardModel> AddBoardModeratorAsync(int boardId, int moderatorId)
 		{
-			var board = await _boardRepo.GetEntityAsync(boardId);
+			var currentUser = await _userAuth.GetAuthenticatedUser();
+
+			var board = await _readBoardRepo.GetEntityAsync(boardId);
 			// verify the current user created the board
 			if (board.Creator.Id != currentUser.Id) throw new UnauthorizedException();
 
-			var moderator = await _userRepo.GetEntityAsync(moderatorId);
+			var moderator = await _readUserRepo.GetEntityAsync(moderatorId);
 			if (board == null || moderator == null) throw new NotFoundException();
 
 			// remove the moderator if already moderating the board
@@ -40,7 +49,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 				board.Moderators.Remove(existingModerator);
 				moderator.BoardsModerating.Remove(existingModerator);
 
-				await _boardRepo.SaveChangesAsync();
+				await _readBoardRepo.SaveChangesAsync();
 				return _mapper.Map<GetBoardModel>(board);
 			}
 
@@ -54,15 +63,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 			board.Moderators.Add(boardUserModerator);
 			moderator.BoardsModerating.Add(boardUserModerator);
 
-			await _boardRepo.SaveChangesAsync();
+			await _readBoardRepo.SaveChangesAsync();
 
 			return _mapper.Map<GetBoardModel>(board);
 		}
 
-
-		public virtual async Task<GetBoardModel> AddBoardSubscriberAsync(int boardId, User currentUser)
+		public async Task<GetBoardModel> AddBoardSubscriberAsync(int boardId)
 		{
-			var board = await _boardRepo.GetEntityAsync(boardId);
+			var currentUser = await _userAuth.GetAuthenticatedUser();
+
+			var board = await _readBoardRepo.GetEntityAsync(boardId);
 			if (board == null || currentUser == null) throw new NotFoundException();
 
 
@@ -73,7 +83,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 				board.Subscribers.Remove(existingSubscriber);
 				currentUser.BoardsSubscribed.Remove(existingSubscriber);
 
-				await _boardRepo.SaveChangesAsync();
+				await _readBoardRepo.SaveChangesAsync();
 				return _mapper.Map<GetBoardModel>(board);
 			}
 
@@ -86,7 +96,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 			board.Subscribers.Add(boardUserSubscriber);
 			currentUser.BoardsSubscribed.Add(boardUserSubscriber);
 
-			await _boardRepo.SaveChangesAsync();
+			await _readBoardRepo.SaveChangesAsync();
 
 			return _mapper.Map<GetBoardModel>(board);
 		}

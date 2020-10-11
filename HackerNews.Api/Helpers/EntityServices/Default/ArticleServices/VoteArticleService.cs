@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Repository;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.EF.Repositories;
+using HackerNews.Domain.Models.Auth;
+using HackerNews.Domain.Models.Users;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,20 +13,24 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 	public class VoteArticleService :
 		VoteEntityService<Article>
 	{
-		private readonly IEntityRepository<Article> _entityRepository;
+		private readonly IReadEntityRepository<Article> _readRepo;
 		private readonly IMapper _mapper;
+		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 
-		public VoteArticleService(IEntityRepository<Article> entityRepository, IMapper mapper)
+		public VoteArticleService(IReadEntityRepository<Article> readRepo, IMapper mapper, IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth)
 		{
-			_entityRepository = entityRepository;
+			_readRepo = readRepo;
 			_mapper = mapper;
+			_userAuth = userAuth;
 		}
 
-		public override async Task VoteEntityAsync(int id, bool upvote, User currentUser)
+		public override async Task VoteEntityAsync(int id, bool upvote)
 		{
-			if (!await _entityRepository.VerifyExistsAsync(id)) throw new NotFoundException();
+			var currentUser = await _userAuth.GetAuthenticatedUser();
 
-			var article = await _entityRepository.GetEntityAsync(id);
+			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
+
+			var article = await _readRepo.GetEntityAsync(id);
 
 			if (upvote)
 			{
@@ -53,7 +60,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 					DislikeEntity(currentUser, article);
 				}
 			}
-			await _entityRepository.SaveChangesAsync();
+			await _readRepo.SaveChangesAsync();
 		}
 
 		private static bool UserDislikedEntity(User currentUser, Article article)

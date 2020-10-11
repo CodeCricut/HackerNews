@@ -15,9 +15,8 @@ namespace HackerNews.Api.Controllers.CommentControllers
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
 		private readonly IVoteableEntityService<Comment> _commentVoter;
 
-		public VoteCommentController(IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService, IVoteableEntityService<Comment> commentVoter)
+		public VoteCommentController(IVoteableEntityService<Comment> commentVoter)
 		{
-			_userAuthService = userAuthService;
 			_commentVoter = commentVoter;
 		}
 
@@ -31,9 +30,7 @@ namespace HackerNews.Api.Controllers.CommentControllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _commentVoter.VoteEntityAsync(entityId, upvote, user);
+			await _commentVoter.VoteEntityAsync(entityId, upvote);
 
 			return Ok();
 		}

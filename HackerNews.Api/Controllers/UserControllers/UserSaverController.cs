@@ -26,7 +26,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		[Authorize]
 		public async Task<ActionResult<GetPrivateUserModel>> SaveArticleAsync([FromQuery] int articleId)
 		{
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser();
 
 			var privateReturnModel = await _userSaverService.SaveArticleToUserAsync(user, articleId);
 
@@ -37,7 +37,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		[Authorize]
 		public async Task<ActionResult<GetPrivateUserModel>> SaveCommentAsync([FromQuery] int commentId)
 		{
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
+			var user = await _userAuthService.GetAuthenticatedUser();
 
 			var privateReturnModel = await _userSaverService.SaveCommentToUserAsync(user, commentId);
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityHelpers
 {
@@ -13,8 +12,8 @@ namespace HackerNews.Api.Helpers.EntityHelpers
 		/// <returns></returns>
 		public Task<TPrivateReturnModel> AuthenticateAsync(TAuthenticateRequest model);
 
-		public Task<TPrivateReturnModel> GetAuthenticatedReturnModelAsync(HttpContext httpContext);
+		public Task<TPrivateReturnModel> GetAuthenticatedReturnModelAsync();
 
-		public Task<TEntity> GetAuthenticatedUser(HttpContext httpContext);
+		public Task<TEntity> GetAuthenticatedUser();
 	}
 }

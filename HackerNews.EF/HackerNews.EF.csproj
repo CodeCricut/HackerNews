@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj" />
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>

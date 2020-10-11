@@ -1,4 +1,6 @@
-﻿using HackerNews.Api.Helpers.EntityHelpers;
+﻿using CleanEntityArchitecture.EntityModelServices;
+using CleanEntityArchitecture.Repository;
+using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Base;
 using HackerNews.Api.Helpers.EntityServices.Base.ArticleServices;
 using HackerNews.Api.Helpers.EntityServices.Base.BoardServices;
@@ -12,9 +14,13 @@ using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using HackerNews.EF;
 using HackerNews.EF.Repositories;
+using HackerNews.EF.Repositories.Articles;
+using HackerNews.EF.Repositories.Boards;
+using HackerNews.EF.Repositories.Comments;
+using HackerNews.EF.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HackerNews.Api.Helpers.StartupExtensions
 {
@@ -23,26 +29,31 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 		public static IServiceCollection AddEntityRepositories(this IServiceCollection services)
 		{
 			return services
-					.AddScoped<IEntityRepository<Article>, ArticleRepository>()
-					.AddScoped<IEntityRepository<Comment>, CommentRepository>()
-					.AddScoped<IEntityRepository<User>, UserRepository>()
-					.AddScoped<IEntityRepository<Board>, BoardRepository>();
+				.AddScoped<IReadEntityRepository<Article>, ReadArticleRepository>()
+				.AddScoped<IReadEntityRepository<Comment>, ReadCommentRepository>()
+				.AddScoped<IReadEntityRepository<Board>, ReadBoardRepository>()
+				.AddScoped<IReadEntityRepository<User>, ReadUserRepository>()
+
+				.AddScoped<IWriteEntityRepository<Article>, WriteArticleRepository>()
+				.AddScoped<IWriteEntityRepository<Comment>, WriteCommentRepository>()
+				.AddScoped<IWriteEntityRepository<Board>, WriteBoardRepository>()
+				.AddScoped<IWriteEntityRepository<User>, WriteUserRepository>();
 		}
 
 		public static IServiceCollection AddEntityServices(this IServiceCollection services)
 		{
 			return services
-				.AddScoped<IBoardUserManagementService, BoardUserManagmentService>()
-
-				.AddScoped<IModifyEntityService<Article, PostArticleModel, GetArticleModel>, ModifyArticleService>()
-				.AddScoped<IModifyEntityService<Comment, PostCommentModel, GetCommentModel>, ModifyCommentService>()
-				.AddScoped<IModifyEntityService<Board, PostBoardModel, GetBoardModel>, ModifyBoardService>()
-				.AddScoped<IModifyEntityService<User, RegisterUserModel, GetPrivateUserModel>, ModifyPrivateUserService>()
-
 				.AddScoped<IReadEntityService<Article, GetArticleModel>, ReadArticleService>()
 				.AddScoped<IReadEntityService<Comment, GetCommentModel>, ReadCommentService>()
 				.AddScoped<IReadEntityService<Board, GetBoardModel>, ReadBoardService>()
-				.AddScoped<IReadEntityService<User, GetPublicUserModel>, ReadPublicUserService>();
+				.AddScoped<IReadEntityService<User, GetPublicUserModel>, ReadPublicUserService>()
+
+				.AddScoped<IWriteEntityService<Article, PostArticleModel>, WriteArticleService>()
+				.AddScoped<IWriteEntityService<Comment, PostCommentModel>, WriteCommentService>()
+				.AddScoped<IWriteEntityService<Board, PostBoardModel>, WriteBoardService>()
+				.AddScoped<IWriteEntityService<User, RegisterUserModel>, WritePrivateUserService>()
+
+				.AddScoped<IBoardUserManagementService, BoardUserManagmentService>();
 		}
 
 		public static IServiceCollection AddVoteableEntityServices(this IServiceCollection services)
@@ -57,7 +68,7 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 			return services
 				.AddScoped<IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>, UserAuthService>()
 				.AddScoped<IUserSaverService, UserSaverService>()
-				.AddScoped<IUserLoginRepository, UserRepository>();
+				.AddScoped<IUserLoginRepository, UserLoginRepository>();
 		}
 
 		public static IServiceCollection AddBoardServices(this IServiceCollection services)

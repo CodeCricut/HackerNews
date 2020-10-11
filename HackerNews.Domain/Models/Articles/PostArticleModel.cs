@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CleanEntityArchitecture.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace HackerNews.Domain.Models.Articles
 {
-	public class PostArticleModel : PostEntityModel
+	public class PostArticleModel : PostModelDto
 	{
 		[Required]
 		public string Type { get; set; }

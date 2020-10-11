@@ -1,30 +1,25 @@
-﻿using HackerNews.Api.Controllers.Interfaces;
+﻿using CleanEntityArchitecture.Domain;
+using CleanEntityArchitecture.EntityModelServices;
+using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Api.Helpers.Attributes;
-using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices.Interfaces;
-using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models;
-using HackerNews.Domain.Models.Auth;
-using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers.Base
 {
 	public abstract class ModifyEntityController<TEntity, TPostModel, TGetModel> : ControllerBase, IModifyEntityController<TEntity, TPostModel, TGetModel>
 		where TEntity : DomainEntity
-		where TPostModel : PostEntityModel
-		where TGetModel : GetEntityModel
+		where TPostModel : PostModelDto
+		where TGetModel : GetModelDto
 	{
-		protected readonly IModifyEntityService<TEntity, TPostModel, TGetModel> _modifyService;
-		protected readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
+		protected readonly IWriteEntityService<TEntity, TPostModel> _writeService;
 
-		public ModifyEntityController(IModifyEntityService<TEntity, TPostModel, TGetModel> modifyService, IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService)
+		public ModifyEntityController(IWriteEntityService<TEntity, TPostModel> writeService)
 		{
-			_modifyService = modifyService;
-			_userAuthService = userAuthService;
+			_writeService = writeService;
 		}
 
 		[HttpPost]
@@ -33,22 +28,18 @@ namespace HackerNews.Api.Controllers.Base
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			var addedModel = await _modifyService.PostEntityModelAsync(postModel, user);
+			var addedModel = await _writeService.PostEntityModelAsync<TGetModel>(postModel);
 
 			return Ok(addedModel);
 		}
-		
+
 		[HttpPost("range")]
 		[Authorize]
 		public virtual async Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<TPostModel> postModels)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _modifyService.PostEntityModelsAsync(postModels, user);
+			await _writeService.PostEntityModelsAsync(postModels.ToList());
 
 			return Ok();
 		}
@@ -59,9 +50,8 @@ namespace HackerNews.Api.Controllers.Base
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
 
-			var updatedModel = await _modifyService.PutEntityModelAsync(key, updateModel, user);
+			var updatedModel = await _writeService.PutEntityModelAsync<TGetModel>(key, updateModel);
 
 			return Ok(updatedModel);
 		}
@@ -72,9 +62,7 @@ namespace HackerNews.Api.Controllers.Base
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var user = await _userAuthService.GetAuthenticatedUser(HttpContext);
-
-			await _modifyService.SoftDeleteEntityAsync(key, user);
+			await _writeService.SoftDeleteEntityAsync(key);
 
 			return Ok();
 		}

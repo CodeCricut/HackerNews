@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.EntityModelServices;
+using CleanEntityArchitecture.Repository;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.EF.Repositories;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {
 	public class ReadArticleService : ReadEntityService<Domain.Article, GetArticleModel>
 	{
-		public ReadArticleService(IMapper mapper, IEntityRepository<Domain.Article> entityRepository) : base(mapper, entityRepository)
+		public ReadArticleService(IMapper mapper, IReadEntityRepository<Article> readRepository) : base(mapper, readRepository)
 		{
 		}
 	}

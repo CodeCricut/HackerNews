@@ -1,7 +1,7 @@
-﻿using HackerNews.Api.Controllers.Base;
+﻿using CleanEntityArchitecture.EntityModelServices;
+using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Api.Helpers.JWT;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
@@ -20,9 +20,9 @@ namespace HackerNews.Api.Controllers.UserControllers
 		private readonly IJwtHelper _jwtHelper;
 
 		public ModifyPrivateUserController(
-			IModifyEntityService<User, RegisterUserModel, GetPrivateUserModel> modifyService, 
+			IWriteEntityService<User, RegisterUserModel> modifyService,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService,
-			IJwtHelper jwtHelper) : base(modifyService, userAuthService)
+			IJwtHelper jwtHelper) : base(modifyService)
 		{
 			_jwtHelper = jwtHelper;
 		}
@@ -33,7 +33,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var response = await _modifyService.PostEntityModelAsync(postModel, null);
+			var response = await _writeService.PostEntityModelAsync<GetPrivateUserModel>(postModel);
 
 			// TODO: throw some unique exception
 			if (response == null) throw new Exception();

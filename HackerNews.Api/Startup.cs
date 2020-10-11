@@ -1,4 +1,5 @@
 using AutoMapper;
+using CleanEntityArchitecture.Helpers;
 using HackerNews.Api.Helpers.Filters;
 using HackerNews.Api.Helpers.Middleware;
 using HackerNews.Api.Helpers.StartupExtensions;
@@ -13,7 +14,6 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Web.Http;
 
 namespace HackerNews.Api
 {
@@ -37,7 +37,7 @@ namespace HackerNews.Api
 					builder => builder.AllowAnyOrigin());
 			});
 
-			services.AddDbContext<HackerNewsContext>(options =>
+			services.AddDbContext<DbContext, HackerNewsContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
 
 			services.AddAutoMapper(typeof(Startup));
@@ -50,6 +50,9 @@ namespace HackerNews.Api
 					.AddVoteableEntityServices()
 					.AddUserServices()
 					.AddBoardServices();
+
+
+			services.AddHttpContextAccessor();
 
 			services.AddJwtServices();
 
@@ -76,7 +79,8 @@ namespace HackerNews.Api
 				opt.IncludeXmlComments(xmlPath);
 
 				// Add JWT support to the UI
-				opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+				opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				{
 					Name = "Authorization",
 					Type = SecuritySchemeType.ApiKey,
 					Scheme = "Bearer",
@@ -107,9 +111,9 @@ namespace HackerNews.Api
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HackerNewsContext dbContext)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{
-			
+
 
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();

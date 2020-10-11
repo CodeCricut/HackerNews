@@ -1,8 +1,6 @@
-﻿using HackerNews.Api.Controllers.Interfaces;
-using HackerNews.Api.Helpers.EntityServices.Interfaces;
-using HackerNews.Domain;
-using HackerNews.Domain.Models;
-using HackerNews.Domain.Parameters;
+﻿using CleanEntityArchitecture.Domain;
+using CleanEntityArchitecture.EntityModelServices;
+using HackerNews.Api.Controllers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -10,7 +8,7 @@ namespace HackerNews.Api.Controllers.Base
 {
 	public abstract class ReadEntityController<TEntity, TGetEntityModel> : ControllerBase, IReadEntityController<TEntity, TGetEntityModel>
 		where TEntity : DomainEntity
-		where TGetEntityModel : GetEntityModel
+		where TGetEntityModel : GetModelDto
 	{
 		protected readonly IReadEntityService<TEntity, TGetEntityModel> _readService;
 
@@ -20,7 +18,7 @@ namespace HackerNews.Api.Controllers.Base
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<PagedList<TGetEntityModel>>> GetAsync(PagingParams pagingParams)
+		public async Task<ActionResult<PagedList<TGetEntityModel>>> GetAsync([FromQuery] PagingParams pagingParams)
 		{
 			PagedList<TGetEntityModel> models = await _readService.GetAllEntityModelsAsync(pagingParams);
 			return Ok(models);

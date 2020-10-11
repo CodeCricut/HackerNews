@@ -1,4 +1,5 @@
-﻿using HackerNews.Domain.JoinEntities;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Domain.JoinEntities;
 using System;
 using System.Collections.Generic;
 

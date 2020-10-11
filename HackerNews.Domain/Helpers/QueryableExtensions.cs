@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain.Parameters;
+﻿using CleanEntityArchitecture.Domain;
 using System.Linq;
 
 namespace HackerNews.Domain.Helpers

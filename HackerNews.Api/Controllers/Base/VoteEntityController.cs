@@ -1,5 +1,5 @@
-﻿using HackerNews.Api.Helpers.Attributes;
-using HackerNews.Domain;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Api.Helpers.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

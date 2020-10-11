@@ -1,9 +1,10 @@
-﻿using System;
+﻿using CleanEntityArchitecture.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace HackerNews.Domain.Models.Comments
 {
-	public class GetCommentModel : GetEntityModel
+	public class GetCommentModel : GetModelDto
 	{
 		public int Id { get; set; }
 		public bool Deleted { get; set; }

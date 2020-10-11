@@ -1,12 +1,13 @@
-﻿using HackerNews.Domain;
+﻿using CleanEntityArchitecture.Repository;
+using HackerNews.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace HackerNews.EF
+namespace HackerNews.EF.Repositories.Comments
 {
-	public class CommentRepository : EntityRepository<Comment>
+	public class ReadCommentRepository : ReadEntityRepository<Comment>
 	{
-		public CommentRepository(HackerNewsContext context) : base(context)
+		public ReadCommentRepository(DbContext context) : base(context)
 		{
 		}
 

@@ -1,10 +1,8 @@
-﻿using HackerNews.Domain.Models;
+﻿using CleanEntityArchitecture.Domain;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +10,7 @@ using System.Threading.Tasks;
 namespace HackerNews.Helpers.ApiServices.Base
 {
 	public abstract class ApiLoginFacilitator<TLoginModel, TGetModel> : IApiLoginFacilitator<TLoginModel, TGetModel>
-		where TGetModel : GetEntityModel, new()
+		where TGetModel : GetModelDto, new()
 	{
 		protected HttpClient _client;
 

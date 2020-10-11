@@ -1,6 +1,4 @@
-﻿using HackerNews.Domain;
-using HackerNews.Domain.Models;
-using HackerNews.Domain.Parameters;
+﻿using CleanEntityArchitecture.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -8,7 +6,7 @@ namespace HackerNews.Api.Controllers.Interfaces
 {
 	interface IReadEntityController<TEntity, TGetModel>
 		where TEntity : DomainEntity
-		where TGetModel : GetEntityModel
+		where TGetModel : GetModelDto
 	{
 		Task<ActionResult<PagedList<TGetModel>>> GetAsync([FromQuery] PagingParams pagingParams);
 

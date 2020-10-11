@@ -1,13 +1,10 @@
-﻿using HackerNews.Domain;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Comments;
-using HackerNews.Domain.Parameters;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Comments;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Controllers

@@ -1,12 +1,13 @@
-﻿using HackerNews.Domain;
+﻿using CleanEntityArchitecture.Repository;
+using HackerNews.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace HackerNews.EF.Repositories
+namespace HackerNews.EF.Repositories.Boards
 {
-	public class BoardRepository : EntityRepository<Board>
+	public class ReadBoardRepository : ReadEntityRepository<Board>
 	{
-		public BoardRepository(HackerNewsContext context) : base(context)
+		public ReadBoardRepository(DbContext context) : base(context)
 		{
 		}
 

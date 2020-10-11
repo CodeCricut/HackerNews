@@ -1,14 +1,11 @@
-﻿using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.EntityServices.Base;
-using HackerNews.Api.Helpers.EntityServices.Base.ArticleServices;
+﻿using CleanEntityArchitecture.Repository;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.EF;
-using HackerNews.EF.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,18 +14,18 @@ namespace HackerNews.Api.Controllers
 	[Route("api/[controller]")]
 	public class DeveloperController : ControllerBase
 	{
-		private readonly IEntityRepository<Article> _articleRepository;
-		private readonly IEntityRepository<Comment> _commentRepository;
-		private readonly IEntityRepository<User> _userRepository;
-		private readonly IEntityRepository<Board> _boardRepository;
-		private readonly HackerNewsContext _context;
+		private readonly IReadEntityRepository<Article> _articleRepository;
+		private readonly IReadEntityRepository<Comment> _commentRepository;
+		private readonly IReadEntityRepository<User> _userRepository;
+		private readonly IReadEntityRepository<Board> _boardRepository;
+		private readonly DbContext _context;
 
 		public DeveloperController(
-			IEntityRepository<Article> articleRepository, 
-			IEntityRepository<Comment> commentRepository, 
-			IEntityRepository<User> userRepository,		
-			IEntityRepository<Board> boardRepository,
-			HackerNewsContext context)
+			 IReadEntityRepository<Article> articleRepository,
+			 IReadEntityRepository<Comment> commentRepository,
+			 IReadEntityRepository<User> userRepository,
+			 IReadEntityRepository<Board> boardRepository,
+			DbContext context)
 		{
 			_articleRepository = articleRepository;
 			_commentRepository = commentRepository;
@@ -42,10 +39,10 @@ namespace HackerNews.Api.Controllers
 		{
 			try
 			{
-				var articles = _context.Articles.ToList();
-				var comments = _context.Comments.ToList();
-				var users = _context.Users.ToList();
-				var boards = _context.Boards.ToList();
+				var articles = _context.Set<Article>().ToList();
+				var comments = _context.Set <Comment>().ToList();
+				var users = _context.Set < User>().ToList();
+				var boards = _context.Set<Board>().ToList();
 
 				_context.RemoveRange(articles);
 				_context.RemoveRange(comments);

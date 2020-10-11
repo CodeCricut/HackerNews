@@ -35,7 +35,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		[Authorize]
 		public async Task<ActionResult<GetPrivateUserModel>> GetPrivateUserAsync()
 		{
-			var privateUser = await _userAuthService.GetAuthenticatedReturnModelAsync(HttpContext);
+			var privateUser = await _userAuthService.GetAuthenticatedReturnModelAsync();
 
 			if (privateUser == null) return StatusCode(StatusCodes.Status500InternalServerError);
 

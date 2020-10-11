@@ -1,5 +1,4 @@
-﻿using HackerNews.Api.Helpers.JWT;
-using HackerNews.Domain.Models.Board;
+﻿using HackerNews.Domain.Models.Board;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.AspNetCore.WebUtilities;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -42,7 +40,7 @@ namespace HackerNews.Helpers.ApiServices.Default.BoardServices
 			query["moderatorId"] = moderatorId.ToString();
 
 			// TODO: this shouldn't be a post action if we aren't posting anything
-			var response = await _client.PostAsync(QueryHelpers.AddQueryString("Boards/add-moderator", query), null );
+			var response = await _client.PostAsync(QueryHelpers.AddQueryString("Boards/add-moderator", query), null);
 
 			if (response.IsSuccessStatusCode)
 			{

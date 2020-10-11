@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.EntityModelServices;
+using CleanEntityArchitecture.Repository;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Board;
-using HackerNews.EF.Repositories;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 {
 	public class ReadBoardService : ReadEntityService<Board, GetBoardModel>
 	{
-		public ReadBoardService(IMapper mapper, IEntityRepository<Board> entityRepository) : base(mapper, entityRepository)
+		public ReadBoardService(IMapper mapper, IReadEntityRepository<Board> readRepository) : base(mapper, readRepository)
 		{
 		}
 	}

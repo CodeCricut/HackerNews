@@ -1,6 +1,4 @@
-﻿using HackerNews.Domain;
-using HackerNews.Domain.Models;
-using HackerNews.Domain.Parameters;
+﻿using CleanEntityArchitecture.Domain;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.AspNetCore.WebUtilities;
@@ -8,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -16,7 +13,7 @@ using System.Threading.Tasks;
 namespace HackerNews.Helpers.ApiServices.Base
 {
 	public abstract class ApiReader<TGetModel> : IApiReader<TGetModel>
-		where TGetModel : GetEntityModel, new()
+		where TGetModel : GetModelDto, new()
 	{
 		protected readonly IJwtService _jwtService;
 		protected HttpClient _client;
@@ -28,7 +25,7 @@ namespace HackerNews.Helpers.ApiServices.Base
 			_client.BaseAddress = new Uri(options.Value.BaseApiAddress);
 			_jwtService = jwtService;
 		}
-	
+
 		public virtual async Task<IEnumerable<TGetModel>> GetEndpointAsync(string endpoint, PagingParams pagingParams)
 		{
 			if (_jwtService.ContainsToken())
