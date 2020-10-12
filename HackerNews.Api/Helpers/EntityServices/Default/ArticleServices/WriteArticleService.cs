@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
@@ -19,23 +20,25 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 		private readonly IReadEntityRepository<Article> _readRepo;
 		private readonly IWriteEntityRepository<Article> _writeRepo;
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
+		private readonly IUserAuth<User> _userAuth;
 		private readonly HttpContext _httpContext;
 
 		public WriteArticleService(IMapper mapper,
 			IReadEntityRepository<Article> readRepo,
 			IWriteEntityRepository<Article> writeRepo,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService)
+			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService, IUserAuth<User> userAuth)
 		{
 			_mapper = mapper;
 			_readRepo = readRepo;
 			_writeRepo = writeRepo;
 			_userAuthService = userAuthService;
+			_userAuth = userAuth;
 		}
 
 
 		public override async Task<TGetModel> PostEntityModelAsync<TGetModel>(PostArticleModel entityModel)
 		{
-			var currentUser = _userAuthService.GetAuthenticatedUser();
+			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
 
 			var entity = _mapper.Map<Domain.Article>(entityModel);
 
@@ -50,7 +53,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 
 		public override async Task<TGetModel> PutEntityModelAsync<TGetModel>(int id, PostArticleModel entityModel)
 		{
-			var currentUser = _userAuthService.GetAuthenticatedUser();
+			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
 
 			// verify entity trying to update exists
 			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
@@ -74,7 +77,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 
 		public override async Task SoftDeleteEntityAsync(int id)
 		{
-			var currentUser = _userAuthService.GetAuthenticatedUser();
+			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
 
 			// verify entity exists
 			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();

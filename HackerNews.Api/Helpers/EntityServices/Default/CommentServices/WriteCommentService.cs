@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
@@ -18,21 +19,24 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IReadEntityRepository<Comment> _readRepo;
 		private readonly IWriteEntityRepository<Comment> _writeRepo;
+		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public WriteCommentService(IMapper mapper,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IReadEntityRepository<Comment> readRepo,
-			IWriteEntityRepository<Comment> writeRepo)
+			IWriteEntityRepository<Comment> writeRepo,
+			IUserAuth<User> cleanUserAuth)
 		{
 			_mapper = mapper;
 			_userAuth = userAuth;
 			_readRepo = readRepo;
 			_writeRepo = writeRepo;
+			_cleanUserAuth = cleanUserAuth;
 		}
 
 		public override async Task<TGetModel> PostEntityModelAsync<TGetModel>(PostCommentModel entityModel)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			// TODO: add checks to the parents
 			//		verify one and only one parent exists
@@ -50,7 +54,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 
 		public override async Task<TGetModel> PutEntityModelAsync<TGetModel>(int id, PostCommentModel entityModel)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 			// TODO: verify parents are the same as previously
 
 			// verify entity trying to update exists
@@ -72,7 +76,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 
 		public override async Task SoftDeleteEntityAsync(int id)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			// verify entity exists
 			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();

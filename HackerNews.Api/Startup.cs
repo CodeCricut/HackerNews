@@ -42,7 +42,7 @@ namespace HackerNews.Api
 
 			services.AddAutoMapper(typeof(Startup));
 
-			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+			services.ConfigureCleanEntityArchitecture(Configuration);
 
 			// Entity-related services.
 			services.AddEntityRepositories()
@@ -53,8 +53,6 @@ namespace HackerNews.Api
 
 
 			services.AddHttpContextAccessor();
-
-			services.AddJwtServices();
 
 			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));
 
@@ -106,7 +104,6 @@ namespace HackerNews.Api
 				});
 			});
 
-
 			services.AddMvcCore();//.AddApiExplorer();
 		}
 
@@ -137,8 +134,8 @@ namespace HackerNews.Api
 			app.UseRouting();
 			app.UseCors("DefaultCorsPolicy");
 
-			app.UseMiddleware<JwtMiddleware>();
 			app.UseMiddleware<DeveloperMiddleware>();
+			app.UseJwtMiddleware();
 
 			app.UseEndpoints(endpoints =>
 			{

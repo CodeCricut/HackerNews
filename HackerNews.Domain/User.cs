@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace HackerNews.Domain
 {
-	public class User : DomainEntity
+	public class User : BaseUser
 	{
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

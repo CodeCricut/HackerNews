@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
@@ -19,21 +20,24 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IReadEntityRepository<Board> _readBoardRepo;
 		private readonly IReadEntityRepository<User> _readUserRepo;
+		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public BoardUserManagmentService(IMapper mapper,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IReadEntityRepository<Board> readBoardRepo,
-			IReadEntityRepository<User> readUserRepo)
+			IReadEntityRepository<User> readUserRepo,
+			IUserAuth<User> cleanUserAuth)
 		{
 			_mapper = mapper;
 			_userAuth = userAuth;
 			_readBoardRepo = readBoardRepo;
 			_readUserRepo = readUserRepo;
+			_cleanUserAuth = cleanUserAuth;
 		}
 
 		public async Task<GetBoardModel> AddBoardModeratorAsync(int boardId, int moderatorId)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			var board = await _readBoardRepo.GetEntityAsync(boardId);
 			// verify the current user created the board
@@ -70,7 +74,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 
 		public async Task<GetBoardModel> AddBoardSubscriberAsync(int boardId)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			var board = await _readBoardRepo.GetEntityAsync(boardId);
 			if (board == null || currentUser == null) throw new NotFoundException();

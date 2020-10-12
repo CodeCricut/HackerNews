@@ -1,5 +1,5 @@
-﻿using HackerNews.Api.Controllers.Interfaces;
-using HackerNews.Api.Helpers.Attributes;
+﻿using CleanEntityArchitecture.Authorization;
+using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Board;

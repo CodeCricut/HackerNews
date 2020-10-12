@@ -1,7 +1,7 @@
-﻿using CleanEntityArchitecture.Domain;
+﻿using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
 using HackerNews.Api.Controllers.Interfaces;
-using HackerNews.Api.Helpers.Attributes;
 using HackerNews.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

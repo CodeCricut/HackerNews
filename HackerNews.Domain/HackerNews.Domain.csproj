@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj" />
+    <ProjectReference Include="..\..\..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj" />
   </ItemGroup>
 
 </Project>

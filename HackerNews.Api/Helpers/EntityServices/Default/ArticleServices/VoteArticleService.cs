@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
@@ -16,17 +17,19 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 		private readonly IReadEntityRepository<Article> _readRepo;
 		private readonly IMapper _mapper;
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
+		private readonly IUserAuth<User> _cleanUserAuth;
 
-		public VoteArticleService(IReadEntityRepository<Article> readRepo, IMapper mapper, IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth)
+		public VoteArticleService(IReadEntityRepository<Article> readRepo, IMapper mapper, IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth, IUserAuth<User> cleanUserAuth)
 		{
 			_readRepo = readRepo;
 			_mapper = mapper;
 			_userAuth = userAuth;
+			_cleanUserAuth = cleanUserAuth;
 		}
 
 		public override async Task VoteEntityAsync(int id, bool upvote)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
 

@@ -7,7 +7,6 @@ using HackerNews.Api.Helpers.EntityServices.Base.BoardServices;
 using HackerNews.Api.Helpers.EntityServices.Base.CommentServices;
 using HackerNews.Api.Helpers.EntityServices.Base.UserServices;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
-using HackerNews.Api.Helpers.JWT;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Auth;
@@ -20,7 +19,6 @@ using HackerNews.EF.Repositories.Boards;
 using HackerNews.EF.Repositories.Comments;
 using HackerNews.EF.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace HackerNews.Api.Helpers.StartupExtensions
 {
@@ -66,7 +64,7 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 		public static IServiceCollection AddUserServices(this IServiceCollection services)
 		{
 			return services
-				.AddScoped<IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>, UserAuthService>()
+				.AddScoped<IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>, AuthenticateUserService>()
 				.AddScoped<IUserSaverService, UserSaverService>()
 				.AddScoped<IUserLoginRepository, UserLoginRepository>();
 		}
@@ -74,11 +72,6 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 		public static IServiceCollection AddBoardServices(this IServiceCollection services)
 		{
 			return services.AddScoped<IBoardUserManagementService, BoardUserManagmentService>();
-		}
-
-		public static IServiceCollection AddJwtServices(this IServiceCollection services)
-		{
-			return services.AddSingleton<IJwtHelper, JwtHelper>();
 		}
 	}
 }

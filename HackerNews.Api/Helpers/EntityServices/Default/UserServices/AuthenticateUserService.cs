@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Authorization;
 using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Api.Helpers.JWT;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
@@ -10,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 {
-	public class UserAuthService : IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>
+	public class AuthenticateUserService : IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>
 	{
 		private readonly IMapper _mapper;
 		private readonly IJwtHelper _jwtHelper;
 		private readonly IUserLoginRepository _userLoginRepository;
+		private readonly IUserAuth<User> _userAuth;
 		private readonly HttpContext _httpContext;
 
-		public UserAuthService(IMapper mapper, IJwtHelper jwtHelper, IUserLoginRepository userLoginRepository, IHttpContextAccessor contextAccessor)
+		public AuthenticateUserService(IMapper mapper, IJwtHelper jwtHelper, IUserLoginRepository userLoginRepository, IHttpContextAccessor contextAccessor, IUserAuth<User> userAuth)
 		{
 			_mapper = mapper;
 			_jwtHelper = jwtHelper;
 			_userLoginRepository = userLoginRepository;
+			_userAuth = userAuth;
 			_httpContext = contextAccessor.HttpContext;
 		}
 
@@ -33,7 +35,6 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 		/// <returns></returns>
 		public virtual async Task<GetPrivateUserModel> AuthenticateAsync(LoginModel model)
 		{
-			// Todo: it is quite inefficient to request all entities and then sort.
 			var user = await _userLoginRepository.GetUserByCredentialsAsync(model.Username, model.Password);
 
 			// return null if not found
@@ -43,27 +44,21 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			var token = _jwtHelper.GenerateJwtToken(user);
 
 			var privateReturnModel = _mapper.Map<GetPrivateUserModel>(user);
-			_jwtHelper.AttachJwtToken(ref privateReturnModel, token);
+			privateReturnModel.JwtToken = token;
 
 			return privateReturnModel;
 		}
 
 		public virtual async Task<GetPrivateUserModel> GetAuthenticatedReturnModelAsync()
 		{
-			var user = await GetAuthenticatedUser();
+			var user = await _userAuth.GetAuthenticatedUserAsync();
 
 			var token = _jwtHelper.GenerateJwtToken(user);
 
 			var privateReturnModel = _mapper.Map<GetPrivateUserModel>(user);
-			_jwtHelper.AttachJwtToken(ref privateReturnModel, token);
+			privateReturnModel.JwtToken = token;
 
 			return privateReturnModel;
 		}
-
-		public async Task<User> GetAuthenticatedUser()
-		{
-			return await Task.Factory.StartNew(() => (User)_httpContext.Items["User"]);
-		}
-
 	}
 }

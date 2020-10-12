@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews", "HackerNews\HackerNews.csproj", "{0755379F-9321-462A-881F-99AB8FAF4A62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanEntityArchitecture", "CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj", "{4458F2C7-5959-45AB-A56A-1FFDE5854462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanEntityArchitecture", "..\..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj", "{5931C8BD-DC82-4838-81CA-2F68F2D3AC9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{0755379F-9321-462A-881F-99AB8FAF4A62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0755379F-9321-462A-881F-99AB8FAF4A62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0755379F-9321-462A-881F-99AB8FAF4A62}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4458F2C7-5959-45AB-A56A-1FFDE5854462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4458F2C7-5959-45AB-A56A-1FFDE5854462}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4458F2C7-5959-45AB-A56A-1FFDE5854462}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4458F2C7-5959-45AB-A56A-1FFDE5854462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5931C8BD-DC82-4838-81CA-2F68F2D3AC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5931C8BD-DC82-4838-81CA-2F68F2D3AC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5931C8BD-DC82-4838-81CA-2F68F2D3AC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5931C8BD-DC82-4838-81CA-2F68F2D3AC9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

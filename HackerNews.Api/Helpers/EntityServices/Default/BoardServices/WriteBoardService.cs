@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
@@ -19,21 +20,24 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IWriteEntityRepository<Board> _writeBoardRepo;
 		private readonly IReadEntityRepository<Board> _readBoardRepo;
+		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public WriteBoardService(IMapper mapper,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IWriteEntityRepository<Board> writeBoardRepo,
-			IReadEntityRepository<Board> readBoardRepo)
+			IReadEntityRepository<Board> readBoardRepo,
+			IUserAuth<User> cleanUserAuth)
 		{
 			_mapper = mapper;
 			_userAuth = userAuth;
 			_writeBoardRepo = writeBoardRepo;
 			_readBoardRepo = readBoardRepo;
+			_cleanUserAuth = cleanUserAuth;
 		}
 
 		public override async Task<TGetModel> PostEntityModelAsync<TGetModel>(PostBoardModel entityModel)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 			var entity = _mapper.Map<Board>(entityModel);
 
 			entity.Creator = currentUser;
@@ -48,7 +52,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 
 		public override async Task<TGetModel> PutEntityModelAsync<TGetModel>(int id, PostBoardModel entityModel)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 			// verify entity trying to update exists
 			if (!await _readBoardRepo.VerifyExistsAsync(id)) throw new NotFoundException();
 
@@ -71,7 +75,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 
 		public override async Task SoftDeleteEntityAsync(int id)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUser();
+			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			// verify entity exists
 			if (!await _readBoardRepo.VerifyExistsAsync(id)) throw new NotFoundException();

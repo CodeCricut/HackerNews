@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj" />
+    <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
     <ProjectReference Include="..\HackerNews.EF\HackerNews.EF.csproj" />
   </ItemGroup>
 
