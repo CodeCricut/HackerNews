@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace HackerNews.Api.Controllers.BoardControllers
 {
 	[Route("api/Boards")]
-	public class ReadBoardController : ReadController<Board, GetBoardModel>
+	public class WriteBoardController : WriteController<Board, PostBoardModel, GetBoardModel>
 	{
-		public ReadBoardController(IReadEntityService<Board, GetBoardModel> readService) : base(readService)
+		public WriteBoardController(IWriteEntityService<Board, PostBoardModel> writeService) : base(writeService)
 		{
 		}
 	}

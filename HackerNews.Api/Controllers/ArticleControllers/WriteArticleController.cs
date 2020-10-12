@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace HackerNews.Api.Controllers.ArticleControllers
 {
 	[Route("api/Articles")]
-	public class ReadArticleController : ReadController<Article, GetArticleModel>
+	public class WriteArticleController : WriteController<Article, PostArticleModel, GetArticleModel>
 	{
-		public ReadArticleController(IReadEntityService<Article, GetArticleModel> readService) : base(readService)
+		public WriteArticleController(IWriteEntityService<Article, PostArticleModel> writeService) : base(writeService)
 		{
 		}
 	}

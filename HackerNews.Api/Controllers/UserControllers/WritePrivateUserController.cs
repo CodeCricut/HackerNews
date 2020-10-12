@@ -1,4 +1,5 @@
 ﻿using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Controllers;
 using CleanEntityArchitecture.EntityModelServices;
 using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Helpers.EntityHelpers;
@@ -14,11 +15,11 @@ using System.Threading.Tasks;
 namespace HackerNews.Api.Controllers.UserControllers
 {
 	[Route("api/Users")]
-	public class ModifyPrivateUserController : ModifyEntityController<User, RegisterUserModel, GetPrivateUserModel>
+	public class WritePrivateUserController : WriteController<User, RegisterUserModel, GetPrivateUserModel>
 	{
 		private readonly IJwtHelper _jwtHelper;
 
-		public ModifyPrivateUserController(
+		public WritePrivateUserController(
 			IWriteEntityService<User, RegisterUserModel> modifyService,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService,
 			IJwtHelper jwtHelper) : base(modifyService)

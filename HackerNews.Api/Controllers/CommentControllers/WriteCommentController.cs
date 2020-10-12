@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace HackerNews.Api.Controllers.CommentControllers
 {
 	[Route("api/Comments")]
-	public class ReadCommentController : ReadController<Comment, GetCommentModel>
+	public class WriteCommentController : WriteController<Comment, PostCommentModel, GetCommentModel>
 	{
-		public ReadCommentController(IReadEntityService<Comment, GetCommentModel> readService) : base(readService)
+		public WriteCommentController(IWriteEntityService<Comment, PostCommentModel> writeService) : base(writeService)
 		{
 		}
 	}
