@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using System.Threading.Tasks;
 
@@ -15,19 +15,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 		private readonly IMapper _mapper;
 		private readonly IWriteEntityRepository<Comment> _writeRepo;
 		private readonly IReadEntityRepository<Comment> _readRepo;
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public VoteCommentService(IMapper mapper,
 			IWriteEntityRepository<Comment> writeRepo,
 			IReadEntityRepository<Comment> readRepo,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IUserAuth<User> cleanUserAuth)
 		{
 			_mapper = mapper;
 			_writeRepo = writeRepo;
 			_readRepo = readRepo;
-			_userAuth = userAuth;
 			_cleanUserAuth = cleanUserAuth;
 		}
 

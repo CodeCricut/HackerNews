@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using System;
@@ -15,16 +15,13 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 {
 	public class WriteCommentService : WriteEntityService<Comment, PostCommentModel>
 	{
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public WriteCommentService(IMapper mapper,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IReadEntityRepository<Comment> readRepo,
 			IWriteEntityRepository<Comment> writeRepo,
 			IUserAuth<User> cleanUserAuth) : base(mapper, writeRepo, readRepo)
 		{
-			_userAuth = userAuth;
 			_cleanUserAuth = cleanUserAuth;
 		}
 

@@ -1,8 +1,8 @@
-﻿using HackerNews.Api.Controllers.Base;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,7 +12,6 @@ namespace HackerNews.Api.Controllers.ArticleControllers
 	[Route("api/Articles")]
 	public class VoteArticleController : VoteEntityController<Article>
 	{
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
 		private readonly IVoteableEntityService<Article> _articleVoter;
 
 		public VoteArticleController(IVoteableEntityService<Article> articleVoter)

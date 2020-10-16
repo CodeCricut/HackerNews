@@ -1,11 +1,9 @@
 ﻿using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.Controllers;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
-using HackerNews.Api.Controllers.Base;
-using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,14 +15,11 @@ namespace HackerNews.Api.Controllers.UserControllers
 	[Route("api/Users")]
 	public class WritePrivateUserController : WriteController<User, RegisterUserModel, GetPrivateUserModel>
 	{
-		private readonly IJwtHelper _jwtHelper;
 
 		public WritePrivateUserController(
 			IWriteEntityService<User, RegisterUserModel> modifyService,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService,
 			IJwtHelper jwtHelper) : base(modifyService)
 		{
-			_jwtHelper = jwtHelper;
 		}
 
 		[HttpPost("register")]

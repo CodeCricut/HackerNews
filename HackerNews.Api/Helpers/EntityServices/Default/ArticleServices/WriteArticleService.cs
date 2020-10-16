@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -16,17 +16,13 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {
 	public class WriteArticleService : WriteEntityService<Article, PostArticleModel>
 	{
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
 		private readonly IUserAuth<User> _userAuth;
-		private readonly HttpContext _httpContext;
 
 		public WriteArticleService(IMapper mapper,
 			IReadEntityRepository<Article> readRepo,
-			IWriteEntityRepository<Article> writeRepo,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService, IUserAuth<User> userAuth)
+			IWriteEntityRepository<Article> writeRepo, IUserAuth<User> userAuth)
 			:base(mapper, writeRepo, readRepo)
 		{
-			_userAuthService = userAuthService;
 			_userAuth = userAuth;
 		}
 
@@ -46,6 +42,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 			return _mapper.Map<TGetModel>(addedEntity);
 		}
 
+		// TODO: refactor omg
 		public override async Task<TGetModel> PutEntityModelAsync<TGetModel>(int id, PostArticleModel entityModel)
 		{
 			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
@@ -56,10 +53,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 			var entity = await _readRepo.GetEntityAsync(id);
 			if (entity.UserId != currentUser.Id) throw new UnauthorizedException();
 
-			// verify new board belongs to prevoius board
-			if (entityModel.BoardId != entity.BoardId) throw new UnauthorizedException();
+			var entityFromModel = _mapper.Map<Article>(entityModel);
 
-			var updatedEntity = _mapper.Map<Article>(entityModel);
+			var updatedEntity = _mapper.Map<Article>(entity);
+
+			// Only update the properties sent via the model
+			updatedEntity.BoardId = entityModel.BoardId;
+			updatedEntity.Text = entityModel.Text;
+			updatedEntity.Title = entityModel.Title;
+			updatedEntity.Type = entityFromModel.Type;
+
 
 			// update and save
 			await _writeRepo.UpdateEntityAsync(id, updatedEntity);

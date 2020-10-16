@@ -1,8 +1,8 @@
-﻿using HackerNews.Api.Controllers.Base;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,7 +12,6 @@ namespace HackerNews.Api.Controllers.CommentControllers
 	[Route("api/Comments")]
 	public class VoteCommentController : VoteEntityController<Comment>
 	{
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
 		private readonly IVoteableEntityService<Comment> _commentVoter;
 
 		public VoteCommentController(IVoteableEntityService<Comment> commentVoter)

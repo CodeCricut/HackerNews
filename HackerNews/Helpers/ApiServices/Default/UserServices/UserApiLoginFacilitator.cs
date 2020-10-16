@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain.Models.Auth;
+﻿using CleanEntityArchitecture.Domain;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Base;
 using Microsoft.Extensions.Options;

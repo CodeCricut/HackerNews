@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain.Models.Auth;
+﻿using CleanEntityArchitecture.Domain;
 using HackerNews.ViewModels.Base;
 
 namespace HackerNews.ViewModels.Users

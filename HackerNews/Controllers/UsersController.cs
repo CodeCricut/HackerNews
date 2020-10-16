@@ -2,7 +2,6 @@
 using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
@@ -79,9 +78,6 @@ namespace HackerNews.Controllers
 		{
 			var loginModel = viewModel.PostModel;
 			GetPrivateUserModel userResponse = await _loginFacilitator.GetUserByCredentialsAsync(loginModel);
-
-			// TODO: refactor to JWT service
-			_jwtService.SetToken(userResponse.JwtToken, 60);
 
 			return RedirectToAction("Me");
 		}

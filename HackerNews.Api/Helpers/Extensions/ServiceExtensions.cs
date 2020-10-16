@@ -1,4 +1,5 @@
-﻿using CleanEntityArchitecture.EntityModelServices;
+﻿using CleanEntityArchitecture.Domain;
+using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Base;
@@ -9,7 +10,6 @@ using HackerNews.Api.Helpers.EntityServices.Base.UserServices;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
@@ -20,9 +20,6 @@ using HackerNews.EF.Repositories.Boards;
 using HackerNews.EF.Repositories.Comments;
 using HackerNews.EF.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Reflection;
 
 namespace HackerNews.Api.Helpers.StartupExtensions
 {
@@ -30,31 +27,6 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 	{
 		public static IServiceCollection AddEntityRepositories(this IServiceCollection services)
 		{
-			//var efAssembly = typeof(HackerNewsContext).Assembly;
-
-			//var types = Assembly.GetExecutingAssembly().GetTypes().Concat(efAssembly.GetTypes());
-
-			//Type readRepoInterfaceType = typeof(IReadEntityRepository<>);
-			//Type writeRepoInterfaceType = typeof(IWriteEntityRepository<>);
-
-
-			//var readRepos = types
-			//	.Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(readRepoInterfaceType))).ToList();
-			//var writeRepos = types
-			//	.Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(writeRepoInterfaceType))).ToList();
-
-			//foreach(var readrepo in readRepos)
-			//{
-			//	var baseType = readrepo.BaseType;
-			//	var args = baseType.GetGenericArguments();
-
-			//	Type firstArg = args.First();
-
-			//	services.AddScoped<IReadEntityRepository<firstArg>
-			//}
-
-
-
 			return services
 				.AddScoped<IReadEntityRepository<Article>, ReadArticleRepository>()
 				.AddScoped<IReadEntityRepository<Comment>, ReadCommentRepository>()
@@ -93,9 +65,10 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 		public static IServiceCollection AddUserServices(this IServiceCollection services)
 		{
 			return services
-				.AddScoped<IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel>, AuthenticateUserService>()
 				.AddScoped<IUserSaverService, UserSaverService>()
-				.AddScoped<IUserLoginRepository, UserLoginRepository>();
+				.AddScoped<IUserLoginRepository<LoginModel, User>, UserLoginRepository<LoginModel, User>>()
+				.AddScoped<IAuthenticateUserService<LoginModel, GetPrivateUserModel>, AuthenticateUserService<User, LoginModel, GetPrivateUserModel>>()
+				.AddScoped<IJwtService<User, LoginModel>, JwtService<User, LoginModel>>();
 		}
 
 		public static IServiceCollection AddBoardServices(this IServiceCollection services)

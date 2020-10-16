@@ -1,6 +1,6 @@
+using CleanEntityArchitecture.Domain;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;

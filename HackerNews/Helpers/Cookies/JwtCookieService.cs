@@ -1,4 +1,5 @@
-﻿using HackerNews.Helpers.Cookies.Interfaces;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Helpers.Cookies.Interfaces;
 
 namespace HackerNews.Helpers.Cookies
 {
@@ -11,9 +12,9 @@ namespace HackerNews.Helpers.Cookies
 			_cookieService = cookieService;
 		}
 
-		public void SetToken(string token, int expiresMinutes)
+		public void SetToken(Jwt token, int expiresMinutes)
 		{
-			_cookieService.Set("JWT", token, expiresMinutes);
+			_cookieService.Set("JWT", token.Token, expiresMinutes);
 		}
 
 		public string GetToken()

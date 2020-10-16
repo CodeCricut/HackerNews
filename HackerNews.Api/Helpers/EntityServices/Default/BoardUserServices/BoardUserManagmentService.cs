@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.JoinEntities;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Users;
 using System.Linq;
@@ -17,19 +17,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base
 	public class BoardUserManagmentService : IBoardUserManagementService
 	{
 		private readonly IMapper _mapper;
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IReadEntityRepository<Board> _readBoardRepo;
 		private readonly IReadEntityRepository<User> _readUserRepo;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public BoardUserManagmentService(IMapper mapper,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IReadEntityRepository<Board> readBoardRepo,
 			IReadEntityRepository<User> readUserRepo,
 			IUserAuth<User> cleanUserAuth)
 		{
 			_mapper = mapper;
-			_userAuth = userAuth;
 			_readBoardRepo = readBoardRepo;
 			_readUserRepo = readUserRepo;
 			_cleanUserAuth = cleanUserAuth;

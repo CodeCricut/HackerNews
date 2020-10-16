@@ -5,7 +5,6 @@ using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -25,8 +24,6 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 
 		public override async Task<TGetModel> PostEntityModelAsync<TGetModel>(RegisterUserModel entityModel)
 		{
-			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
-
 			var entity = _mapper.Map<User>(entityModel);
 
 			var currentDate = DateTime.UtcNow;
@@ -55,6 +52,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			if (entity.Id != currentUser.Id) throw new UnauthorizedException();
 
 			var updatedEntity = _mapper.Map<Domain.User>(entityModel);
+			updatedEntity.JoinDate = entity.JoinDate;
 
 			// update and save
 			await _writeRepo.UpdateEntityAsync(id, updatedEntity);

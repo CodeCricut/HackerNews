@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
+using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.Repository;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Users;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,15 +15,11 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 		VoteEntityService<Article>
 	{
 		private readonly IReadEntityRepository<Article> _readRepo;
-		private readonly IMapper _mapper;
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
-		public VoteArticleService(IReadEntityRepository<Article> readRepo, IMapper mapper, IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth, IUserAuth<User> cleanUserAuth)
+		public VoteArticleService(IReadEntityRepository<Article> readRepo, IUserAuth<User> cleanUserAuth)
 		{
 			_readRepo = readRepo;
-			_mapper = mapper;
-			_userAuth = userAuth;
 			_cleanUserAuth = cleanUserAuth;
 		}
 
