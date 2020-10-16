@@ -26,7 +26,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		}
 
 		[HttpPost("save-article")]
-		[Authorize]
+		[JwtAuthorize]
 		public async Task<ActionResult<GetPrivateUserModel>> SaveArticleAsync([FromQuery] int articleId)
 		{
 			var user = await _userAuth.GetAuthenticatedUserAsync();
@@ -37,7 +37,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		}
 
 		[HttpPost("save-comment")]
-		[Authorize]
+		[JwtAuthorize]
 		public async Task<ActionResult<GetPrivateUserModel>> SaveCommentAsync([FromQuery] int commentId)
 		{
 			var user = await _userAuth.GetAuthenticatedUserAsync();

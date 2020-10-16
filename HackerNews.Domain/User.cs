@@ -9,10 +9,8 @@ namespace HackerNews.Domain
 	{
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public string Username { get; set; }
 		public int Karma { get; set; }
 		// don't store in plaintext
-		public string Password { get; set; }
 		public List<Article> Articles { get; set; }
 		public List<Comment> Comments { get; set; }
 

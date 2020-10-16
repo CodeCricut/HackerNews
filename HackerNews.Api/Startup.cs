@@ -31,27 +31,27 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddCors(opt =>
-			{
-				opt.AddPolicy(name: "DefaultCorsPolicy",
-					builder => builder.AllowAnyOrigin());
-			});
-
-			services.AddDbContext<DbContext, HackerNewsContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
-
-			services.AddAutoMapper(typeof(Startup));
-
+			// Clean Architecture Services
 			services.ConfigureCleanEntityArchitecture(Configuration);
 
-			// Entity-related services.
+			// Other Custom Services
 			services.AddEntityRepositories()
 					.AddEntityServices()
 					.AddVoteableEntityServices()
 					.AddUserServices()
 					.AddBoardServices();
 
+			services.AddDbContext<DbContext, HackerNewsContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
+			services.AddAutoMapper(typeof(Startup));
 
+			services.AddCors(opt =>
+			{
+				opt.AddPolicy(name: "DefaultCorsPolicy",
+					builder => builder.AllowAnyOrigin());
+			});
+
+			
 			services.AddHttpContextAccessor();
 
 			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));
@@ -110,8 +110,6 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{
-
-
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
 

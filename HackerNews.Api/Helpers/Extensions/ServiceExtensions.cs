@@ -13,12 +13,16 @@ using HackerNews.Domain.Models.Auth;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
+using HackerNews.EF;
 using HackerNews.EF.Repositories;
 using HackerNews.EF.Repositories.Articles;
 using HackerNews.EF.Repositories.Boards;
 using HackerNews.EF.Repositories.Comments;
 using HackerNews.EF.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace HackerNews.Api.Helpers.StartupExtensions
 {
@@ -26,6 +30,31 @@ namespace HackerNews.Api.Helpers.StartupExtensions
 	{
 		public static IServiceCollection AddEntityRepositories(this IServiceCollection services)
 		{
+			//var efAssembly = typeof(HackerNewsContext).Assembly;
+
+			//var types = Assembly.GetExecutingAssembly().GetTypes().Concat(efAssembly.GetTypes());
+
+			//Type readRepoInterfaceType = typeof(IReadEntityRepository<>);
+			//Type writeRepoInterfaceType = typeof(IWriteEntityRepository<>);
+
+
+			//var readRepos = types
+			//	.Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(readRepoInterfaceType))).ToList();
+			//var writeRepos = types
+			//	.Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(writeRepoInterfaceType))).ToList();
+
+			//foreach(var readrepo in readRepos)
+			//{
+			//	var baseType = readrepo.BaseType;
+			//	var args = baseType.GetGenericArguments();
+
+			//	Type firstArg = args.First();
+
+			//	services.AddScoped<IReadEntityRepository<firstArg>
+			//}
+
+
+
 			return services
 				.AddScoped<IReadEntityRepository<Article>, ReadArticleRepository>()
 				.AddScoped<IReadEntityRepository<Comment>, ReadCommentRepository>()

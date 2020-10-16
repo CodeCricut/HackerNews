@@ -16,26 +16,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 	// TODO: the register user model is fine for updating the user for now, but should be a dedicated UpdateUserModel later
 	public class WritePrivateUserService : WriteEntityService<User, RegisterUserModel>
 	{
-		private readonly IMapper _mapper;
-		private readonly IReadEntityRepository<User> _readRepo;
-		private readonly IWriteEntityRepository<User> _writeRepo;
-		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
-		private readonly IUserAuth<User> _cleanUserAuth;
+		private readonly IUserAuth<User> _userAuth;
 
-		public WritePrivateUserService(IMapper mapper, IReadEntityRepository<User> readRepo, IWriteEntityRepository<User> writeRepo,
-			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
-			IUserAuth<User> cleanUserAuth)
+		public WritePrivateUserService(IMapper mapper, IWriteEntityRepository<User> writeRepo, IReadEntityRepository<User> readRepo, IUserAuth<User> userAuth) : base(mapper, writeRepo, readRepo)
 		{
-			_mapper = mapper;
-			_readRepo = readRepo;
-			_writeRepo = writeRepo;
 			_userAuth = userAuth;
-			_cleanUserAuth = cleanUserAuth;
 		}
 
 		public override async Task<TGetModel> PostEntityModelAsync<TGetModel>(RegisterUserModel entityModel)
 		{
-			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
+			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
 
 			var entity = _mapper.Map<User>(entityModel);
 
@@ -48,15 +38,14 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 			return _mapper.Map<TGetModel>(addedEntity);
 		}
 
-		public override Task PostEntityModelsAsync(List<RegisterUserModel> entityModels)
+		public override Task<IEnumerable<TGetModel>> PostEntityModelsAsync<TGetModel>(List<RegisterUserModel> entityModels)
 		{
 			throw new UnauthorizedException("Not permitted to register mutliple users at once.");
-
 		}
 
 		public override async Task<TGetModel> PutEntityModelAsync<TGetModel>(int id, RegisterUserModel entityModel)
 		{
-			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
+			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
 
 			// verify entity trying to update exists
 			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
@@ -79,7 +68,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 
 		public override async Task SoftDeleteEntityAsync(int id)
 		{
-			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
+			var currentUser = await _userAuth.GetAuthenticatedUserAsync();
 
 			// verify entity exists
 			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();

@@ -6,7 +6,6 @@ namespace HackerNews.Domain.Models.Articles
 {
 	public class GetArticleModel : GetModelDto
 	{
-		public int Id { get; set; }
 		public bool Deleted { get; set; }
 		public ArticleType Type { get; set; }
 		public int UserId { get; set; }

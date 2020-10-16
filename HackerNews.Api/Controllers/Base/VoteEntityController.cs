@@ -9,7 +9,7 @@ namespace HackerNews.Api.Controllers.Base
 		where TEntity : DomainEntity
 	{
 		[HttpPost("vote/{entityId:int}")]
-		[Authorize]
+		[JwtAuthorize]
 		public abstract Task<IActionResult> VoteEntityAsync(int entityId, [FromBody] bool upvote);
 	}
 }

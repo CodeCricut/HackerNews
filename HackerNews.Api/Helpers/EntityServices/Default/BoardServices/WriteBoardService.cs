@@ -16,22 +16,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 {
 	public class WriteBoardService : WriteEntityService<Board, PostBoardModel>
 	{
-		private readonly IMapper _mapper;
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
-		private readonly IWriteEntityRepository<Board> _writeBoardRepo;
-		private readonly IReadEntityRepository<Board> _readBoardRepo;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public WriteBoardService(IMapper mapper,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
-			IWriteEntityRepository<Board> writeBoardRepo,
-			IReadEntityRepository<Board> readBoardRepo,
-			IUserAuth<User> cleanUserAuth)
+			IWriteEntityRepository<Board> writeRepo,
+			IReadEntityRepository<Board> readRepo,
+			IUserAuth<User> cleanUserAuth) : base(mapper, writeRepo, readRepo)
 		{
-			_mapper = mapper;
 			_userAuth = userAuth;
-			_writeBoardRepo = writeBoardRepo;
-			_readBoardRepo = readBoardRepo;
 			_cleanUserAuth = cleanUserAuth;
 		}
 
@@ -43,9 +37,9 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 			entity.Creator = currentUser;
 			entity.CreateDate = DateTime.UtcNow;
 
-			var addedEntity = await _writeBoardRepo.AddEntityAsync(entity);
+			var addedEntity = await _writeRepo.AddEntityAsync(entity);
 
-			await _writeBoardRepo.SaveChangesAsync();
+			await _writeRepo.SaveChangesAsync();
 
 			return _mapper.Map<TGetModel>(addedEntity);
 		}
@@ -54,10 +48,10 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 		{
 			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 			// verify entity trying to update exists
-			if (!await _readBoardRepo.VerifyExistsAsync(id)) throw new NotFoundException();
+			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
 
 			// verify user has moderation privileges
-			var entity = await _readBoardRepo.GetEntityAsync(id);
+			var entity = await _readRepo.GetEntityAsync(id);
 			if (entity.Creator.Id != currentUser.Id ||
 				entity.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null)
 				throw new UnauthorizedException();
@@ -65,8 +59,8 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 			var updatedEntity = _mapper.Map<Board>(entityModel);
 
 			// update and save
-			await _writeBoardRepo.UpdateEntityAsync(id, updatedEntity);
-			await _writeBoardRepo.SaveChangesAsync();
+			await _writeRepo.UpdateEntityAsync(id, updatedEntity);
+			await _writeRepo.SaveChangesAsync();
 
 			// return updated entity
 			// TODO: see if ldkalkfj
@@ -78,15 +72,15 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 			var currentUser = await _cleanUserAuth.GetAuthenticatedUserAsync();
 
 			// verify entity exists
-			if (!await _readBoardRepo.VerifyExistsAsync(id)) throw new NotFoundException();
+			if (!await _readRepo.VerifyExistsAsync(id)) throw new NotFoundException();
 
 			// verify user created the board
-			var entity = await _readBoardRepo.GetEntityAsync(id);
+			var entity = await _readRepo.GetEntityAsync(id);
 			if (entity.Creator.Id != currentUser.Id) throw new UnauthorizedException();
 
 			// soft delete and save
-			await _writeBoardRepo.SoftDeleteEntityAsync(id);
-			await _writeBoardRepo.SaveChangesAsync();
+			await _writeRepo.SoftDeleteEntityAsync(id);
+			await _writeRepo.SaveChangesAsync();
 		}
 	}
 }

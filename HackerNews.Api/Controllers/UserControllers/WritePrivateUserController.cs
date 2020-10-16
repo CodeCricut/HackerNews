@@ -28,7 +28,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		}
 
 		[HttpPost("register")]
-		[Authorize(false)]
+		[JwtAuthorize(false)]
 		public override async Task<ActionResult<GetPrivateUserModel>> PostAsync([FromBody] RegisterUserModel postModel)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
@@ -41,7 +41,8 @@ namespace HackerNews.Api.Controllers.UserControllers
 			return Ok(response);
 		}
 
-		public override Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<RegisterUserModel> postModels)
+
+		public override Task<ActionResult<IEnumerable<GetPrivateUserModel>>> PostRangeAsync([FromBody] IEnumerable<RegisterUserModel> postModels)
 		{
 			throw new UnauthorizedException("Unauthorized to register mutliple users at once.");
 		}

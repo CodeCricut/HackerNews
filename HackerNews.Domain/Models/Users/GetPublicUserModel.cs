@@ -6,7 +6,6 @@ namespace HackerNews.Domain.Models.Users
 {
 	public class GetPublicUserModel : GetModelDto
 	{
-		public int Id { get; set; }
 		public string Username { get; set; }
 		public int Karma { get; set; }
 		public bool Deleted { get; set; }

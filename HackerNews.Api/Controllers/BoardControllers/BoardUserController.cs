@@ -19,7 +19,7 @@ namespace HackerNews.Api.Controllers.BoardControllers
 		}
 
 		[HttpPost("add-moderator")]
-		[Authorize]
+		[JwtAuthorize]
 		public async Task<ActionResult<GetBoardModel>> AddModeratorAsync([FromQuery] int boardId, [FromQuery] int moderatorId)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
@@ -30,7 +30,7 @@ namespace HackerNews.Api.Controllers.BoardControllers
 		}
 
 		[HttpPost("add-subscriber")]
-		[Authorize]
+		[JwtAuthorize]
 		public async Task<ActionResult<GetBoardModel>> AddSubscriberAsync([FromQuery] int boardId)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);

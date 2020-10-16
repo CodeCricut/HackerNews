@@ -16,9 +16,6 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 {
 	public class WriteArticleService : WriteEntityService<Article, PostArticleModel>
 	{
-		private readonly IMapper _mapper;
-		private readonly IReadEntityRepository<Article> _readRepo;
-		private readonly IWriteEntityRepository<Article> _writeRepo;
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuthService;
 		private readonly IUserAuth<User> _userAuth;
 		private readonly HttpContext _httpContext;
@@ -27,10 +24,8 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 			IReadEntityRepository<Article> readRepo,
 			IWriteEntityRepository<Article> writeRepo,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuthService, IUserAuth<User> userAuth)
+			:base(mapper, writeRepo, readRepo)
 		{
-			_mapper = mapper;
-			_readRepo = readRepo;
-			_writeRepo = writeRepo;
 			_userAuthService = userAuthService;
 			_userAuth = userAuth;
 		}

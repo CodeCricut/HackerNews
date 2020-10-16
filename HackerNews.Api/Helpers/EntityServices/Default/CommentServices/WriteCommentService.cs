@@ -15,22 +15,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 {
 	public class WriteCommentService : WriteEntityService<Comment, PostCommentModel>
 	{
-		private readonly IMapper _mapper;
 		private readonly IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> _userAuth;
-		private readonly IReadEntityRepository<Comment> _readRepo;
-		private readonly IWriteEntityRepository<Comment> _writeRepo;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public WriteCommentService(IMapper mapper,
 			IAuthenticatableEntityService<User, LoginModel, GetPrivateUserModel> userAuth,
 			IReadEntityRepository<Comment> readRepo,
 			IWriteEntityRepository<Comment> writeRepo,
-			IUserAuth<User> cleanUserAuth)
+			IUserAuth<User> cleanUserAuth) : base(mapper, writeRepo, readRepo)
 		{
-			_mapper = mapper;
 			_userAuth = userAuth;
-			_readRepo = readRepo;
-			_writeRepo = writeRepo;
 			_cleanUserAuth = cleanUserAuth;
 		}
 

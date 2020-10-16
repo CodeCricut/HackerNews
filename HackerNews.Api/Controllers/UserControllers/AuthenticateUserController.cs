@@ -32,7 +32,7 @@ namespace HackerNews.Api.Controllers.UserControllers
 		}
 
 		[HttpGet("me")]
-		[Authorize]
+		[JwtAuthorize]
 		public async Task<ActionResult<GetPrivateUserModel>> GetPrivateUserAsync()
 		{
 			var privateUser = await _userAuthService.GetAuthenticatedReturnModelAsync();
