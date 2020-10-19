@@ -65,7 +65,7 @@ namespace HackerNews.Controllers
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
 			var boardModels = await _boardReader.GetEndpointAsync(BOARD_ENDPOINT, pagingParams);
 
-			var viewModel = new BoardListViewModel { GetModels = boardModels };
+			var viewModel = new BoardListViewModel { GetModels = boardModels.Items };
 
 			return View(viewModel);
 		}

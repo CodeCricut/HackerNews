@@ -22,7 +22,7 @@ namespace HackerNews.Controllers
 		public async Task<IActionResult> Index(PagingParams pagingParams)
 		{
 			var articles = await _articleReader.GetEndpointAsync("articles", pagingParams);
-			var viewModel = new HomeIndexViewModel { Articles = new PagedList<GetArticleModel>(articles.ToList(), articles.Count(), pagingParams) };
+			var viewModel = new HomeIndexViewModel(articles);
 			return View(viewModel);
 		}
 

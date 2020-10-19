@@ -103,7 +103,7 @@ namespace HackerNews.Controllers
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
 			var users = await _publicUserReader.GetEndpointAsync(USER_ENDPOINT, pagingParams);
 
-			var returnModel = new UsersListViewModel { GetModels = users };
+			var returnModel = new UsersListViewModel { GetModels = users.Items };
 			return View(returnModel);
 		}
 

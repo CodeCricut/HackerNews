@@ -26,7 +26,7 @@ namespace HackerNews.Helpers.ApiServices.Base
 			_jwtService = jwtService;
 		}
 
-		public virtual async Task<IEnumerable<TGetModel>> GetEndpointAsync(string endpoint, PagingParams pagingParams)
+		public virtual async Task<PagedListResponse<TGetModel>> GetEndpointAsync(string endpoint, PagingParams pagingParams)
 		{
 			if (_jwtService.ContainsToken())
 				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
@@ -46,11 +46,11 @@ namespace HackerNews.Helpers.ApiServices.Base
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<IEnumerable<TGetModel>>(responseJson);
+				return JsonConvert.DeserializeObject<PagedListResponse<TGetModel>>(responseJson);
 			}
 
 			// TODO: Throw some error
-			return new List<TGetModel>();
+			return null;
 		}
 
 		public virtual async Task<TGetModel> GetEndpointAsync(string endpoint, int id)

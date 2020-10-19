@@ -28,16 +28,6 @@ namespace HackerNews.Controllers
 			_commentReader = commentReader;
 		}
 
-		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
-		{
-			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var articleModels = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, pagingParams);
-
-			var viewModel = new ArticleListViewModel { GetModels = articleModels };
-
-			return View(viewModel);
-		}
-
 		public async Task<ViewResult> Details(int id)
 		{
 			var articleModel = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, id);

@@ -9,20 +9,30 @@ namespace HackerNews.ViewModels.Home
 {
 	public class HomeIndexViewModel
 	{
-		public PagedList<GetArticleModel> Articles { get; set; }
+		private readonly PagedListResponse<GetArticleModel> _pagedListResponse;
+
+		public HomeIndexViewModel(PagedListResponse<GetArticleModel> pagedListResponse)
+		{
+			Articles = pagedListResponse.Items;
+			_pagedListResponse = pagedListResponse;
+		}
+
+		public IEnumerable<GetArticleModel> Articles { get; set; }
+		public bool HasPrev { get => _pagedListResponse.HasPrevious; }
+		public bool HasNext { get => _pagedListResponse.HasNext; }
 		public PagingParams PrevPagingParams
 		{
 			get {
-				return Articles.HasPrevious
+				return _pagedListResponse.HasPrevious
 					? new PagingParams
 					{
-						PageNumber = Articles.CurrentPage - 1,
-						PageSize = Articles.PageSize
+						PageNumber = _pagedListResponse.CurrentPage - 1,
+						PageSize = _pagedListResponse.PageSize
 					}
 					: new PagingParams
 					{
-						PageNumber = Articles.CurrentPage,
-						PageSize = Articles.PageSize
+						PageNumber = _pagedListResponse.CurrentPage,
+						PageSize = _pagedListResponse.PageSize
 					};
 			}
 		}
@@ -30,16 +40,16 @@ namespace HackerNews.ViewModels.Home
 		{
 			get
 			{
-				return Articles.HasNext
+				return _pagedListResponse.HasNext
 					? new PagingParams
 					{
-						PageNumber = Articles.CurrentPage + 1,
-						PageSize = Articles.PageSize
+						PageNumber = _pagedListResponse.CurrentPage + 1,
+						PageSize = _pagedListResponse.PageSize
 					}
 					: new PagingParams
 					{
-						PageNumber = Articles.CurrentPage,
-						PageSize = Articles.PageSize
+						PageNumber = _pagedListResponse.CurrentPage,
+						PageSize = _pagedListResponse.PageSize
 					};
 			}
 		}

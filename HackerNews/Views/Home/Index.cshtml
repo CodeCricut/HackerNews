@@ -1,44 +1,15 @@
 ﻿@model HackerNews.ViewModels.Home.HomeIndexViewModel
 
-
-
 @{
     Layout = "_Layout";
-    // for testing
-    IEnumerable<HackerNews.Domain.Models.Articles.GetArticleModel> articles = new List<HackerNews.Domain.Models.Articles.GetArticleModel>
-{
-        new HackerNews.Domain.Models.Articles.GetArticleModel
-        {
-            BoardId = 1,
-            CommentIds = new List<int> { 1, 2, 3},
-            Deleted = false,
-            Id = 1,
-            Karma = 10,
-            PostDate = DateTime.Now,
-            Text = "Neuromod promises a new revolutionary tinnitus treatment.",
-            Title = "Tinnitus Treatment from Neuromod",
-            Type = HackerNews.Domain.ArticleType.News,
-            Url = "/articles/1",
-            UserId = 1,
-            UsersDisliked = new List<int> { },
-            UsersLiked = new List<int> { }
-        },
-        new HackerNews.Domain.Models.Articles.GetArticleModel
-        {
-            BoardId = 1,
-            CommentIds = new List<int> { 1, 2, 3},
-            Deleted = false,
-            Id = 1,
-            Karma = 10,
-            PostDate = DateTime.Now,
-            Text = "Neuromod promises a new revolutionary tinnitus treatment.",
-            Title = "Article 2",
-            Type = HackerNews.Domain.ArticleType.News,
-            Url = "/articles/1",
-            UserId = 1,
-            UsersDisliked = new List<int> { },
-            UsersLiked = new List<int> { }
-        }
+    var nextPagingParam = new Dictionary<string, string>
+    {
+        {"pageNumber", Model.NextPagingParams.PageNumber.ToString() },
+        {"pageSize", Model.NextPagingParams.PageSize.ToString() }
+    };
+    var prevPagingParam = new Dictionary<string, string> {
+        {"pageNumber", Model.PrevPagingParams.PageNumber.ToString() },
+        {"pageSize", Model.PrevPagingParams.PageSize.ToString() }
     };
 }
 
@@ -56,13 +27,13 @@
             @* Bottom of Article List *@
             <div class="row w-100">
                 <div class="col">
-                    @if (Model.Articles.HasPrevious)
+                    @if (Model.HasPrev)
                     {
-                        <a asp-action="Index" asp-route-paging-params="@Model.PrevPagingParams" class="mr-auto btn btn-outline-secondary ">Prev</a>
+                        <a asp-action="Index" asp-all-route-data="prevPagingParam" class="mr-auto btn btn-outline-secondary ">Prev</a>
                     }
-                    @if (Model.Articles.HasNext)
+                    @if (Model.HasNext)
                     {
-                        <a asp-action="Index" asp-route-paging-params="@Model.NextPagingParams" class="mr-auto btn btn-outline-secondary ">Next</a>
+                        <a asp-action="Index" asp-all-route-data="nextPagingParam" class="mr-auto btn btn-outline-secondary ">Next</a>
                     }
                 </div>
             </div>

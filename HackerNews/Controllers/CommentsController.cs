@@ -28,7 +28,7 @@ namespace HackerNews.Controllers
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
 			var commentModels = await _commentReader.GetEndpointAsync(COMMENT_ENDPOINT, pagingParams);
 
-			var viewModel = new CommentsListViewModel { GetModels = commentModels };
+			var viewModel = new CommentsListViewModel { GetModels = commentModels.Items };
 
 			return View(viewModel);
 		}
