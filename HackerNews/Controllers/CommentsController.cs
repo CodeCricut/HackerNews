@@ -1,6 +1,9 @@
 ﻿using CleanEntityArchitecture.Domain;
 using HackerNews.Domain;
+using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
+using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Comments;
@@ -12,21 +15,21 @@ namespace HackerNews.Controllers
 	public class CommentsController : Controller
 	{
 		private static readonly string COMMENT_ENDPOINT = "comments";
-		private readonly IApiReader<GetCommentModel> _commentReader;
+		private readonly IApiReader _apiReader;
 		private readonly IApiModifier<Comment, PostCommentModel, GetCommentModel> _commentModifier;
 
 		public CommentsController(
-			IApiReader<GetCommentModel> commentReader,
+			IApiReader apiReader,
 			IApiModifier<Comment, PostCommentModel, GetCommentModel> commentModifier)
 		{
-			_commentReader = commentReader;
+			_apiReader = apiReader;
 			_commentModifier = commentModifier;
 		}
 
 		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
 		{
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var commentModels = await _commentReader.GetEndpointAsync(COMMENT_ENDPOINT, pagingParams);
+			var commentModels = await _apiReader.GetEndpointAsync<GetCommentModel>(COMMENT_ENDPOINT, pagingParams);
 
 			var viewModel = new CommentsListViewModel { GetModels = commentModels.Items };
 
@@ -35,9 +38,22 @@ namespace HackerNews.Controllers
 
 		public async Task<ViewResult> Details(int id)
 		{
-			var commentModel = await _commentReader.GetEndpointAsync(COMMENT_ENDPOINT, id);
+			var commentModel = await _apiReader.GetEndpointAsync<GetCommentModel>(COMMENT_ENDPOINT, id);
+			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("Boards", commentModel.BoardId);
+			var parentArticle = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", commentModel.ParentArticleId);
+			var childComments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.CommentIds);
+			var parentComment = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.ParentCommentId);
+			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", commentModel.UserId);
 
-			var model = new CommentDetailsViewModel { GetModel = commentModel };
+			var model = new CommentDetailsViewModel { 
+				GetModel = commentModel,
+				Board = board,
+				ParentArticle = parentArticle,
+				PostCommentModel = new PostCommentModel(),
+				ChildComments = childComments,
+				ParentComment = parentComment,
+				User = user
+			};
 
 			return View(model);
 		}
@@ -48,12 +64,12 @@ namespace HackerNews.Controllers
 			return View(model);
 		}
 
-		[HttpPost]
-		public async Task<ActionResult> Post(PostCommentModel comment)
-		{
-			GetCommentModel getCommentModel = await _commentModifier.PostEndpointAsync(COMMENT_ENDPOINT, comment);
+		//[HttpPost]
+		//public async Task<ActionResult> Post(PostCommentModel comment)
+		//{
+		//	GetCommentModel getCommentModel = await _commentModifier.PostEndpointAsync(COMMENT_ENDPOINT, comment);
 
-			return RedirectToAction("Details", new { getCommentModel.Id });
-		}
+		//	return RedirectToAction("Details", new { getCommentModel.Id });
+		//}
 	}
 }

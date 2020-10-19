@@ -12,16 +12,16 @@ namespace HackerNews.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly IApiReader<GetArticleModel> _articleReader;
+		private readonly IApiReader _apiReader;
 
-		public HomeController(IApiReader<GetArticleModel> articleReader)
+		public HomeController(IApiReader apiReader)
 		{
-			_articleReader = articleReader;
+			_apiReader = apiReader;
 		}
 
 		public async Task<IActionResult> Index(PagingParams pagingParams)
 		{
-			var articles = await _articleReader.GetEndpointAsync("articles", pagingParams);
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", pagingParams);
 			var viewModel = new HomeIndexViewModel(articles);
 			return View(viewModel);
 		}

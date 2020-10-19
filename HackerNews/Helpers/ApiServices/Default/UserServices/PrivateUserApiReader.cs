@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Helpers.ApiServices.Default.UserServices
 {
-	public class PrivateUserApiReader : ApiReader<GetPrivateUserModel>
+	public class PrivateUserApiReader : ApiReader
 	{
 		public PrivateUserApiReader(IHttpClientFactory clientFactory, IOptions<AppSettings> options, IJwtService jwtService) : base(clientFactory, options, jwtService)
 		{
 		}
 
-		public override async Task<GetPrivateUserModel> GetEndpointAsync(string endpoint, int id)
+		public override async Task<GetPrivateUserModel> GetEndpointAsync<GetPrivateUserModel>(string endpoint, int id)
 		{
 			if (_jwtService.ContainsToken())
 				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
@@ -29,7 +29,7 @@ namespace HackerNews.Helpers.ApiServices.Default.UserServices
 				return JsonConvert.DeserializeObject<GetPrivateUserModel>(responseJson);
 			}
 			// TODO: Throw some error
-			return new GetPrivateUserModel();
+			throw new System.Exception();
 		}
 	}
 }

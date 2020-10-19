@@ -6,7 +6,7 @@ using System.Net.Http;
 
 namespace HackerNews.Helpers.ApiServices.Default.BoardServices
 {
-	public class BoardApiReader : ApiReader<GetBoardModel>
+	public class BoardApiReader : ApiReader
 	{
 		public BoardApiReader(IHttpClientFactory clientFactory, IOptions<AppSettings> options, IJwtService jwtService) : base(clientFactory, options, jwtService)
 		{

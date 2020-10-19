@@ -13,19 +13,17 @@ namespace HackerNews.ViewComponents
 {
 	public class ArticleCardViewComponent : ViewComponent
 	{
-		private readonly IApiReader<GetBoardModel> _boardApiReader;
-		private readonly IApiReader<GetPublicUserModel> _publicUserApiReader;
+		private readonly IApiReader _apiReader;
 
-		public ArticleCardViewComponent(IApiReader<GetBoardModel> boardApiReader, IApiReader<GetPublicUserModel> publicUserApiReader)
+		public ArticleCardViewComponent(IApiReader apiReader)
 		{
-			_boardApiReader = boardApiReader;
-			_publicUserApiReader = publicUserApiReader;
+			_apiReader = apiReader;
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel)
 		{
-			var board = await _boardApiReader.GetEndpointAsync("Boards", articleModel.BoardId);
-			var user = await _publicUserApiReader.GetEndpointAsync("users", articleModel.UserId);
+			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("Boards", articleModel.BoardId);
+			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", articleModel.UserId);
 
 			var viewModel = new ArticleCardViewModel
 			{

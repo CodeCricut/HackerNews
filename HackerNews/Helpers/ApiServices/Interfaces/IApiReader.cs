@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Helpers.ApiServices.Interfaces
 {
-	public interface IApiReader<TGetModel>
-		where TGetModel : GetModelDto
+	public interface IApiReader
 	{
-		Task<PagedListResponse<TGetModel>> GetEndpointAsync(string endpoint, PagingParams pagingParams);
-		Task<TGetModel> GetEndpointAsync(string endpoint, int id);
+		Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, PagingParams pagingParams) where TGetModel : GetModelDto, new();
+		Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, int id) where TGetModel : GetModelDto, new();
+		Task<IEnumerable<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids) where TGetModel : GetModelDto, new();
+		Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint) where TGetModel : GetModelDto, new();
 	}
 }

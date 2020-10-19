@@ -1,5 +1,4 @@
 ﻿@model HackerNews.ViewModels.Users.UserCommentsListView
-@inject HackerNews.Helpers.ApiServices.Interfaces.IApiReader<HackerNews.Domain.Models.Board.GetBoardModel> _boardReader
 @{
     ViewData["Title"] = "Comments";
 }
@@ -10,7 +9,6 @@
 {
     <tr>
         @{ 
-            var board = await _boardReader.GetEndpointAsync("Boards", item.BoardId);
         }
         <td>@item.Id</td>
         <td>@item.Text</td>

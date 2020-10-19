@@ -1,8 +1,8 @@
-﻿using CleanEntityArchitecture.Domain;
-using HackerNews.Api.DB_Helpers;
-using HackerNews.Domain;
+﻿using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
+using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
+using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Articles;
@@ -14,26 +14,29 @@ namespace HackerNews.Controllers
 	public class ArticlesController : Controller
 	{
 		private static readonly string ARTICLE_ENDPOINT = "articles";
-		private readonly IApiReader<GetArticleModel> _articleReader;
 		private readonly IApiModifier<Article, PostArticleModel, GetArticleModel> _articleModifier;
-		private readonly IApiReader<GetCommentModel> _commentReader;
+		private readonly IApiModifier<Comment, PostCommentModel, GetCommentModel> _commentModifier;
+		private readonly IApiReader _apiReader;
 
 		public ArticlesController(
-			IApiReader<GetArticleModel> articleReader,
 			IApiModifier<Article, PostArticleModel, GetArticleModel> articleModifier,
-			IApiReader<GetCommentModel> commentReader)
+			IApiModifier<Comment, PostCommentModel, GetCommentModel> commentModifier,
+			IApiReader apiReader)
 		{
-			_articleReader = articleReader;
 			_articleModifier = articleModifier;
-			_commentReader = commentReader;
+			_commentModifier = commentModifier;
+			_apiReader = apiReader;
 		}
 
 		public async Task<ViewResult> Details(int id)
 		{
-			var articleModel = await _articleReader.GetEndpointAsync(ARTICLE_ENDPOINT, id);
-			var comments = await TaskHelper.RunConcurrentTasksAsync(articleModel.CommentIds, commentId => _commentReader.GetEndpointAsync("Comments", commentId));
+			var articleModel = await _apiReader.GetEndpointAsync<GetArticleModel>(ARTICLE_ENDPOINT, id);
+			// TODO: there is an endpoint for gettign many by IDs now
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", articleModel.CommentIds);
+			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", articleModel.BoardId);
+			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", articleModel.UserId);
 
-			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments });
+			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments, Board = board, User = user });
 		}
 
 		public ViewResult Create()
@@ -43,12 +46,24 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Post(PostArticleModel article)
+		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
 		{
-			GetArticleModel model = await _articleModifier.PostEndpointAsync(ARTICLE_ENDPOINT, article);
+			var postModel = viewModel.PostModel;
+			GetArticleModel model = await _articleModifier.PostEndpointAsync(ARTICLE_ENDPOINT, postModel);
 
 			return RedirectToAction("Details", new { model.Id });
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> AddComment([Bind("GetModel, PostCommentModel")] ArticleDetailsViewModel viewModel)
+		{
+			var commentAdded = viewModel.PostCommentModel;
+			commentAdded.BoardId = viewModel.GetModel.BoardId;
+			commentAdded.ParentArticleId = viewModel.GetModel.Id;
+
+			await _commentModifier.PostEndpointAsync("Comments", commentAdded);
+
+			return RedirectToAction("Details", new { id = viewModel.GetModel.Id });
+		}
 	}
 }

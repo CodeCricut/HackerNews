@@ -6,7 +6,7 @@ using System.Net.Http;
 
 namespace HackerNews.Helpers.ApiServices.Default.UserServices
 {
-	public class PublicUserApiReader : ApiReader<GetPublicUserModel>
+	public class PublicUserApiReader : ApiReader
 	{
 		public PublicUserApiReader(IHttpClientFactory clientFactory, IOptions<AppSettings> options, IJwtService jwtService) : base(clientFactory, options, jwtService)
 		{

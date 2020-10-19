@@ -4,6 +4,7 @@ using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
+using HackerNews.Helpers.ApiServices.Base;
 using HackerNews.Helpers.ApiServices.Default.ArticleServices;
 using HackerNews.Helpers.ApiServices.Default.BoardServices;
 using HackerNews.Helpers.ApiServices.Default.CommentServices;
@@ -39,18 +40,20 @@ namespace HackerNews
 
 			services.AddHttpClient();
 
-			services.AddScoped<IApiReader<GetBoardModel>, BoardApiReader>();
+			services.AddScoped<IApiReader, ApiReader>();
+
+			//services.AddScoped<IApiReader<GetBoardModel>, BoardApiReader>();
 			services.AddScoped<IApiModifier<Board, PostBoardModel, GetBoardModel>, BoardApiModifier>();
 			services.AddScoped<IApiBoardModeratorAdder, ApiBoardModeratorAdder>();
 
-			services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
+			//services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
 			services.AddScoped<IApiModifier<Article, PostArticleModel, GetArticleModel>, ArticleApiModifier>();
 
-			services.AddScoped<IApiReader<GetCommentModel>, CommentApiReader>();
+			//services.AddScoped<IApiReader<GetCommentModel>, CommentApiReader>();
 			services.AddScoped<IApiModifier<Comment, PostCommentModel, GetCommentModel>, CommentApiModifier>();
 
-			services.AddScoped<IApiReader<GetPublicUserModel>, PublicUserApiReader>();
-			services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();
+			//services.AddScoped<IApiReader<GetPublicUserModel>, PublicUserApiReader>();
+			//services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();
 			services.AddScoped<IApiModifier<User, RegisterUserModel, GetPrivateUserModel>, PrivateUserApiModifier>();
 			services.AddScoped<IApiLoginFacilitator<LoginModel, GetPrivateUserModel>, UserApiLoginFacilitator>();
 			services.AddScoped<IApiUserSaver<Article, GetPrivateUserModel>, ApiUserSaver>();

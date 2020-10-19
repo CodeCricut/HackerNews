@@ -16,26 +16,17 @@ namespace HackerNews.Controllers
 	{
 		private static readonly string BOARD_ENDPOINT = "boards";
 		private readonly IApiModifier<Board, PostBoardModel, GetBoardModel> _boardModifier;
-		private readonly IApiReader<GetBoardModel> _boardReader;
-		private readonly IApiReader<GetPrivateUserModel> _privateUserReader;
 		private readonly IApiBoardModeratorAdder _moderatorAdder;
-		private readonly IApiReader<GetPublicUserModel> _publicUserReader;
-		private readonly IApiReader<GetArticleModel> _articleReader;
+		private readonly IApiReader _apiReader;
 
 		public BoardsController(
 			IApiModifier<Board, PostBoardModel, GetBoardModel> boardModifier,
-			IApiReader<GetBoardModel> boardReader,
-			IApiReader<GetPrivateUserModel> privateUserReader,
 			IApiBoardModeratorAdder moderatorAdder,
-			IApiReader<GetPublicUserModel> publicUserReader,
-			IApiReader<GetArticleModel> articleReader)
+			IApiReader apiReader)
 		{
 			_boardModifier = boardModifier;
-			_boardReader = boardReader;
-			_privateUserReader = privateUserReader;
 			_moderatorAdder = moderatorAdder;
-			_publicUserReader = publicUserReader;
-			_articleReader = articleReader;
+			_apiReader = apiReader;
 		}
 
 		public ViewResult Create()
@@ -54,7 +45,7 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult> Details(int id)
 		{
-			GetBoardModel getBoardModel = await _boardReader.GetEndpointAsync(BOARD_ENDPOINT, id);
+			GetBoardModel getBoardModel = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 
 			var model = new BoardDetailsViewModel { GetModel = getBoardModel };
 			return View(model);
@@ -63,7 +54,7 @@ namespace HackerNews.Controllers
 		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
 		{
 			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var boardModels = await _boardReader.GetEndpointAsync(BOARD_ENDPOINT, pagingParams);
+			var boardModels = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, pagingParams);
 
 			var viewModel = new BoardListViewModel { GetModels = boardModels.Items };
 
@@ -72,10 +63,10 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult<BoardAdminViewModel>> Admin(int id)
 		{
-			var board = await _boardReader.GetEndpointAsync(BOARD_ENDPOINT, id);
+			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 			// TODO: you shoul dnot have to pass board name to method; should be setup in each implementation
-			var moderators = await TaskHelper.RunConcurrentTasksAsync(board.ModeratorIds, modId => _publicUserReader.GetEndpointAsync("Users", modId));
-			var subscribers = await TaskHelper.RunConcurrentTasksAsync(board.SubscriberIds, subId => _publicUserReader.GetEndpointAsync("Subscribers", subId));
+			var moderators = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.ModeratorIds);
+			var subscribers = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.SubscriberIds);
 
 			return View(new BoardAdminViewModel { Board = board, Moderators = moderators, Subscribers = subscribers });
 		}
@@ -89,10 +80,10 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult<BoardModeratorsListViewModel>> Moderators(int id)
 		{
-			var board = await _boardReader.GetEndpointAsync(BOARD_ENDPOINT, id);
+			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 
 			// TODO: there should be an API endpoint to get a list of things by ID
-			var moderators = await TaskHelper.RunConcurrentTasksAsync(board.ModeratorIds, modId => _publicUserReader.GetEndpointAsync("Users", modId));
+			var moderators = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.ModeratorIds);
 
 			var model = new BoardModeratorsListViewModel { Moderators = moderators };
 			return View(model);
@@ -100,9 +91,8 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult<BoardArticlesListViewModel>> Articles(int id)
 		{
-			var board = await _boardReader.GetEndpointAsync(BOARD_ENDPOINT, id);
-
-			var artices = await TaskHelper.RunConcurrentTasksAsync(board.ArticleIds, articleId => _articleReader.GetEndpointAsync("Articles", articleId));
+			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
+			var artices = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", board.ArticleIds);
 
 			var model = new BoardArticlesListViewModel { Articles = artices };
 			return View(model);

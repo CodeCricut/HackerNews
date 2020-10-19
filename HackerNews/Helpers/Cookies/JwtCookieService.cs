@@ -26,5 +26,10 @@ namespace HackerNews.Helpers.Cookies
 		{
 			return _cookieService.Contains("JWT");
 		}
+
+		public void RemoveToken()
+		{
+			_cookieService.Remove("JWT");
+		}
 	}
 }

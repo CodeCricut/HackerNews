@@ -7,5 +7,6 @@ namespace HackerNews.Helpers.Cookies.Interfaces
 		string GetToken();
 		void SetToken(Jwt token, int expireseMinutes);
 		bool ContainsToken();
+		void RemoveToken();
 	}
 }

@@ -6,6 +6,6 @@ namespace HackerNews.Helpers.ApiServices.Interfaces
 	public interface IApiLoginFacilitator<TLoginModel, TGetModel>
 		where TGetModel : GetModelDto
 	{
-		Task<TGetModel> GetUserByCredentialsAsync(TLoginModel authUserReq);
+		Task<Jwt> LogIn(TLoginModel authUserReq);
 	}
 }
