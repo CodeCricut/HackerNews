@@ -1,0 +1,189 @@
+﻿<!--@{
+    Layout = "_Layout";
+
+    var comments = new List<HackerNews.Domain.Models.Comments.GetCommentModel>
+    {
+        new HackerNews.Domain.Models.Comments.GetCommentModel
+        {
+            Id = 1,
+            Karma = 10,
+            ParentArticleId = 39,
+            PostDate = DateTime.Now,
+            Text = "And now, with the realization that you are God, you have come to grips with with the fact that you are both nothing and everything.",
+            ParentCommentId = 0,
+            Url = "comments/1",
+            CommentIds = new List<int>(),
+            BoardId = 7,
+            UserId = 2
+        }
+    };
+}
+
+
+<div class="container-fluid">
+    <div class="row p-4">-->
+@* Comments *@
+<!--<div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+    @foreach (var comment in comments)
+    {
+        <div class="row w-100">
+            <div class="col card article-card mb-3">
+                <div class="row card-body">
+                    <div class="vote-panel hidden-sm col-md-1 text-center">
+                        <div role="button" class=""><i class="fas fa-caret-up"></i></div>
+                        <div class="">@comment.Karma</div>
+                        <div role="button" class=""><i class="fas fa-caret-down"></i></div>
+                    </div>
+                    <div class="col-sm-12 col-md-11">
+                        <div class="article-card-title">@comment.Text</div>
+                        <div>
+                            <span class="article-card-board">@comment.BoardId</span>
+                            <span class="article-card-user">Posted by @comment.UserId</span>
+                            <span class="article-card-date">at @comment.PostDate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }-->
+@* Bottom of Comment List *@
+<!--<button type="button" class="row mr-auto btn btn-outline-secondary mb-4">More</button>
+</div>-->
+@* Sidebar *@
+<!--<div class="row hidden-sm col-md-5 col-lg-3 sidebar">
+        <div class="card">
+            <img class="card-img-top" src="~/img/home-banner.png" alt="home-banner" />
+            <div class="card-body">
+                <h4 class="h4">Home</h4>
+                <p>
+                    Welcome to HackerNews. Come here to check in with all the latest news and discussion threads.
+                </p>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary col my-1">Create Post</button>
+                <div class="w-100"></div>
+                <button class="btn btn-outline-primary col my-1">Create Board</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+@* Footer *@
+<!--<div class="bg-dark text-white">Footer</div>
+</div>-->
+
+@{
+    Layout = "_Layout";
+    // for testing
+    IEnumerable<HackerNews.Domain.Models.Articles.GetArticleModel> articles = new List<HackerNews.Domain.Models.Articles.GetArticleModel>
+{
+        new HackerNews.Domain.Models.Articles.GetArticleModel
+        {
+            BoardId = 1,
+            CommentIds = new List<int> { 1, 2, 3},
+            Deleted = false,
+            Id = 1,
+            Karma = 10,
+            PostDate = DateTime.Now,
+            Text = "Neuromod promises a new revolutionary tinnitus treatment.",
+            Title = "Tinnitus Treatment from Neuromod",
+            Type = HackerNews.Domain.ArticleType.News,
+            Url = "/articles/1",
+            UserId = 1,
+            UsersDisliked = new List<int> { },
+            UsersLiked = new List<int> { }
+        },
+        new HackerNews.Domain.Models.Articles.GetArticleModel
+        {
+            BoardId = 1,
+            CommentIds = new List<int> { 1, 2, 3},
+            Deleted = false,
+            Id = 1,
+            Karma = 10,
+            PostDate = DateTime.Now,
+            Text = "Neuromod promises a new revolutionary tinnitus treatment.",
+            Title = "Article 2",
+            Type = HackerNews.Domain.ArticleType.News,
+            Url = "/articles/1",
+            UserId = 1,
+            UsersDisliked = new List<int> { },
+            UsersLiked = new List<int> { }
+        }
+    };
+}
+
+@* Navbar *@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="#" class="navbar-brand">HackerNews</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a href="#" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item"><a href="" class="nav-link">New</a></li>
+            <li class="nav-item"><a href="" class="nav-link">Past</a></li>
+            <li class="nav-item"><a href="" class="nav-link">Comments</a></li>
+            <li class="nav-item"><a href="" class="nav-link">Ask</a></li>
+            <li class="nav-item"><a href="" class="nav-link">Show</a></li>
+            <li class="nav-item"><a href="" class="nav-link">Submit</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Articles *@
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            @foreach (var article in articles)
+            {
+                <div class="row w-100">
+                    <div class="col card article-card mb-3">
+                        <div class="row card-body">
+                            <div class="vote-panel hidden-sm col-md-1 text-center">
+                                <div role="button" class=""><i class="fas fa-caret-up"></i></div>
+                                <div class="">@article.Karma</div>
+                                <div role="button" class=""><i class="fas fa-caret-down"></i></div>
+                            </div>
+                            <div class="col-sm-12 col-md-11">
+                                <div class="article-card-title">@article.Title</div>
+                                <div>
+                                    <span class="article-card-board">@article.BoardId</span>
+                                    <span class="article-card-user">Posted by @article.UserId</span>
+                                    <span class="article-card-date">at @article.PostDate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @* Bottom of Article List *@
+            <button type="button" class="row mr-auto btn btn-outline-secondary mb-4">More</button>
+        </div>
+
+        @* Sidebar *@
+        <div class="row hidden-sm col-md-5 col-lg-3 sidebar">
+            <div class="card">
+                <img class="card-img-top" src="~/img/home-banner.png" alt="home-banner" />
+                <div class="card-body">
+                    <h4 class="h4">Home</h4>
+                    <p>
+                        Welcome to HackerNews. Come here to check in with all the latest news and discussion threads.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary col my-1">Create Post</button>
+                    <div class="w-100"></div>
+                    <button class="btn btn-outline-primary col my-1">Create Board</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    @* Footer *@
+    <div class="bg-dark text-white">Footer</div>
+</div>

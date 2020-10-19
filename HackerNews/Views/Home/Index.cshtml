@@ -1,0 +1,76 @@
+﻿@model HackerNews.ViewModels.Home.HomeIndexViewModel
+
+
+
+@{
+    Layout = "_Layout";
+    // for testing
+    IEnumerable<HackerNews.Domain.Models.Articles.GetArticleModel> articles = new List<HackerNews.Domain.Models.Articles.GetArticleModel>
+{
+        new HackerNews.Domain.Models.Articles.GetArticleModel
+        {
+            BoardId = 1,
+            CommentIds = new List<int> { 1, 2, 3},
+            Deleted = false,
+            Id = 1,
+            Karma = 10,
+            PostDate = DateTime.Now,
+            Text = "Neuromod promises a new revolutionary tinnitus treatment.",
+            Title = "Tinnitus Treatment from Neuromod",
+            Type = HackerNews.Domain.ArticleType.News,
+            Url = "/articles/1",
+            UserId = 1,
+            UsersDisliked = new List<int> { },
+            UsersLiked = new List<int> { }
+        },
+        new HackerNews.Domain.Models.Articles.GetArticleModel
+        {
+            BoardId = 1,
+            CommentIds = new List<int> { 1, 2, 3},
+            Deleted = false,
+            Id = 1,
+            Karma = 10,
+            PostDate = DateTime.Now,
+            Text = "Neuromod promises a new revolutionary tinnitus treatment.",
+            Title = "Article 2",
+            Type = HackerNews.Domain.ArticleType.News,
+            Url = "/articles/1",
+            UserId = 1,
+            UsersDisliked = new List<int> { },
+            UsersLiked = new List<int> { }
+        }
+    };
+}
+
+@* Navbar *@
+<partial name="_Navbar" />
+
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Articles *@
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            @foreach (var article in Model.Articles)
+            {
+                @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+            }
+            @* Bottom of Article List *@
+            <div class="row w-100">
+                <div class="col">
+                    @if (Model.Articles.HasPrevious)
+                    {
+                        <a asp-action="Index" asp-route-paging-params="@Model.PrevPagingParams" class="mr-auto btn btn-outline-secondary ">Prev</a>
+                    }
+                    @if (Model.Articles.HasNext)
+                    {
+                        <a asp-action="Index" asp-route-paging-params="@Model.NextPagingParams" class="mr-auto btn btn-outline-secondary ">Next</a>
+                    }
+                </div>
+            </div>
+             <div class="row h-100"></div>
+        </div>
+        @* Sidebar *@
+        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
+            <partial name="_HomeSidebarCard" />
+        </div>
+    </div>
+</div>
