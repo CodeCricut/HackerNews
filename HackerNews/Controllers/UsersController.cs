@@ -7,6 +7,7 @@ using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
+using HackerNews.ViewModels.Home;
 using HackerNews.ViewModels.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -107,6 +108,7 @@ namespace HackerNews.Controllers
 
 			// TODO: refactor to service and null checks and all that jazz
 			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", user.ArticleIds);
+
 			var model = new UserArticlesListView { GetModels = articles };
 			return View(model);
 		}

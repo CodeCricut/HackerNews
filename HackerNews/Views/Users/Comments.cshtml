@@ -5,16 +5,16 @@
 
 <h2>Comments</h2>
 
-@foreach (var item in Model.GetModels)
-{
-    <tr>
-        @{ 
-        }
-        <td>@item.Id</td>
-        <td>@item.Text</td>
-        @*<td>
-            @board.Title
-        </td>*@
-    </tr>
-}
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Comments *@
+        <div class="col main-content card-deck">
+            @foreach (var comment in Model.GetModels)
+            {
+                @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+            }
+            <div class="row h-100"></div>
+        </div>
+    </div>
+</div>
 
