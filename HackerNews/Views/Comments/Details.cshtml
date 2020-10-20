@@ -40,10 +40,14 @@
     <div class="row mt-3">
         <div class="col">
             @* Add Comment*@
-            <form asp-controller="Comments" asp-action="Post" method="post">
+            <form asp-controller="Comments" asp-action="AddComment" method="post">
                 <div class="form-group">
                     <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
                 </div>
+                <input hidden asp-for="GetModel.Id" />
+                <input hidden asp-for="GetModel.BoardId" />
+                <input hidden asp-for="GetModel.UserId" />
+
                 <div class="form-group">
                     <input type="submit" class="btn btn-outline-secondary" value="Add comment" />
                 </div>

@@ -1,4 +1,5 @@
 ﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Domain.JoinEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

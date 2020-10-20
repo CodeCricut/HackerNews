@@ -71,5 +71,17 @@ namespace HackerNews.Controllers
 
 		//	return RedirectToAction("Details", new { getCommentModel.Id });
 		//}
+
+		[HttpPost]
+		public async Task<ActionResult> AddComment([Bind("GetModel, PostCommentModel")] CommentDetailsViewModel viewModel)
+		{
+			var commentAdded = viewModel.PostCommentModel;
+			commentAdded.BoardId = viewModel.GetModel.BoardId;
+			commentAdded.ParentCommentId = viewModel.GetModel.Id;
+
+			await _commentModifier.PostEndpointAsync("Comments", commentAdded);
+
+			return RedirectToAction("Details", new { id = viewModel.GetModel.Id });
+		}
 	}
 }

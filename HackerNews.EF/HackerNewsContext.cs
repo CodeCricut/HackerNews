@@ -50,94 +50,114 @@ namespace HackerNews.EF
 				.Property(a => a.BoardId).IsRequired();
 			modelBuilder.Entity<Article>()
 				.HasOne(a => a.Board).WithMany(b => b.Articles);
+			modelBuilder.Entity<Comment>()
+				.Property(c => c.BoardId).IsRequired();
+			modelBuilder.Entity<Comment>()
+				.HasOne(c => c.Board).WithMany(b => b.Comments);
 
 			modelBuilder.Entity<UserArticle>()
 				.HasKey(ua => new { ua.UserId, ua.ArticleId });
 			modelBuilder.Entity<UserArticle>()
 				.HasOne(ua => ua.User)
 				.WithMany(u => u.SavedArticles)
-				.HasForeignKey(ua => ua.UserId);
+				.HasForeignKey(ua => ua.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<UserArticle>()
 				.HasOne(ua => ua.Article)
 				.WithMany(a => a.UsersSaved)
-				.HasForeignKey(ua => ua.ArticleId);
+				.HasForeignKey(ua => ua.ArticleId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<UserComment>()
 				.HasKey(uc => new { uc.UserId, uc.CommentId });
 			modelBuilder.Entity<UserComment>()
 				.HasOne(uc => uc.User)
 				.WithMany(u => u.SavedComments)
-				.HasForeignKey(uc => uc.UserId);
+				.HasForeignKey(uc => uc.UserId)
+				.OnDelete(DeleteBehavior.NoAction); ;
 			modelBuilder.Entity<UserComment>()
 				.HasOne(uc => uc.Comment)
 				.WithMany(a => a.UsersSaved)
-				.HasForeignKey(uc => uc.CommentId);
+				.HasForeignKey(uc => uc.CommentId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<UserArticleLikes>()
 				.HasKey(ual => new { ual.UserId, ual.ArticleId });
 			modelBuilder.Entity<UserArticleLikes>()
 				.HasOne(ual => ual.User)
 				.WithMany(u => u.LikedArticles)
-				.HasForeignKey(ual => ual.UserId);
+				.HasForeignKey(ual => ual.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<UserArticleLikes>()
 				.HasOne(ual => ual.Article)
 				.WithMany(a => a.UsersLiked)
-				.HasForeignKey(ual => ual.ArticleId);
+				.HasForeignKey(ual => ual.ArticleId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<UserArticleDislikes>()
 				.HasKey(uad => new { uad.UserId, uad.ArticleId });
 			modelBuilder.Entity<UserArticleDislikes>()
 				.HasOne(uad => uad.User)
 				.WithMany(u => u.DislikedArticles)
-				.HasForeignKey(uad => uad.UserId);
+				.HasForeignKey(uad => uad.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<UserArticleDislikes>()
 				.HasOne(uad => uad.Article)
 				.WithMany(a => a.UsersDisliked)
-				.HasForeignKey(uad => uad.ArticleId);
+				.HasForeignKey(uad => uad.ArticleId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<UserCommentLikes>()
 				.HasKey(ucl => new { ucl.UserId, ucl.CommentId });
 			modelBuilder.Entity<UserCommentLikes>()
 				.HasOne(ucl => ucl.User)
 				.WithMany(u => u.LikedComments)
-				.HasForeignKey(ual => ual.UserId);
+				.HasForeignKey(ual => ual.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<UserCommentLikes>()
 				.HasOne(ucl => ucl.Comment)
 				.WithMany(a => a.UsersLiked)
-				.HasForeignKey(ucl => ucl.CommentId);
+				.HasForeignKey(ucl => ucl.CommentId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<UserCommentDislikes>()
 				.HasKey(ucd => new { ucd.UserId, ucd.CommentId });
 			modelBuilder.Entity<UserCommentDislikes>()
 				.HasOne(ucd => ucd.User)
 				.WithMany(u => u.DislikedComments)
-				.HasForeignKey(ucd => ucd.UserId);
+				.HasForeignKey(ucd => ucd.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<UserCommentDislikes>()
 				.HasOne(ucd => ucd.Comment)
 				.WithMany(a => a.UsersDisliked)
-				.HasForeignKey(ucd => ucd.CommentId);
+				.HasForeignKey(ucd => ucd.CommentId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<BoardUserModerator>()
 				.HasKey(bu => new { bu.UserId, bu.BoardId });
 			modelBuilder.Entity<BoardUserModerator>()
 				.HasOne(bu => bu.User)
 				.WithMany(u => u.BoardsModerating)
-				.HasForeignKey(bu => bu.UserId);
+				.HasForeignKey(bu => bu.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<BoardUserModerator>()
 				.HasOne(bu => bu.Board)
 				.WithMany(b => b.Moderators)
-				.HasForeignKey(bu => bu.BoardId);
+				.HasForeignKey(bu => bu.BoardId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			modelBuilder.Entity<BoardUserSubscriber>()
 				.HasKey(bu => new { bu.UserId, bu.BoardId });
 			modelBuilder.Entity<BoardUserSubscriber>()
 				.HasOne(bu => bu.User)
 				.WithMany(u => u.BoardsSubscribed)
-				.HasForeignKey(bu => bu.UserId);
+				.HasForeignKey(bu => bu.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 			modelBuilder.Entity<BoardUserSubscriber>()
 				.HasOne(bu => bu.Board)
 				.WithMany(b => b.Subscribers)
-				.HasForeignKey(bu => bu.BoardId);
+				.HasForeignKey(bu => bu.BoardId)
+				.OnDelete(DeleteBehavior.NoAction);
 		}
 	}
 }

@@ -24,14 +24,16 @@
     <Compile Remove="Migrations\20200929194009_boards.Designer.cs" />
     <Compile Remove="Migrations\20200929194226_boards.cs" />
     <Compile Remove="Migrations\20200929194226_boards.Designer.cs" />
+    <Compile Remove="Migrations\20201020000335_NewDb.cs" />
+    <Compile Remove="Migrations\20201020000335_NewDb.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
   </ItemGroup>
 
   <ItemGroup>

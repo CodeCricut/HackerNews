@@ -1,4 +1,8 @@
-﻿namespace HackerNews.Domain
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace HackerNews.Domain.JoinEntities
 {
 	public class UserComment
 	{

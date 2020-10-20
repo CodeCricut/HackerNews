@@ -15,6 +15,7 @@ namespace HackerNews.EF.Repositories.Boards
 		{
 			return queryable
 				.Include(b => b.Articles)
+				.Include(b => b.Comments)
 				.Include(b => b.Creator)
 				.Include(b => b.Moderators)
 				.Include(b => b.Subscribers);

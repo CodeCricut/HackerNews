@@ -26,8 +26,7 @@ namespace HackerNews.Api.Converters.Profiles
 				//.ForMember(cm => cm.ParentCommentId,
 				//			o => o.MapFrom(c => c.ParentComment.Id))
 				.ForMember(cm => cm.CommentIds,
-							o => o.MapFrom(c => c.ChildComments.Select(c => c.Id))
-						);
+							o => o.MapFrom(c => c.ChildComments.Select(c => c.Id)));
 		}
 	}
 }

@@ -41,8 +41,11 @@ namespace HackerNews.Api
 					.AddUserServices()
 					.AddBoardServices();
 
+			
+
 			services.AddDbContext<DbContext, HackerNewsContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")));
+				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")
+				));
 			services.AddAutoMapper(typeof(Startup));
 
 			services.AddCors(opt =>
@@ -110,6 +113,14 @@ namespace HackerNews.Api
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{
+			// temp
+			//using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+			//{
+			//	var context = serviceScope.ServiceProvider.GetRequiredService<DbContext>();
+			//	context.Database.EnsureDeleted();
+			//	context.Database.EnsureCreated();
+			//}
+
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
 

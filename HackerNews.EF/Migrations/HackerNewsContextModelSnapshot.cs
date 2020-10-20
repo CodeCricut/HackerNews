@@ -15,7 +15,7 @@ namespace HackerNews.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -100,6 +100,9 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BoardId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
@@ -126,6 +129,8 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BoardId");
 
                     b.HasIndex("ParentArticleId");
 
@@ -317,6 +322,12 @@ namespace HackerNews.EF.Migrations
 
             modelBuilder.Entity("HackerNews.Domain.Comment", b =>
                 {
+                    b.HasOne("HackerNews.Domain.Board", "Board")
+                        .WithMany("Comments")
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HackerNews.Domain.Article", "ParentArticle")
                         .WithMany("Comments")
                         .HasForeignKey("ParentArticleId");

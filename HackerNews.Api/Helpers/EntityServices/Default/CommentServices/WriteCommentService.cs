@@ -15,13 +15,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 {
 	public class WriteCommentService : WriteEntityService<Comment, PostCommentModel>
 	{
+		private readonly IReadEntityRepository<Article> _readArticleRepo;
 		private readonly IUserAuth<User> _cleanUserAuth;
 
 		public WriteCommentService(IMapper mapper,
 			IReadEntityRepository<Comment> readRepo,
 			IWriteEntityRepository<Comment> writeRepo,
+			IReadEntityRepository<Article> readArticleRepo,
 			IUserAuth<User> cleanUserAuth) : base(mapper, writeRepo, readRepo)
 		{
+			_readArticleRepo = readArticleRepo;
 			_cleanUserAuth = cleanUserAuth;
 		}
 
@@ -34,8 +37,29 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.CommentServices
 			//		verify parent belongs to boardid/board exists
 			var entity = _mapper.Map<Comment>(entityModel);
 
+
+			var parentArticle = await _readArticleRepo.GetEntityAsync(entityModel.ParentArticleId);
+			var parentComment = await _readRepo.GetEntityAsync(entityModel.ParentCommentId);
+
+			if (parentArticle == null &&
+				parentComment == null) throw new InvalidPostException("No parent given.");
+			if (parentArticle != null &&
+				parentComment != null) throw new InvalidPostException("Two parents given.");
+
+			var boardId = 0;
+			// God save us
+			boardId = parentArticle != null
+					? parentArticle.BoardId
+					: (
+					parentComment != null
+					? parentComment.BoardId
+					: 0
+					);
+
+
 			entity.UserId = currentUser.Id;
 			entity.PostDate = DateTime.UtcNow;
+			entity.BoardId = boardId;
 
 			var addedEntity = await _writeRepo.AddEntityAsync(entity);
 			await _writeRepo.SaveChangesAsync();

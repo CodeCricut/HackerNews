@@ -1,4 +1,5 @@
 ﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Domain.JoinEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,6 +18,9 @@ namespace HackerNews.Domain
 
 		public List<UserCommentLikes> UsersLiked { get; set; }
 		public List<UserCommentDislikes> UsersDisliked { get; set; }
+
+		public int BoardId { get; set; }
+		public Board Board { get; set; }
 
 		public DateTime PostDate { get; set; }
 

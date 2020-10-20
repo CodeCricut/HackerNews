@@ -14,6 +14,7 @@ namespace HackerNews.Domain
 		public List<BoardUserModerator> Moderators { get; set; }
 		public List<BoardUserSubscriber> Subscribers { get; set; }
 		public List<Article> Articles { get; set; }
+		public List<Comment> Comments { get; set; }
 
 		public Board()
 		{
