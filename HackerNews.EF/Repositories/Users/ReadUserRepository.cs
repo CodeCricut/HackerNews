@@ -1,7 +1,9 @@
-﻿using CleanEntityArchitecture.Repository;
+﻿using CleanEntityArchitecture.Domain;
+using CleanEntityArchitecture.Repository;
 using HackerNews.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HackerNews.EF.Repositories.Users
 {
@@ -9,6 +11,20 @@ namespace HackerNews.EF.Repositories.Users
 	{
 		public ReadUserRepository(DbContext context) : base(context)
 		{
+		}
+
+		public override Task<PagedList<User>> GetEntitiesByQueryAsync(string query, PagingParams pagingParams)
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				var withoutChildren = _context.Set<User>().AsQueryable();
+				var withChildren = IncludeChildren(withoutChildren);
+
+				var matchingQuery = withChildren.Where(
+					u => u.Username.Contains(query));
+
+				return PagedList<User>.Create(matchingQuery, pagingParams);
+			});
 		}
 
 		public override IQueryable<User> IncludeChildren(IQueryable<User> queryable)

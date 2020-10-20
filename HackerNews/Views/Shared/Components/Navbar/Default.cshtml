@@ -8,8 +8,10 @@
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a href="#" class="nav-link">Home</a>
+            <li class="nav-item mx-auto">
+                <form asp-controller="Home" asp-action="Search" class="form-inline my-2 my-lg-0">
+                    <input  asp-for="SearchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search" >
+                </form>
             </li>
             @if (Model.LoggedIn)
             {

@@ -135,5 +135,36 @@ namespace HackerNews.Helpers.ApiServices.Base
 			// TODO: Throw some error
 			return null;
 		}
+
+		public async Task<PagedListResponse<TGetModel>> GetEndpointWithQueryAsync<TGetModel>(string endpoint, string query, PagingParams pagingParams) where TGetModel : GetModelDto, new()
+		{
+			if (_jwtService.ContainsToken())
+				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
+
+			var queryString = new Dictionary<string, string>();
+			if (pagingParams != null &&
+				pagingParams.PageNumber > 0 &&
+				pagingParams.PageSize > 0)
+			{
+				queryString["pageNumber"] = pagingParams.PageNumber.ToString();
+				queryString["pageSize"] = pagingParams.PageSize.ToString();
+			}
+
+			queryString["query"] = query;
+
+			var response = await _client.GetAsync(QueryHelpers.AddQueryString($"{endpoint}/search", queryString));
+			// HTTP GET
+
+			if (response.IsSuccessStatusCode)
+			{
+				var responseJson = await response.Content.ReadAsStringAsync();
+				return JsonConvert.DeserializeObject<PagedListResponse<TGetModel>>(responseJson);
+			}
+
+			// TODO: Throw some error
+			return null;
+
+
+		}
 	}
 }
