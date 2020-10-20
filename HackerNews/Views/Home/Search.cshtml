@@ -1,0 +1,44 @@
+﻿@model HackerNews.ViewModels.Home.HomeSearchViewModel
+
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Main Content *@
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            @* Boards *@
+            <h4>Boards</h4>
+            @foreach (var board in Model.Boards.Items)
+            {
+                @await Component.InvokeAsync("BoardCard", new { boardModel = board });
+            }
+            @* Users *@
+            <h4>Users</h4>
+            @foreach (var user in Model.Users.Items)
+            {
+                @await Component.InvokeAsync("UserCard", new { userModel = user });
+            }
+            @* Articles *@
+            <h4>Articles</h4>
+            @foreach (var article in Model.Articles.Items)
+            {
+                @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+            }
+            @* Comments *@
+            <h4>Comments</h4>
+            @foreach (var comment in Model.Comments.Items)
+            {
+                @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+            }
+            <div class="row w-100 h-100"></div>
+        </div>
+       
+        @* Sidebar *@
+        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
+            <partial name="_HomeSidebarCard" />
+        </div>
+
+        @* Footer *@
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
