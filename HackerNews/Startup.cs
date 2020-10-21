@@ -58,8 +58,8 @@ namespace HackerNews
 			//services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();
 			services.AddScoped<IApiModifier<User, RegisterUserModel, GetPrivateUserModel>, PrivateUserApiModifier>();
 			services.AddScoped<IApiLoginFacilitator<LoginModel, GetPrivateUserModel>, UserApiLoginFacilitator>();
-			services.AddScoped<IApiUserSaver<Article, GetPrivateUserModel>, ApiUserSaver>();
-			services.AddScoped<IApiUserSaver<Comment, GetPrivateUserModel>, ApiUserSaver>();
+			services.AddScoped<IApiUserSaver<Article>, ApiUserSaver>();
+			services.AddScoped<IApiUserSaver<Comment>, ApiUserSaver>();
 
 			services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddTransient<ICookieService, CookieService>();

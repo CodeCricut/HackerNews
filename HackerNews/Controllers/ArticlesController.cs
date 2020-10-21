@@ -18,17 +18,20 @@ namespace HackerNews.Controllers
 		private readonly IApiModifier<Comment, PostCommentModel, GetCommentModel> _commentModifier;
 		private readonly IApiReader _apiReader;
 		private readonly IApiVoter<Article> _articleVoter;
+		private readonly IApiUserSaver<Article> _articleSaver;
 
 		public ArticlesController(
 			IApiModifier<Article, PostArticleModel, GetArticleModel> articleModifier,
 			IApiModifier<Comment, PostCommentModel, GetCommentModel> commentModifier,
 			IApiReader apiReader,
-			IApiVoter<Article> articleVoter)
+			IApiVoter<Article> articleVoter,
+			IApiUserSaver<Article> articleSaver)
 		{
 			_articleModifier = articleModifier;
 			_commentModifier = commentModifier;
 			_apiReader = apiReader;
 			_articleVoter = articleVoter;
+			_articleSaver = articleSaver;
 		}
 
 		public async Task<ViewResult> Details(int id)
@@ -74,5 +77,11 @@ namespace HackerNews.Controllers
 			return RedirectToAction("Details", new { id });
 		}
 
+		public async Task<ActionResult> SaveArticle(int id)
+		{
+			await _articleSaver.SaveEntityToUserAsync(id);
+
+			return RedirectToAction("Details", new { id });
+		}
 	}
 }

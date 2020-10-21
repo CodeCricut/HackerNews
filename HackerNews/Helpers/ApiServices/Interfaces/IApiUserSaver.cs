@@ -2,8 +2,8 @@
 
 namespace HackerNews.Helpers.ApiServices.Interfaces
 {
-	public interface IApiUserSaver<TSavedType, TGetModel>
+	public interface IApiUserSaver<TSavedType>
 	{
-		Task<TGetModel> SaveEntityToUserAsync(int entityId);
+		public Task SaveEntityToUserAsync(int entityId);
 	}
 }

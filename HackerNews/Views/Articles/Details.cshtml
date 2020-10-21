@@ -21,6 +21,7 @@
             @Model.GetModel.Karma points by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a>
             at @Model.GetModel.PostDate
             |  <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">@Model.Board.Title</a>
+            | <a asp-controller="Articles" asp-action="SaveArticle" asp-route-id="@Model.GetModel.Id">Save</a>
 
             <p>@Model.GetModel.Text</p>
 
