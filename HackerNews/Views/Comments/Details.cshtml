@@ -11,7 +11,7 @@
                 <i class="fas fa-caret-up"></i>
             </a>
             <div class="">@Model.GetModel.Karma</div>
-            <a asp-controller="Articles" asp-action="vote" asp-route-id="@Model.GetModel.Id" asp-route-upvote="@false">
+            <a asp-controller="Comments" asp-action="vote" asp-route-id="@Model.GetModel.Id" asp-route-upvote="@false">
                 <i class="fas fa-caret-down"></i>
             </a>
         </div>

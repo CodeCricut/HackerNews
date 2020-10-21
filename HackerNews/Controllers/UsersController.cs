@@ -48,9 +48,9 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Register(RegisterUserModel registerModel)
+		public async Task<IActionResult> Register(UserRegisterViewModel registerModel)
 		{
-			GetPrivateUserModel addedUser = await _privateUserModifier.PostEndpointAsync($"{USER_ENDPOINT}/register", registerModel);
+			GetPrivateUserModel addedUser = await _privateUserModifier.PostEndpointAsync($"{USER_ENDPOINT}/register", registerModel.PostModel);
 			return RedirectToAction("Login");
 		}
 
@@ -124,10 +124,10 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult<UserSavedView>> Saved()
 		{
-			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me", 0);
+			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
 
-			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.ArticleIds);
-			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.CommentIds);
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.SavedArticles);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.SavedComments);
 			var model = new UserSavedView { SavedArticles = articles, SavedComments = comments };
 			return View(model);
 		}

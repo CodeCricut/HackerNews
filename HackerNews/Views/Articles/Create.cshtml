@@ -29,11 +29,7 @@
                             <input asp-for="PostModel.Type" class="form-control" />
                             <span asp-validation-for="PostModel.Type" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="PostModel.BoardId" class="control-label"></label>
-                            <input asp-for="PostModel.BoardId" class="form-control" />
-                            <span asp-validation-for="PostModel.BoardId" class="text-danger"></span>
-                        </div>
+                            <input hidden asp-for="PostModel.BoardId" class="form-control" />
                         <div class="form-group">
                             <input type="submit" value="Create" class="btn btn-primary" />
                         </div>

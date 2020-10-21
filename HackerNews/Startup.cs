@@ -48,9 +48,11 @@ namespace HackerNews
 
 			//services.AddScoped<IApiReader<GetArticleModel>, ArticleApiReader>();
 			services.AddScoped<IApiModifier<Article, PostArticleModel, GetArticleModel>, ArticleApiModifier>();
+			services.AddScoped<IApiVoter<Article>, ArticleApiVoter>();
 
 			//services.AddScoped<IApiReader<GetCommentModel>, CommentApiReader>();
 			services.AddScoped<IApiModifier<Comment, PostCommentModel, GetCommentModel>, CommentApiModifier>();
+			services.AddScoped<IApiVoter<Comment>, CommentApiVoter>();
 
 			//services.AddScoped<IApiReader<GetPublicUserModel>, PublicUserApiReader>();
 			//services.AddScoped<IApiReader<GetPrivateUserModel>, PrivateUserApiReader>();

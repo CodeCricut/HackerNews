@@ -17,13 +17,16 @@ namespace HackerNews.Controllers
 		private static readonly string COMMENT_ENDPOINT = "comments";
 		private readonly IApiReader _apiReader;
 		private readonly IApiModifier<Comment, PostCommentModel, GetCommentModel> _commentModifier;
+		private readonly IApiVoter<Comment> _commentVoter;
 
 		public CommentsController(
 			IApiReader apiReader,
-			IApiModifier<Comment, PostCommentModel, GetCommentModel> commentModifier)
+			IApiModifier<Comment, PostCommentModel, GetCommentModel> commentModifier,
+			IApiVoter<Comment> commentVoter)
 		{
 			_apiReader = apiReader;
 			_commentModifier = commentModifier;
+			_commentVoter = commentVoter;
 		}
 
 		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
@@ -81,6 +84,12 @@ namespace HackerNews.Controllers
 			await _commentModifier.PostEndpointAsync("Comments", commentAdded);
 
 			return RedirectToAction("Details", new { id = viewModel.GetModel.Id });
+		}
+
+		public async Task<ActionResult> Vote(int id, bool upvote)
+		{
+			await _commentVoter.VoteEntityAsync(id, upvote);
+			return RedirectToAction("Details", new { id });
 		}
 	}
 }

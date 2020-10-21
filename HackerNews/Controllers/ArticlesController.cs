@@ -17,15 +17,18 @@ namespace HackerNews.Controllers
 		private readonly IApiModifier<Article, PostArticleModel, GetArticleModel> _articleModifier;
 		private readonly IApiModifier<Comment, PostCommentModel, GetCommentModel> _commentModifier;
 		private readonly IApiReader _apiReader;
+		private readonly IApiVoter<Article> _articleVoter;
 
 		public ArticlesController(
 			IApiModifier<Article, PostArticleModel, GetArticleModel> articleModifier,
 			IApiModifier<Comment, PostCommentModel, GetCommentModel> commentModifier,
-			IApiReader apiReader)
+			IApiReader apiReader,
+			IApiVoter<Article> articleVoter)
 		{
 			_articleModifier = articleModifier;
 			_commentModifier = commentModifier;
 			_apiReader = apiReader;
+			_articleVoter = articleVoter;
 		}
 
 		public async Task<ViewResult> Details(int id)
@@ -39,9 +42,9 @@ namespace HackerNews.Controllers
 			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments, Board = board, User = user });
 		}
 
-		public ViewResult Create()
+		public ViewResult Create(int boardId)
 		{
-			var model = new ArticleCreateViewModel { PostModel = new PostArticleModel() };
+			var model = new ArticleCreateViewModel { PostModel = new PostArticleModel() { BoardId = boardId } };
 			return View(model);
 		}
 
@@ -64,5 +67,12 @@ namespace HackerNews.Controllers
 
 			return RedirectToAction("Details", new { id = viewModel.GetModel.Id });
 		}
+
+		public async Task<ActionResult> Vote(int id, bool upvote)
+		{
+			await _articleVoter.VoteEntityAsync(id, upvote);
+			return RedirectToAction("Details", new { id });
+		}
+
 	}
 }

@@ -87,6 +87,18 @@ namespace HackerNews.Helpers.ApiServices.Base
 			throw new Exception();
 		}
 
+		public async Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids, PagingParams pagingParams) where TGetModel : GetModelDto, new()
+		{
+			var idPage = ids.Skip((pagingParams.PageNumber - 1) * pagingParams.PageSize).Take(pagingParams.PageSize);
+
+			IEnumerable<TGetModel> enumerable = await GetEndpointAsync<TGetModel>(endpoint, idPage);
+			PagedList<TGetModel> pagedList = new PagedList<TGetModel>(enumerable.ToList(), ids.Count(), pagingParams);
+
+			PagedListResponse<TGetModel> pagedListResponse = new PagedListResponse<TGetModel>(pagedList);
+
+			return pagedListResponse;
+		}
+
 		public async Task<IEnumerable<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids) where TGetModel : GetModelDto, new()
 		{
 			if (_jwtService.ContainsToken())
@@ -135,6 +147,8 @@ namespace HackerNews.Helpers.ApiServices.Base
 			// TODO: Throw some error
 			return null;
 		}
+
+		
 
 		public async Task<PagedListResponse<TGetModel>> GetEndpointWithQueryAsync<TGetModel>(string endpoint, string query, PagingParams pagingParams) where TGetModel : GetModelDto, new()
 		{

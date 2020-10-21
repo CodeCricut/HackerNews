@@ -6,7 +6,16 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="vote-panel d-none d-md-block col-md-1 text-center">
+            <a asp-controller="Articles" asp-action="vote" asp-route-id="@Model.GetModel.Id" asp-route-upvote="@true">
+                <i class="fas fa-caret-up"></i>
+            </a>
+            <div class="">@Model.GetModel.Karma</div>
+            <a asp-controller="Articles" asp-action="vote" asp-route-id="@Model.GetModel.Id" asp-route-upvote="@false">
+                <i class="fas fa-caret-down"></i>
+            </a>
+        </div>
+        <div class="col-sm-12 col-md-11">
             <h1 class="h3">@Model.GetModel.Title</h1>
 
             @Model.GetModel.Karma points by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a>
@@ -37,5 +46,5 @@
                 }
             </div>
         </div>
+        </div>
     </div>
-</div>

@@ -36,18 +36,19 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Post(PostBoardModel board)
+		public async Task<ActionResult> Post(BoardCreateModel boardCreateModel)
 		{
-			GetBoardModel model = await _boardModifier.PostEndpointAsync(BOARD_ENDPOINT, board);
+			GetBoardModel model = await _boardModifier.PostEndpointAsync(BOARD_ENDPOINT, boardCreateModel.PostModel);
 
-			return RedirectToAction("Details", model.Id);
+			return RedirectToAction("Details", new { id =  model.Id });
 		}
 
-		public async Task<ActionResult> Details(int id)
+		public async Task<ActionResult> Details(int id, PagingParams pagingParams)
 		{
 			GetBoardModel getBoardModel = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
+			PagedListResponse<GetArticleModel> articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", getBoardModel.ArticleIds, pagingParams);
 
-			var model = new BoardDetailsViewModel { GetModel = getBoardModel };
+			var model = new BoardDetailsViewModel(articles) { GetModel = getBoardModel };
 			return View(model);
 		}
 
