@@ -18,15 +18,18 @@ namespace HackerNews.Controllers
 		private readonly IApiModifier<Board, PostBoardModel, GetBoardModel> _boardModifier;
 		private readonly IApiBoardModeratorAdder _moderatorAdder;
 		private readonly IApiReader _apiReader;
+		private readonly IApiBoardSubscriber _boardSubscriber;
 
 		public BoardsController(
 			IApiModifier<Board, PostBoardModel, GetBoardModel> boardModifier,
 			IApiBoardModeratorAdder moderatorAdder,
-			IApiReader apiReader)
+			IApiReader apiReader,
+			IApiBoardSubscriber boardSubscriber)
 		{
 			_boardModifier = boardModifier;
 			_moderatorAdder = moderatorAdder;
 			_apiReader = apiReader;
+			_boardSubscriber = boardSubscriber;
 		}
 
 		public ViewResult Create()
@@ -47,19 +50,10 @@ namespace HackerNews.Controllers
 		{
 			GetBoardModel getBoardModel = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 			PagedListResponse<GetArticleModel> articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", getBoardModel.ArticleIds, pagingParams);
+			var moderators = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", getBoardModel.ModeratorIds);
 
-			var model = new BoardDetailsViewModel(articles) { GetModel = getBoardModel };
+			var model = new BoardDetailsViewModel(articles) { GetModel = getBoardModel, Moderators = moderators };
 			return View(model);
-		}
-
-		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
-		{
-			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var boardModels = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, pagingParams);
-
-			var viewModel = new BoardListViewModel { GetModels = boardModels.Items };
-
-			return View(viewModel);
 		}
 
 		public async Task<ActionResult<BoardAdminViewModel>> Admin(int id)
@@ -67,9 +61,8 @@ namespace HackerNews.Controllers
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 			// TODO: you shoul dnot have to pass board name to method; should be setup in each implementation
 			var moderators = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.ModeratorIds);
-			var subscribers = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.SubscriberIds);
 
-			return View(new BoardAdminViewModel { Board = board, Moderators = moderators, Subscribers = subscribers });
+			return View(new BoardAdminViewModel { Board = board, Moderators = moderators });
 		}
 
 		public async Task<ActionResult> AddModerator([Bind(include: new string[] { "Board", "ModeratorAddedId" })] BoardAdminViewModel model)
@@ -86,17 +79,15 @@ namespace HackerNews.Controllers
 			// TODO: there should be an API endpoint to get a list of things by ID
 			var moderators = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.ModeratorIds);
 
-			var model = new BoardModeratorsListViewModel { Moderators = moderators };
+			var model = new BoardModeratorsListViewModel { Moderators = moderators, Board = board };
 			return View(model);
 		}
 
-		public async Task<ActionResult<BoardArticlesListViewModel>> Articles(int id)
+		public async Task<ActionResult> Subscribe(int boardId)
 		{
-			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
-			var artices = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", board.ArticleIds);
+			var updatedBoard = await _boardSubscriber.AddSubscriber(boardId);
 
-			var model = new BoardArticlesListViewModel { Articles = artices };
-			return View(model);
+			return RedirectToAction("Details", new { id = updatedBoard.Id });
 		}
 	}
 }

@@ -80,7 +80,10 @@ namespace HackerNews.Controllers
 		public async Task<ViewResult> Me()
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
-			var model = new PrivateUserDetailsViewModel { GetModel = privateModel };
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.ArticleIds);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.CommentIds);
+
+			var model = new PrivateUserDetailsViewModel { GetModel = privateModel, Articles =articles, Comments = comments };
 
 			return View(model);
 		}
@@ -93,14 +96,6 @@ namespace HackerNews.Controllers
 			return View(returnModel);
 		}
 
-		public async Task<ActionResult<UsersListViewModel>> List(int pageNumber, int pageSize)
-		{
-			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var users = await _apiReader.GetEndpointAsync<GetPublicUserModel>(USER_ENDPOINT, pagingParams);
-
-			var returnModel = new UsersListViewModel { GetModels = users.Items };
-			return View(returnModel);
-		}
 
 		public async Task<ActionResult<UserArticlesListView>> Articles(int userId)
 		{
@@ -134,7 +129,7 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult<UserBoardsView>> Boards()
 		{
-			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me", 0);
+			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
 
 			var boardsSubscribed = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsSubscribed);
 			var boardsModerating = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsModerating);

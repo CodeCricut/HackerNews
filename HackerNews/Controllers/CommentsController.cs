@@ -51,14 +51,23 @@ namespace HackerNews.Controllers
 			var parentComment = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.ParentCommentId);
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", commentModel.UserId);
 
-			var model = new CommentDetailsViewModel { 
+			var privateUser = await _apiReader.GetEndpointAsync<GetPrivateUserModel>("users/me");
+			var loggedIn = privateUser != null && privateUser.Id != 0;
+
+			var savedComment = privateUser.SavedComments.Contains(id);
+
+
+			var model = new CommentDetailsViewModel
+			{
 				GetModel = commentModel,
 				Board = board,
 				ParentArticle = parentArticle,
 				PostCommentModel = new PostCommentModel(),
 				ChildComments = childComments,
 				ParentComment = parentComment,
-				User = user
+				User = user,
+				LoggedIn = loggedIn,
+				UserSavedComment = savedComment
 			};
 
 			return View(model);

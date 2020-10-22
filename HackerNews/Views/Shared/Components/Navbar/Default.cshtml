@@ -7,16 +7,28 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
+
+        <form asp-controller="Home" asp-action="Search" class="form-inline my-2 my-lg-0">
+            <input asp-for="SearchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search">
+        </form>
+
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-auto">
-                <form asp-controller="Home" asp-action="Search" class="form-inline my-2 my-lg-0">
-                    <input  asp-for="SearchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search" >
-                </form>
-            </li>
+            <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Articles</a></li>
+            <li class="nav-item"><a asp-controller="Home" asp-action="Boards" class="nav-link">Boards</a></li>
+
             @if (Model.LoggedIn)
             {
-                <li class="nav-item"><a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id" class="nav-link">Articles</a></li>
-                <li class="nav-item"><a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id" class="nav-link">Comments</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Stuff
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a asp-controller="Users" asp-action="Me" class="dropdown-item">My Profile</a>
+                        <a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id" class="dropdown-item">Written Articles</a>
+                        <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id" class="dropdown-item">Written Comments</a>
+                        <a asp-controller="Users" asp-action="Saved" class="dropdown-item">Saved</a>
+                    </div>
+                </li>
                 <li class="nav-item"><a asp-controller="Articles" asp-action="Create" class="nav-link">Submit</a></li>
                 <li class="nav-item"><a asp-controller="Users" asp-action="Logout" class="nav-link">Logout</a></li>
             }
@@ -25,6 +37,7 @@
                 <li class="nav-item"><a asp-controller="Users" asp-action="Register" class="nav-link">Register</a></li>
                 <li class="nav-item"><a asp-controller="Users" asp-action="Login" class="nav-link">Login</a></li>
             }
+
         </ul>
     </div>
 </nav>

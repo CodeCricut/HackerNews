@@ -3,41 +3,31 @@
     ViewData["Title"] = "Boards";
 }
 
-<h2>Subscribed Boards</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.BoardsSubscribed)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Title</td>
-                <td>@item.Description</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Main Content *@
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            <h4>Subscribed Boards</h4>
+            @foreach (var board in Model.BoardsSubscribed)
+            {
+                @await Component.InvokeAsync("BoardCard", new { boardModel = board });
+            }
+            @* Comments *@
+            <h4>Moderating Boards</h4>
+            @foreach (var board in Model.BoardsModerating)
+            {
+                @await Component.InvokeAsync("BoardCard", new { boardModel = board });
+            }
+            <div class="row w-100 h-100"></div>
+        </div>
 
-<h2>Moderating Boards</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.BoardsModerating)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Title</td>
-                <td>@item.Description</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        @* Sidebar *@
+        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
+            <partial name="_HomeSidebarCard" />
+        </div>
 
+        @* Footer *@
+    </div>
+    <div class="card-footer">
+    </div>
+</div>

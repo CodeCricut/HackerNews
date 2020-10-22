@@ -9,6 +9,5 @@ namespace HackerNews.ViewModels.Boards
 		public GetBoardModel Board { get; set; }
 		public int ModeratorAddedId { get; set; }
 		public IEnumerable<GetPublicUserModel> Moderators { get; set; }
-		public IEnumerable<GetPublicUserModel> Subscribers { get; set; }
 	}
 }

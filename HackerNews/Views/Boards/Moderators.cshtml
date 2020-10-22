@@ -3,20 +3,23 @@
     ViewData["Title"] = "Moderators";
 }
 
-<h2>Moderators</h2>
-<div>
-    @foreach (var mod in Model.Moderators)
-    {
-        <div class="panel">
-            <div class="panel-title">
-                @Html.ActionLink($"{mod.Username}", "Details", "Users", new { id = mod.Id })
-            </div>
-            <div class="panel-body">
-                @Html.ActionLink("Articles", "Articles", "Users", new { id = mod.Id })
-                <div class="panel-footer">
-                    Joined @mod.JoinDate | @mod.Karma karma
-                </div>
-            </div>
+<div class="container-fluid">
+    <div class="row p-4">
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            @foreach(var moderator in Model.Moderators)
+            {
+                @await Component.InvokeAsync("UserCard", new { userModel = moderator });
+            }
+            <div class="row h-100 w-100"></div>
         </div>
-    }
+        @* Sidebar *@
+        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
+            @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board })
+        </div>
+
+        @* Footer *@
+    </div>
+    <div class="card-footer">
+
+    </div>
 </div>

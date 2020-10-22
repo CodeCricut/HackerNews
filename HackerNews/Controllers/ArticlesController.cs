@@ -36,13 +36,19 @@ namespace HackerNews.Controllers
 
 		public async Task<ViewResult> Details(int id)
 		{
+
 			var articleModel = await _apiReader.GetEndpointAsync<GetArticleModel>(ARTICLE_ENDPOINT, id);
 			// TODO: there is an endpoint for gettign many by IDs now
 			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", articleModel.CommentIds);
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", articleModel.BoardId);
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", articleModel.UserId);
 
-			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments, Board = board, User = user });
+			var privateUser = await _apiReader.GetEndpointAsync<GetPrivateUserModel>("users/me");
+			var loggedIn = privateUser != null && privateUser.Id != 0;
+
+			var savedArticle = privateUser.SavedArticles.Contains(id);
+
+			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments, Board = board, User = user, LoggedIn = loggedIn, UserSavedArticle = savedArticle });
 		}
 
 		public ViewResult Create(int boardId)

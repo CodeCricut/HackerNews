@@ -25,15 +25,11 @@ namespace HackerNews.Controllers
 
 		public async Task<IActionResult> Index(PagingParams pagingParams)
 		{
-			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", pagingParams);
-			var viewModel = new HomeIndexViewModel(articles);
+			var  pagedArticles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", pagingParams); ;
+
+			var viewModel = new HomeIndexViewModel(pagedArticles);
 			return View(viewModel);
 		}
-
-
-
-
-
 
 		public async Task<ActionResult<HomeSearchViewModel>> Search(string searchTerm, PagingParams pagingParams)
 		{
@@ -60,6 +56,15 @@ namespace HackerNews.Controllers
 			return RedirectToAction("Search", new { searchTerm = viewModel.SearchTerm, pageNumber = 1, pageSize=3 });
 		}
 
+
+		public async Task<ViewResult> Boards(PagingParams pagingParams)
+		{
+			var boardModels = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", pagingParams);
+
+			var viewModel = new HomeBoardsViewModel(boardModels);
+
+			return View(viewModel);
+		}
 
 	}
 }

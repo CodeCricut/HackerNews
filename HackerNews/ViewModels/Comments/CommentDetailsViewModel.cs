@@ -16,5 +16,8 @@ namespace HackerNews.ViewModels.Comments
 		public GetArticleModel ParentArticle { get; set; }
 		public IEnumerable<GetCommentModel> ChildComments { get; set; }
 		public PostCommentModel PostCommentModel { get; set; }
+
+		public bool LoggedIn { get; set; }
+		public bool UserSavedComment { get; set; }
 	}
 }

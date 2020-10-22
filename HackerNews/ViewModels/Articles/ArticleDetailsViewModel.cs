@@ -13,5 +13,7 @@ namespace HackerNews.ViewModels
 		public IEnumerable<GetCommentModel> Comments { get; set; }
 		public GetBoardModel Board { get; set; }
 		public PostCommentModel PostCommentModel { get; set; }
+		public bool LoggedIn { get; set; }
+		public bool UserSavedArticle { get; set; }
 	}
 }

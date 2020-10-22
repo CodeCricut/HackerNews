@@ -5,8 +5,8 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+    <div class="row mt-3">
+        <div class="col-sm-12 col-md-6 mx-auto">
             <form asp-action="Register" class="form">
                 <h1 class="h3 mb-3 font-weight-normal form">Register for HackerNews</h1>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -31,14 +31,9 @@
                     <span asp-validation-for="PostModel.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Register" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

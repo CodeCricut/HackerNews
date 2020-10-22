@@ -31,7 +31,22 @@
                 {
                     <a asp-controller="Comments" asp-action="Details" asp-route-id="@Model.ParentComment.Id">Parent</a>
                 }
-                | <a asp-controller="Comments" asp-action="SaveComment" asp-route-id="@Model.GetModel.Id">Save</a>
+
+                @if (Model.LoggedIn)
+                {
+                    <text>
+                        | <a asp-controller="Comments" asp-action="SaveComment" asp-route-id="@Model.GetModel.Id">
+                            @if (Model.UserSavedComment)
+                            {
+                                <text>Unsave</text>
+                    }
+                    else
+                    {
+                        <text>Save</text>
+                    }
+                    </a>
+                     </text>
+                }
             </div>
             <p>
                 @Model.GetModel.Text
