@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
-using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
-using HackerNews.Api.Helpers.EntityHelpers;
+using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Board;
-using HackerNews.Domain.Models.Users;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +15,16 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 	public class WriteBoardService : WriteEntityService<Board, PostBoardModel>
 	{
 		private readonly IUserAuth<User> _cleanUserAuth;
+		private readonly IBoardUserManagementService _boardUserManagementService;
 
 		public WriteBoardService(IMapper mapper,
 			IWriteEntityRepository<Board> writeRepo,
 			IReadEntityRepository<Board> readRepo,
-			IUserAuth<User> cleanUserAuth) : base(mapper, writeRepo, readRepo)
+			IUserAuth<User> cleanUserAuth,
+			IBoardUserManagementService boardUserManagementService) : base(mapper, writeRepo, readRepo)
 		{
 			_cleanUserAuth = cleanUserAuth;
+			_boardUserManagementService = boardUserManagementService;
 		}
 
 		public override async Task<TGetModel> PostEntityModelAsync<TGetModel>(PostBoardModel entityModel)
@@ -34,9 +35,12 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.BoardServices
 			entity.Creator = currentUser;
 			entity.CreateDate = DateTime.UtcNow;
 
+
 			var addedEntity = await _writeRepo.AddEntityAsync(entity);
 
 			await _writeRepo.SaveChangesAsync();
+
+			await _boardUserManagementService.AddBoardModeratorAsync(addedEntity.Id, currentUser.Id);
 
 			return _mapper.Map<TGetModel>(addedEntity);
 		}

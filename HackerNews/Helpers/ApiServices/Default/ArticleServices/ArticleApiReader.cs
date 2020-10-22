@@ -1,5 +1,4 @@
-﻿using HackerNews.Domain.Models.Articles;
-using HackerNews.Helpers.ApiServices.Base;
+﻿using HackerNews.Helpers.ApiServices.Base;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net.Http;

@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
-using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.Repository;
-using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Api.Helpers.EntityServices.Interfaces;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.JoinEntities;
 using HackerNews.Domain.Models.Board;
-using HackerNews.Domain.Models.Users;
 using System.Linq;
 using System.Threading.Tasks;
 

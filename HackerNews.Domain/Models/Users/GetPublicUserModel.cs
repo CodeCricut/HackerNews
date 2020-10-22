@@ -8,7 +8,6 @@ namespace HackerNews.Domain.Models.Users
 	{
 		public string Username { get; set; }
 		public int Karma { get; set; }
-		public bool Deleted { get; set; }
 
 		public List<int> ArticleIds { get; set; }
 		public List<int> CommentIds { get; set; }

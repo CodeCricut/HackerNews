@@ -2,7 +2,6 @@
 using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
-using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Users;

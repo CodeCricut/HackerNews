@@ -1,11 +1,9 @@
 ﻿using CleanEntityArchitecture.Domain;
-using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
-using HackerNews.ViewModels;
 using HackerNews.ViewModels.Boards;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,12 +44,12 @@ namespace HackerNews.Controllers
 		{
 			GetBoardModel model = await _boardModifier.PostEndpointAsync(BOARD_ENDPOINT, boardCreateModel.Board);
 
-			return RedirectToAction("Details", new { id =  model.Id });
+			return RedirectToAction("Details", new { id = model.Id });
 		}
 
 		public async Task<ActionResult> Details(int id, PagingParams pagingParams)
 		{
-			GetBoardModel getBoardModel = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
+			GetBoardModel getBoardModel = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id, includeDeleted: true);
 
 			PagedListResponse<GetArticleModel> articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", getBoardModel.ArticleIds, pagingParams);
 
@@ -72,6 +70,9 @@ namespace HackerNews.Controllers
 		public async Task<ActionResult<BoardAdminViewModel>> Admin(int id)
 		{
 			// TODO: ensure user is moderator
+			var user = await _apiReader.GetEndpointAsync<GetPrivateUserModel>("users/me", includeDeleted: true);
+
+			if (!user.BoardsModerating.Contains(id)) return RedirectToAction("Details", new { id });
 
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 
@@ -82,7 +83,8 @@ namespace HackerNews.Controllers
 			var viewModel = new BoardAdminViewModel
 			{
 				Board = board,
-				ModeratorPage = new Page<GetPublicUserModel>(moderators)
+				ModeratorPage = new Page<GetPublicUserModel>(moderators),
+				UserCreatedBoard = board.CreatorId == user.Id
 			};
 
 			return View(viewModel);
@@ -106,7 +108,7 @@ namespace HackerNews.Controllers
 			var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
 			var moderators = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", board.ModeratorIds, moderatorPagingParams);
 
-			var model = new BoardModeratorsListViewModel {  Board = board, ModeratorPage = new Page<GetPublicUserModel>(moderators) };
+			var model = new BoardModeratorsListViewModel { Board = board, ModeratorPage = new Page<GetPublicUserModel>(moderators) };
 			return View(model);
 		}
 
@@ -124,6 +126,14 @@ namespace HackerNews.Controllers
 
 			var model = new BoardSearchViewModel { BoardPage = new Page<GetBoardModel>(boards), SearchTerm = searchTerm };
 			return View(model);
+		}
+
+		[Authorize]
+		public async Task<IActionResult> Delete(int id)
+		{
+			await _boardModifier.DeleteEndpointAsync(BOARD_ENDPOINT, id);
+
+			return RedirectToAction("Details", new { id });
 		}
 	}
 }

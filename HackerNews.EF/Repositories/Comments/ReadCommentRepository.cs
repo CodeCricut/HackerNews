@@ -21,7 +21,7 @@ namespace HackerNews.EF.Repositories.Comments
 				var withChildren = IncludeChildren(withoutChildren);
 
 				var matchingQuery = withChildren.Where(
-					c => 
+					c =>
 						c.Board.Title.Contains(query) ||
 						c.Board.Description.Contains(query) ||
 						c.User.Username.Contains(query) ||

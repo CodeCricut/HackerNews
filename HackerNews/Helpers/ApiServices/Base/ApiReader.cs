@@ -10,11 +10,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace HackerNews.Helpers.ApiServices.Base
 {
-	public class ApiReader: IApiReader
+	public class ApiReader : IApiReader
 	{
 		protected readonly IJwtService _jwtService;
 		protected HttpClient _client;
@@ -27,7 +26,7 @@ namespace HackerNews.Helpers.ApiServices.Base
 			_jwtService = jwtService;
 		}
 
-		public virtual async Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, PagingParams pagingParams) where TGetModel : GetModelDto, new()
+		public virtual async Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, PagingParams pagingParams, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			if (_jwtService.ContainsToken())
 				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
@@ -47,7 +46,10 @@ namespace HackerNews.Helpers.ApiServices.Base
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<PagedListResponse<TGetModel>>(responseJson);
+				var responsePage = JsonConvert.DeserializeObject<PagedListResponse<TGetModel>>(responseJson);
+				if (responsePage != null && !includeDeleted)
+					responsePage.Items = responsePage.Items.Where(item => !item.Deleted);
+				return responsePage;
 			}
 
 			// TODO: Throw some error
@@ -55,14 +57,14 @@ namespace HackerNews.Helpers.ApiServices.Base
 		}
 
 
-		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint) where TGetModel : GetModelDto, new()
+		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			var jwt = _jwtService.GetToken();
 			return await GetEndpointAsync<TGetModel>(endpoint, jwt);
 		}
 
 		// needed for a VERY ugly workaround, where the jwt cannot be accessed from the cookie store in the same request as it was set
-		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, string jwt) where TGetModel : GetModelDto, new()
+		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, string jwt, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			if (jwt.Length >= 0) _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
@@ -71,14 +73,17 @@ namespace HackerNews.Helpers.ApiServices.Base
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<TGetModel>(responseJson);
+				var responseObj = JsonConvert.DeserializeObject<TGetModel>(responseJson);
+				if (responseObj != null && !includeDeleted && responseObj.Deleted)
+					return new TGetModel();
+				return responseObj;
 			}
 			// TODO: Throw some error
 			return new TGetModel();
 		}
 
 
-		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, int id) where TGetModel : GetModelDto, new()
+		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, int id, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			if (_jwtService.ContainsToken())
 				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
@@ -88,42 +93,34 @@ namespace HackerNews.Helpers.ApiServices.Base
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<TGetModel>(responseJson);
+
+				var responseObj = JsonConvert.DeserializeObject<TGetModel>(responseJson);
+				if (responseObj != null && responseObj.Deleted && !includeDeleted)
+					return new TGetModel();
+				return responseObj;
 			}
 			// TODO: Throw some error
 			throw new Exception();
 		}
 
-		public async Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids, PagingParams pagingParams) where TGetModel : GetModelDto, new()
+		public async Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids, PagingParams pagingParams, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			var idPage = ids.Skip((pagingParams.PageNumber - 1) * pagingParams.PageSize).Take(pagingParams.PageSize);
 
-			IEnumerable<TGetModel> enumerable = await GetEndpointAsync<TGetModel>(endpoint, idPage);
+			IEnumerable<TGetModel> enumerable = await GetEndpointAsync<TGetModel>(endpoint, idPage, includeDeleted);
 			PagedList<TGetModel> pagedList = new PagedList<TGetModel>(enumerable.ToList(), ids.Count(), pagingParams);
 
 			PagedListResponse<TGetModel> pagedListResponse = new PagedListResponse<TGetModel>(pagedList);
+			if (pagedListResponse != null && !includeDeleted)
+				pagedListResponse.Items = pagedListResponse.Items.Where(item => !item.Deleted);
 
 			return pagedListResponse;
 		}
 
-		public async Task<IEnumerable<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids) where TGetModel : GetModelDto, new()
+		public async Task<IEnumerable<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			if (_jwtService.ContainsToken())
 				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
-
-
-
-
-			//var query = new Dictionary<string, string>();
-			//if (pagingParams != null &&
-			//	pagingParams.PageNumber > 0 &&
-			//	pagingParams.PageSize > 0)
-			//{
-			//	query["pageNumber"] = pagingParams.PageNumber.ToString();
-			//	query["pageSize"] = pagingParams.PageSize.ToString();
-			//}
-
-			//var response = await _client.GetAsync(QueryHelpers.AddQueryString(endpoint, query));
 
 			var queryString = "?";
 
@@ -132,32 +129,32 @@ namespace HackerNews.Helpers.ApiServices.Base
 				var idArray = ids.ToArray();
 				queryString += $"id={idArray[0]}";
 
-				for(int i = 1; i < idArray.Count(); i++)
+				for (int i = 1; i < idArray.Count(); i++)
 				{
 					queryString += $"&id={idArray[i]}";
 				}
 			}
 
-			//var query = HttpUtility.ParseQueryString(string.Empty);
-			//foreach (var id in ids)
-			//	query["id"] = id.ToString();
-
-			//var queryString = query.ToString();
 
 			var response = await _client.GetAsync($"{endpoint}/range{queryString}");
 
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<IEnumerable<TGetModel>>(responseJson);
+
+				var responseList = JsonConvert.DeserializeObject<IEnumerable<TGetModel>>(responseJson);
+				if (responseList != null && !includeDeleted)
+					responseList = responseList.Where(item => !item.Deleted);
+
+				return responseList;
 			}
 			// TODO: Throw some error
 			return null;
 		}
 
-		
 
-		public async Task<PagedListResponse<TGetModel>> GetEndpointWithQueryAsync<TGetModel>(string endpoint, string query, PagingParams pagingParams) where TGetModel : GetModelDto, new()
+
+		public async Task<PagedListResponse<TGetModel>> GetEndpointWithQueryAsync<TGetModel>(string endpoint, string query, PagingParams pagingParams, bool includeDeleted = false) where TGetModel : GetModelDto, new()
 		{
 			if (_jwtService.ContainsToken())
 				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
@@ -179,13 +176,15 @@ namespace HackerNews.Helpers.ApiServices.Base
 			if (response.IsSuccessStatusCode)
 			{
 				var responseJson = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<PagedListResponse<TGetModel>>(responseJson);
+
+				var pagedListResponse = JsonConvert.DeserializeObject<PagedListResponse<TGetModel>>(responseJson);
+				if (pagedListResponse != null && !includeDeleted)
+					pagedListResponse.Items = pagedListResponse.Items.Where(item => !item.Deleted);
+				return pagedListResponse;
 			}
 
 			// TODO: Throw some error
 			return null;
-
-
 		}
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using HackerNews.Domain;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Users;
-using System.Collections.Generic;
 
 namespace HackerNews.ViewModels.Boards
 {

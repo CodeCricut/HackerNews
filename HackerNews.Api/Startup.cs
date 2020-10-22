@@ -41,7 +41,7 @@ namespace HackerNews.Api
 					.AddUserServices()
 					.AddBoardServices();
 
-			
+
 
 			services.AddDbContext<DbContext, HackerNewsContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("HackerNews")
@@ -54,7 +54,7 @@ namespace HackerNews.Api
 					builder => builder.AllowAnyOrigin());
 			});
 
-			
+
 			services.AddHttpContextAccessor();
 
 			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));

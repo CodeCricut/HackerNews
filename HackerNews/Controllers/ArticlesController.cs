@@ -4,7 +4,6 @@ using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Articles;
@@ -55,7 +54,7 @@ namespace HackerNews.Controllers
 
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
-			var articleModel = await _apiReader.GetEndpointAsync<GetArticleModel>(ARTICLE_ENDPOINT, id);
+			var articleModel = await _apiReader.GetEndpointAsync<GetArticleModel>(ARTICLE_ENDPOINT, id, includeDeleted: true);
 			// TODO: there is an endpoint for gettign many by IDs now
 			var pagedCommentResponse = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", articleModel.CommentIds, pagingParams);
 			var commentPage = new Page<GetCommentModel>(pagedCommentResponse);
@@ -67,7 +66,11 @@ namespace HackerNews.Controllers
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 
 			var savedArticle = loggedIn
-				?  privateUser.SavedArticles.Contains(id)
+				? privateUser.SavedArticles.Contains(id)
+				: false;
+
+			var wroteArticle = loggedIn
+				? privateUser.ArticleIds.Contains(id)
 				: false;
 
 			var viewModel = new ArticleDetailsViewModel
@@ -77,7 +80,8 @@ namespace HackerNews.Controllers
 				CommentPage = commentPage,
 				LoggedIn = loggedIn,
 				User = user,
-				UserSavedArticle = savedArticle
+				UserSavedArticle = savedArticle,
+				UserWroteArticle = wroteArticle
 			};
 
 			return View(viewModel);
@@ -112,11 +116,19 @@ namespace HackerNews.Controllers
 
 		public async Task<ActionResult<ArticleSearchViewModel>> Search(string searchTerm, PagingParams pagingParams)
 		{
-			
+
 			var articles = await _apiReader.GetEndpointWithQueryAsync<GetArticleModel>(ARTICLE_ENDPOINT, searchTerm, pagingParams);
 
 			var model = new ArticleSearchViewModel { SearchTerm = searchTerm, ArticlePage = new Page<GetArticleModel>(articles) };
 			return View(model);
+		}
+
+		[Authorize]
+		public async Task<IActionResult> Delete(int id)
+		{
+			await _articleModifier.DeleteEndpointAsync(ARTICLE_ENDPOINT, id);
+
+			return RedirectToAction("Details", new { id });
 		}
 	}
 }

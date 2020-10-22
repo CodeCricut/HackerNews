@@ -11,7 +11,15 @@
     }
     @if (Model.ModeratorPage.HasNext)
     {
-        <a asp-controller="Boards" asp-action="Moderators"class="mr-auto btn btn-outline-secondary ">All Moderators</a>
+        <a asp-controller="Boards" asp-action="Moderators" class="mr-auto btn btn-outline-secondary ">All Moderators</a>
+    }
+    | @if (Model.Board.Deleted)
+    {
+        <span class="text-danger">Deleted</span>
+    }
+    else if (Model.UserCreatedBoard)
+    {
+       <a asp-controller="Boards" asp-action="Delete" asp-route-id="@Model.Board.Id" class="text-danger">Delete</a>
     }
 
     <h2>Add Moderator</h2>

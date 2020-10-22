@@ -32,20 +32,29 @@
                     <a asp-controller="Comments" asp-action="Details" asp-route-id="@Model.ParentComment.Id">Parent</a>
                 }
 
-                @if (Model.LoggedIn)
+                | @if (Model.Comment.Deleted)
                 {
-                    <text>
-                        | <a asp-controller="Comments" asp-action="SaveComment" asp-route-id="@Model.Comment.Id">
-                            @if (Model.UserSavedComment)
-                            {
-                                <text>Unsave</text>
-                    }
-                    else
-                    {
-                        <text>Save</text>
-                    }
+                    <span class="text-danger">Deleted</span>
+                }
+                else if (Model.UserWroteComment)
+                {
+                   <a asp-controller="Comments" asp-action="Delete" asp-route-id="@Model.Comment.Id" class="text-danger">Delete</a>
+                }
+
+            @if (Model.LoggedIn)
+            {
+                <text>
+                    | <a asp-controller="Comments" asp-action="SaveComment" asp-route-id="@Model.Comment.Id">
+                        @if (Model.UserSavedComment)
+                        {
+                            <text>Unsave</text>
+            }
+            else
+            {
+                <text>Save</text>
+            }
                     </a>
-                     </text>
+                    </text>
                 }
             </div>
             <p>

@@ -1,6 +1,5 @@
 ﻿using CleanEntityArchitecture.Authorization;
 using CleanEntityArchitecture.Controllers;
-using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;

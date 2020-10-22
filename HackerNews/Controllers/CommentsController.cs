@@ -5,7 +5,6 @@ using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
-using HackerNews.ViewModels;
 using HackerNews.ViewModels.Comments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +35,7 @@ namespace HackerNews.Controllers
 
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
-			var commentModel = await _apiReader.GetEndpointAsync<GetCommentModel>(COMMENT_ENDPOINT, id);
+			var commentModel = await _apiReader.GetEndpointAsync<GetCommentModel>(COMMENT_ENDPOINT, id, includeDeleted: true);
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("Boards", commentModel.BoardId);
 			var parentArticle = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", commentModel.ParentArticleId);
 			var childComments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.CommentIds, pagingParams);
@@ -61,7 +60,8 @@ namespace HackerNews.Controllers
 				ParentComment = parentComment,
 				PostCommentModel = new PostCommentModel(),
 				User = user,
-				UserSavedComment = savedComment
+				UserSavedComment = savedComment,
+				UserWroteComment = commentModel.UserId == user.Id
 			};
 
 			return View(model);
@@ -99,6 +99,14 @@ namespace HackerNews.Controllers
 
 			var model = new CommentSearchViewModel { SearchTerm = searchTerm, CommentPage = new Page<GetCommentModel>(comments) };
 			return View(model);
+		}
+
+		[Authorize]
+		public async Task<IActionResult> Delete(int id)
+		{
+			await _commentModifier.DeleteEndpointAsync(COMMENT_ENDPOINT, id);
+
+			return RedirectToAction("Details", new { id });
 		}
 	}
 }

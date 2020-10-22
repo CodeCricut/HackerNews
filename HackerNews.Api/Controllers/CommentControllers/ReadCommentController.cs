@@ -1,11 +1,8 @@
 ﻿using CleanEntityArchitecture.Controllers;
-using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
-using HackerNews.Api.Controllers.Base;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers.CommentControllers
 {

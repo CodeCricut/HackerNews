@@ -7,6 +7,10 @@
                 <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">
                     @Model.Board.Title
                 </a>
+                @if (Model.Board.Deleted)
+                {
+                    <text>| <span class="text-danger">Deleted</span></text>
+                }
                 <p>@Model.Board.Description</p>
             </div>
         </div>

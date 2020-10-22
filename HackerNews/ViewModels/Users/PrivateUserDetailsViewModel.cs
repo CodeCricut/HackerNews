@@ -2,12 +2,10 @@
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
 
 namespace HackerNews.ViewModels.Users
 {
-	public class PrivateUserDetailsViewModel 
+	public class PrivateUserDetailsViewModel
 	{
 		public GetPrivateUserModel User { get; set; }
 

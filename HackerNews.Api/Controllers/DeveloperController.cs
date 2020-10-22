@@ -1,7 +1,6 @@
 ﻿using CleanEntityArchitecture.Repository;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.EF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,8 +39,8 @@ namespace HackerNews.Api.Controllers
 			try
 			{
 				var articles = _context.Set<Article>().ToList();
-				var comments = _context.Set <Comment>().ToList();
-				var users = _context.Set < User>().ToList();
+				var comments = _context.Set<Comment>().ToList();
+				var users = _context.Set<User>().ToList();
 				var boards = _context.Set<Board>().ToList();
 
 				_context.RemoveRange(articles);

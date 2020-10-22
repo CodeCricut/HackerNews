@@ -1,11 +1,8 @@
-﻿using CleanEntityArchitecture.EntityModelServices;
-using HackerNews.Domain;
-using HackerNews.Domain.Models.Users;
+﻿using HackerNews.Domain;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -51,6 +48,6 @@ namespace HackerNews.Helpers.ApiServices.Default.UserServices
 
 			var response = await _client.PostAsync(QueryHelpers.AddQueryString($"users/save-comment", queryString), null);
 		}
-		
+
 	}
 }

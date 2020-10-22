@@ -35,7 +35,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.UserServices
 
 			if (user == null || article == null) throw new NotFoundException();
 
-			
+
 
 			bool alreadySaved = article.UsersSaved.Where(us => us.UserId == user.Id).Count() > 0;
 

@@ -1,13 +1,10 @@
 ﻿using CleanEntityArchitecture.Domain;
-using HackerNews.Api.DB_Helpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
-using HackerNews.Helpers.Cookies.Interfaces;
-using HackerNews.ViewModels.Home;
 using HackerNews.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +50,7 @@ namespace HackerNews.Controllers
 
 		public ViewResult Login()
 		{
-			var model = new UserLoginViewModel {  LoginModel = new LoginModel() };
+			var model = new UserLoginViewModel { LoginModel = new LoginModel() };
 			return View(model);
 		}
 
@@ -75,11 +72,11 @@ namespace HackerNews.Controllers
 		[Authorize]
 		public async Task<ViewResult> Me()
 		{
-			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
+			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me", includeDeleted: true);
 
 			var pagingParams = new PagingParams { PageNumber = 1, PageSize = 10 };
-			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.ArticleIds, pagingParams);
-			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.CommentIds, pagingParams);
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.ArticleIds, pagingParams, includeDeleted: true);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.CommentIds, pagingParams, includeDeleted: true);
 
 			var model = new PrivateUserDetailsViewModel
 			{
@@ -99,11 +96,11 @@ namespace HackerNews.Controllers
 			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", user.ArticleIds, pagingParams);
 			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", user.CommentIds, pagingParams);
 
-			var returnModel = new PublicUserDetailsViewModel 
+			var returnModel = new PublicUserDetailsViewModel
 			{
-				User = user, 
-				ArticlePage = new Page<GetArticleModel>(articles), 
-				CommentPage = new Page<GetCommentModel>(comments) 
+				User = user,
+				ArticlePage = new Page<GetArticleModel>(articles),
+				CommentPage = new Page<GetCommentModel>(comments)
 			};
 			return View(returnModel);
 		}
@@ -135,10 +132,10 @@ namespace HackerNews.Controllers
 			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.SavedArticles, pagingParams);
 			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.SavedComments, pagingParams);
 
-			var model = new UserSavedView 
-			{ 
-				SavedArticlesPage = new Page<GetArticleModel>(articles), 
-				SavedCommentsPage = new Page<GetCommentModel>(comments) 
+			var model = new UserSavedView
+			{
+				SavedArticlesPage = new Page<GetArticleModel>(articles),
+				SavedCommentsPage = new Page<GetCommentModel>(comments)
 			};
 			return View(model);
 		}
@@ -146,7 +143,7 @@ namespace HackerNews.Controllers
 		[Authorize]
 		public async Task<ActionResult<UserBoardsView>> Boards(PagingParams pagingParams)
 		{
-			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
+			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me", includeDeleted: true);
 
 			var boardsSubscribed = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsSubscribed, pagingParams);
 			var boardsModerating = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsModerating, pagingParams);
@@ -156,6 +153,14 @@ namespace HackerNews.Controllers
 				BoardsModeratingPage = new Page<GetBoardModel>(boardsModerating)
 			};
 			return View(model);
+		}
+
+		[Authorize]
+		public async Task<IActionResult> Delete(int id)
+		{
+			await _privateUserModifier.DeleteEndpointAsync(USER_ENDPOINT, id);
+
+			return RedirectToAction("users/me");
 		}
 	}
 }

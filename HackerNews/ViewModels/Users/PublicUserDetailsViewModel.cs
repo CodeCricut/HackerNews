@@ -5,7 +5,7 @@ using HackerNews.Domain.Models.Users;
 
 namespace HackerNews.ViewModels.Users
 {
-	public class PublicUserDetailsViewModel 
+	public class PublicUserDetailsViewModel
 	{
 		public GetPublicUserModel User { get; set; }
 		public Page<GetArticleModel> ArticlePage { get; set; }

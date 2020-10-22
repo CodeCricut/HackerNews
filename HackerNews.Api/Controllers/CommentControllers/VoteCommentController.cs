@@ -1,9 +1,7 @@
-﻿using CleanEntityArchitecture.Domain;
-using HackerNews.Api.Controllers.Base;
+﻿using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

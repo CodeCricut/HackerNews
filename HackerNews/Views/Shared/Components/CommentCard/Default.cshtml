@@ -31,6 +31,11 @@
                     {
                         <a asp-controller="Comments" asp-action="Details" asp-route-id="@Model.Comment.Id">@Model.Comment.CommentIds.Count() comments</a>
                     }
+                    @if (Model.Comment.Deleted)
+                    {
+                        <text>| <span class="text-danger">Deleted</span></text>
+                    }
+
                 </div>
                 <p>
                     @Model.Comment.Text

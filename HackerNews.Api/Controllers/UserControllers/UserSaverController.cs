@@ -1,5 +1,4 @@
 ﻿using CleanEntityArchitecture.Authorization;
-using CleanEntityArchitecture.Domain;
 using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;

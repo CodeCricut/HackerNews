@@ -26,17 +26,26 @@
             {
                 <text>
                     | <a asp-controller="Articles" asp-action="SaveArticle" asp-route-id="@Model.Article.Id">
-                        @if (Model.UserSavedArticle)
-                        {
-                            <text>Unsave</text>
+                            @if (Model.UserSavedArticle)
+                            {
+                                <text>Unsave</text>
+                            }
+                            else
+                            {
+                                <text>Save</text>
+                            }
+                      </a>
+                    | @if (Model.Article.Deleted)
+                    {
+                        <span class="text-danger">Deleted</span>
+                    }
+                    else if (Model.UserWroteArticle)
+                    {
+                        
+                        <text> <a asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Article.Id" class="text-danger">Delete</a></text>
+                    }
+                </text>
             }
-            else
-            {
-                <text>Save</text>
-            }
-                    </a>
-                    </text>
-                }
 
 
             <p>@Model.Article.Text</p>
@@ -76,3 +85,6 @@
         </div>
     </div>
 </div>
+
+<h1>TESTINT TESTING</h1>
+deleted: @Model.Article.Deleted

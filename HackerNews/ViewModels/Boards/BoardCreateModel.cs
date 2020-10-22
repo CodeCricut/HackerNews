@@ -2,7 +2,7 @@
 
 namespace HackerNews.ViewModels.Boards
 {
-	public class BoardCreateModel 
+	public class BoardCreateModel
 	{
 		public PostBoardModel Board { get; set; }
 	}

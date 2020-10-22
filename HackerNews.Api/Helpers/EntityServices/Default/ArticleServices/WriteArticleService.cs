@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using CleanEntityArchitecture.Authorization;
-using CleanEntityArchitecture.Domain;
 using CleanEntityArchitecture.EntityModelServices;
 using CleanEntityArchitecture.Repository;
-using HackerNews.Api.Helpers.EntityHelpers;
 using HackerNews.Domain;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Articles;
-using HackerNews.Domain.Models.Users;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +17,7 @@ namespace HackerNews.Api.Helpers.EntityServices.Base.ArticleServices
 		public WriteArticleService(IMapper mapper,
 			IReadEntityRepository<Article> readRepo,
 			IWriteEntityRepository<Article> writeRepo, IUserAuth<User> userAuth)
-			:base(mapper, writeRepo, readRepo)
+			: base(mapper, writeRepo, readRepo)
 		{
 			_userAuth = userAuth;
 		}

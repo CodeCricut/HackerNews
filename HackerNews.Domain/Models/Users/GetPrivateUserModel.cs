@@ -15,7 +15,6 @@ namespace HackerNews.Domain.Models.Users
 		public string LastName { get; set; }
 		public string Username { get; set; }
 		public int Karma { get; set; }
-		public bool Deleted { get; set; }
 		// don't store in plaintext
 		public string Password { get; set; }
 		public List<int> ArticleIds { get; set; }

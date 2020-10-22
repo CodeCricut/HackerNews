@@ -9,6 +9,10 @@
         @* Articles *@
         <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
             <h1>@Model.Board.Title</h1>
+            @if (Model.Board.Deleted)
+            {
+                <p class="text-danger">Deleted</p>
+            }
             @foreach (var article in Model.ArticlePage.Items)
             {
                 @await Component.InvokeAsync("ArticleCard", new { articleModel = article });

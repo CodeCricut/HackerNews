@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CleanEntityArchitecture.Domain;
+﻿using CleanEntityArchitecture.Domain;
 using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
@@ -10,8 +6,8 @@ using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels.Home;
-using HackerNews.ViewModels.Other;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HackerNews.Controllers
 {
@@ -55,7 +51,7 @@ namespace HackerNews.Controllers
 		[HttpPost]
 		public IActionResult Search(HomeIndexViewModel viewModel)
 		{
-			return RedirectToAction("Search", new { searchTerm = viewModel.SearchTerm});
+			return RedirectToAction("Search", new { searchTerm = viewModel.SearchTerm });
 		}
 
 

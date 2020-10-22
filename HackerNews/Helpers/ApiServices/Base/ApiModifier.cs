@@ -27,9 +27,15 @@ namespace HackerNews.Helpers.ApiServices.Base
 			_jwtService = jwtService;
 		}
 
-		public virtual Task<bool> DeleteEndpointAsync(string endpoint, int id)
+		public virtual async Task<bool> DeleteEndpointAsync(string endpoint, int id)
 		{
-			throw new NotImplementedException();
+			// try attatch JWT token if present
+			if (_jwtService.ContainsToken())
+				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
+
+			var response = await _client.DeleteAsync($"{endpoint}/{id}");
+
+			return response.IsSuccessStatusCode;
 		}
 
 		public virtual async Task<TGetModel> PostEndpointAsync(string endpoint, TPostModel postModel)

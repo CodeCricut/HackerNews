@@ -21,7 +21,7 @@ namespace HackerNews.EF.Repositories.Boards
 				var withChildren = IncludeChildren(withoutChildren);
 
 				var matchingQuery = withChildren.Where(
-					b => 
+					b =>
 						b.Title.Contains(query) ||
 						b.Description.Contains(query)
 					);

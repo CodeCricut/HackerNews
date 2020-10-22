@@ -6,7 +6,6 @@ namespace HackerNews.Domain.Models.Comments
 {
 	public class GetCommentModel : GetModelDto
 	{
-		public bool Deleted { get; set; }
 		public int UserId { get; set; }
 		public string Text { get; set; }
 		public string Url { get; set; }

@@ -17,8 +17,13 @@
                     at <a asp-controller="Articles" asp-action="Past" asp-route-date="@Model.Article.PostDate">@Model.Article.PostDate</a>
                     @if (Model.Article.CommentIds.Count() >= 1)
                     {
-                        <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">@Model.Article.CommentIds.Count() comments</a>
+                        <text>| <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">@Model.Article.CommentIds.Count() comments</a></text>
                     }
+                    @if (Model.Article.Deleted)
+                    {
+                        <text>| <span class="text-danger">Deleted</span></text>
+                    }
+
                 </div>
                 <p>
                     @Model.Article.Text

@@ -13,8 +13,6 @@ using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using HackerNews.EF;
-using HackerNews.EF.Repositories;
 using HackerNews.EF.Repositories.Articles;
 using HackerNews.EF.Repositories.Boards;
 using HackerNews.EF.Repositories.Comments;

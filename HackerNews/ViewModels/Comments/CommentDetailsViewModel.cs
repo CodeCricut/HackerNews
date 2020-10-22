@@ -6,7 +6,7 @@ using HackerNews.Domain.Models.Users;
 
 namespace HackerNews.ViewModels.Comments
 {
-	public class CommentDetailsViewModel 
+	public class CommentDetailsViewModel
 	{
 		public GetCommentModel Comment { get; set; }
 
@@ -21,5 +21,6 @@ namespace HackerNews.ViewModels.Comments
 
 		public bool LoggedIn { get; set; }
 		public bool UserSavedComment { get; set; }
+		public bool UserWroteComment { get; set; }
 	}
 }

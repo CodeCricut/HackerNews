@@ -22,9 +22,10 @@
                     </p>
                     <p>
                         Saved <a asp-controller="Users" asp-action="Saved">@Model.User.SavedArticles.Count() articles</a> and <a asp-controller="Users" asp-action="Saved">
-                        @Model.User.SavedComments.Count() comments
-</a>
+                            @Model.User.SavedComments.Count() comments
+                        </a>
                     </p>
+                    <a asp-controller="Users" asp-action="Delete" asp-route-id="@Model.User.Id" class="btn btn-outline-danger">Delete Account</a>
                 </div>
             </div>
         </div>
