@@ -18,5 +18,6 @@ namespace HackerNews.Helpers.ApiServices.Interfaces
 		Task<PagedListResponse<TGetModel>> GetEndpointAsync<TGetModel>(string endpoint, IEnumerable<int> ids, PagingParams pagingParams) where TGetModel : GetModelDto, new();
 
 		Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint) where TGetModel : GetModelDto, new();
+		Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, string jwt) where TGetModel : GetModelDto, new();
 	}
 }

@@ -4,9 +4,11 @@ using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
+using HackerNews.Helpers;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Articles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -35,6 +37,7 @@ namespace HackerNews.Controllers
 			_articleSaver = articleSaver;
 		}
 
+		[Authorize]
 		public ViewResult Create(int boardId)
 		{
 			var model = new ArticleCreateViewModel { Article = new PostArticleModel() { BoardId = boardId } };
@@ -42,6 +45,7 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
 		{
 			GetArticleModel model = await _articleModifier.PostEndpointAsync(ARTICLE_ENDPOINT, viewModel.Article);
@@ -62,7 +66,9 @@ namespace HackerNews.Controllers
 			var privateUser = await _apiReader.GetEndpointAsync<GetPrivateUserModel>("users/me");
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 
-			var savedArticle = privateUser.SavedArticles.Contains(id);
+			var savedArticle = loggedIn
+				?  privateUser.SavedArticles.Contains(id)
+				: false;
 
 			var viewModel = new ArticleDetailsViewModel
 			{
@@ -78,6 +84,7 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public async Task<ActionResult> AddComment([Bind("GetModel, PostCommentModel")] ArticleDetailsViewModel viewModel)
 		{
 			var commentAdded = viewModel.PostCommentModel;
@@ -88,12 +95,14 @@ namespace HackerNews.Controllers
 			return RedirectToAction("Details", new { id = viewModel.Article.Id });
 		}
 
+		[Authorize]
 		public async Task<ActionResult> Vote(int id, bool upvote)
 		{
 			await _articleVoter.VoteEntityAsync(id, upvote);
 			return RedirectToAction("Details", new { id });
 		}
 
+		[Authorize]
 		public async Task<ActionResult> SaveArticle(int id)
 		{
 			await _articleSaver.SaveEntityToUserAsync(id);

@@ -7,5 +7,6 @@ namespace HackerNews.Helpers.ApiServices.Interfaces
 		where TGetModel : GetModelDto
 	{
 		Task<Jwt> LogIn(TLoginModel authUserReq);
+		Task LogOut();
 	}
 }

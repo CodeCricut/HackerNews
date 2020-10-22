@@ -20,7 +20,7 @@
                 <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a> at
                 @Model.Comment.PostDate
 
-                @*|  <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">@Model.Board.Title</a>*@
+                |  <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">@Model.Board.Title</a>
 
                 |
                 @if (Model.ParentArticle != null)
@@ -55,19 +55,23 @@
     </div>
     <div class="row mt-3">
         <div class="col">
-            @* Add Comment*@
-            <form asp-controller="Comments" asp-action="AddComment" method="post">
-                <div class="form-group">
-                    <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
-                </div>
-                <input hidden asp-for="Comment.Id" />
-                <input hidden asp-for="Comment.BoardId" />
-                <input hidden asp-for="Comment.UserId" />
+            @if (Model.LoggedIn)
+            {
+                @* Add Comment*@
+                <form asp-controller="Comments" asp-action="AddComment" method="post">
+                    <div class="form-group">
+                        <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
+                    </div>
+                    <input hidden asp-for="Comment.Id" />
+                    <input hidden asp-for="Comment.BoardId" />
+                    <input hidden asp-for="Comment.UserId" />
 
-                <div class="form-group">
-                    <input type="submit" class="btn btn-outline-secondary" value="Add comment" />
-                </div>
-            </form>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-outline-secondary" value="Add comment" />
+                    </div>
+                </form>
+            }
+
             <div class="container-fluid">
                 @foreach (var childComment in Model.ChildCommentPage.Items)
                 {

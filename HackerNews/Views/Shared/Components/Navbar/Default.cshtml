@@ -19,6 +19,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a asp-controller="Users" asp-action="Me" class="dropdown-item">My Profile</a>
+                        <a asp-controller="Users" asp-action="Boards" class="dropdown-item">Boards</a>
                         <a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id" class="dropdown-item">Written Articles</a>
                         <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id" class="dropdown-item">Written Comments</a>
                         <a asp-controller="Users" asp-action="Saved" class="dropdown-item">Saved</a>

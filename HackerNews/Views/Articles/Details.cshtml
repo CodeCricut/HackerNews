@@ -26,35 +26,38 @@
             {
                 <text>
                     | <a asp-controller="Articles" asp-action="SaveArticle" asp-route-id="@Model.Article.Id">
-                            @if (Model.UserSavedArticle)
-                            {
-                                <text>Unsave</text>
-                            }
-                            else
-                            {
-                                <text>Save</text>
-                            }
-                    </a>
-                </text>
+                        @if (Model.UserSavedArticle)
+                        {
+                            <text>Unsave</text>
             }
+            else
+            {
+                <text>Save</text>
+            }
+                    </a>
+                    </text>
+                }
 
 
             <p>@Model.Article.Text</p>
 
             @* Add Comment*@
-            <form asp-controller="Articles" asp-action="AddComment" method="post">
-                <div class="form-group">
-                    <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
-                </div>
-                <input hidden asp-for="Article.BoardId" />
-                <input hidden asp-for="Article.Id" />
-                <input hidden asp-for="Article.UserId" />
+            @if (Model.LoggedIn)
+            {
+                <form asp-controller="Articles" asp-action="AddComment" method="post">
+                    <div class="form-group">
+                        <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
+                    </div>
+                    <input hidden asp-for="Article.BoardId" />
+                    <input hidden asp-for="Article.Id" />
+                    <input hidden asp-for="Article.UserId" />
 
 
-                <div class="form-group">
-                    <input type="submit" class="btn btn-outline-secondary" value="Add comment" />
-                </div>
-            </form>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-outline-secondary" value="Add comment" />
+                    </div>
+                </form>
+            }
 
             <div class="container-fluid">
                 @foreach (var comment in Model.CommentPage.Items)
@@ -71,5 +74,5 @@
                 }
             </div>
         </div>
-        </div>
     </div>
+</div>

@@ -57,8 +57,14 @@ namespace HackerNews.Helpers.ApiServices.Base
 
 		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint) where TGetModel : GetModelDto, new()
 		{
-			if (_jwtService.ContainsToken())
-				_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _jwtService.GetToken());
+			var jwt = _jwtService.GetToken();
+			return await GetEndpointAsync<TGetModel>(endpoint, jwt);
+		}
+
+		// needed for a VERY ugly workaround, where the jwt cannot be accessed from the cookie store in the same request as it was set
+		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, string jwt) where TGetModel : GetModelDto, new()
+		{
+			if (jwt.Length >= 0) _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
 			var response = await _client.GetAsync($"{endpoint}");
 
@@ -70,6 +76,7 @@ namespace HackerNews.Helpers.ApiServices.Base
 			// TODO: Throw some error
 			return new TGetModel();
 		}
+
 
 		public virtual async Task<TGetModel> GetEndpointAsync<TGetModel>(string endpoint, int id) where TGetModel : GetModelDto, new()
 		{

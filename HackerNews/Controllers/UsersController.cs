@@ -9,6 +9,7 @@ using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using HackerNews.ViewModels.Home;
 using HackerNews.ViewModels.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,19 +18,16 @@ namespace HackerNews.Controllers
 	public class UsersController : Controller
 	{
 		private static readonly string USER_ENDPOINT = "users";
-		private readonly IJwtService _jwtService;
 		private readonly IApiModifier<User, RegisterUserModel, GetPrivateUserModel> _privateUserModifier;
 		private readonly IApiLoginFacilitator<LoginModel, GetPrivateUserModel> _loginFacilitator;
 		private readonly IApiReader _apiReader;
 
 		public UsersController(
-			IJwtService jwtService,
 			IApiModifier<User, RegisterUserModel, GetPrivateUserModel> privateUserModifier,
 			IApiLoginFacilitator<LoginModel, GetPrivateUserModel> loginFacilitator,
 			IApiReader apiReader
 			)
 		{
-			_jwtService = jwtService;
 			_privateUserModifier = privateUserModifier;
 			_loginFacilitator = loginFacilitator;
 			_apiReader = apiReader;
@@ -68,13 +66,13 @@ namespace HackerNews.Controllers
 		}
 
 
-		public ActionResult Logout()
+		public async Task<IActionResult> Logout()
 		{
-			_jwtService.RemoveToken();
+			await _loginFacilitator.LogOut();
 			return RedirectToAction("Register");
 		}
 
-
+		[Authorize]
 		public async Task<ViewResult> Me()
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
@@ -129,6 +127,7 @@ namespace HackerNews.Controllers
 			return View(model);
 		}
 
+		[Authorize]
 		public async Task<ActionResult<UserSavedView>> Saved(PagingParams pagingParams)
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
@@ -144,6 +143,7 @@ namespace HackerNews.Controllers
 			return View(model);
 		}
 
+		[Authorize]
 		public async Task<ActionResult<UserBoardsView>> Boards(PagingParams pagingParams)
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");

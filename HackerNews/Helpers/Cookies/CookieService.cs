@@ -45,6 +45,8 @@ namespace HackerNews.Helpers.Cookies
 			else
 				options.Expires = DateTime.Now.AddDays(7);
 
+			options.IsEssential = true;
+
 			_httpContext.Response.Cookies.Append(key, value, options);
 		}
 	}

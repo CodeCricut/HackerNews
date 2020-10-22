@@ -7,6 +7,7 @@ using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Comments;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -45,7 +46,9 @@ namespace HackerNews.Controllers
 			var privateUser = await _apiReader.GetEndpointAsync<GetPrivateUserModel>("users/me");
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 
-			var savedComment = privateUser.SavedComments.Contains(id);
+			var savedComment = loggedIn
+				? privateUser.SavedComments.Contains(id)
+				: false;
 
 
 			var model = new CommentDetailsViewModel
@@ -65,6 +68,7 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public async Task<ActionResult> AddComment([Bind("GetModel, PostCommentModel")] CommentDetailsViewModel viewModel)
 		{
 			viewModel.PostCommentModel.ParentCommentId = viewModel.Comment.Id;
@@ -74,12 +78,14 @@ namespace HackerNews.Controllers
 			return RedirectToAction("Details", new { id = viewModel.Comment.Id });
 		}
 
+		[Authorize]
 		public async Task<ActionResult> Vote(int id, bool upvote)
 		{
 			await _commentVoter.VoteEntityAsync(id, upvote);
 			return RedirectToAction("Details", new { id });
 		}
 
+		[Authorize]
 		public async Task<ActionResult> SaveComment(int id)
 		{
 			await _commentSaver.SaveEntityToUserAsync(id);

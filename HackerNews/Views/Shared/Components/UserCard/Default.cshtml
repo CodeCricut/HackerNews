@@ -8,8 +8,8 @@
                     @Model.User.Username
                 </a>
                 <div>
-                    <a asp-controller="User" asp-action="Articles" asp-route-id="@Model.User.Id">Articles</a>
-                    | <a asp-controller="User" asp-action="Comments" asp-route-id="@Model.User.Id">Comments</a>
+                    <a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id">Articles</a>
+                    | <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">Comments</a>
                 </div>
             </div>
         </div>

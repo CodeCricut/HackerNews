@@ -7,6 +7,7 @@ using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.ViewModels;
 using HackerNews.ViewModels.Boards;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -32,6 +33,7 @@ namespace HackerNews.Controllers
 			_boardSubscriber = boardSubscriber;
 		}
 
+		[Authorize]
 		public ViewResult Create()
 		{
 			var model = new BoardCreateModel { Board = new PostBoardModel() };
@@ -39,6 +41,7 @@ namespace HackerNews.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public async Task<ActionResult> Post(BoardCreateModel boardCreateModel)
 		{
 			GetBoardModel model = await _boardModifier.PostEndpointAsync(BOARD_ENDPOINT, boardCreateModel.Board);
@@ -65,8 +68,11 @@ namespace HackerNews.Controllers
 			return View(model);
 		}
 
+		[Authorize]
 		public async Task<ActionResult<BoardAdminViewModel>> Admin(int id)
 		{
+			// TODO: ensure user is moderator
+
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>(BOARD_ENDPOINT, id);
 
 			// TODO: you shoul dnot have to pass board name to method; should be setup in each implementation
@@ -82,8 +88,11 @@ namespace HackerNews.Controllers
 			return View(viewModel);
 		}
 
+		[Authorize]
 		public async Task<ActionResult> AddModerator([Bind(include: new string[] { "Board", "ModeratorAddedId" })] BoardAdminViewModel model)
 		{
+			// TODO: ensure user is moderator
+
 			var updatedBoard = await _moderatorAdder.AddModerator(model.Board.Id, model.ModeratorAddedId);
 
 			return RedirectToAction("Admin", new { id = updatedBoard.Id });
@@ -101,6 +110,7 @@ namespace HackerNews.Controllers
 			return View(model);
 		}
 
+		[Authorize]
 		public async Task<ActionResult> Subscribe(int boardId)
 		{
 			var updatedBoard = await _boardSubscriber.AddSubscriber(boardId);
