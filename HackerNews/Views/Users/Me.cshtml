@@ -10,19 +10,19 @@
         <div class="col-sm-12 col-md-5 sidebar">
             <div class="row card mx-2">
                 <div class="col card-body">
-                    <h2>@Model.GetModel.Username</h2>
-                    <h3>@Model.GetModel.FirstName @Model.GetModel.LastName</h3>
+                    <h2>@Model.User.Username</h2>
+                    <h3>@Model.User.FirstName @Model.User.LastName</h3>
                     <p>
-                        @Model.GetModel.Karma karma | Joined at @Model.GetModel.JoinDate
+                        @Model.User.Karma karma | Joined at @Model.User.JoinDate
                     </p>
 
                     <p>
-                        Moderating <a asp-controller="Users" asp-action="Boards">@Model.GetModel.BoardsModerating.Count() boards</a>
-                        | Subscribed to <a asp-controller="Users" asp-action="Boards">@Model.GetModel.BoardsSubscribed.Count() boards</a>
+                        Moderating <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsModerating.Count() boards</a>
+                        | Subscribed to <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsSubscribed.Count() boards</a>
                     </p>
                     <p>
-                        Saved <a asp-controller="Users" asp-action="Saved">@Model.GetModel.SavedArticles.Count() articles</a> and <a asp-controller="Users" asp-action="Saved">
-                        @Model.GetModel.SavedComments.Count() comments
+                        Saved <a asp-controller="Users" asp-action="Saved">@Model.User.SavedArticles.Count() articles</a> and <a asp-controller="Users" asp-action="Saved">
+                        @Model.User.SavedComments.Count() comments
 </a>
                     </p>
                 </div>
@@ -33,18 +33,25 @@
         <div class="col-sm-12 col-md-7 main-content card-deck">
             <div class="row mx-2">
                 @* Articles *@
-                <h4>Articles</h4>
-                @foreach (var article in Model.Articles)
-                {
-                    @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-                }
+                <div class="my-2">
+                    <h4>Articles</h4>
+                    @foreach (var article in Model.ArticlePage.Items)
+                    {
+                        @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+                    }
+                    <a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id">All Articles</a>
+                </div>
+
                 @* Comments *@
-                <h4>Comments</h4>
-                @foreach (var comment in Model.Comments)
-                {
-                    @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
-                }
-                <div class="row w-100 h-100"></div>
+                <div class="my-2">
+                    <h4>Comments</h4>
+                    @foreach (var comment in Model.CommentPage.Items)
+                    {
+                        @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+                    }
+                    <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">All Comments</a>
+                    <div class="row w-100 h-100"></div>
+                </div>
             </div>
         </div>
 

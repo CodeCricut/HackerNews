@@ -15,6 +15,5 @@ namespace HackerNews.ViewModels.Other
 			}
 		}
 		public GetPrivateUserModel User { get; set; }
-		public string SearchTerm { get; set; }
 	}
 }

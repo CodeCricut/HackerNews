@@ -1,4 +1,5 @@
 ﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Helpers;
 using System;
@@ -10,18 +11,7 @@ namespace HackerNews.ViewModels.Home
 {
 	public class HomeIndexViewModel
 	{
-		private readonly PagedListResponse<GetArticleModel> _pagedListResponse;
-
-		public HomeIndexViewModel(PagedListResponse<GetArticleModel> pagedListResponse)
-		{
-			Articles = pagedListResponse.Items;
-			_pagedListResponse = pagedListResponse;
-		}
-
-		public IEnumerable<GetArticleModel> Articles { get; set; }
-		public bool HasPrev { get => _pagedListResponse.HasPrevious; }
-		public bool HasNext { get => _pagedListResponse.HasNext; }
-		public PagingParams PrevPagingParams { get => _pagedListResponse.GetPrevPagingParams(); }
-		public PagingParams NextPagingParams { get => _pagedListResponse.GetNextPagingParams(); }
+		public Page<GetArticleModel> ArticlePage { get; set; }
+		public string SearchTerm { get; set; }
 	}
 }

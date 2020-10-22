@@ -1,24 +1,24 @@
 ﻿@model HackerNews.ViewModels.Comments.CommentDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = $"{Model.Comment.Text.Take(10)}...";
 }
 
 <div class="container">
     <div class="row">
         <div class="vote-panel d-none d-md-block col-md-1 text-center">
-            <a asp-controller="Comments" asp-action="vote" asp-route-id="@Model.GetModel.Id" asp-route-upvote="@true">
+            <a asp-controller="Comments" asp-action="vote" asp-route-id="@Model.Comment.Id" asp-route-upvote="@true">
                 <i class="fas fa-caret-up"></i>
             </a>
-            <div class="">@Model.GetModel.Karma</div>
-            <a asp-controller="Comments" asp-action="vote" asp-route-id="@Model.GetModel.Id" asp-route-upvote="@false">
+            <div class="">@Model.Comment.Karma</div>
+            <a asp-controller="Comments" asp-action="vote" asp-route-id="@Model.Comment.Id" asp-route-upvote="@false">
                 <i class="fas fa-caret-down"></i>
             </a>
         </div>
         <div class="col-sm-12 col-md-11">
             <div>
                 <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a> at
-                @Model.GetModel.PostDate
+                @Model.Comment.PostDate
 
                 @*|  <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">@Model.Board.Title</a>*@
 
@@ -35,7 +35,7 @@
                 @if (Model.LoggedIn)
                 {
                     <text>
-                        | <a asp-controller="Comments" asp-action="SaveComment" asp-route-id="@Model.GetModel.Id">
+                        | <a asp-controller="Comments" asp-action="SaveComment" asp-route-id="@Model.Comment.Id">
                             @if (Model.UserSavedComment)
                             {
                                 <text>Unsave</text>
@@ -49,7 +49,7 @@
                 }
             </div>
             <p>
-                @Model.GetModel.Text
+                @Model.Comment.Text
             </p>
         </div>
     </div>
@@ -60,18 +60,26 @@
                 <div class="form-group">
                     <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
                 </div>
-                <input hidden asp-for="GetModel.Id" />
-                <input hidden asp-for="GetModel.BoardId" />
-                <input hidden asp-for="GetModel.UserId" />
+                <input hidden asp-for="Comment.Id" />
+                <input hidden asp-for="Comment.BoardId" />
+                <input hidden asp-for="Comment.UserId" />
 
                 <div class="form-group">
                     <input type="submit" class="btn btn-outline-secondary" value="Add comment" />
                 </div>
             </form>
             <div class="container-fluid">
-                @foreach (var childComment in Model.ChildComments)
+                @foreach (var childComment in Model.ChildCommentPage.Items)
                 {
                     @await Component.InvokeAsync("CommentCard", new { commentModel = childComment });
+                }
+                @if (Model.ChildCommentPage.HasPrev)
+                {
+                    <a asp-controller="Comments" asp-action="Details" asp-all-route-data="@Model.ChildCommentPage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
+                }
+                @if (Model.ChildCommentPage.HasNext)
+                {
+                    <a asp-controller="Comments" asp-action="Details" asp-all-route-data="@Model.ChildCommentPage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
                 }
             </div>
         </div>

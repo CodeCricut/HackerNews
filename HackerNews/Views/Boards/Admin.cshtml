@@ -1,13 +1,17 @@
 ﻿@model HackerNews.ViewModels.Boards.BoardAdminViewModel
 @{
-    ViewData["Title"] = "Admin";
+    ViewData["Title"] = $"{Model.Board.Title} - Admin Panel";
 }
 
 <div class="container-fluid">
     <h2>Moderators</h2>
-    @foreach (var moderator in Model.Moderators)
+    @foreach (var moderator in Model.ModeratorPage.Items)
     {
         @await Component.InvokeAsync("UserCard", new { userModel = moderator });
+    }
+    @if (Model.ModeratorPage.HasNext)
+    {
+        <a asp-controller="Boards" asp-action="Moderators"class="mr-auto btn btn-outline-secondary ">All Moderators</a>
     }
 
     <h2>Add Moderator</h2>

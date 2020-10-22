@@ -35,31 +35,38 @@ namespace HackerNews.Controllers
 			_apiReader = apiReader;
 		}
 
-		public IActionResult Index()
-		{
-			return View();
-		}
-
-
 		public ViewResult Register()
 		{
-			var model = new UserRegisterViewModel { PostModel = new RegisterUserModel() };
+			var model = new UserRegisterViewModel { RegisterModel = new RegisterUserModel() };
 			return View(model);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Register(UserRegisterViewModel registerModel)
+		public async Task<IActionResult> Register(UserRegisterViewModel viewModel)
 		{
-			GetPrivateUserModel addedUser = await _privateUserModifier.PostEndpointAsync($"{USER_ENDPOINT}/register", registerModel.PostModel);
-			return RedirectToAction("Login");
-		}
+			// Register
+			var privateUser = await _privateUserModifier.PostEndpointAsync($"{USER_ENDPOINT}/register", viewModel.RegisterModel);
 
+			// Login
+			var loginModel = new LoginModel { Username = privateUser.Username, Password = privateUser.Password };
+			await _loginFacilitator.LogIn(loginModel);
+			return RedirectToAction("Me");
+		}
 
 		public ViewResult Login()
 		{
-			var model = new UserLoginViewModel { PostModel = new LoginModel() };
+			var model = new UserLoginViewModel {  LoginModel = new LoginModel() };
 			return View(model);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> Login(UserLoginViewModel viewModel)
+		{
+			await _loginFacilitator.LogIn(viewModel.LoginModel);
+
+			return RedirectToAction("Me");
+		}
+
 
 		public ActionResult Logout()
 		{
@@ -68,22 +75,20 @@ namespace HackerNews.Controllers
 		}
 
 
-		[HttpPost]
-		public async Task<IActionResult> Login(UserLoginViewModel viewModel)
-		{
-			var loginModel = viewModel.PostModel;
-			await _loginFacilitator.LogIn(loginModel);
-
-			return RedirectToAction("Me");
-		}
-
 		public async Task<ViewResult> Me()
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
-			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.ArticleIds);
-			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.CommentIds);
 
-			var model = new PrivateUserDetailsViewModel { GetModel = privateModel, Articles =articles, Comments = comments };
+			var pagingParams = new PagingParams { PageNumber = 1, PageSize = 10 };
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.ArticleIds, pagingParams);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.CommentIds, pagingParams);
+
+			var model = new PrivateUserDetailsViewModel
+			{
+				User = privateModel,
+				ArticlePage = new Page<GetArticleModel>(articles),
+				CommentPage = new Page<GetCommentModel>(comments)
+			};
 
 			return View(model);
 		}
@@ -92,48 +97,64 @@ namespace HackerNews.Controllers
 		{
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>(USER_ENDPOINT, id);
 
-			var returnModel = new PublicUserDetailsViewModel { GetModel = user };
+			var pagingParams = new PagingParams { PageNumber = 1, PageSize = 10 };
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", user.ArticleIds, pagingParams);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", user.CommentIds, pagingParams);
+
+			var returnModel = new PublicUserDetailsViewModel 
+			{
+				User = user, 
+				ArticlePage = new Page<GetArticleModel>(articles), 
+				CommentPage = new Page<GetCommentModel>(comments) 
+			};
 			return View(returnModel);
 		}
 
 
-		public async Task<ActionResult<UserArticlesListView>> Articles(int userId)
+		public async Task<ActionResult<UserArticlesListView>> Articles(int userId, PagingParams pagingParams)
 		{
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>(USER_ENDPOINT, userId);
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", user.ArticleIds, pagingParams);
 
-			// TODO: refactor to service and null checks and all that jazz
-			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", user.ArticleIds);
-
-			var model = new UserArticlesListView { GetModels = articles };
+			var model = new UserArticlesListView { ArticlePage = new Page<GetArticleModel>(articles) };
 			return View(model);
 		}
 
-		public async Task<ActionResult<UserCommentsListView>> Comments(int userId)
+		public async Task<ActionResult<UserCommentsListView>> Comments(int userId, PagingParams pagingParams)
 		{
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>(USER_ENDPOINT, userId);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", user.CommentIds, pagingParams);
 
-			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", user.CommentIds);
-			var model = new UserCommentsListView { GetModels = comments };
+			var model = new UserCommentsListView { CommentPage = new Page<GetCommentModel>(comments) };
 			return View(model);
 		}
 
-		public async Task<ActionResult<UserSavedView>> Saved()
+		public async Task<ActionResult<UserSavedView>> Saved(PagingParams pagingParams)
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
 
-			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.SavedArticles);
-			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.SavedComments);
-			var model = new UserSavedView { SavedArticles = articles, SavedComments = comments };
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", privateModel.SavedArticles, pagingParams);
+			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", privateModel.SavedComments, pagingParams);
+
+			var model = new UserSavedView 
+			{ 
+				SavedArticlesPage = new Page<GetArticleModel>(articles), 
+				SavedCommentsPage = new Page<GetCommentModel>(comments) 
+			};
 			return View(model);
 		}
 
-		public async Task<ActionResult<UserBoardsView>> Boards()
+		public async Task<ActionResult<UserBoardsView>> Boards(PagingParams pagingParams)
 		{
 			GetPrivateUserModel privateModel = await _apiReader.GetEndpointAsync<GetPrivateUserModel>($"{USER_ENDPOINT}/me");
 
-			var boardsSubscribed = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsSubscribed);
-			var boardsModerating = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsModerating);
-			var model = new UserBoardsView { BoardsModerating = boardsModerating, BoardsSubscribed = boardsSubscribed };
+			var boardsSubscribed = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsSubscribed, pagingParams);
+			var boardsModerating = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", privateModel.BoardsModerating, pagingParams);
+			var model = new UserBoardsView
+			{
+				BoardsSubscribedPage = new Page<GetBoardModel>(boardsSubscribed),
+				BoardsModeratingPage = new Page<GetBoardModel>(boardsModerating)
+			};
 			return View(model);
 		}
 	}

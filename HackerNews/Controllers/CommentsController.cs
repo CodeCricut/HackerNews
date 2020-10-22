@@ -32,22 +32,13 @@ namespace HackerNews.Controllers
 			_commentSaver = commentSaver;
 		}
 
-		public async Task<ViewResult> List(int pageNumber = 1, int pageSize = 10)
-		{
-			var pagingParams = new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
-			var commentModels = await _apiReader.GetEndpointAsync<GetCommentModel>(COMMENT_ENDPOINT, pagingParams);
 
-			var viewModel = new CommentsListViewModel { GetModels = commentModels.Items };
-
-			return View(viewModel);
-		}
-
-		public async Task<ViewResult> Details(int id)
+		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
 			var commentModel = await _apiReader.GetEndpointAsync<GetCommentModel>(COMMENT_ENDPOINT, id);
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("Boards", commentModel.BoardId);
 			var parentArticle = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", commentModel.ParentArticleId);
-			var childComments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.CommentIds);
+			var childComments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.CommentIds, pagingParams);
 			var parentComment = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", commentModel.ParentCommentId);
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", commentModel.UserId);
 
@@ -59,43 +50,28 @@ namespace HackerNews.Controllers
 
 			var model = new CommentDetailsViewModel
 			{
-				GetModel = commentModel,
 				Board = board,
-				ParentArticle = parentArticle,
-				PostCommentModel = new PostCommentModel(),
-				ChildComments = childComments,
-				ParentComment = parentComment,
-				User = user,
+				ChildCommentPage = new Page<GetCommentModel>(childComments),
+				Comment = commentModel,
 				LoggedIn = loggedIn,
+				ParentArticle = parentArticle,
+				ParentComment = parentComment,
+				PostCommentModel = new PostCommentModel(),
+				User = user,
 				UserSavedComment = savedComment
 			};
 
 			return View(model);
 		}
 
-		public ViewResult Create()
-		{
-			var model = new CommentCreateViewModel { PostModel = new PostCommentModel() };
-			return View(model);
-		}
-
-		//[HttpPost]
-		//public async Task<ActionResult> Post(PostCommentModel comment)
-		//{
-		//	GetCommentModel getCommentModel = await _commentModifier.PostEndpointAsync(COMMENT_ENDPOINT, comment);
-
-		//	return RedirectToAction("Details", new { getCommentModel.Id });
-		//}
-
 		[HttpPost]
 		public async Task<ActionResult> AddComment([Bind("GetModel, PostCommentModel")] CommentDetailsViewModel viewModel)
 		{
-			var commentAdded = viewModel.PostCommentModel;
-			commentAdded.ParentCommentId = viewModel.GetModel.Id;
+			viewModel.PostCommentModel.ParentCommentId = viewModel.Comment.Id;
 
-			await _commentModifier.PostEndpointAsync("Comments", commentAdded);
+			await _commentModifier.PostEndpointAsync("Comments", viewModel.PostCommentModel);
 
-			return RedirectToAction("Details", new { id = viewModel.GetModel.Id });
+			return RedirectToAction("Details", new { id = viewModel.Comment.Id });
 		}
 
 		public async Task<ActionResult> Vote(int id, bool upvote)
@@ -109,6 +85,14 @@ namespace HackerNews.Controllers
 			await _commentSaver.SaveEntityToUserAsync(id);
 
 			return RedirectToAction("Details", new { id });
+		}
+
+		public async Task<ActionResult<CommentSearchViewModel>> Search(string searchTerm, PagingParams pagingParams)
+		{
+			var comments = await _apiReader.GetEndpointWithQueryAsync<GetCommentModel>(COMMENT_ENDPOINT, searchTerm, pagingParams);
+
+			var model = new CommentSearchViewModel { SearchTerm = searchTerm, CommentPage = new Page<GetCommentModel>(comments) };
+			return View(model);
 		}
 	}
 }

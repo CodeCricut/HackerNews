@@ -11,7 +11,6 @@ namespace HackerNews.ViewModels.Other
 {
 	public class CommentCardViewModel
 	{
-
 		public GetCommentModel Comment { get; set; }
 		public GetArticleModel ParentArticle { get; set; }
 		public GetCommentModel ParentComment { get; set; }

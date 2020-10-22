@@ -1,12 +1,11 @@
-﻿using HackerNews.Domain.Models.Comments;
-using HackerNews.ViewModels.Base;
+﻿using HackerNews.Domain;
+using HackerNews.Domain.Models.Comments;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HackerNews.ViewModels.Users
 {
-	public class UserCommentsListView : ListViewModel<GetCommentModel>
+	public class UserCommentsListView 
 	{
-		public UserCommentsListView()
-		{
-		}
+		public Page<GetCommentModel> CommentPage { get; set; }
 	}
 }

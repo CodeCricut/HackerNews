@@ -1,9 +1,18 @@
 ﻿using HackerNews.Domain.Models.Articles;
-using HackerNews.ViewModels.Base;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HackerNews.ViewModels.Articles
 {
-	public class ArticleCreateViewModel : CreateViewModel<PostArticleModel>
+	public class ArticleCreateViewModel 
 	{
+		public PostArticleModel Article { get; set; }
+		public IEnumerable<SelectListItem> ArticleTypeList { get
+			{
+				return Enum.GetNames(typeof(ArticleCreateViewModel)).Select(name => new SelectListItem() { Text = name, Value = name });
+			}
+		}
 	}
 }

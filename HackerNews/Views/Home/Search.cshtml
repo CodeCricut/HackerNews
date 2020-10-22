@@ -4,31 +4,58 @@
     <div class="row p-4">
         @* Main Content *@
         <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            <form asp-controller="Home" asp-action="Search" class="w-100">
+                <div class="form-group">
+                    <input asp-for="SearchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search">
+                </div>
+            </form>
             @* Boards *@
-            <h4>Boards</h4>
-            @foreach (var board in Model.Boards.Items)
+            @if (Model.BoardPage.Items.Count() > 0)
             {
-                @await Component.InvokeAsync("BoardCard", new { boardModel = board });
+                <h4>Boards</h4>
+                @foreach (var board in Model.BoardPage.Items)
+                {
+                    @await Component.InvokeAsync("BoardCard", new { boardModel = board });
+                }
+                <a asp-controller="Boards" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="mr-auto btn btn-outline-secondary ">More</a>
+                <div class="row w-100"></div>
             }
+
             @* Users *@
-            <h4>Users</h4>
-            @foreach (var user in Model.Users.Items)
+            @if (Model.UserPage.Items.Count() > 0)
             {
-                @await Component.InvokeAsync("UserCard", new { userModel = user });
+                <h4>Users</h4>
+                @foreach (var user in Model.UserPage.Items)
+                {
+                    @await Component.InvokeAsync("UserCard", new { userModel = user });
+                }
+                <a asp-controller="Users" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="mr-auto btn btn-outline-secondary ">More</a>
+                <div class="row w-100"></div>
             }
+
             @* Articles *@
-            <h4>Articles</h4>
-            @foreach (var article in Model.Articles.Items)
+            @if (Model.ArticlePage.Items.Count() > 0)
             {
-                @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+                <h4>Articles</h4>
+                @foreach (var article in Model.ArticlePage.Items)
+                {
+                    @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+                }
+                <a asp-controller="Articles" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="mr-auto btn btn-outline-secondary ">More</a>
+                <div class="row w-100"></div>
             }
+
             @* Comments *@
-            <h4>Comments</h4>
-            @foreach (var comment in Model.Comments.Items)
+            @if (Model.CommentPage.Items.Count() > 0)
             {
-                @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+                <h4>Comments</h4>
+                @foreach (var comment in Model.CommentPage.Items)
+                {
+                    @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+                }
+                <a asp-controller="Comments" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="mr-auto btn btn-outline-secondary ">More</a>
+                <div class="row w-100"></div>
             }
-            <div class="row w-100 h-100"></div>
         </div>
        
         @* Sidebar *@

@@ -1,14 +1,22 @@
 ﻿@model HackerNews.ViewModels.Boards.BoardModeratorsListViewModel
 @{
-    ViewData["Title"] = "Moderators";
+    ViewData["Title"] = $"{Model.Board.Title} Moderators";
 }
 
 <div class="container-fluid">
     <div class="row p-4">
         <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
-            @foreach(var moderator in Model.Moderators)
+            @foreach (var moderator in Model.ModeratorPage.Items)
             {
                 @await Component.InvokeAsync("UserCard", new { userModel = moderator });
+            }
+            @if (Model.ModeratorPage.HasPrev)
+            {
+                <a asp-controller="Boards" asp-action="Moderators" asp-all-route-data="@Model.ModeratorPage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
+            }
+            @if (Model.ModeratorPage.HasNext)
+            {
+                <a asp-controller="Boards" asp-action="Moderators" asp-all-route-data="@Model.ModeratorPage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
             }
             <div class="row h-100 w-100"></div>
         </div>

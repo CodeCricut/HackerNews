@@ -1,4 +1,5 @@
-﻿using HackerNews.Domain;
+﻿using CleanEntityArchitecture.Domain;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
@@ -34,12 +35,27 @@ namespace HackerNews.Controllers
 			_articleSaver = articleSaver;
 		}
 
-		public async Task<ViewResult> Details(int id)
+		public ViewResult Create(int boardId)
 		{
+			var model = new ArticleCreateViewModel { Article = new PostArticleModel() { BoardId = boardId } };
+			return View(model);
+		}
 
+		[HttpPost]
+		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
+		{
+			GetArticleModel model = await _articleModifier.PostEndpointAsync(ARTICLE_ENDPOINT, viewModel.Article);
+
+			return RedirectToAction("Details", new { model.Id });
+		}
+
+		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
+		{
 			var articleModel = await _apiReader.GetEndpointAsync<GetArticleModel>(ARTICLE_ENDPOINT, id);
 			// TODO: there is an endpoint for gettign many by IDs now
-			var comments = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", articleModel.CommentIds);
+			var pagedCommentResponse = await _apiReader.GetEndpointAsync<GetCommentModel>("comments", articleModel.CommentIds, pagingParams);
+			var commentPage = new Page<GetCommentModel>(pagedCommentResponse);
+
 			var board = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", articleModel.BoardId);
 			var user = await _apiReader.GetEndpointAsync<GetPublicUserModel>("users", articleModel.UserId);
 
@@ -48,33 +64,28 @@ namespace HackerNews.Controllers
 
 			var savedArticle = privateUser.SavedArticles.Contains(id);
 
-			return View(new ArticleDetailsViewModel { GetModel = articleModel, Comments = comments, Board = board, User = user, LoggedIn = loggedIn, UserSavedArticle = savedArticle });
-		}
+			var viewModel = new ArticleDetailsViewModel
+			{
+				Article = articleModel,
+				Board = board,
+				CommentPage = commentPage,
+				LoggedIn = loggedIn,
+				User = user,
+				UserSavedArticle = savedArticle
+			};
 
-		public ViewResult Create(int boardId)
-		{
-			var model = new ArticleCreateViewModel { PostModel = new PostArticleModel() { BoardId = boardId } };
-			return View(model);
-		}
-
-		[HttpPost]
-		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
-		{
-			var postModel = viewModel.PostModel;
-			GetArticleModel model = await _articleModifier.PostEndpointAsync(ARTICLE_ENDPOINT, postModel);
-
-			return RedirectToAction("Details", new { model.Id });
+			return View(viewModel);
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> AddComment([Bind("GetModel, PostCommentModel")] ArticleDetailsViewModel viewModel)
 		{
 			var commentAdded = viewModel.PostCommentModel;
-			commentAdded.ParentArticleId = viewModel.GetModel.Id;
+			commentAdded.ParentArticleId = viewModel.Article.Id;
 
 			await _commentModifier.PostEndpointAsync("Comments", commentAdded);
 
-			return RedirectToAction("Details", new { id = viewModel.GetModel.Id });
+			return RedirectToAction("Details", new { id = viewModel.Article.Id });
 		}
 
 		public async Task<ActionResult> Vote(int id, bool upvote)
@@ -88,6 +99,15 @@ namespace HackerNews.Controllers
 			await _articleSaver.SaveEntityToUserAsync(id);
 
 			return RedirectToAction("Details", new { id });
+		}
+
+		public async Task<ActionResult<ArticleSearchViewModel>> Search(string searchTerm, PagingParams pagingParams)
+		{
+			
+			var articles = await _apiReader.GetEndpointWithQueryAsync<GetArticleModel>(ARTICLE_ENDPOINT, searchTerm, pagingParams);
+
+			var model = new ArticleSearchViewModel { SearchTerm = searchTerm, ArticlePage = new Page<GetArticleModel>(articles) };
+			return View(model);
 		}
 	}
 }

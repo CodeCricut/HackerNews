@@ -6,15 +6,16 @@
 <div class="container-fluid">
     <div class="row p-4">
         @* Main Content *@
+@* TODO: either need to split into two actions/views for paging, or have multiple page params*@
         <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
             <h4>Subscribed Boards</h4>
-            @foreach (var board in Model.BoardsSubscribed)
+            @foreach (var board in Model.BoardsSubscribedPage.Items)
             {
                 @await Component.InvokeAsync("BoardCard", new { boardModel = board });
             }
             @* Comments *@
             <h4>Moderating Boards</h4>
-            @foreach (var board in Model.BoardsModerating)
+            @foreach (var board in Model.BoardsModeratingPage.Items)
             {
                 @await Component.InvokeAsync("BoardCard", new { boardModel = board });
             }

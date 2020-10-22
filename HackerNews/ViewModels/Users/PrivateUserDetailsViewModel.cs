@@ -1,15 +1,17 @@
-﻿using HackerNews.Domain.Models.Articles;
+﻿using HackerNews.Domain;
+using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Comments;
 using HackerNews.Domain.Models.Users;
-using HackerNews.ViewModels.Base;
-using System.Collections;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 
 namespace HackerNews.ViewModels.Users
 {
-	public class PrivateUserDetailsViewModel : DetailsViewModel<GetPrivateUserModel>
+	public class PrivateUserDetailsViewModel 
 	{
-		public IEnumerable<GetArticleModel> Articles { get; set; }
-		public IEnumerable<GetCommentModel> Comments { get; set; }
+		public GetPrivateUserModel User { get; set; }
+
+		public Page<GetArticleModel> ArticlePage { get; set; }
+		public Page<GetCommentModel> CommentPage { get; set; }
 	}
 }

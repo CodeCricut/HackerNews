@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CleanEntityArchitecture.Domain;
+using HackerNews.Domain;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;
@@ -25,14 +26,16 @@ namespace HackerNews.Controllers
 
 		public async Task<IActionResult> Index(PagingParams pagingParams)
 		{
-			var  pagedArticles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", pagingParams); ;
+			var articles = await _apiReader.GetEndpointAsync<GetArticleModel>("articles", pagingParams); ;
 
-			var viewModel = new HomeIndexViewModel(pagedArticles);
+			var viewModel = new HomeIndexViewModel { ArticlePage = new Page<GetArticleModel>(articles) };
 			return View(viewModel);
 		}
 
-		public async Task<ActionResult<HomeSearchViewModel>> Search(string searchTerm, PagingParams pagingParams)
+		public async Task<ActionResult<HomeSearchViewModel>> Search(string searchTerm)
 		{
+			var pagingParams = new PagingParams { PageNumber = 1, PageSize = 3 };
+
 			var matchingBoards = await _apiReader.GetEndpointWithQueryAsync<GetBoardModel>("boards", searchTerm, pagingParams);
 			var matchingUsers = await _apiReader.GetEndpointWithQueryAsync<GetPublicUserModel>("users", searchTerm, pagingParams);
 			var matchingArticles = await _apiReader.GetEndpointWithQueryAsync<GetArticleModel>("articles", searchTerm, pagingParams);
@@ -40,20 +43,19 @@ namespace HackerNews.Controllers
 
 			var model = new HomeSearchViewModel
 			{
-				Articles = matchingArticles,
-				Boards = matchingBoards,
-				Comments = matchingComments,
-				Users = matchingUsers
+				SearchTerm = searchTerm,
+				ArticlePage = new Page<GetArticleModel>(matchingArticles),
+				BoardPage = new Page<GetBoardModel>(matchingBoards),
+				CommentPage = new Page<GetCommentModel>(matchingComments),
+				UserPage = new Page<GetPublicUserModel>(matchingUsers)
 			};
-
 			return View(model);
 		}
 
 		[HttpPost]
-		public IActionResult Search(NavbarViewModel viewModel)
+		public IActionResult Search(HomeIndexViewModel viewModel)
 		{
-
-			return RedirectToAction("Search", new { searchTerm = viewModel.SearchTerm, pageNumber = 1, pageSize=3 });
+			return RedirectToAction("Search", new { searchTerm = viewModel.SearchTerm});
 		}
 
 
@@ -61,8 +63,7 @@ namespace HackerNews.Controllers
 		{
 			var boardModels = await _apiReader.GetEndpointAsync<GetBoardModel>("boards", pagingParams);
 
-			var viewModel = new HomeBoardsViewModel(boardModels);
-
+			var viewModel = new HomeBoardsViewModel { BoardPage = new Page<GetBoardModel>(boardModels) };
 			return View(viewModel);
 		}
 
