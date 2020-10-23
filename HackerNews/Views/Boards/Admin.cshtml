@@ -4,6 +4,17 @@
 }
 
 <div class="container-fluid">
+    @await Component.InvokeAsync("BoardCard", new { boardModel = Model.Board })
+
+    | @if (Model.Board.Deleted)
+    {
+        <h2 class="text-danger">Deleted</h2>
+    }
+    else if (Model.UserCreatedBoard)
+    {
+        <a asp-controller="Boards" asp-action="Delete" asp-route-id="@Model.Board.Id" class="btn btn-danger">Delete</a>
+    }
+
     <h2>Moderators</h2>
     @foreach (var moderator in Model.ModeratorPage.Items)
     {
@@ -13,14 +24,7 @@
     {
         <a asp-controller="Boards" asp-action="Moderators" class="mr-auto btn btn-outline-secondary ">All Moderators</a>
     }
-    | @if (Model.Board.Deleted)
-    {
-        <span class="text-danger">Deleted</span>
-    }
-    else if (Model.UserCreatedBoard)
-    {
-       <a asp-controller="Boards" asp-action="Delete" asp-route-id="@Model.Board.Id" class="text-danger">Delete</a>
-    }
+
 
     <h2>Add Moderator</h2>
     <form asp-controller="Boards" asp-action="AddModerator">
