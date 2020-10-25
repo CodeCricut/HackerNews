@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HackerNews.Application.Common.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using HackerNews.Application.Common.Models;
 namespace HackerNews.Api.Controllers.Interfaces
 {
 	public interface IJwtController<TLoginModel>

@@ -1,15 +1,9 @@
-﻿using AutoMapper;
-using HackerNews.Application.Common.Interfaces;
+﻿using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
-using HackerNews.Domain.Entities;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

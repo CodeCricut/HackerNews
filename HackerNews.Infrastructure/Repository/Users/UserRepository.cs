@@ -3,9 +3,7 @@ using HackerNews.Domain.Interfaces;
 using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Users
@@ -46,18 +44,6 @@ namespace HackerNews.Infrastructure.Repository.Users
 					.Include(u => u.BoardsSubscribed)
 					.FirstOrDefault(user => user.Id == id)
 				);
-		}
-
-		public Task<User> SaveArticle(int articleId)
-		{
-			// TODO
-			throw new NotImplementedException();
-		}
-
-		public Task<User> SaveComment(int commentId)
-		{
-			// TODO
-			throw new NotImplementedException();
 		}
 	}
 }

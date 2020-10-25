@@ -3,7 +3,6 @@ using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Domain.Entities;
-using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

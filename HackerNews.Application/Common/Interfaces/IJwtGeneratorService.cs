@@ -1,7 +1,5 @@
 ﻿using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
-using HackerNews.Domain.Common;
-using HackerNews.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace HackerNews.Application.Common.Interfaces

@@ -2,7 +2,6 @@
 using HackerNews.Application.Common.Mappings;
 using HackerNews.Domain.Common;
 using HackerNews.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace HackerNews.Application.Common.Models.Boards
 {

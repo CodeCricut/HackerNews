@@ -1,5 +1,4 @@
 ﻿using HackerNews.Application.Common.Models.Users;
-using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

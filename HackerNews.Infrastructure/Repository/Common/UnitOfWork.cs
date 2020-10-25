@@ -4,9 +4,6 @@ using HackerNews.Infrastructure.Repository.Boards;
 using HackerNews.Infrastructure.Repository.Comments;
 using HackerNews.Infrastructure.Repository.Users;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Infrastructure.Repository.Common
 {

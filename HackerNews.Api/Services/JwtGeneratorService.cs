@@ -3,8 +3,6 @@ using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
-using HackerNews.Domain.Common;
-using HackerNews.Domain.Entities;
 using HackerNews.Domain.Errors;
 using MediatR;
 using Microsoft.Extensions.Options;

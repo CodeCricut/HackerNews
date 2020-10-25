@@ -3,9 +3,7 @@ using HackerNews.Domain.Interfaces;
 using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Boards
@@ -14,18 +12,6 @@ namespace HackerNews.Infrastructure.Repository.Boards
 	{
 		public BoardRepository(DbContext context) : base(context)
 		{
-		}
-
-		public Task<Board> AddBoardModeratorAsync(int boardId, int moderatorId)
-		{
-			// TODO
-			throw new NotImplementedException();
-		}
-
-		public Task<Board> AddBoardSubscriberAsync(int boardId)
-		{
-			// TODO
-			throw new NotImplementedException();
 		}
 
 		public override Task<IQueryable<Board>> GetEntitiesAsync()

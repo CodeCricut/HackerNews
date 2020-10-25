@@ -2,9 +2,6 @@
 using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Api.Pipeline.Filters;
 using HackerNews.Application.Common.Models.Users;
-using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
-using HackerNews.Domain.Entities;
-using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

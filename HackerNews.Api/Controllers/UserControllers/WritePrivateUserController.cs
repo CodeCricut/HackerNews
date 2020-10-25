@@ -1,10 +1,7 @@
 ﻿using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Controllers.Interfaces;
-using HackerNews.Api.Pipeline.Filters;
-using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Domain.Entities;
-using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using System;

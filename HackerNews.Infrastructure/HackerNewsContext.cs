@@ -1,5 +1,4 @@
 ﻿using HackerNews.Domain.Entities;
-using HackerNews.Domain.Entities.JoinEntities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

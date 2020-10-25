@@ -1,9 +1,6 @@
 ﻿using HackerNews.Domain.Entities.JoinEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Infrastructure.Configurations
 {

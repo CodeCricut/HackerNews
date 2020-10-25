@@ -1,8 +1,6 @@
-﻿using HackerNews.Domain.Entities;
-using HackerNews.Domain.Interfaces;
+﻿using HackerNews.Domain.Interfaces;
 using HackerNews.EF;
 using HackerNews.Infrastructure.Repository.Common;
-using HackerNews.Infrastructure.Repository.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +25,7 @@ namespace HackerNews.Infrastructure
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-			services.AddHttpContextAccessor(); 
+			services.AddHttpContextAccessor();
 
 			// I choose not to register the repositories manually, because they should really only be used in conjunction with IUnitOfWork
 

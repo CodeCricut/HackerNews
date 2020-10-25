@@ -1,8 +1,6 @@
 ﻿using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Controllers.Interfaces;
 using HackerNews.Application.Articles.Commands.VoteArticle;
-using HackerNews.Domain.Entities;
-using HackerNews.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
