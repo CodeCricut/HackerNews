@@ -9,8 +9,8 @@ namespace HackerNews.Domain.Interfaces
 	{
 		Task<TEntity> AddEntityAsync(TEntity entity);
 		Task<IEnumerable<TEntity>> AddEntititesAsync(IEnumerable<TEntity> entities);
-		Task UpdateEntityAsync(int id, TEntity updatedEntity);
-		Task DeleteEntityAsync(int id);
+		Task<bool> UpdateEntityAsync(int id, TEntity updatedEntity);
+		Task<bool> DeleteEntityAsync(int id);
 
 		Task<TEntity> GetEntityAsync(int id);
 		Task<IQueryable<TEntity>> GetEntitiesAsync();
