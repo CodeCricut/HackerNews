@@ -35,8 +35,8 @@ namespace HackerNews.Application.Boards.Commands.AddBoard
 		{
 			using (UnitOfWork)
 			{
+				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
-				if (user == null) throw new UnauthorizedException();
 
 				var board = Mapper.Map<Board>(request.PostBoardModel);
 				board.CreateDate = DateTime.Now;

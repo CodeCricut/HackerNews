@@ -36,19 +36,30 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 		{
 			using (UnitOfWork)
 			{
+				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
-
-				if (currentUser == null) throw new UnauthorizedException();
 
 				var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
 				var newModerator = await UnitOfWork.Users.GetEntityAsync(request.ModeratorId);
 
 				if (board == null || newModerator == null) throw new NotFoundException();
 
-				// If the current user isn't a moderator of the sub
+				// If the current user isn't a moderator of the sub...
 				if (board.Moderators.FirstOrDefault(boardUserModerator => boardUserModerator.UserId == currentUser.Id) == null)
 					throw new UnauthorizedException();
 
+				// Remove the moderator if already moderating the board.
+				var existingModerator = board.Moderators.FirstOrDefault(bu => bu.UserId == request.ModeratorId);
+				if (existingModerator != null)
+				{
+					board.Moderators.Remove(existingModerator);
+					newModerator.BoardsModerating.Remove(existingModerator);
+
+					UnitOfWork.SaveChanges();
+					return Mapper.Map<GetBoardModel>(board);
+				}
+
+				// Add the moderator.
 				var boardUserModerator = new BoardUserModerator
 				{
 					Board = board,
@@ -56,6 +67,7 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 				};
 
 				board.Moderators.Add(boardUserModerator);
+				newModerator.BoardsModerating.Add(boardUserModerator);
 
 				UnitOfWork.SaveChanges();
 
