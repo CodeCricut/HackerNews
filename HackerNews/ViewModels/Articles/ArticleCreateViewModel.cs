@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Domain.Entities;
 using HackerNews.Domain.Models.Articles;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;

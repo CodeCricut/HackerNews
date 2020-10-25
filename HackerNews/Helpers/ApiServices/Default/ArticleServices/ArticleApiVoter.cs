@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Domain.Entities;
 using HackerNews.Helpers.ApiServices.Interfaces;
 using HackerNews.Helpers.Cookies.Interfaces;
 using Microsoft.Extensions.Options;

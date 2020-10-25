@@ -1,5 +1,5 @@
 using CleanEntityArchitecture.Domain;
-using HackerNews.Domain;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Models.Articles;
 using HackerNews.Domain.Models.Board;
 using HackerNews.Domain.Models.Comments;

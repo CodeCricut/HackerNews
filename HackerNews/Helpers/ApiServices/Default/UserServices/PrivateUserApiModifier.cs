@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Domain.Entities;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Helpers.ApiServices.Base;
 using HackerNews.Helpers.Cookies.Interfaces;

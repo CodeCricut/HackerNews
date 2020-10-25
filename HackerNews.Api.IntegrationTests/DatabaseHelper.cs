@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain;
+﻿using HackerNews.Domain.Entities;
 using HackerNews.EF;
 using System.Collections.Generic;
 using System.Linq;

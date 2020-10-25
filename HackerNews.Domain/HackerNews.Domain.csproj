@@ -4,14 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Models\RequestObjects\**" />
-    <EmbeddedResource Remove="Models\RequestObjects\**" />
-    <None Remove="Models\RequestObjects\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CleanEntityArchitecture\CleanEntityArchitecture\CleanEntityArchitecture.csproj" />
-  </ItemGroup>
-
 </Project>

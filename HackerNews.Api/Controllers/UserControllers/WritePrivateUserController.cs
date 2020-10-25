@@ -1,7 +1,9 @@
-﻿using CleanEntityArchitecture.Authorization;
-using CleanEntityArchitecture.Controllers;
-using CleanEntityArchitecture.EntityModelServices;
-using HackerNews.Domain;
+﻿using HackerNews.Api.Controllers.Base;
+using HackerNews.Api.Controllers.Interfaces;
+using HackerNews.Api.Pipeline.Filters;
+using HackerNews.Application.Common.Models.Articles;
+using HackerNews.Application.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Errors;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -12,33 +14,26 @@ using System.Threading.Tasks;
 namespace HackerNews.Api.Controllers.UserControllers
 {
 	[Route("api/Users")]
-	public class WritePrivateUserController : WriteController<User, RegisterUserModel, GetPrivateUserModel>
+	public class WritePrivateUserController : ApiController, IWriteEntityController<User, RegisterUserModel, GetPrivateUserModel>
 	{
-
-		public WritePrivateUserController(
-			IWriteEntityService<User, RegisterUserModel> modifyService,
-			IJwtHelper jwtHelper) : base(modifyService)
+		public Task<ActionResult> Delete(int key)
 		{
+			throw new NotImplementedException();
 		}
 
-		[HttpPost("register")]
-		[JwtAuthorize(false)]
-		public override async Task<ActionResult<GetPrivateUserModel>> PostAsync([FromBody] RegisterUserModel postModel)
+		public Task<ActionResult<GetPrivateUserModel>> PostAsync([FromBody] RegisterUserModel postModel)
 		{
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			var response = await _writeService.PostEntityModelAsync<GetPrivateUserModel>(postModel);
-
-			// TODO: throw some unique exception
-			if (response == null) throw new Exception();
-
-			return Ok(response);
+			throw new NotImplementedException();
 		}
 
-
-		public override Task<ActionResult<IEnumerable<GetPrivateUserModel>>> PostRangeAsync([FromBody] IEnumerable<RegisterUserModel> postModels)
+		public Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<RegisterUserModel> postModels)
 		{
-			throw new UnauthorizedException("Unauthorized to register mutliple users at once.");
+			throw new NotImplementedException();
+		}
+
+		public Task<ActionResult<GetPrivateUserModel>> Put(int key, [FromBody] RegisterUserModel updateModel)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

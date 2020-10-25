@@ -1,21 +1,21 @@
-﻿using CleanEntityArchitecture.Authorization;
+﻿using HackerNews.Api.Controllers.Base;
 using HackerNews.Api.Controllers.Interfaces;
-using HackerNews.Api.Helpers.EntityServices.Interfaces;
+using HackerNews.Api.Pipeline.Filters;
+using HackerNews.Application.Boards.Commands.AddModerator;
+using HackerNews.Application.Boards.Commands.AddSubscriber;
+using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Domain.Errors;
-using HackerNews.Domain.Models.Board;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers.BoardControllers
 {
 	[Route("api/Boards")]
-	public class BoardUserController : ControllerBase, IBoardUserController
+	public class BoardUserController : ApiController, IBoardUserController
 	{
-		private readonly IBoardUserManagementService _boardUserService;
 
-		public BoardUserController(IBoardUserManagementService boardUserService)
+		public BoardUserController()
 		{
-			_boardUserService = boardUserService;
 		}
 
 		[HttpPost("add-moderator")]
@@ -24,9 +24,7 @@ namespace HackerNews.Api.Controllers.BoardControllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var updatedBoard = await _boardUserService.AddBoardModeratorAsync(boardId, moderatorId);
-
-			return Ok(updatedBoard);
+			return Ok(await Mediator.Send(new AddModeratorCommand(boardId, moderatorId)));
 		}
 
 		[HttpPost("add-subscriber")]
@@ -35,9 +33,7 @@ namespace HackerNews.Api.Controllers.BoardControllers
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 
-			var updatedBoardModel = await _boardUserService.AddBoardSubscriberAsync(boardId);
-
-			return Ok(updatedBoardModel);
+			return Ok(await Mediator.Send(new AddSubscriberCommand(boardId)));
 		}
 	}
 }

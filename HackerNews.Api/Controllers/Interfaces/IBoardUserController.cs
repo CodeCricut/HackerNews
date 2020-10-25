@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain.Models.Board;
+﻿using HackerNews.Application.Common.Models.Boards;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

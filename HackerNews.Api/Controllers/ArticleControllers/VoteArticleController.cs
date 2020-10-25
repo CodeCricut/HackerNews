@@ -1,6 +1,7 @@
 ﻿using HackerNews.Api.Controllers.Base;
-using HackerNews.Api.Helpers.EntityHelpers;
-using HackerNews.Domain;
+using HackerNews.Api.Controllers.Interfaces;
+using HackerNews.Application.Articles.Commands.VoteArticle;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,22 +9,11 @@ using System.Threading.Tasks;
 namespace HackerNews.Api.Controllers.ArticleControllers
 {
 	[Route("api/Articles")]
-	public class VoteArticleController : VoteEntityController<Article>
+	public class VoteArticleController : ApiController, IVoteEntityController
 	{
-		private readonly IVoteableEntityService<Article> _articleVoter;
-
-		public VoteArticleController(IVoteableEntityService<Article> articleVoter)
+		public async Task<ActionResult> VoteEntityAsync(int entityId, bool upvote)
 		{
-			_articleVoter = articleVoter;
-		}
-
-		public override async Task<IActionResult> VoteEntityAsync(int entityId, [FromBody] bool upvote)
-		{
-			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
-
-			await _articleVoter.VoteEntityAsync(entityId, upvote);
-
-			return Ok();
+			return Ok(await Mediator.Send(new VoteArticleCommand(entityId, upvote)));
 		}
 	}
 }
