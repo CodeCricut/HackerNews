@@ -38,9 +38,6 @@ namespace HackerNews.Application.Comments.Commands.AddComment
 				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
-				// TODO: add checks to the parents
-				//		verify one and only one parent exists
-				//		verify parent belongs to boardid/board exists
 				Comment comment = Mapper.Map<Comment>(request.PostCommentModel);
 
 				var postCommentModel = request.PostCommentModel;
