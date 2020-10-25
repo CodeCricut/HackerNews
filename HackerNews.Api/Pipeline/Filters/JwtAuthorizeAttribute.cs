@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HackerNews.Domain.Errors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -35,13 +36,7 @@ namespace HackerNews.Api.Pipeline.Filters
 			{
 				var userId = context.HttpContext.Items["UserId"];
 				if (userId == null)
-				{
-					// the user is not yet logged in, return 401
-
-					// this isn't ideal, but throwing using actual exceptions causes the exception middleware to run and return the wrong exception
-					context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
-					// new JsonResult(new UnauthorizedException());
-				}
+					throw new UnauthorizedException();
 			}
 		}
 	}

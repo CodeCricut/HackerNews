@@ -1,6 +1,7 @@
 ﻿using HackerNews.Domain.Common;
 using HackerNews.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,11 +31,20 @@ namespace HackerNews.Infrastructure.Repository.Common
 			return Task.FromResult(_context.Set<TEntity>().Add(entity).Entity);
 		}
 
-		public virtual async Task DeleteEntityAsync(int id)
+		public virtual async Task<bool> DeleteEntityAsync(int id)
 		{
-			var entity = await _context.Set<TEntity>().FindAsync(id);
-			entity.Deleted = true;
-			await UpdateEntityAsync(id, entity);
+			try
+			{
+				var entity = await _context.Set<TEntity>().FindAsync(id);
+				entity.Deleted = true;
+				await UpdateEntityAsync(id, entity);
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
 		}
 
 		public virtual async Task<bool> EntityExistsAsync(int id)
@@ -46,15 +56,24 @@ namespace HackerNews.Infrastructure.Repository.Common
 
 		public abstract Task<TEntity> GetEntityAsync(int id);
 
-		public virtual Task UpdateEntityAsync(int id, TEntity updatedEntity)
+		public virtual Task<bool> UpdateEntityAsync(int id, TEntity updatedEntity)
 		{
 			return Task.Factory.StartNew(() =>
 			{
-				var local = _context.Set<TEntity>().Local.FirstOrDefault(x => x.Id == id);
-				if (local != null) _context.Entry(local).State = EntityState.Detached;
+				try
+				{
+					var local = _context.Set<TEntity>().Local.FirstOrDefault(x => x.Id == id);
+					if (local != null) _context.Entry(local).State = EntityState.Detached;
 
-				updatedEntity.Id = id;
-				_context.Entry(updatedEntity).State = EntityState.Modified;
+					updatedEntity.Id = id;
+					_context.Entry(updatedEntity).State = EntityState.Modified;
+
+					return true;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
 			});
 		}
 	}

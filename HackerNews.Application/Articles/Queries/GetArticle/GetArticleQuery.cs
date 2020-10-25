@@ -1,5 +1,6 @@
 ﻿using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -28,6 +29,7 @@ namespace HackerNews.Application.Articles.Queries.GetArticle
 			using (UnitOfWork)
 			{
 				var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
+				if (article == null) throw new NotFoundException();
 
 				return Mapper.Map<GetArticleModel>(article);
 			}

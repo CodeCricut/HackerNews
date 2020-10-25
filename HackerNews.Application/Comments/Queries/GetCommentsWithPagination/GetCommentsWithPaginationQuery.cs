@@ -2,8 +2,10 @@
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,7 +34,7 @@ namespace HackerNews.Application.Comments.Queries.GetCommentsWithPagination
 				var comments = await UnitOfWork.Comments.GetEntitiesAsync();
 				var paginatedComments = await comments.PaginatedListAsync(request.PagingParams);
 
-				return Mapper.Map<PaginatedList<GetCommentModel>>(paginatedComments);
+				return paginatedComments.ToMappedPagedList<Comment, GetCommentModel>(Mapper);
 			}
 		}
 	}

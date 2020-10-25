@@ -4,6 +4,7 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Models.Users;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +31,11 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 			using (UnitOfWork)
 			{
 				var user = Mapper.Map<User>(request.RegisterUserModel);
+				user.JoinDate = DateTime.Now;
+
 				var registeredUser = await UnitOfWork.Users.AddEntityAsync(user);
+
+				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetPrivateUserModel>(registeredUser);
 			}

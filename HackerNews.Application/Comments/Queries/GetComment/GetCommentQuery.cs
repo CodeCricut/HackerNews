@@ -1,5 +1,6 @@
 ﻿using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -28,6 +29,7 @@ namespace HackerNews.Application.Comments.Queries.GetComment
 			using (UnitOfWork)
 			{
 				var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
+				if (comment == null) throw new NotFoundException();
 
 				return Mapper.Map<GetCommentModel>(comment);
 			}

@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -32,7 +33,7 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesWithPagination
 				var articles = await UnitOfWork.Articles.GetEntitiesAsync();
 				var paginatedArticles = await articles.PaginatedListAsync(request.PagingParams);
 
-				return Mapper.Map<PaginatedList<GetArticleModel>>(paginatedArticles);
+				return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
 			}
 		}
 	}

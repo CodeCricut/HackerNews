@@ -22,16 +22,16 @@ namespace HackerNews.Application.Users.Queries.GetAuthenticatedUser
 			_currentUserService = currentUserService;
 		}
 
-		public override Task<GetPrivateUserModel> Handle(GetAuthenticatedUserQuery request, CancellationToken cancellationToken)
+		public override async Task<GetPrivateUserModel> Handle(GetAuthenticatedUserQuery request, CancellationToken cancellationToken)
 		{
 			var userId = _currentUserService.UserId;
 
 			using (UnitOfWork)
 			{
-				var user = UnitOfWork.Users.GetEntityAsync(userId);
+				var user = await UnitOfWork.Users.GetEntityAsync(userId);
 				if (user == null) throw new NotFoundException();
 
-				return Task.FromResult(Mapper.Map<GetPrivateUserModel>(user));
+				return Mapper.Map<GetPrivateUserModel>(user);
 			}
 		}
 	}

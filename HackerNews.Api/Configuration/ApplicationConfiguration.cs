@@ -1,5 +1,5 @@
-﻿using HackerNews.Api.Helpers.Middleware;
-using HackerNews.Api.Helpers.StartupExtensions;
+﻿using HackerNews.Api.Pipeline.Extensions;
+using HackerNews.Api.Pipeline.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,29 +11,28 @@ namespace HackerNews.Api
 	{
 		public static IApplicationBuilder ConfigureApp(this IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{
-			// Enable middleware to serve generated Swagger as a JSON endpoint.
-			app.UseSwagger();
-
-			app.UseApiExceptionHandler();
 
 			if (env.IsDevelopment())
 			{
 				// create the db if it doesn't exist
 				dbContext.Database.EnsureCreated();
 
-				// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-				// specifying the Swagger JSON endpoint.
-				app.UseSwaggerUI(c =>
-				{
-					c.SwaggerEndpoint($"/swagger/v1/swagger.json", "HackerNews API V1");
-				});
+				
 			}
-
 			app.UseHttpsRedirection();
+
+			// Enable middleware to serve generated Swagger as a JSON endpoint.
+			app.UseSwagger();
+			app.UseSwaggerUI(c =>
+			{
+				c.SwaggerEndpoint($"/swagger/v1/swagger.json", "HackerNews API V1");
+			});
+
 			app.UseRouting();
 			app.UseCors("DefaultCorsPolicy");
 
-			app.UseMiddleware<DeveloperMiddleware>();
+			app.UseApiExceptionHandler();
+			app.UseMiddleware<JwtMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{

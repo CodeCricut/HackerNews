@@ -14,7 +14,7 @@
 			PageSize = 10;
 		}
 
-		public int PageNumber { get; }
-		public int PageSize { get; }
+		public int PageNumber { get; set; }
+		public int PageSize { get; set; }
 	}
 }

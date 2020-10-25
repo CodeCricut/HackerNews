@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HackerNews.Application.Common.Mappings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace HackerNews.Application.Common.Models
 		public int PageIndex { get; }
 		public int TotalPages { get; }
 		public int TotalCount { get; }
+		public int PageSize { get; set; }
 
 		public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
 		{
@@ -18,6 +20,7 @@ namespace HackerNews.Application.Common.Models
 			TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 			TotalCount = count;
 			Items = items;
+			PageSize = pageSize;
 		}
 
 		public bool HasPreviousPage => PageIndex > 1;
