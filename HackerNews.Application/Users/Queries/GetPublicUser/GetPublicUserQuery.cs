@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.Application.Users.Queries.GetPublicUserQuery
+namespace HackerNews.Application.Users.Queries.GetPublicUser
 {
 	public class GetPublicUserQuery : IRequest<GetPublicUserModel>
 	{

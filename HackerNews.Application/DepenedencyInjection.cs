@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using HackerNews.Application.Common.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -12,9 +13,14 @@ namespace HackerNews.Application
 		{
 			var assembly = Assembly.GetExecutingAssembly();
 			services.AddAutoMapper(assembly);
-			services.AddValidatorsFromAssembly(assembly);
+
 			services.AddMediatR(assembly);
-			// Add custom pipeline behavior.
+
+			// Adds validators to DI
+			services.AddValidatorsFromAssembly(assembly);
+
+			// Add validation behavior
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
 			return services;
 		}

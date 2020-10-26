@@ -1,4 +1,5 @@
-﻿using HackerNews.Application.Common.Models.Articles;
+﻿using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities;
@@ -23,18 +24,20 @@ namespace HackerNews.Application.Articles.Commands.AddArticle
 
 	public class AddArticleCommandHandler : DatabaseRequestHandler<AddArticleCommand, GetArticleModel>
 	{
+		private readonly ICurrentUserService _currentUserService;
 
-		public AddArticleCommandHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public AddArticleCommandHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
 		{
+			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetArticleModel> Handle(AddArticleCommand request, CancellationToken cancellationToken)
 		{
 			using (UnitOfWork)
 			{
-				var user = await Mediator.Send(new GetAuthenticatedUserQuery());
-
-				if (user == null) throw new UnauthorizedException("Unable to add article; User is not logged in.");
+				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId))
+					throw new UnauthorizedException("Unable to add article; User is not logged in.");
+				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
 				Article article = Mapper.Map<Article>(request.PostArticleModel);
 				article.PostDate = DateTime.Now;

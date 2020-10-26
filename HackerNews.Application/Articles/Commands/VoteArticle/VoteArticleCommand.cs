@@ -95,6 +95,7 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 		private static void UndislikeEntity(User currentUser, Article article)
 		{
 			article.Karma++;
+			currentUser.Karma++;
 			var joinEntity = article.UsersDisliked.FirstOrDefault(ud => ud.UserId == currentUser.Id);
 
 			article.UsersDisliked.Remove(joinEntity);
@@ -110,6 +111,7 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			};
 
 			article.Karma--;
+			currentUser.Karma--;
 
 			article.UsersDisliked.Add(userDislike);
 			currentUser.DislikedArticles.Add(userDislike);
@@ -118,6 +120,8 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 		private static void UnlikeEntity(User currentUser, Article article)
 		{
 			article.Karma--;
+			currentUser.Karma--;
+
 			var joinEntity = article.UsersLiked.FirstOrDefault(ul => ul.UserId == currentUser.Id);
 
 			article.UsersLiked.Remove(joinEntity);
@@ -133,6 +137,7 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			};
 
 			article.Karma++;
+			currentUser.Karma++;
 
 			article.UsersLiked.Add(userLike);
 			currentUser.LikedArticles.Add(userLike);
