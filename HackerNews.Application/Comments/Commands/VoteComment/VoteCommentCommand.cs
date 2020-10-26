@@ -4,7 +4,7 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Entities.JoinEntities;
-using HackerNews.Domain.Errors;
+using HackerNews.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace HackerNews.Api.Services
 {
-	public class CurrentUserService : ICurrentUserService
+	class CurrentUserService : ICurrentUserService
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
 

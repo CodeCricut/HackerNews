@@ -1,6 +1,6 @@
 ﻿using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
-using HackerNews.Domain.Errors;
+using HackerNews.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;

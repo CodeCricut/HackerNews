@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HackerNews.Infrastructure.Configurations
 {
-	public class BoardUserModeratorConfiguration : IEntityTypeConfiguration<BoardUserModerator>
+	class BoardUserModeratorConfiguration : IEntityTypeConfiguration<BoardUserModerator>
 	{
 		public void Configure(EntityTypeBuilder<BoardUserModerator> builder)
 		{

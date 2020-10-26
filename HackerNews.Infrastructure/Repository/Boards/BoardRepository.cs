@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Boards
 {
-	public class BoardRepository : EntityRepository<Board>, IBoardRepository
+	 class BoardRepository : EntityRepository<Board>, IBoardRepository
 	{
 		public BoardRepository(DbContext context) : base(context)
 		{

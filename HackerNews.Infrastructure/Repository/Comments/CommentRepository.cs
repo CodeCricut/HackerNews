@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Comments
 {
-	public class CommentRepository : EntityRepository<Comment>, ICommentRepository
+	 class CommentRepository : EntityRepository<Comment>, ICommentRepository
 	{
 		public CommentRepository(DbContext context) : base(context)
 		{

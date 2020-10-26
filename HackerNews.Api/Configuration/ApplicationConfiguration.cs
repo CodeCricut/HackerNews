@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace HackerNews.Api
 {
-	public static class ApplicationConfiguration
+	static class ApplicationConfiguration
 	{
 		public static IApplicationBuilder ConfigureApp(this IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{

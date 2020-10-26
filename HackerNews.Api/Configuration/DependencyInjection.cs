@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace HackerNews.Api
 {
-	public static class DependencyInjection
+	static class DependencyInjection
 	{
 		public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
 		{

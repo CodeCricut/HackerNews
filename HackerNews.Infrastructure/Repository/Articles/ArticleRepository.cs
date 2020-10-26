@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Articles
 {
-	public class ArticleRepository : EntityRepository<Article>, IArticleRepository
+	 class ArticleRepository : EntityRepository<Article>, IArticleRepository
 	{
 		public ArticleRepository(DbContext context) : base(context)
 		{

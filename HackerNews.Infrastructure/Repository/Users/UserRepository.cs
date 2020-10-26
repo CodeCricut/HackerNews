@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Users
 {
-	public class UserRepository : EntityRepository<User>, IUserRepository
+	 class UserRepository : EntityRepository<User>, IUserRepository
 	{
 		public UserRepository(DbContext context) : base(context)
 		{

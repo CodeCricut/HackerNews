@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HackerNews.Infrastructure.Configurations
 {
-	public class UserCommentConfiguration : IEntityTypeConfiguration<UserComment>
+	 class UserCommentConfiguration : IEntityTypeConfiguration<UserComment>
 	{
 		public void Configure(EntityTypeBuilder<UserComment> builder)
 		{

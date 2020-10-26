@@ -3,7 +3,7 @@ using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
-using HackerNews.Domain.Errors;
+using HackerNews.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Services
 {
-	public class JwtGeneratorService : IJwtGeneratorService
+	class JwtGeneratorService : IJwtGeneratorService
 	{
 		private readonly IMediator _mediator;
 		private JwtSettings _jwtSettings;

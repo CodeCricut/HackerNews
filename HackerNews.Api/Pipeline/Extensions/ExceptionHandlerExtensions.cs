@@ -1,4 +1,4 @@
-﻿using HackerNews.Domain.Errors;
+﻿using HackerNews.Domain.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
