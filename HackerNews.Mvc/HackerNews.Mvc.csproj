@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HackerNews.Application\HackerNews.Application.csproj" />
+    <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
+    <ProjectReference Include="..\HackerNews.Infrastructure\HackerNews.Infrastructure.csproj" />
+    <ProjectReference Include="..\HackerNews.Web\HackerNews.Web.csproj" />
+  </ItemGroup>
+
+</Project>
