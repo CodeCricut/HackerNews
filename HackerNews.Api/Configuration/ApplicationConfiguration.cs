@@ -1,5 +1,5 @@
 ﻿using HackerNews.Api.Pipeline.Extensions;
-using HackerNews.Api.Pipeline.Middleware;
+using HackerNews.Web.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,8 @@ namespace HackerNews.Api
 			app.UseCors("DefaultCorsPolicy");
 
 			app.UseApiExceptionHandler();
-			app.UseMiddleware<JwtMiddleware>();
+
+			app.ConfigureWebLayer();
 
 			app.UseEndpoints(endpoints =>
 			{

@@ -26,6 +26,32 @@ namespace HackerNews.Application.Common.Models
 
 		public bool HasNextPage => PageIndex < TotalPages;
 
+		public PagingParams PreviousPagingParams 
+		{  
+			get
+			{
+				var pageNumber = this.PageIndex;
+				var pageSize = this.PageSize;
+
+				if (this.HasPreviousPage) pageNumber = PageIndex - 1;
+
+				return new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
+			}
+		}
+
+		public PagingParams NextPagingParams
+		{
+			get
+			{
+				var pageNumber = this.PageIndex;
+				var pageSize = this.PageSize;
+
+				if (this.HasNextPage) pageNumber = PageIndex + 1;
+
+				return new PagingParams { PageNumber = pageNumber, PageSize = pageSize };
+			}
+		}
+
 		public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
 		{
 			var count = await Task.FromResult(source.Count());

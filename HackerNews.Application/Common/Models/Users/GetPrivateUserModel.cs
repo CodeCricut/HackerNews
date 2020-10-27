@@ -34,6 +34,8 @@ namespace HackerNews.Application.Common.Models.Users
 
 		public List<int> BoardsSubscribed { get; set; }
 		public List<int> BoardsModerating { get; set; }
+		public bool Deleted { get; set; }
+
 
 		public void Mapping(Profile profile)
 		{

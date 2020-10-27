@@ -1,5 +1,4 @@
-﻿using HackerNews.Api.Pipeline.Filters;
-using HackerNews.Application.Articles.Commands.AddArticle;
+﻿using HackerNews.Application.Articles.Commands.AddArticle;
 using HackerNews.Application.Articles.Commands.AddArticles;
 using HackerNews.Application.Articles.Commands.DeleteArticle;
 using HackerNews.Application.Articles.Commands.UpdateArticle;
@@ -9,6 +8,7 @@ using HackerNews.Application.Articles.Queries.GetArticlesByIds;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Articles;
+using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -21,6 +21,7 @@ namespace HackerNews.Application.Common.Models.Articles
 		public List<int> UsersDisliked { get; set; }
 		public DateTime PostDate { get; set; }
 		public int BoardId { get; set; }
+		public bool Deleted { get; set; }
 
 		public void Mapping(Profile profile)
 		{

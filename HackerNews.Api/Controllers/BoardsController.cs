@@ -1,5 +1,4 @@
-﻿using HackerNews.Api.Pipeline.Filters;
-using HackerNews.Application.Boards.Commands.AddBoard;
+﻿using HackerNews.Application.Boards.Commands.AddBoard;
 using HackerNews.Application.Boards.Commands.AddBoards;
 using HackerNews.Application.Boards.Commands.AddModerator;
 using HackerNews.Application.Boards.Commands.AddSubscriber;
@@ -11,6 +10,7 @@ using HackerNews.Application.Boards.Queries.GetBoardsWithPagination;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

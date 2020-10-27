@@ -17,6 +17,8 @@ namespace HackerNews.Application.Common.Models.Boards
 		public List<int> ModeratorIds { get; set; }
 		public List<int> SubscriberIds { get; set; }
 		public List<int> ArticleIds { get; set; }
+		public bool Deleted { get; set; }
+
 
 		public void Mapping(Profile profile)
 		{

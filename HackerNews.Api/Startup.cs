@@ -1,5 +1,6 @@
 using HackerNews.Application;
 using HackerNews.Infrastructure;
+using HackerNews.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,9 @@ namespace HackerNews.Api
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddApplication();
 			services.AddInfrastructure(Configuration);
+			services.AddApplication();
+			services.AddWeb(Configuration);
 			services.AddApi(Configuration);
 		}
 

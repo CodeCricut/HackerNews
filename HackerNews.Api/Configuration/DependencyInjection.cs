@@ -1,7 +1,4 @@
-﻿using HackerNews.Api.Configuration;
-using HackerNews.Api.Helpers.Filters;
-using HackerNews.Api.Services;
-using HackerNews.Application.Common.Interfaces;
+﻿using HackerNews.Api.Helpers.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -16,10 +13,7 @@ namespace HackerNews.Api
 	{
 		public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.Configure<JwtSettings>(options => configuration.GetSection("JwtSettings").Bind(options));
 
-			services.AddSingleton<IJwtGeneratorService, JwtGeneratorService>();
-			services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
 			services.AddCors(opt =>
 			{

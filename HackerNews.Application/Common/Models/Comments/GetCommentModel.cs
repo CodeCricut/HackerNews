@@ -17,6 +17,8 @@ namespace HackerNews.Application.Common.Models.Comments
 		public List<int> CommentIds { get; set; }
 		public int ParentCommentId { get; set; }
 		public int ParentArticleId { get; set; }
+		public bool Deleted { get; set; }
+
 
 		public List<int> UsersLiked { get; set; }
 		public List<int> UsersDisliked { get; set; }
