@@ -7,7 +7,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,10 +30,10 @@ namespace HackerNews.Application.Users.Queries.GetPublicUsersWithPagination
 
 		public override async Task<PaginatedList<GetPublicUserModel>> Handle(GetPublicUsersWithPaginationQuery request, CancellationToken cancellationToken)
 		{
-				var users = await UnitOfWork.Users.GetEntitiesAsync();
-				var paginatedUsers = await users.PaginatedListAsync(request.PagingParams);
+			var users = await UnitOfWork.Users.GetEntitiesAsync();
+			var paginatedUsers = await users.PaginatedListAsync(request.PagingParams);
 
-				return paginatedUsers.ToMappedPagedList<User, GetPublicUserModel>(Mapper); 
+			return paginatedUsers.ToMappedPagedList<User, GetPublicUserModel>(Mapper);
 		}
 	}
 }

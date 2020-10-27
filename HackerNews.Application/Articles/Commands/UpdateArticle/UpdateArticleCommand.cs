@@ -6,7 +6,6 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 

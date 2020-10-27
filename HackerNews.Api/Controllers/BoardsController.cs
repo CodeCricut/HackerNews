@@ -50,7 +50,7 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpGet]
-		public async  Task<ActionResult<PaginatedList<GetBoardModel>>> GetAsync([FromQuery] PagingParams pagingParams)
+		public async Task<ActionResult<PaginatedList<GetBoardModel>>> GetAsync([FromQuery] PagingParams pagingParams)
 		{
 			return Ok(await Mediator.Send(new GetBoardsWithPaginationQuery(pagingParams)));
 		}
@@ -62,21 +62,21 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpGet("{key:int}")]
-		public async  Task<ActionResult<GetBoardModel>> GetByIdAsync(int key)
+		public async Task<ActionResult<GetBoardModel>> GetByIdAsync(int key)
 		{
 			return Ok(await Mediator.Send(new GetBoardQuery(key)));
 		}
 
 		[HttpPost("add-moderator")]
 		[JwtAuthorize]
-		public async  Task<ActionResult<GetBoardModel>> AddModeratorAsync([FromQuery] int boardId, [FromQuery] int moderatorId)
+		public async Task<ActionResult<GetBoardModel>> AddModeratorAsync([FromQuery] int boardId, [FromQuery] int moderatorId)
 		{
 			return Ok(await Mediator.Send(new AddModeratorCommand(boardId, moderatorId)));
 		}
 
 		[HttpPost("add-subscriber")]
 		[JwtAuthorize]
-		public async  Task<ActionResult<GetBoardModel>> AddSubscriberAsync([FromQuery] int boardId)
+		public async Task<ActionResult<GetBoardModel>> AddSubscriberAsync([FromQuery] int boardId)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);
 

@@ -5,7 +5,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,10 +24,10 @@ namespace HackerNews.Application.Users.Queries.GetAuthenticatedUser
 		{
 			var userId = _currentUserService.UserId;
 
-				var user = await UnitOfWork.Users.GetEntityAsync(userId);
-				if (user == null) throw new NotFoundException();
+			var user = await UnitOfWork.Users.GetEntityAsync(userId);
+			if (user == null) throw new NotFoundException();
 
-				return Mapper.Map<GetPrivateUserModel>(user);
+			return Mapper.Map<GetPrivateUserModel>(user);
 		}
 	}
 }

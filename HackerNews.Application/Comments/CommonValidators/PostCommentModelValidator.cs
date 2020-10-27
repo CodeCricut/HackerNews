@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Application.Comments.CommonValidators
 {

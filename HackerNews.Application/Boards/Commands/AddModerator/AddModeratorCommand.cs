@@ -6,7 +6,6 @@ using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,42 +32,42 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 
 		public override async Task<GetBoardModel> Handle(AddModeratorCommand request, CancellationToken cancellationToken)
 		{
-				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
-				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
+			var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
-				var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
-				var newModerator = await UnitOfWork.Users.GetEntityAsync(request.ModeratorId);
+			var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
+			var newModerator = await UnitOfWork.Users.GetEntityAsync(request.ModeratorId);
 
-				if (board == null || newModerator == null) throw new NotFoundException();
+			if (board == null || newModerator == null) throw new NotFoundException();
 
-				// If the current user isn't a moderator of the sub or creator...
-				if (board.Creator.Id != currentUser.Id && board.Moderators.FirstOrDefault(boardUserModerator => boardUserModerator.UserId == currentUser.Id) == null)
-					throw new UnauthorizedException();
+			// If the current user isn't a moderator of the sub or creator...
+			if (board.Creator.Id != currentUser.Id && board.Moderators.FirstOrDefault(boardUserModerator => boardUserModerator.UserId == currentUser.Id) == null)
+				throw new UnauthorizedException();
 
-				// Remove the moderator if already moderating the board.
-				var existingModerator = board.Moderators.FirstOrDefault(bu => bu.UserId == request.ModeratorId);
-				if (existingModerator != null)
-				{
-					board.Moderators.Remove(existingModerator);
-					newModerator.BoardsModerating.Remove(existingModerator);
-
-					UnitOfWork.SaveChanges();
-					return Mapper.Map<GetBoardModel>(board);
-				}
-
-				// Add the moderator.
-				var boardUserModerator = new BoardUserModerator
-				{
-					Board = board,
-					User = newModerator
-				};
-
-				board.Moderators.Add(boardUserModerator);
-				newModerator.BoardsModerating.Add(boardUserModerator);
+			// Remove the moderator if already moderating the board.
+			var existingModerator = board.Moderators.FirstOrDefault(bu => bu.UserId == request.ModeratorId);
+			if (existingModerator != null)
+			{
+				board.Moderators.Remove(existingModerator);
+				newModerator.BoardsModerating.Remove(existingModerator);
 
 				UnitOfWork.SaveChanges();
-
 				return Mapper.Map<GetBoardModel>(board);
+			}
+
+			// Add the moderator.
+			var boardUserModerator = new BoardUserModerator
+			{
+				Board = board,
+				User = newModerator
+			};
+
+			board.Moderators.Add(boardUserModerator);
+			newModerator.BoardsModerating.Add(boardUserModerator);
+
+			UnitOfWork.SaveChanges();
+
+			return Mapper.Map<GetBoardModel>(board);
 		}
 	}
 }

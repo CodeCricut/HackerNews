@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.Domain.Exceptions
+﻿namespace HackerNews.Domain.Exceptions
 {
 	public class UsernameTakenException : ApiException
 	{

@@ -7,7 +7,6 @@ using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -33,28 +32,28 @@ namespace HackerNews.Application.Boards.Commands.AddBoards
 
 		public override async Task<IEnumerable<GetBoardModel>> Handle(AddBoardsCommand request, CancellationToken cancellationToken)
 		{
-				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
-				if (user == null) throw new UnauthorizedException();
+			if (user == null) throw new UnauthorizedException();
 
-				var boards = Mapper.Map<IEnumerable<Board>>(request.PostBoardModels);
-				foreach (var board in boards)
+			var boards = Mapper.Map<IEnumerable<Board>>(request.PostBoardModels);
+			foreach (var board in boards)
+			{
+				board.CreateDate = DateTime.Now;
+				board.Creator = user;
+
+				// Add creator to moderators
+				var boardUser = new BoardUserModerator
 				{
-					board.CreateDate = DateTime.Now;
-					board.Creator = user;
+					Board = board,
+					User = user
+				};
+				board.Moderators.Add(boardUser);
+			}
 
-					// Add creator to moderators
-					var boardUser = new BoardUserModerator
-					{
-						Board = board,
-						User = user
-					};
-					board.Moderators.Add(boardUser);
-				}
+			var addedBoards = await UnitOfWork.Boards.AddEntititesAsync(boards);
 
-				var addedBoards = await UnitOfWork.Boards.AddEntititesAsync(boards);
-
-				return Mapper.Map<IEnumerable<GetBoardModel>>(addedBoards);
+			return Mapper.Map<IEnumerable<GetBoardModel>>(addedBoards);
 		}
 	}
 }

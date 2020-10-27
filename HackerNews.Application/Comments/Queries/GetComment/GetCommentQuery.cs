@@ -5,7 +5,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,10 +28,10 @@ namespace HackerNews.Application.Comments.Queries.GetComment
 
 		public override async Task<GetCommentModel> Handle(GetCommentQuery request, CancellationToken cancellationToken)
 		{
-				var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
-				if (comment == null) throw new NotFoundException();
+			var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
+			if (comment == null) throw new NotFoundException();
 
-				return Mapper.Map<GetCommentModel>(comment);
+			return Mapper.Map<GetCommentModel>(comment);
 		}
 	}
 }

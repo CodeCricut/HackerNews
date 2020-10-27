@@ -1,9 +1,5 @@
 ﻿using FluentValidation;
-using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Application.Comments.Queries.GetCommentsByIds
 {

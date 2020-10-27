@@ -36,27 +36,27 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote")]
-		public async Task<ActionResult> VoteEntityAsync([FromQuery]  int commentId, [FromQuery] bool upvote)
+		public async Task<ActionResult> VoteEntityAsync([FromQuery] int commentId, [FromQuery] bool upvote)
 		{
-						return Ok(await Mediator.Send(new VoteCommentCommand(commentId, upvote)));
+			return Ok(await Mediator.Send(new VoteCommentCommand(commentId, upvote)));
 		}
 
 		[HttpDelete("{key:int}")]
 		public async Task<ActionResult> Delete(int key)
 		{
-						return Ok(await Mediator.Send(new DeleteCommentCommand(key)));
+			return Ok(await Mediator.Send(new DeleteCommentCommand(key)));
 		}
 
 		[HttpPost]
 		public async Task<ActionResult<GetCommentModel>> PostAsync([FromBody] PostCommentModel postModel)
 		{
-						return Ok(await Mediator.Send(new AddCommentCommand(postModel)));
+			return Ok(await Mediator.Send(new AddCommentCommand(postModel)));
 		}
 
 		[HttpPost("range")]
 		public async Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<PostCommentModel> postModels)
 		{
-						return Ok(await Mediator.Send(new AddCommentsCommand(postModels)));
+			return Ok(await Mediator.Send(new AddCommentsCommand(postModels)));
 		}
 
 		[HttpPut("{key:int}")]

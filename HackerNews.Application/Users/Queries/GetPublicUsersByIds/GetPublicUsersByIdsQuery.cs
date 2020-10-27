@@ -7,7 +7,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +35,9 @@ namespace HackerNews.Application.Users.Queries.GetPublicUsersByIds
 
 		public override async Task<PaginatedList<GetPublicUserModel>> Handle(GetPublicUsersByIdsQuery request, CancellationToken cancellationToken)
 		{
-				var users = await UnitOfWork.Users.GetEntitiesAsync();
-				var usersByIds = users.Where(user => request.Ids.Contains(user.Id));
-				var paginatedUsers = await usersByIds.PaginatedListAsync(request.PagingParams);
+			var users = await UnitOfWork.Users.GetEntitiesAsync();
+			var usersByIds = users.Where(user => request.Ids.Contains(user.Id));
+			var paginatedUsers = await usersByIds.PaginatedListAsync(request.PagingParams);
 
 			// Fourth bug caught by tests
 			return paginatedUsers.ToMappedPagedList<User, GetPublicUserModel>(Mapper);

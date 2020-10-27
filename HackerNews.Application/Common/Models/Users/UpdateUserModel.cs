@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.Application.Common.Models.Users
+﻿namespace HackerNews.Application.Common.Models.Users
 {
 	public class UpdateUserModel
 	{

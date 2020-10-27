@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 using HackerNews.Application.Comments.CommonValidators;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.Application.Comments.Commands.AddComments
 {

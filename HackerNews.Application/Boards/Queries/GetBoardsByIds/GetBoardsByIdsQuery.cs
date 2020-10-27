@@ -7,11 +7,9 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,10 +35,10 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsByIds
 
 		public override async Task<PaginatedList<GetBoardModel>> Handle(GetBoardsByIdsQuery request, CancellationToken cancellationToken)
 		{
-				var boards = await UnitOfWork.Boards.GetEntitiesAsync();
-				var boardsByIds = boards.Where(b => request.Ids.Contains(b.Id));
+			var boards = await UnitOfWork.Boards.GetEntitiesAsync();
+			var boardsByIds = boards.Where(b => request.Ids.Contains(b.Id));
 
-				var paginatedBoards = await boardsByIds.PaginatedListAsync(request.PagingParams);
+			var paginatedBoards = await boardsByIds.PaginatedListAsync(request.PagingParams);
 
 			return paginatedBoards.ToMappedPagedList<Board, GetBoardModel>(Mapper);
 		}

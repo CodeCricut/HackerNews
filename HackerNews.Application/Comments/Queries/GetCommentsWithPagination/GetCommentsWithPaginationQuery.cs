@@ -7,8 +7,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,10 +30,10 @@ namespace HackerNews.Application.Comments.Queries.GetCommentsWithPagination
 
 		public override async Task<PaginatedList<GetCommentModel>> Handle(GetCommentsWithPaginationQuery request, CancellationToken cancellationToken)
 		{
-				var comments = await UnitOfWork.Comments.GetEntitiesAsync();
-				var paginatedComments = await comments.PaginatedListAsync(request.PagingParams);
+			var comments = await UnitOfWork.Comments.GetEntitiesAsync();
+			var paginatedComments = await comments.PaginatedListAsync(request.PagingParams);
 
-				return paginatedComments.ToMappedPagedList<Comment, GetCommentModel>(Mapper);
+			return paginatedComments.ToMappedPagedList<Comment, GetCommentModel>(Mapper);
 		}
 	}
 }

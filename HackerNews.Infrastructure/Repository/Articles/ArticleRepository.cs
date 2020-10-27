@@ -2,13 +2,12 @@
 using HackerNews.Domain.Interfaces;
 using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Articles
 {
-	 class ArticleRepository : EntityRepository<Article>, IArticleRepository
+	class ArticleRepository : EntityRepository<Article>, IArticleRepository
 	{
 		public ArticleRepository(DbContext context) : base(context)
 		{

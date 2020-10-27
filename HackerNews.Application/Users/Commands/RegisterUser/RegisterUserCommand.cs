@@ -7,7 +7,6 @@ using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using HackerNews.Domain.Models.Users;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Threading;
@@ -33,21 +32,21 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 
 		public override async Task<GetPrivateUserModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 		{
-				var user = Mapper.Map<User>(request.RegisterUserModel);
+			var user = Mapper.Map<User>(request.RegisterUserModel);
 
-				// Verify username isn't taken
-				var users = await UnitOfWork.Users.GetEntitiesAsync();
-				var userWithUsername = users.FirstOrDefault(u => u.Username == user.Username);
-				if (userWithUsername != null) throw new UsernameTakenException();
+			// Verify username isn't taken
+			var users = await UnitOfWork.Users.GetEntitiesAsync();
+			var userWithUsername = users.FirstOrDefault(u => u.Username == user.Username);
+			if (userWithUsername != null) throw new UsernameTakenException();
 
 
-				user.JoinDate = DateTime.Now;
+			user.JoinDate = DateTime.Now;
 
-				var registeredUser = await UnitOfWork.Users.AddEntityAsync(user);
+			var registeredUser = await UnitOfWork.Users.AddEntityAsync(user);
 
-				UnitOfWork.SaveChanges();
+			UnitOfWork.SaveChanges();
 
-				return Mapper.Map<GetPrivateUserModel>(registeredUser);
+			return Mapper.Map<GetPrivateUserModel>(registeredUser);
 		}
 	}
 }

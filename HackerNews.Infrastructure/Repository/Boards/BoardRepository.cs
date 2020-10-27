@@ -2,13 +2,12 @@
 using HackerNews.Domain.Interfaces;
 using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Boards
 {
-	 class BoardRepository : EntityRepository<Board>, IBoardRepository
+	class BoardRepository : EntityRepository<Board>, IBoardRepository
 	{
 		public BoardRepository(DbContext context) : base(context)
 		{

@@ -2,13 +2,12 @@
 using HackerNews.Domain.Interfaces;
 using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Comments
 {
-	 class CommentRepository : EntityRepository<Comment>, ICommentRepository
+	class CommentRepository : EntityRepository<Comment>, ICommentRepository
 	{
 		public CommentRepository(DbContext context) : base(context)
 		{

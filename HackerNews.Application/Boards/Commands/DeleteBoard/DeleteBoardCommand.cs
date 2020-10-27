@@ -4,10 +4,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,20 +27,20 @@ namespace HackerNews.Application.Boards.Commands.DeleteBoard
 
 		public override async Task<bool> Handle(DeleteBoardCommand request, CancellationToken cancellationToken)
 		{
-				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
-				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
+			var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
-				if (!await UnitOfWork.Boards.EntityExistsAsync(request.Id)) throw new NotFoundException();
-				var board = await UnitOfWork.Boards.GetEntityAsync(request.Id);
+			if (!await UnitOfWork.Boards.EntityExistsAsync(request.Id)) throw new NotFoundException();
+			var board = await UnitOfWork.Boards.GetEntityAsync(request.Id);
 
-				// Verify user created the board
-				if (board.Creator.Id != currentUser.Id) throw new UnauthorizedException();
+			// Verify user created the board
+			if (board.Creator.Id != currentUser.Id) throw new UnauthorizedException();
 
-				// Delete and save.
-				var successful = await UnitOfWork.Boards.DeleteEntityAsync(request.Id);
-				UnitOfWork.SaveChanges();
+			// Delete and save.
+			var successful = await UnitOfWork.Boards.DeleteEntityAsync(request.Id);
+			UnitOfWork.SaveChanges();
 
-				return successful;
+			return successful;
 		}
 	}
 }

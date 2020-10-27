@@ -6,11 +6,8 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,26 +33,26 @@ namespace HackerNews.Application.Boards.Commands.UpdateBoard
 
 		public override async Task<GetBoardModel> Handle(UpdateBoardCommand request, CancellationToken cancellationToken)
 		{
-				var userId = _currentUserService.UserId;
-				var currentUser = await UnitOfWork.Boards.GetEntityAsync(userId);
-				if (currentUser == null) throw new UnauthorizedAccessException();
+			var userId = _currentUserService.UserId;
+			var currentUser = await UnitOfWork.Boards.GetEntityAsync(userId);
+			if (currentUser == null) throw new UnauthorizedAccessException();
 
-				// Verify entity trying to update exists.
-				if (!await UnitOfWork.Boards.EntityExistsAsync(request.BoardId)) throw new NotFoundException();
+			// Verify entity trying to update exists.
+			if (!await UnitOfWork.Boards.EntityExistsAsync(request.BoardId)) throw new NotFoundException();
 
-				// Verify user created board or has moderation privileges.
-				var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
-				if (board.Creator.Id != currentUser.Id &&
-					board.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null)
-					throw new UnauthorizedException();
+			// Verify user created board or has moderation privileges.
+			var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
+			if (board.Creator.Id != currentUser.Id &&
+				board.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null)
+				throw new UnauthorizedException();
 
-				var updatedEntity = Mapper.Map<Board>(request.PostBoardModel);
+			var updatedEntity = Mapper.Map<Board>(request.PostBoardModel);
 
-				// Update and save.
-				await UnitOfWork.Boards.UpdateEntityAsync(request.BoardId, updatedEntity);
-				UnitOfWork.SaveChanges();
+			// Update and save.
+			await UnitOfWork.Boards.UpdateEntityAsync(request.BoardId, updatedEntity);
+			UnitOfWork.SaveChanges();
 
-				return Mapper.Map<GetBoardModel>(updatedEntity);
+			return Mapper.Map<GetBoardModel>(updatedEntity);
 		}
 	}
 }

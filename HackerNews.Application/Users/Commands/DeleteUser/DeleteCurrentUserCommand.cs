@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
-using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,16 +24,16 @@ namespace HackerNews.Application.Users.Commands.DeleteUser
 
 		public override async Task<bool> Handle(DeleteCurrentUserCommand request, CancellationToken cancellationToken)
 		{
-				var userId = _currentUserService.UserId;
-				if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
+			var userId = _currentUserService.UserId;
+			if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
 
-				// Third bug, baby! forgot to await
-				var user = await UnitOfWork.Users.GetEntityAsync(userId);
+			// Third bug, baby! forgot to await
+			var user = await UnitOfWork.Users.GetEntityAsync(userId);
 
-				var successful = await UnitOfWork.Users.DeleteEntityAsync(user.Id);
-				UnitOfWork.SaveChanges();
+			var successful = await UnitOfWork.Users.DeleteEntityAsync(user.Id);
+			UnitOfWork.SaveChanges();
 
-				return successful;
+			return successful;
 		}
 	}
 }

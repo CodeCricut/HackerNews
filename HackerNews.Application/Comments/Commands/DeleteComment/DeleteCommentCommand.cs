@@ -4,10 +4,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,21 +27,21 @@ namespace HackerNews.Application.Comments.Commands.DeleteComment
 
 		public override async Task<bool> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
 		{
-				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
-				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
+			var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
-				// Verify entity exists.
-				if (!await UnitOfWork.Comments.EntityExistsAsync(request.Id)) throw new NotFoundException();
+			// Verify entity exists.
+			if (!await UnitOfWork.Comments.EntityExistsAsync(request.Id)) throw new NotFoundException();
 
-				// Verify user owns the entity.
-				var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
-				if (comment.UserId != currentUser.Id) throw new UnauthorizedException();
+			// Verify user owns the entity.
+			var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
+			if (comment.UserId != currentUser.Id) throw new UnauthorizedException();
 
-				// soft delete and save
-				var successful = await UnitOfWork.Comments.DeleteEntityAsync(request.Id);
-				UnitOfWork.SaveChanges();
+			// soft delete and save
+			var successful = await UnitOfWork.Comments.DeleteEntityAsync(request.Id);
+			UnitOfWork.SaveChanges();
 
-				return successful;
+			return successful;
 		}
 	}
 }

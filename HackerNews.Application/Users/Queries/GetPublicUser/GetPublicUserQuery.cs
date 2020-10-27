@@ -5,7 +5,6 @@ using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,10 +28,10 @@ namespace HackerNews.Application.Users.Queries.GetPublicUser
 
 		public override async Task<GetPublicUserModel> Handle(GetPublicUserQuery request, CancellationToken cancellationToken)
 		{
-				var user = await UnitOfWork.Users.GetEntityAsync(request.Id);
-				if (user == null) throw new NotFoundException();
+			var user = await UnitOfWork.Users.GetEntityAsync(request.Id);
+			if (user == null) throw new NotFoundException();
 
-				return Mapper.Map<GetPublicUserModel>(user);
+			return Mapper.Map<GetPublicUserModel>(user);
 		}
 	}
 }

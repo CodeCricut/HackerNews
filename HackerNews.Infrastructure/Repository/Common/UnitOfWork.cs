@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HackerNews.Infrastructure.Repository.Common
 {
-	 class UnitOfWork : IUnitOfWork
+	class UnitOfWork : IUnitOfWork
 	{
 		private readonly DbContext _db;
 
