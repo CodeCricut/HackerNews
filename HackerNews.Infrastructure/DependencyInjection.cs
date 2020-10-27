@@ -4,6 +4,7 @@ using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HackerNews.Infrastructure
 {
@@ -13,8 +14,11 @@ namespace HackerNews.Infrastructure
 		{
 			if (configuration.GetValue<bool>("UseInMemoryDatabase"))
 			{
+				// In order to run tests in parallel without issues, DB name must be unique.
+				var inMemoryDbName = $"HackerNewsDb{Guid.NewGuid()}";
+
 				services.AddDbContext<DbContext, HackerNewsContext>(options =>
-					options.UseInMemoryDatabase("HackerNewsDb"));
+					options.UseInMemoryDatabase(inMemoryDbName)); ;
 			}
 			else
 			{

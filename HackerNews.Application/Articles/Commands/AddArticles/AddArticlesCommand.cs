@@ -46,6 +46,9 @@ namespace HackerNews.Application.Articles.Commands.AddArticles
 
 			var addedArticles = await UnitOfWork.Articles.AddEntititesAsync(articles);
 
+			// My first bug caught by a integration test... brings a tear to my eye >_<
+			UnitOfWork.SaveChanges(); // missing before
+
 			return Mapper.Map<IEnumerable<GetArticleModel>>(addedArticles);
 		}
 	}
