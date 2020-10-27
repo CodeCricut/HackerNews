@@ -9,9 +9,11 @@ using HackerNews.Application.Users.Commands.SaveCommentToUser;
 using HackerNews.Application.Users.Commands.UpdateUser;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
+using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Application.Users.Queries.GetPublicUsersWithPagination;
 using HackerNews.Domain.Models.Users;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
@@ -49,6 +51,12 @@ namespace HackerNews.Api.Controllers
 		public async Task<ActionResult<GetPublicUserModel>> GetByIdAsync(int key)
 		{
 			return Ok(await Mediator.Send(new GetPublicUserQuery(key)));
+		}
+
+		[HttpGet("range")]
+		public async Task<ActionResult<PaginatedList<GetPublicUserModel>>> GetByIdAsync([FromQuery] IEnumerable<int> id, [FromQuery] PagingParams pagingParams)
+		{
+			return await Mediator.Send(new GetPublicUsersByIdsQuery(id, pagingParams));
 		}
 
 		[HttpPost("save-article")]

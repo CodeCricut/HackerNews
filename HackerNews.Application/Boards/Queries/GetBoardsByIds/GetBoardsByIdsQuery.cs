@@ -4,6 +4,7 @@ using HackerNews.Application.Common.Mappings;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -39,9 +40,9 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsByIds
 				var boards = await UnitOfWork.Boards.GetEntitiesAsync();
 				var boardsByIds = boards.Where(b => request.Ids.Contains(b.Id));
 
-				var paginatedBoards = boardsByIds.PaginatedListAsync(request.PagingParams);
+				var paginatedBoards = await boardsByIds.PaginatedListAsync(request.PagingParams);
 
-				return Mapper.Map<PaginatedList<GetBoardModel>>(paginatedBoards);
+			return paginatedBoards.ToMappedPagedList<Board, GetBoardModel>(Mapper);
 		}
 	}
 }
