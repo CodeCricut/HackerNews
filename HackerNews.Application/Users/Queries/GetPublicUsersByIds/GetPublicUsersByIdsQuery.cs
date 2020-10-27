@@ -4,6 +4,7 @@ using HackerNews.Application.Common.Mappings;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,8 @@ namespace HackerNews.Application.Users.Queries.GetPublicUsersByIds
 				var usersByIds = users.Where(user => request.Ids.Contains(user.Id));
 				var paginatedUsers = await usersByIds.PaginatedListAsync(request.PagingParams);
 
-				return Mapper.Map<PaginatedList<GetPublicUserModel>>(paginatedUsers);
+			// Fourth bug caught by tests
+			return paginatedUsers.ToMappedPagedList<User, GetPublicUserModel>(Mapper);
 		}
 	}
 }

@@ -15,9 +15,9 @@ namespace HackerNews.Application.Users.Queries.GetAuthenticatedUser
 	{
 	}
 
-	public class GetPrivateUserHandler : DatabaseRequestHandler<GetAuthenticatedUserQuery, GetPrivateUserModel>
+	public class GetAuthenticatedUserHandler : DatabaseRequestHandler<GetAuthenticatedUserQuery, GetPrivateUserModel>
 	{
-		public GetPrivateUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		public GetAuthenticatedUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 

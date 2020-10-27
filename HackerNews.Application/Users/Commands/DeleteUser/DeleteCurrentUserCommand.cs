@@ -31,7 +31,9 @@ namespace HackerNews.Application.Users.Commands.DeleteUser
 		{
 				var userId = _currentUserService.UserId;
 				if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
-				var user = UnitOfWork.Users.GetEntityAsync(userId);
+
+				// Third bug, baby! forgot to await
+				var user = await UnitOfWork.Users.GetEntityAsync(userId);
 
 				var successful = await UnitOfWork.Users.DeleteEntityAsync(user.Id);
 				UnitOfWork.SaveChanges();
