@@ -1,0 +1,49 @@
+﻿@model HackerNews.Mvc.ViewModels.Boards.BoardSearchViewModel 
+
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Boards *@
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            @foreach (var board in Model.BoardPage.Items)
+            {
+                @await Component.InvokeAsync("BoardCard", new { boardModel = board });
+            }
+            @* Bottom of Boards List *@
+            <div class="row w-100">
+                <div class="col">
+                    @if (Model.BoardPage.HasPrev)
+                    {
+                        <a asp-controller="Boards" asp-action="Search"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageNumber="@Model.BoardPage.PrevPagingParams.PageNumber.ToString()"
+                           asp-route-pageSize="@Model.BoardPage.PrevPagingParams.PageSize.ToString()"
+                           class="mr-auto btn btn-outline-secondary ">Prev</a>
+                    }
+                    @if (Model.BoardPage.HasNext)
+                    {
+                        <a asp-controller="Boards" asp-action="Search"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageNumber="@Model.BoardPage.NextPagingParams.PageNumber.ToString()"
+                           asp-route-pageSize="@Model.BoardPage.NextPagingParams.PageSize.ToString()"
+                           class="mr-auto btn btn-outline-secondary">Next</a>
+                    }
+                </div>
+            </div>
+            <div class="row w-100 p-3">
+                <a asp-controller="Home" asp-action="Search"
+                   asp-route-searchTerm="@Model.SearchTerm">
+                    Back to search
+                </a>
+            </div>
+            <div class="row h-100"></div>
+        </div>
+        @* Sidebar *@
+        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
+            @await Component.InvokeAsync("HomeSidebarCard")
+        </div>
+        @* Footer *@
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>

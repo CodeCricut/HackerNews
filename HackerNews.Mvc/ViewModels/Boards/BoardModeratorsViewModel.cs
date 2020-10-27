@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.ViewModels.Boards
 {
-	public class BoardModeratorsListViewModel
+	public class BoardModeratorsViewModel
 	{
 		public GetBoardModel Board { get; set; }
 		public FrontendPage<GetPublicUserModel> ModeratorPage { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.ViewModels.Users
 {
-	public class UserArticlesListView
+	public class UserArticlesViewModel
 	{
 		public FrontendPage<GetArticleModel> ArticlePage { get; set; }
 	}

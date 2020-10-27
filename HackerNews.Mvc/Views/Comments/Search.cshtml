@@ -1,0 +1,49 @@
+﻿@model HackerNews.Mvc.ViewModels.Comments.CommentSearchViewModel 
+
+<div class="container-fluid">
+    <div class="row p-4">
+        @* Comments *@
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
+            @foreach (var comment in Model.CommentPage.Items)
+            {
+                @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+            }
+            @* Bottom of Comments List *@
+            <div class="row w-100">
+                <div class="col">
+                    @if (Model.CommentPage.HasPrev)
+                    {
+                        <a asp-controller="Comments" asp-action="Search"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageNumber="@Model.CommentPage.PrevPagingParams.PageNumber.ToString()"
+                           asp-route-pageSize="@Model.CommentPage.PrevPagingParams.PageSize.ToString()"
+                           class="mr-auto btn btn-outline-secondary ">Prev</a>
+                    }
+                    @if (Model.CommentPage.HasNext)
+                    {
+                        <a asp-controller="Comments" asp-action="Search"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageNumber="@Model.CommentPage.NextPagingParams.PageNumber.ToString()"
+                           asp-route-pageSize="@Model.CommentPage.NextPagingParams.PageSize.ToString()"
+                           class="mr-auto btn btn-outline-secondary">Next</a>
+                    }
+                </div>
+            </div>
+            <div class="row w-100 p-3">
+                <a asp-controller="Home" asp-action="Search"
+                   asp-route-searchTerm="@Model.SearchTerm">
+                    Back to search
+                </a>
+            </div>
+            <div class="row h-100"></div>
+        </div>
+        @* Sidebar *@
+        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
+            @await Component.InvokeAsync("HomeSidebarCard")
+        </div>
+        @* Footer *@
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>

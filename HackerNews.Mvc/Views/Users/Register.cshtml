@@ -1,0 +1,18 @@
+﻿@model HackerNews.Mvc.ViewModels.Users.UserRegisterViewModel 
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-sm-12 col-md-6 mx-auto">
+            <form asp-action="Register" class="form">
+                <h1 class="h3 mb-3 font-weight-normal form">Register for HackerNews</h1>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="RegisterModel.FirstName" class="control-label"></label>
+                    <input asp-for="RegisterModel.FirstName" class="form-control inputEmail" />
+                    <span asp-validation-for="RegisterModel.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
