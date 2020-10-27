@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Articles\Queries\GetArticlesBySearch\" />
     <Folder Include="Common\Exceptions\" />
   </ItemGroup>
 
