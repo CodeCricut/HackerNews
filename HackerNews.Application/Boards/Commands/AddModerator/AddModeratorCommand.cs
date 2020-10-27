@@ -41,8 +41,8 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 
 				if (board == null || newModerator == null) throw new NotFoundException();
 
-				// If the current user isn't a moderator of the sub...
-				if (board.Moderators.FirstOrDefault(boardUserModerator => boardUserModerator.UserId == currentUser.Id) == null)
+				// If the current user isn't a moderator of the sub or creator...
+				if (board.Creator.Id != currentUser.Id && board.Moderators.FirstOrDefault(boardUserModerator => boardUserModerator.UserId == currentUser.Id) == null)
 					throw new UnauthorizedException();
 
 				// Remove the moderator if already moderating the board.
