@@ -1,7 +1,9 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -21,17 +23,12 @@ namespace HackerNews.Application.Users.Commands.UpdateUser
 
 	public class UpdateUserHandler : DatabaseRequestHandler<UpdateUserCommand, GetPrivateUserModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public UpdateUserHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public UpdateUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetPrivateUserModel> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var userid = _currentUserService.UserId;
 				if (!await UnitOfWork.Users.EntityExistsAsync(userid)) throw new UnauthorizedException();
 				var currentUser = await UnitOfWork.Users.GetEntityAsync(userid);
@@ -47,7 +44,6 @@ namespace HackerNews.Application.Users.Commands.UpdateUser
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetPrivateUserModel>(currentUser);
-			}
 		}
 	}
 }

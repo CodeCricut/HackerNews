@@ -1,8 +1,10 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -24,17 +26,12 @@ namespace HackerNews.Application.Comments.Commands.UpdateComment
 
 	public class UpdateCommentHandler : DatabaseRequestHandler<UpdateCommentCommand, GetCommentModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public UpdateCommentHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public UpdateCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetCommentModel> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var userId = _currentUserService.UserId;
 				var currentUser = await UnitOfWork.Users.GetEntityAsync(userId);
 				if (currentUser == null) throw new UnauthorizedException();
@@ -54,8 +51,7 @@ namespace HackerNews.Application.Comments.Commands.UpdateComment
 				await UnitOfWork.Comments.UpdateEntityAsync(request.CommentId, comment);
 				UnitOfWork.SaveChanges();
 
-				return Mapper.Map<GetCommentModel>(updatedEntity);
-			}
+				return Mapper.Map<GetCommentModel>(comment);
 		}
 	}
 }

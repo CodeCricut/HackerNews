@@ -1,6 +1,8 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -23,17 +25,12 @@ namespace HackerNews.Application.Boards.Commands.DeleteBoard
 
 	public class DeleteBoardHandler : DatabaseRequestHandler<DeleteBoardCommand, bool>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public DeleteBoardHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public DeleteBoardHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<bool> Handle(DeleteBoardCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
@@ -48,7 +45,6 @@ namespace HackerNews.Application.Boards.Commands.DeleteBoard
 				UnitOfWork.SaveChanges();
 
 				return successful;
-			}
 		}
 	}
 }

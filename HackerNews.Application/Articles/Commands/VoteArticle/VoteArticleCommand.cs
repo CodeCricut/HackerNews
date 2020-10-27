@@ -1,10 +1,12 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
@@ -27,59 +29,52 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 
 	public class VoteArticleCommandHandler : DatabaseRequestHandler<VoteArticleCommand, GetArticleModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public VoteArticleCommandHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public VoteArticleCommandHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetArticleModel> Handle(VoteArticleCommand request, CancellationToken cancellationToken)
 		{
-			// TODO: for the love of god, refactor this...
-			using (UnitOfWork)
+			var userId = _currentUserService.UserId;
+			if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
+			var currentUser = await UnitOfWork.Users.GetEntityAsync(userId);
+
+			if (!await UnitOfWork.Articles.EntityExistsAsync(request.ArticleId)) throw new NotFoundException();
+			var article = await UnitOfWork.Articles.GetEntityAsync(request.ArticleId);
+
+			if (request.Upvote)
 			{
-				var userId = _currentUserService.UserId;
-				if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
-				var currentUser = await UnitOfWork.Users.GetEntityAsync(userId);
-
-				if (!await UnitOfWork.Articles.EntityExistsAsync(request.ArticleId)) throw new NotFoundException();
-				var article = await UnitOfWork.Articles.GetEntityAsync(request.ArticleId);
-
-				if (request.Upvote)
-				{
-					// if the user has liked the entity, unlike it (not dislike)
-					if (UserLikedEntity(currentUser, article))
-						UnlikeEntity(currentUser, article);
-					// if the user hasn't liked the entity, like it
-					else
-					{
-						// if the user dislike the entity, un-dislike it then like it
-						if (UserDislikedEntity(currentUser, article))
-							UndislikeEntity(currentUser, article);
-						LikeEntity(currentUser, article);
-					}
-				}
+				// if the user has liked the entity, unlike it (not dislike)
+				if (UserLikedEntity(currentUser, article))
+					UnlikeEntity(currentUser, article);
+				// if the user hasn't liked the entity, like it
 				else
 				{
-					// if the user has dislike the entity, un-dislike it (not like)
+					// if the user dislike the entity, un-dislike it then like it
 					if (UserDislikedEntity(currentUser, article))
 						UndislikeEntity(currentUser, article);
-					// if the user hasn't disliked the entity, dislike it
-					else
-					{
-						// if the user liked the entity, unlike it then dislike it
-						if (UserLikedEntity(currentUser, article))
-							UnlikeEntity(currentUser, article);
-						DislikeEntity(currentUser, article);
-					}
+					LikeEntity(currentUser, article);
 				}
-
-				// Save changes and return model.
-				UnitOfWork.SaveChanges();
-
-				return Mapper.Map<GetArticleModel>(article);
 			}
+			else
+			{
+				// if the user has dislike the entity, un-dislike it (not like)
+				if (UserDislikedEntity(currentUser, article))
+					UndislikeEntity(currentUser, article);
+				// if the user hasn't disliked the entity, dislike it
+				else
+				{
+					// if the user liked the entity, unlike it then dislike it
+					if (UserLikedEntity(currentUser, article))
+						UnlikeEntity(currentUser, article);
+					DislikeEntity(currentUser, article);
+				}
+			}
+
+			// Save changes and return model.
+			UnitOfWork.SaveChanges();
+
+			return Mapper.Map<GetArticleModel>(article);
 		}
 
 		private static bool UserDislikedEntity(User currentUser, Article article)

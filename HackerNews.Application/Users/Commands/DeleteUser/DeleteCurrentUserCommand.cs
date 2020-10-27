@@ -1,7 +1,9 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -21,17 +23,12 @@ namespace HackerNews.Application.Users.Commands.DeleteUser
 
 	public class DeleteCurrentUserHandler : DatabaseRequestHandler<DeleteCurrentUserCommand, bool>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public DeleteCurrentUserHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public DeleteCurrentUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<bool> Handle(DeleteCurrentUserCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var userId = _currentUserService.UserId;
 				if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
 				var user = UnitOfWork.Users.GetEntityAsync(userId);
@@ -40,7 +37,6 @@ namespace HackerNews.Application.Users.Commands.DeleteUser
 				UnitOfWork.SaveChanges();
 
 				return successful;
-			}
 		}
 	}
 }

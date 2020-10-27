@@ -1,7 +1,10 @@
-﻿using HackerNews.Application.Common.Mappings;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Mappings;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -26,20 +29,17 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesByIds
 
 	public class GetArticlesByIdsQueryHandler : DatabaseRequestHandler<GetArticlesByIdsQuery, PaginatedList<GetArticleModel>>
 	{
-		public GetArticlesByIdsQueryHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetArticlesByIdsQueryHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesByIdsQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
-				var articles = await UnitOfWork.Articles.GetEntitiesAsync();
-				var articlesByIds = articles.Where(article => request.Ids.Contains(article.Id));
-				var paginatedArticles = await articlesByIds.PaginatedListAsync(request.PagingParams);
+			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
+			var articlesByIds = articles.Where(article => request.Ids.Contains(article.Id));
+			var paginatedArticles = await articlesByIds.PaginatedListAsync(request.PagingParams);
 
-				return Mapper.Map<PaginatedList<GetArticleModel>>(paginatedArticles);
-			}
+			return Mapper.Map<PaginatedList<GetArticleModel>>(paginatedArticles);
 		}
 	}
 }

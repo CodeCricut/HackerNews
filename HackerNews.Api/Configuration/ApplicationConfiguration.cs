@@ -16,8 +16,6 @@ namespace HackerNews.Api
 			{
 				// create the db if it doesn't exist
 				dbContext.Database.EnsureCreated();
-
-				
 			}
 			app.UseHttpsRedirection();
 

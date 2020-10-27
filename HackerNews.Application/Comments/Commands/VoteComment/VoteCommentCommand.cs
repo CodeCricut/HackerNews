@@ -1,10 +1,12 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
@@ -27,17 +29,12 @@ namespace HackerNews.Application.Comments.Commands.VoteComment
 
 	public class VoteCommentHandler : DatabaseRequestHandler<VoteCommentCommand, GetCommentModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public VoteCommentHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public VoteCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetCommentModel> Handle(VoteCommentCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
@@ -76,7 +73,6 @@ namespace HackerNews.Application.Comments.Commands.VoteComment
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetCommentModel>(comment);
-			}
 		}
 
 		private static bool UserDislikedEntity(User currentUser, Comment comment)

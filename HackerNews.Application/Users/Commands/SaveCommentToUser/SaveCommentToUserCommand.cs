@@ -1,8 +1,10 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
@@ -26,17 +28,12 @@ namespace HackerNews.Application.Users.Commands.SaveCommentToUser
 
 	public class SaveCommentToUserHandler : DatabaseRequestHandler<SaveCommentToUserCommand, GetPrivateUserModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public SaveCommentToUserHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public SaveCommentToUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetPrivateUserModel> Handle(SaveCommentToUserCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var userId = _currentUserService.UserId;
 				var user = await UnitOfWork.Users.GetEntityAsync(userId);
 				if (user == null) throw new UnauthorizedException();
@@ -67,7 +64,6 @@ namespace HackerNews.Application.Users.Commands.SaveCommentToUser
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetPrivateUserModel>(user);
-			}
 		}
 	}
 }

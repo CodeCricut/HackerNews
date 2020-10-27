@@ -1,9 +1,11 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
@@ -24,17 +26,12 @@ namespace HackerNews.Application.Boards.Commands.AddSubscriber
 
 	public class AddSubscriberHandler : DatabaseRequestHandler<AddSubscriberCommand, GetBoardModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public AddSubscriberHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public AddSubscriberHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetBoardModel> Handle(AddSubscriberCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
@@ -65,7 +62,6 @@ namespace HackerNews.Application.Boards.Commands.AddSubscriber
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetBoardModel>(board);
-			}
 		}
 	}
 }

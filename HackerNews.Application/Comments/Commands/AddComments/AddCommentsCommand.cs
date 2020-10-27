@@ -1,9 +1,11 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -25,17 +27,12 @@ namespace HackerNews.Application.Comments.Commands.AddComments
 
 	public class AddCommentHandler : DatabaseRequestHandler<AddCommentsCommand, IEnumerable<GetCommentModel>>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public AddCommentHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public AddCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<IEnumerable<GetCommentModel>> Handle(AddCommentsCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
@@ -69,7 +66,6 @@ namespace HackerNews.Application.Comments.Commands.AddComments
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<IEnumerable<GetCommentModel>>(addedComments);
-			}
 		}
 	}
 }

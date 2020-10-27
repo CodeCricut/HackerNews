@@ -1,6 +1,9 @@
-﻿using HackerNews.Application.Common.Models.Boards;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -23,19 +26,16 @@ namespace HackerNews.Application.Boards.Queries.GetBoard
 
 	public class GetBoardHandler : DatabaseRequestHandler<GetBoardQuery, GetBoardModel>
 	{
-		public GetBoardHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetBoardHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<GetBoardModel> Handle(GetBoardQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var board = await UnitOfWork.Boards.GetEntityAsync(request.Id);
 				if (board == null) throw new NotFoundException();
 
 				return Mapper.Map<GetBoardModel>(board);
-			}
 		}
 	}
 }

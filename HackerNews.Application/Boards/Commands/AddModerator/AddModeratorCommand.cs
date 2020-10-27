@@ -1,8 +1,10 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
@@ -25,17 +27,12 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 
 	public class AddModeratorHandler : DatabaseRequestHandler<AddModeratorCommand, GetBoardModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public AddModeratorHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public AddModeratorHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetBoardModel> Handle(AddModeratorCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 				var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
@@ -72,7 +69,6 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetBoardModel>(board);
-			}
 		}
 	}
 }

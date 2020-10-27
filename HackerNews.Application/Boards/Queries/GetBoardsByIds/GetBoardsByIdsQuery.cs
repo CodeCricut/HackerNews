@@ -1,7 +1,10 @@
-﻿using HackerNews.Application.Common.Mappings;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Mappings;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -27,21 +30,18 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsByIds
 
 	public class GetBoardsByIdsHandler : DatabaseRequestHandler<GetBoardsByIdsQuery, PaginatedList<GetBoardModel>>
 	{
-		public GetBoardsByIdsHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetBoardsByIdsHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<PaginatedList<GetBoardModel>> Handle(GetBoardsByIdsQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var boards = await UnitOfWork.Boards.GetEntitiesAsync();
 				var boardsByIds = boards.Where(b => request.Ids.Contains(b.Id));
 
 				var paginatedBoards = boardsByIds.PaginatedListAsync(request.PagingParams);
 
 				return Mapper.Map<PaginatedList<GetBoardModel>>(paginatedBoards);
-			}
 		}
 	}
 }

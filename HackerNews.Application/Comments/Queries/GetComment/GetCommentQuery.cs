@@ -1,6 +1,9 @@
-﻿using HackerNews.Application.Common.Models.Comments;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -20,19 +23,16 @@ namespace HackerNews.Application.Comments.Queries.GetComment
 
 	public class GetCommentHandler : DatabaseRequestHandler<GetCommentQuery, GetCommentModel>
 	{
-		public GetCommentHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<GetCommentModel> Handle(GetCommentQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
 				if (comment == null) throw new NotFoundException();
 
 				return Mapper.Map<GetCommentModel>(comment);
-			}
 		}
 	}
 }

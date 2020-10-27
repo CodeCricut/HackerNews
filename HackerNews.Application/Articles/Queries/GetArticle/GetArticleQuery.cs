@@ -1,6 +1,9 @@
-﻿using HackerNews.Application.Common.Models.Articles;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -20,19 +23,16 @@ namespace HackerNews.Application.Articles.Queries.GetArticle
 
 	public class GetArticleHandler : DatabaseRequestHandler<GetArticleQuery, GetArticleModel>
 	{
-		public GetArticleHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<GetArticleModel> Handle(GetArticleQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
-				var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
-				if (article == null) throw new NotFoundException();
+			var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
+			if (article == null) throw new NotFoundException();
 
-				return Mapper.Map<GetArticleModel>(article);
-			}
+			return Mapper.Map<GetArticleModel>(article);
 		}
 	}
 }

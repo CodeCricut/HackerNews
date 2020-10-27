@@ -1,7 +1,10 @@
-﻿using HackerNews.Application.Common.Mappings;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Mappings;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -26,20 +29,17 @@ namespace HackerNews.Application.Users.Queries.GetPublicUsersByIds
 
 	public class GetPublicUsersByIdsHandler : DatabaseRequestHandler<GetPublicUsersByIdsQuery, PaginatedList<GetPublicUserModel>>
 	{
-		public GetPublicUsersByIdsHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetPublicUsersByIdsHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<PaginatedList<GetPublicUserModel>> Handle(GetPublicUsersByIdsQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var users = await UnitOfWork.Users.GetEntitiesAsync();
 				var usersByIds = users.Where(user => request.Ids.Contains(user.Id));
 				var paginatedUsers = await usersByIds.PaginatedListAsync(request.PagingParams);
 
 				return Mapper.Map<PaginatedList<GetPublicUserModel>>(paginatedUsers);
-			}
 		}
 	}
 }

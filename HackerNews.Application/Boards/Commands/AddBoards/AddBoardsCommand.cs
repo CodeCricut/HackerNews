@@ -1,9 +1,11 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -25,17 +27,12 @@ namespace HackerNews.Application.Boards.Commands.AddBoards
 
 	public class AddBoardsHandler : DatabaseRequestHandler<AddBoardsCommand, IEnumerable<GetBoardModel>>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public AddBoardsHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public AddBoardsHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<IEnumerable<GetBoardModel>> Handle(AddBoardsCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
 				if (user == null) throw new UnauthorizedException();
@@ -58,7 +55,6 @@ namespace HackerNews.Application.Boards.Commands.AddBoards
 				var addedBoards = await UnitOfWork.Boards.AddEntititesAsync(boards);
 
 				return Mapper.Map<IEnumerable<GetBoardModel>>(addedBoards);
-			}
 		}
 	}
 }

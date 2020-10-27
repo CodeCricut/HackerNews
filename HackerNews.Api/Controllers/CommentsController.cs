@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
-	class CommentsController : ApiController
+	public class CommentsController : ApiController
 	{
 		[HttpGet]
 		public async Task<ActionResult<PaginatedList<GetCommentModel>>> GetAsync([FromQuery] PagingParams pagingParams)

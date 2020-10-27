@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
-	class BoardsController : ApiController
+	public class BoardsController : ApiController
 	{
 		[HttpDelete("{key:int}")]
 		[JwtAuthorize]

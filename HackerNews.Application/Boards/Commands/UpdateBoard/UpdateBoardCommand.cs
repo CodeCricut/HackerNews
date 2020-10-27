@@ -1,8 +1,10 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -28,17 +30,12 @@ namespace HackerNews.Application.Boards.Commands.UpdateBoard
 
 	public class UpdateBoardHandler : DatabaseRequestHandler<UpdateBoardCommand, GetBoardModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public UpdateBoardHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public UpdateBoardHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetBoardModel> Handle(UpdateBoardCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var userId = _currentUserService.UserId;
 				var currentUser = await UnitOfWork.Boards.GetEntityAsync(userId);
 				if (currentUser == null) throw new UnauthorizedAccessException();
@@ -59,7 +56,6 @@ namespace HackerNews.Application.Boards.Commands.UpdateBoard
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetBoardModel>(updatedEntity);
-			}
 		}
 	}
 }

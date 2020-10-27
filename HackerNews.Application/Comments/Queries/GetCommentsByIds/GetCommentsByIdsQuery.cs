@@ -1,7 +1,10 @@
-﻿using HackerNews.Application.Common.Mappings;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Mappings;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -26,20 +29,17 @@ namespace HackerNews.Application.Comments.Queries.GetCommentsByIds
 
 	public class GetCommentsByIdsHandler : DatabaseRequestHandler<GetCommentsByIdsQuery, PaginatedList<GetCommentModel>>
 	{
-		public GetCommentsByIdsHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetCommentsByIdsHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<PaginatedList<GetCommentModel>> Handle(GetCommentsByIdsQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var comments = await UnitOfWork.Comments.GetEntitiesAsync();
 				var commentsByIds = comments.Where(comment => request.Ids.Contains(comment.Id));
 				var paginatedComments = await commentsByIds.PaginatedListAsync(request.PagingParams);
 
 				return Mapper.Map<PaginatedList<GetCommentModel>>(paginatedComments);
-			}
 		}
 	}
 }

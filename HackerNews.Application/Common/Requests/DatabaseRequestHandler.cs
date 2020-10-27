@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,16 +12,18 @@ namespace HackerNews.Application.Common.Requests
 	public abstract class DatabaseRequestHandler<TRequest, TReturn> : IRequestHandler<TRequest, TReturn>
 		where TRequest : IRequest<TReturn>
 	{
-		private HttpContext _httpContext;
+		public IUnitOfWork UnitOfWork { get; set; }
+		public IMediator Mediator { get; set; }
+		public IMapper Mapper { get; set; }
+		public ICurrentUserService _currentUserService { get; set; }
 
-		public DatabaseRequestHandler(IHttpContextAccessor httpContextAccessor)
+		public DatabaseRequestHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService)
 		{
-			_httpContext = httpContextAccessor.HttpContext;
+			UnitOfWork = unitOfWork;
+			Mediator = mediator;
+			Mapper = mapper;
+			_currentUserService = currentUserService;
 		}
-
-		protected IUnitOfWork UnitOfWork { get => _httpContext.RequestServices.GetService<IUnitOfWork>(); }
-		protected IMediator Mediator { get => _httpContext.RequestServices.GetService<IMediator>(); }
-		protected IMapper Mapper { get => _httpContext.RequestServices.GetService<IMapper>(); }
 
 		public abstract Task<TReturn> Handle(TRequest request, CancellationToken cancellationToken);
 	}

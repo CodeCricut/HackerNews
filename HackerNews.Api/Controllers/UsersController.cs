@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace HackerNews.Api.Controllers
 {
 	[Route("api/[controller]")]
-	class UsersController : ApiController
+	public class UsersController : ApiController
 	{
 		private readonly IJwtGeneratorService _jwtGeneratorService;
 

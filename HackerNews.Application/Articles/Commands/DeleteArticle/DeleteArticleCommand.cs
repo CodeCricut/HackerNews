@@ -1,6 +1,8 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -23,31 +25,25 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 
 	public class DeleteArticleHandler : DatabaseRequestHandler<DeleteArticleCommand, bool>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public DeleteArticleHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public DeleteArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<bool> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
-				var userId = _currentUserService.UserId;
+			var userId = _currentUserService.UserId;
 
-				if (!await UnitOfWork.Articles.EntityExistsAsync(request.Id)) throw new NotFoundException();
+			if (!await UnitOfWork.Articles.EntityExistsAsync(request.Id)) throw new NotFoundException();
 
-				var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
-				// Verify user owns the entity
-				if (article.UserId != userId) throw new UnauthorizedException();
+			var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
+			// Verify user owns the entity
+			if (article.UserId != userId) throw new UnauthorizedException();
 
-				// Delete article and save.
-				var successful = await UnitOfWork.Articles.DeleteEntityAsync(request.Id);
-				UnitOfWork.SaveChanges();
+			// Delete article and save.
+			var successful = await UnitOfWork.Articles.DeleteEntityAsync(request.Id);
+			UnitOfWork.SaveChanges();
 
-				return successful;
-			}
+			return successful;
 		}
 	}
 }

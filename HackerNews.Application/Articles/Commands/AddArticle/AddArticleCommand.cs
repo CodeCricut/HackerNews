@@ -1,9 +1,11 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -24,31 +26,25 @@ namespace HackerNews.Application.Articles.Commands.AddArticle
 
 	public class AddArticleCommandHandler : DatabaseRequestHandler<AddArticleCommand, GetArticleModel>
 	{
-		private readonly ICurrentUserService _currentUserService;
-
-		public AddArticleCommandHandler(IHttpContextAccessor httpContextAccessor, ICurrentUserService currentUserService) : base(httpContextAccessor)
+		public AddArticleCommandHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
-			_currentUserService = currentUserService;
 		}
 
 		public override async Task<GetArticleModel> Handle(AddArticleCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
-				if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId))
-					throw new UnauthorizedException("Unable to add article; User is not logged in.");
-				var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId))
+				throw new UnauthorizedException("Unable to add article; User is not logged in.");
+			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
 
-				Article article = Mapper.Map<Article>(request.PostArticleModel);
-				article.PostDate = DateTime.Now;
-				article.UserId = user.Id;
+			Article article = Mapper.Map<Article>(request.PostArticleModel);
+			article.PostDate = DateTime.Now;
+			article.UserId = user.Id;
 
-				var addedArticle = await UnitOfWork.Articles.AddEntityAsync(article);
+			var addedArticle = await UnitOfWork.Articles.AddEntityAsync(article);
 
-				UnitOfWork.SaveChanges();
+			UnitOfWork.SaveChanges();
 
-				return Mapper.Map<GetArticleModel>(addedArticle);
-			}
+			return Mapper.Map<GetArticleModel>(addedArticle);
 		}
 	}
 }

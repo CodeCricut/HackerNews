@@ -1,6 +1,9 @@
-﻿using HackerNews.Application.Common.Models.Users;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -20,19 +23,16 @@ namespace HackerNews.Application.Users.Queries.GetPublicUser
 
 	public class GetPublicUserHandler : DatabaseRequestHandler<GetPublicUserQuery, GetPublicUserModel>
 	{
-		public GetPublicUserHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public GetPublicUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<GetPublicUserModel> Handle(GetPublicUserQuery request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var user = await UnitOfWork.Users.GetEntityAsync(request.Id);
 				if (user == null) throw new NotFoundException();
 
 				return Mapper.Map<GetPublicUserModel>(user);
-			}
 		}
 	}
 }

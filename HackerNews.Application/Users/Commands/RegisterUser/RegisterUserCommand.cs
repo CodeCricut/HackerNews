@@ -1,7 +1,10 @@
-﻿using HackerNews.Application.Common.Models.Users;
+﻿using AutoMapper;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Domain.Interfaces;
 using HackerNews.Domain.Models.Users;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -24,14 +27,12 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 
 	public class RegisterUserHandler : DatabaseRequestHandler<RegisterUserCommand, GetPrivateUserModel>
 	{
-		public RegisterUserHandler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+		public RegisterUserHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<GetPrivateUserModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 		{
-			using (UnitOfWork)
-			{
 				var user = Mapper.Map<User>(request.RegisterUserModel);
 
 				// Verify username isn't taken
@@ -47,7 +48,6 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 				UnitOfWork.SaveChanges();
 
 				return Mapper.Map<GetPrivateUserModel>(registeredUser);
-			}
 		}
 	}
 }
