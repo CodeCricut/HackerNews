@@ -14,11 +14,7 @@ using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Boards;
 using HackerNews.Web.Pipeline.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
@@ -36,7 +32,7 @@ namespace HackerNews.Mvc.Controllers
 		[JwtAuthorize]
 		public async Task<ActionResult> Post(BoardCreateModel boardCreateModel)
 		{
-			GetBoardModel addedBoard = await Mediator.Send(new AddBoardCommand(boardCreateModel.Board)); 
+			GetBoardModel addedBoard = await Mediator.Send(new AddBoardCommand(boardCreateModel.Board));
 			return RedirectToAction("Details", new { id = addedBoard.Id });
 		}
 
@@ -44,7 +40,7 @@ namespace HackerNews.Mvc.Controllers
 		{
 			GetBoardModel getBoardModel = await Mediator.Send(new GetBoardQuery(id));
 			var boardArticles = await Mediator.Send(new GetArticlesByIdsQuery(getBoardModel.ArticleIds, pagingParams));
-			
+
 			var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
 			var boardModerators = await Mediator.Send(new GetPublicUsersByIdsQuery(getBoardModel.ModeratorIds, moderatorPagingParams));
 
@@ -66,7 +62,7 @@ namespace HackerNews.Mvc.Controllers
 			if (!user.BoardsModerating.Contains(id)) return RedirectToAction("Details", new { id });
 
 			var board = await Mediator.Send(new GetBoardQuery(id));
-			
+
 			var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
 			var moderators = await Mediator.Send(new GetPublicUsersByIdsQuery(board.ModeratorIds, moderatorPagingParams));
 
@@ -90,7 +86,7 @@ namespace HackerNews.Mvc.Controllers
 		public async Task<ActionResult<BoardModeratorsViewModel>> Moderators(int id)
 		{
 			var board = await Mediator.Send(new GetBoardQuery(id));
-			
+
 			var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
 			var moderators = await Mediator.Send(new GetPublicUsersByIdsQuery(board.ModeratorIds, moderatorPagingParams));
 
@@ -115,7 +111,7 @@ namespace HackerNews.Mvc.Controllers
 		[JwtAuthorize]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await Mediator.Send(new DeleteBoardCommand(id)); 
+			await Mediator.Send(new DeleteBoardCommand(id));
 			return RedirectToAction("Details", new { id });
 		}
 	}

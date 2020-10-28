@@ -26,8 +26,8 @@ namespace HackerNews.Application.Common.Models
 
 		public bool HasNextPage => PageIndex < TotalPages;
 
-		public PagingParams PreviousPagingParams 
-		{  
+		public PagingParams PreviousPagingParams
+		{
 			get
 			{
 				var pageNumber = this.PageIndex;

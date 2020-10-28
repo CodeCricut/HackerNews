@@ -5,6 +5,7 @@ using HackerNews.Application.Articles.Commands.UpdateArticle;
 using HackerNews.Application.Articles.Commands.VoteArticle;
 using HackerNews.Application.Articles.Queries.GetArticle;
 using HackerNews.Application.Articles.Queries.GetArticlesByIds;
+using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Articles;
@@ -34,6 +35,12 @@ namespace HackerNews.Api.Controllers
 		public async Task<ActionResult<GetArticleModel>> GetByIdAsync(int key)
 		{
 			return await Mediator.Send(new GetArticleQuery(key));
+		}
+
+		[HttpGet("search")]
+		public async Task<ActionResult<PaginatedList<GetArticleModel>>> Search(string searchTerm, PagingParams pagingParams)
+		{
+			return await Mediator.Send(new GetArticlesBySearchQuery(searchTerm, pagingParams));
 		}
 
 		[HttpPost("vote")]

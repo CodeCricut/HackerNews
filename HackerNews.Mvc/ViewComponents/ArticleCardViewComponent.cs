@@ -3,14 +3,10 @@ using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetPublicUser;
-using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.ViewComponents

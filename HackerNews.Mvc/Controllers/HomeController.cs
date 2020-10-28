@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using HackerNews.Application.Articles.Queries.GetArticlesByIds;
+﻿using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
-using HackerNews.Application.Boards.Queries.GetBoardsByIds;
 using HackerNews.Application.Boards.Queries.GetBoardsBySearch;
 using HackerNews.Application.Boards.Queries.GetBoardsWithPagination;
 using HackerNews.Application.Comments.Queries.GetCommentsBySearch;
@@ -14,12 +8,11 @@ using HackerNews.Application.Common.Models.Articles;
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Models.Users;
-using HackerNews.Application.Users.Queries.GetCommentsBySearch;
+using HackerNews.Application.Users.Queries.GetUsersBySearch;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Home;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
 {

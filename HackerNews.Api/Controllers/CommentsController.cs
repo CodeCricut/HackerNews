@@ -5,6 +5,7 @@ using HackerNews.Application.Comments.Commands.UpdateComment;
 using HackerNews.Application.Comments.Commands.VoteComment;
 using HackerNews.Application.Comments.Queries.GetComment;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
+using HackerNews.Application.Comments.Queries.GetCommentsBySearch;
 using HackerNews.Application.Comments.Queries.GetCommentsWithPagination;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Comments;
@@ -33,6 +34,12 @@ namespace HackerNews.Api.Controllers
 		public async Task<ActionResult<PaginatedList<GetCommentModel>>> GetByIdAsync([FromQuery] IEnumerable<int> id, [FromQuery] PagingParams pagingParams)
 		{
 			return await Mediator.Send(new GetCommentsByIdsQuery(id, pagingParams));
+		}
+
+		[HttpGet("search")]
+		public async Task<ActionResult<PaginatedList<GetCommentModel>>> Search(string searchTerm, PagingParams pagingParams)
+		{
+			return await Mediator.Send(new GetCommentsBySearchQuery(searchTerm, pagingParams));
 		}
 
 		[HttpPost("vote")]

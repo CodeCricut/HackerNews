@@ -10,6 +10,7 @@ using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Application.Users.Queries.GetPublicUsersWithPagination;
+using HackerNews.Application.Users.Queries.GetUsersBySearch;
 using HackerNews.Domain.Models.Users;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,12 @@ namespace HackerNews.Api.Controllers
 		public async Task<ActionResult<PaginatedList<GetPublicUserModel>>> GetByIdAsync([FromQuery] IEnumerable<int> id, [FromQuery] PagingParams pagingParams)
 		{
 			return await Mediator.Send(new GetPublicUsersByIdsQuery(id, pagingParams));
+		}
+
+		[HttpGet("search")]
+		public async Task<ActionResult<PaginatedList<GetPublicUserModel>>> Search(string searchTerm, PagingParams pagingParams)
+		{
+			return await Mediator.Send(new GetUsersBySearchQuery(searchTerm, pagingParams));
 		}
 
 		[HttpPost("save-article")]

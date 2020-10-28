@@ -4,7 +4,6 @@ using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
 using HackerNews.Domain.Exceptions;
-using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

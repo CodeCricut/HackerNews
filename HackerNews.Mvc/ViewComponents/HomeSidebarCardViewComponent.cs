@@ -1,11 +1,6 @@
 ﻿using HackerNews.Application.Common.Interfaces;
 using HackerNews.Mvc.ViewModels.ViewComponents.HomeSidebarCard;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.ViewComponents
 {

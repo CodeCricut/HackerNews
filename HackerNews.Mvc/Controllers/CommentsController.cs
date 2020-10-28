@@ -17,11 +17,7 @@ using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Comments;
 using HackerNews.Web.Pipeline.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
@@ -61,8 +57,8 @@ namespace HackerNews.Mvc.Controllers
 			{
 				privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
 			}
-			catch (NotFoundException){}
-			catch (UnauthorizedException){}
+			catch (NotFoundException) { }
+			catch (UnauthorizedException) { }
 
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 			var savedComment = loggedIn

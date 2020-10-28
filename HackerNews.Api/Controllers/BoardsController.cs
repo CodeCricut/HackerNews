@@ -6,6 +6,7 @@ using HackerNews.Application.Boards.Commands.DeleteBoard;
 using HackerNews.Application.Boards.Commands.UpdateBoard;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Boards.Queries.GetBoardsByIds;
+using HackerNews.Application.Boards.Queries.GetBoardsBySearch;
 using HackerNews.Application.Boards.Queries.GetBoardsWithPagination;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Boards;
@@ -59,6 +60,12 @@ namespace HackerNews.Api.Controllers
 		public async Task<ActionResult<PaginatedList<GetBoardModel>>> GetByIdAsync([FromQuery] IEnumerable<int> id, [FromQuery] PagingParams pagingParams)
 		{
 			return await Mediator.Send(new GetBoardsByIdsQuery(id, pagingParams));
+		}
+
+		[HttpGet("search")]
+		public async Task<ActionResult<PaginatedList<GetBoardModel>>> Search(string searchTerm, PagingParams pagingParams)
+		{
+			return await Mediator.Send(new GetBoardsBySearchQuery(searchTerm, pagingParams));
 		}
 
 		[HttpGet("{key:int}")]

@@ -15,8 +15,10 @@ namespace HackerNews.Web.Services
 		/// <summary>
 		/// Generated from the HttpContext.Items["UserID"]
 		/// </summary>
-		public int UserId {
-			get {
+		public int UserId
+		{
+			get
+			{
 				var userId = _httpContextAccessor.HttpContext.Items["UserId"];
 				if (userId != null) return (int)userId;
 				return -1;

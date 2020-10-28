@@ -15,11 +15,7 @@ using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Users;
 using HackerNews.Web.Pipeline.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
@@ -50,7 +46,7 @@ namespace HackerNews.Mvc.Controllers
 				privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
 			}
 			catch (NotFoundException) { }
-			catch (UnauthorizedException) {}
+			catch (UnauthorizedException) { }
 
 			// Login
 			var loginModel = new LoginModel { Username = privateUser.Username, Password = privateUser.Password };
@@ -75,7 +71,7 @@ namespace HackerNews.Mvc.Controllers
 
 		public async Task<IActionResult> Logout()
 		{
-			await _userAuthService.LogOut(); 
+			await _userAuthService.LogOut();
 			return RedirectToAction("Register");
 		}
 

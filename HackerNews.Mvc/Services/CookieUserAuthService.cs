@@ -1,18 +1,10 @@
 ﻿using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Models;
 using HackerNews.Application.Common.Models.Users;
-using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
-using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Services.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Services
@@ -24,8 +16,8 @@ namespace HackerNews.Mvc.Services
 		private readonly IJwtSetterService _jwtSetterService;
 		private readonly HttpContext _context;
 
-		public CookieUserAuthService(IJwtGeneratorService jwtGeneratorService, 
-			IHttpContextAccessor httpContextAccessor, 
+		public CookieUserAuthService(IJwtGeneratorService jwtGeneratorService,
+			IHttpContextAccessor httpContextAccessor,
 			IMediator mediator,
 			IJwtSetterService jwtSetterService)
 		{

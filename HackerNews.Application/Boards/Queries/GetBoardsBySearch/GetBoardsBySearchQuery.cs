@@ -8,9 +8,7 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,12 +35,14 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsBySearch
 		public override async Task<PaginatedList<GetBoardModel>> Handle(GetBoardsBySearchQuery request, CancellationToken cancellationToken)
 		{
 			var boards = await UnitOfWork.Boards.GetEntitiesAsync();
+
 			var searchedBoards = boards.Where(b =>
+				b.Title.Contains(request.SearchTerm) ||
 				b.Title.Contains(request.SearchTerm) ||
 				b.Description.Contains(request.SearchTerm)
 			);
 
-			var paginatedSearchedBoards = await PaginatedList<Board>.CreateAsync(searchedBoards, 
+			var paginatedSearchedBoards = await PaginatedList<Board>.CreateAsync(searchedBoards,
 				request.PagingParams.PageNumber, request.PagingParams.PageSize);
 
 			return paginatedSearchedBoards.ToMappedPagedList<Board, GetBoardModel>(Mapper);

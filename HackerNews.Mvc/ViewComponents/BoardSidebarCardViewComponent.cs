@@ -2,16 +2,12 @@
 using HackerNews.Application.Common.Models.Boards;
 using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
-using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.ViewComponents
@@ -37,7 +33,7 @@ namespace HackerNews.Mvc.ViewComponents
 			try
 			{
 				var user = await _mediator.Send(new GetAuthenticatedUserQuery());
-				
+
 				loggedIn = user != null && user.Id > 0;
 
 				moderating = loggedIn
@@ -50,7 +46,7 @@ namespace HackerNews.Mvc.ViewComponents
 			}
 			catch (NotFoundException ex) { }
 
-			var model = new BoardSidebarViewModel 
+			var model = new BoardSidebarViewModel
 			{
 				Board = boardModel,
 				ModeratorPage = new FrontendPage<GetPublicUserModel>(moderators),

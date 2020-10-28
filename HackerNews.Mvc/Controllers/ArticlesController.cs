@@ -2,7 +2,7 @@
 using HackerNews.Application.Articles.Commands.DeleteArticle;
 using HackerNews.Application.Articles.Commands.VoteArticle;
 using HackerNews.Application.Articles.Queries.GetArticle;
-using HackerNews.Application.Articles.Queries.GetArticlesByIds;
+using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Comments.Commands.AddComment;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
@@ -15,11 +15,7 @@ using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
@@ -49,7 +45,7 @@ namespace HackerNews.Mvc.Controllers
 			var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
 			var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
 			var privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
-			
+
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 
 			var savedArticle = loggedIn
@@ -89,14 +85,14 @@ namespace HackerNews.Mvc.Controllers
 		[JwtAuthorize]
 		public async Task<ActionResult> Vote(int id, bool upvote)
 		{
-			await Mediator.Send(new VoteArticleCommand(id, upvote)); 
+			await Mediator.Send(new VoteArticleCommand(id, upvote));
 			return RedirectToAction("Details", new { id });
 		}
 
 		[JwtAuthorize]
 		public async Task<ActionResult> SaveArticle(int id)
 		{
-			await Mediator.Send(new SaveArticleToUserCommand(id)); 
+			await Mediator.Send(new SaveArticleToUserCommand(id));
 			return RedirectToAction("Details", new { id });
 		}
 
@@ -111,7 +107,7 @@ namespace HackerNews.Mvc.Controllers
 		[JwtAuthorize]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await Mediator.Send(new DeleteArticleCommand(id)); 
+			await Mediator.Send(new DeleteArticleCommand(id));
 			return RedirectToAction("Details", new { id });
 		}
 
