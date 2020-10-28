@@ -54,6 +54,9 @@ namespace HackerNews.Mvc
 
 			app.ConfigureWebLayer();
 
+			//app.UseAuthentication();
+			//app.UseAuthorization();
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(

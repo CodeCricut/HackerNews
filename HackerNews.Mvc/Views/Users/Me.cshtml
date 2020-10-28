@@ -1,5 +1,64 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model HackerNews.Mvc.ViewModels.Users.PrivateUserDetailsViewModel 
+
 @{
+    ViewData["Title"] = "Me";
 }
+
+<div class="container-fluid">
+    <div class="row mt-2">
+        @* Sidebar *@
+        <div class="col-sm-12 col-md-5 sidebar">
+            <div class="row card mx-2">
+                <div class="col card-body">
+                    <h2>@Model.User.Username</h2>
+                    <h3>@Model.User.FirstName @Model.User.LastName</h3>
+                    <p>
+                        @Model.User.Karma karma | Joined at @Model.User.JoinDate
+                    </p>
+
+                    <p>
+                        Moderating <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsModerating.Count() boards</a>
+                        | Subscribed to <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsSubscribed.Count() boards</a>
+                    </p>
+                    <p>
+                        Saved <a asp-controller="Users" asp-action="Saved">@Model.User.SavedArticles.Count() articles</a> and <a asp-controller="Users" asp-action="Saved">
+                            @Model.User.SavedComments.Count() comments
+                        </a>
+                    </p>
+                    <a asp-controller="Users" asp-action="Delete"  class="btn btn-outline-danger">Delete Account</a>
+                </div>
+            </div>
+        </div>
+
+        @* Main Content *@
+        <div class="col-sm-12 col-md-7 main-content card-deck">
+            <div class="row mx-2">
+                @* Articles *@
+                <div class="my-2">
+                    <h4>Articles</h4>
+                    @foreach (var article in Model.ArticlePage.Items)
+                    {
+                        @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+                    }
+                    <a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id">All Articles</a>
+                </div>
+
+                @* Comments *@
+                <div class="my-2">
+                    <h4>Comments</h4>
+                    @foreach (var comment in Model.CommentPage.Items)
+                    {
+                        @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+                    }
+                    <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">All Comments</a>
+                    <div class="row w-100 h-100"></div>
+                </div>
+            </div>
+        </div>
+
+
+        @* Footer *@
+    </div>
+    <div class="card-footer">
+    </div>
+</div>

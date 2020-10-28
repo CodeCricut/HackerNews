@@ -35,9 +35,15 @@ namespace HackerNews.Web.Pipeline.Middleware
 		}
 
 
+		/// <summary>
+		/// Attatches UserId to the context, if a valid JWT token is present in the request headers.
+		/// </summary>
+		/// <param name="context"></param>
+		/// <returns></returns>
 		public async Task Invoke(HttpContext context)
 		{
-			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last() ??
+				context.Request.Cookies["JWT"];
 
 			if (token != null)
 				AttachUserIdToContext(context, token);

@@ -15,11 +15,4 @@
     <ProjectReference Include="..\HackerNews.Web\HackerNews.Web.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Articles\" />
-    <Folder Include="Views\Boards\" />
-    <Folder Include="Views\Comments\" />
-    <Folder Include="Views\Users\" />
-  </ItemGroup>
-
 </Project>

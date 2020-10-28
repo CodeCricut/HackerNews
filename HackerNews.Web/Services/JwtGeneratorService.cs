@@ -19,14 +19,12 @@ namespace HackerNews.Web.Services
 	class JwtGeneratorService : IJwtGeneratorService
 	{
 		private readonly IMediator _mediator;
-		private readonly IUnitOfWork _unitOfWork;
 		private JwtSettings _jwtSettings;
 
-		public JwtGeneratorService(IOptions<JwtSettings> options, IMediator mediator, IUnitOfWork unitOfWork)
+		public JwtGeneratorService(IOptions<JwtSettings> options, IMediator mediator)
 		{
 			_jwtSettings = options.Value;
 			_mediator = mediator;
-			_unitOfWork = unitOfWork;
 		}
 
 
