@@ -13,8 +13,6 @@ namespace HackerNews.Api
 	{
 		public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
 		{
-
-
 			services.AddCors(opt =>
 			{
 				opt.AddPolicy(name: "DefaultCorsPolicy",

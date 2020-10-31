@@ -12,7 +12,6 @@ namespace HackerNews.Application
 		public static IServiceCollection AddApplication(this IServiceCollection services)
 		{
 			var assembly = Assembly.GetExecutingAssembly();
-			services.AddAutoMapper(assembly);
 
 			services.AddMediatR(assembly);
 

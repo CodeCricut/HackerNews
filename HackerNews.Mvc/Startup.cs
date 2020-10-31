@@ -1,4 +1,5 @@
 using HackerNews.Application;
+using HackerNews.Domain;
 using HackerNews.Infrastructure;
 using HackerNews.Mvc.Configuration;
 using HackerNews.Web;
@@ -24,6 +25,7 @@ namespace HackerNews.Mvc
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvcProject(Configuration);
+			services.AddDomain();
 			services.AddInfrastructure(Configuration);
 			services.AddApplication();
 			services.AddWeb(Configuration);
