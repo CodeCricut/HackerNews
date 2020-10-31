@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Mappings;
-using HackerNews.Application.Common.Models;
-using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Common.Mappings;
+using HackerNews.Domain.Common.Models;
+using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;

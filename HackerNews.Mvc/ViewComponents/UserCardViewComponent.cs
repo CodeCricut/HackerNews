@@ -1,4 +1,4 @@
-﻿using HackerNews.Application.Common.Models.Users;
+﻿using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
 

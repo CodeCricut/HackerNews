@@ -1,6 +1,4 @@
 ﻿using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models;
-using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Commands.DeleteUser;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Application.Users.Commands.SaveArticleToUser;
@@ -11,7 +9,8 @@ using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Application.Users.Queries.GetPublicUsersWithPagination;
 using HackerNews.Application.Users.Queries.GetUsersBySearch;
-using HackerNews.Domain.Models.Users;
+using HackerNews.Domain.Common.Models;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

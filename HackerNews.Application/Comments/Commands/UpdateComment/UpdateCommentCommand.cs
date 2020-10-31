@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;

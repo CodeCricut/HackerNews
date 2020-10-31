@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using HackerNews.Application.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Articles;
 
 namespace HackerNews.Application.Articles.CommonValidators
 {

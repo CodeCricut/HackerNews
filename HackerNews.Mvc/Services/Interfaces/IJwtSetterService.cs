@@ -1,4 +1,4 @@
-﻿using HackerNews.Application.Common.Models;
+﻿using HackerNews.Domain.Common.Models;
 
 namespace HackerNews.Mvc.Services.Interfaces
 {

@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
-using HackerNews.Domain.Models.Users;
 using MediatR;
 using System;
 using System.Linq;

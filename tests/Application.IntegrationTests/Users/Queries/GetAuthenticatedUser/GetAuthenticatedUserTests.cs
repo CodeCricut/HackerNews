@@ -1,8 +1,8 @@
 ﻿using Application.IntegrationTests.Common;
 using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

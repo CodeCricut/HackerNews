@@ -1,7 +1,7 @@
-﻿using HackerNews.Application.Common.Models.Articles;
-using HackerNews.Application.Common.Models.Boards;
-using HackerNews.Application.Common.Models.Comments;
-using HackerNews.Application.Common.Models.Users;
+﻿using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.Models;
 
 namespace HackerNews.Mvc.ViewModels.Comments

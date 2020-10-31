@@ -1,12 +1,11 @@
 ﻿using Application.IntegrationTests.Common;
 using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models;
-using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
+using HackerNews.Domain.Common.Models;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Interfaces;
-using HackerNews.Domain.Models.Users;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;

@@ -1,9 +1,9 @@
 ﻿using HackerNews.Application.Articles.Queries.GetArticle;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Comments.Queries.GetComment;
-using HackerNews.Application.Common.Models.Articles;
-using HackerNews.Application.Common.Models.Comments;
 using HackerNews.Application.Users.Queries.GetPublicUser;
+using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;

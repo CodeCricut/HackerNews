@@ -1,4 +1,4 @@
-﻿using HackerNews.Application.Common.Models.Comments;
+﻿using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Mvc.Models;
 
 namespace HackerNews.Mvc.ViewModels.Comments

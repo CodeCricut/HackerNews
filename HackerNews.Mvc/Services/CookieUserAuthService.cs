@@ -1,7 +1,7 @@
 ﻿using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models;
-using HackerNews.Application.Common.Models.Users;
 using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
+using HackerNews.Domain.Common.Models;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;

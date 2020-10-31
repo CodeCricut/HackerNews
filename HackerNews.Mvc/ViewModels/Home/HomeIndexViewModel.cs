@@ -1,4 +1,4 @@
-﻿using HackerNews.Application.Common.Models.Articles;
+﻿using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Mvc.Models;
 
 namespace HackerNews.Mvc.ViewModels.Home

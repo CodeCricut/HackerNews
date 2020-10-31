@@ -2,7 +2,7 @@
 using AutoMapper;
 using HackerNews.Application.Boards.Commands.AddSubscriber;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

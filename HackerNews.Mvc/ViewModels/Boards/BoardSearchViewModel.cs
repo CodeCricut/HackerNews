@@ -1,4 +1,4 @@
-﻿using HackerNews.Application.Common.Models.Boards;
+﻿using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Mvc.Models;
 
 namespace HackerNews.Mvc.ViewModels.Boards
