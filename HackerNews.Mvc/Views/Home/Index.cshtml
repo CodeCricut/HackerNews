@@ -1,26 +1,27 @@
-﻿@model HackerNews.Mvc.ViewModels.Home.HomeIndexViewModel
+﻿@using HackerNews.Mvc.ViewModels.ViewComponents.HomeSidebarCard;
+
+@model HackerNews.Mvc.ViewModels.Home.HomeIndexViewModel
 
 @{
     ViewData["Title"] = "HackerNews Home";
 }
 
-<div class="container-fluid">
+<!--<div class="container-fluid">
     <div class="row p-4">
-        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
-            @* Search Bar *@
-            <form asp-controller="Home" asp-action="Search" class="w-100">
-                <div class="form-group">
-                    <input asp-for="SearchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search">
-                </div>
-            </form>
-
-            @* Articles *@
-            @foreach (var article in Model.ArticlePage.Items)
-            {
-                @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-            }
-            @* Bottom of Article List *@
-            <div class="row w-100">
+        <div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">-->
+@* Search Bar *@
+<!--<form asp-controller="Home" asp-action="Search" class="w-100">
+    <div class="form-group">
+        <input asp-for="SearchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search">
+    </div>
+</form>-->
+@* Articles *@
+<!--@foreach (var article in Model.ArticlePage.Items)
+{
+    @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+}-->
+@* Bottom of Article List *@
+<!--<div class="row w-100">
                 <div class="col">
                     @if (Model.ArticlePage.HasPrev)
                     {
@@ -32,16 +33,41 @@
                     }
                 </div>
             </div>
-            <div class="row h-100"></div>
         </div>
-        @* Sidebar *@
-        <div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
-            @await Component.InvokeAsync("HomeSidebarCard")
+    </div>
+</div>-->
+
+
+<main class="container main-container">
+    <div class="content">
+        @* Search Bar *@
+        <form asp-controller="Home" asp-action="Search" class="w-100">
+            <div class="input">
+                <i class="fas fa-search input-icon"></i>
+                <input type="search" class="page-search" placeholder="Search Articles" asp-for="SearchTerm">
+            </div>
+        </form>
+
+        @foreach (var article in Model.ArticlePage.Items)
+        {
+            @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+        }
+
+
+        <div class="navigation-row">
+            @* Bottom of Article List *@
+            @if (Model.ArticlePage.HasPrev)
+            {
+                <a asp-controller="Home" asp-action="Index" asp-all-route-data="Model.ArticlePage.PrevPageQuery" class="btn">Prev</a>
+            }
+            @if (Model.ArticlePage.HasNext)
+            {
+                <a asp-controller="Home" asp-action="Index" asp-all-route-data="Model.ArticlePage.NextPageQuery" class="btn">Next</a>
+            }
         </div>
-
-        @* Footer *@
     </div>
-    <div class="card-footer">
 
+    <div class="sidebar">
+        @await Component.InvokeAsync("HomeSidebarCard")
     </div>
-</div>
+</main>

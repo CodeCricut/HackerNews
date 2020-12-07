@@ -1,6 +1,6 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard.ArticleCardViewModel
 
-<div class="row w-100">
+@*<div class="row w-100">
     <div class="col card article-card mb-3">
         <div class="row card-body">
             <div class="d-none d-md-block col-md-1 text-center">
@@ -29,6 +29,36 @@
                     @Model.Article.Text
                 </p>
             </div>
+        </div>
+    </div>
+</div>*@
+
+<div class="card">
+    <div class="karma-col">
+        <a href="#" class="upvote upvoted"><i class="fas fa-caret-up"></i></a>
+        <p>@Model.Article.Karma</p>
+        <a href="#" class="downvote"><i class="fas fa-caret-down"></i></a>
+    </div>
+    <div class="content-col">
+        <div class="sub-row">
+            <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id" class="sub-link">@Model.Board.Title</a>
+            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id" class="user-link">Posted by @Model.User.Username 10 hours ago</a>
+        </div>
+        <div class="title-row">
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">
+            @Model.Article.Title
+                </a>
+        </div>
+        <div class="more-row">
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
+            @if (Model.Saved)
+            {
+                <a href="#" class="save-link">Saved</a>
+            }
+            else
+            {
+                <a href="#" class="save-link">Save</a>
+            }
         </div>
     </div>
 </div>

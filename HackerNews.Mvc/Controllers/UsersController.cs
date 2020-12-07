@@ -2,6 +2,7 @@
 using HackerNews.Application.Boards.Queries.GetBoardsByIds;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
 using HackerNews.Application.Users.Commands.DeleteUser;
+using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models;
@@ -38,7 +39,7 @@ namespace HackerNews.Mvc.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(UserRegisterViewModel viewModel)
 		{
-			// Register
+			// Verify not logged in
 			GetPrivateUserModel privateUser = null;
 			try
 			{
@@ -47,8 +48,11 @@ namespace HackerNews.Mvc.Controllers
 			catch (NotFoundException) { }
 			catch (UnauthorizedException) { }
 
+			// Regiser
+			GetPrivateUserModel registeredUser = await Mediator.Send(new RegisterUserCommand(viewModel.RegisterModel));
+
 			// Login
-			var loginModel = new LoginModel { Username = privateUser.Username, Password = privateUser.Password };
+			var loginModel = new LoginModel { Username = registeredUser.Username, Password = registeredUser.Password };
 			await _userAuthService.LogIn(loginModel);
 
 			return RedirectToAction("Me");

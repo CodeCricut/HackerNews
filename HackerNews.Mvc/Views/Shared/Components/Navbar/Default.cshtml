@@ -1,6 +1,6 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.NavbarViewModel
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+@*<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a asp-controller="Home" asp-action="Index" class="navbar-brand">HackerNews</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -36,4 +36,29 @@
 
         </ul>
     </div>
-</nav>
+</nav>*@
+
+<header class="header">
+    <h1>
+        <a asp-controller="Home" asp-action="Index" class="logo">HackerNews</a>
+    </h1>
+    <div class="input">
+        <i class="fas fa-search input-icon"></i>
+        <input type="text" placeholder="Search HackerNews">
+    </div>
+    <ul class="header-links">
+        <li><a asp-controller="Home" asp-action="Index" class="nav-link">Articles</a></li>
+        <li><a asp-controller="Home" asp-action="Boards" class="nav-link">Boards</a></li>
+        @if (Model.LoggedIn)
+        {
+            @* TODO: add MyStuff dropdown *@
+            <li><a asp-controller="Articles" asp-action="Create" class="nav-link">Submit</a></li>
+            <li><a asp-controller="Users" asp-action="Logout" class="nav-link">Logout</a></li>
+        }
+        else
+        {
+            <li><a asp-controller="Users" asp-action="Register" class="nav-link">Register</a></li>
+            <li><a asp-controller="Users" asp-action="Login" class="nav-link">Login</a></li>
+        }
+    </ul>
+</header>

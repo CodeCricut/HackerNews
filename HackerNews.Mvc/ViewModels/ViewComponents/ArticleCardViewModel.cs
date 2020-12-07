@@ -9,5 +9,7 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard
 		public GetArticleModel Article { get; set; }
 		public GetBoardModel Board { get; set; }
 		public GetPublicUserModel User { get; set; }
+		// TODO: properly bind value and add js action to make save button work
+		public bool Saved { get; set; }
 	}
 }

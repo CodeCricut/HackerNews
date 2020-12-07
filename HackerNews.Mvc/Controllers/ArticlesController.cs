@@ -12,6 +12,8 @@ using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
@@ -44,7 +46,8 @@ namespace HackerNews.Mvc.Controllers
 			var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
 			var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
 			var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
-			var privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
+
+			var privateUser = await TryGetPrivateUser();
 
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 
@@ -111,6 +114,16 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Details", new { id });
 		}
 
-
+		private async Task<GetPrivateUserModel> TryGetPrivateUser()
+		{
+			try
+			{
+				return await Mediator.Send(new GetAuthenticatedUserQuery());
+			}
+			catch (NotFoundException)
+			{
+				return null;
+			}
+		}
 	}
 }
