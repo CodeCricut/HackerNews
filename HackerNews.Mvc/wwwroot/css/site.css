@@ -452,7 +452,8 @@ input.page-search {
     }
 
     .sidebar {
-        display: none;
+        grid-row: 1 / 2;
+        grid-column: main;
     }
 
     .header > * {
