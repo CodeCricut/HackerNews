@@ -1,0 +1,44 @@
+﻿form h2 {
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+.center-col {
+    grid-column: 4 / 9;
+}
+
+.container .center-col .card-lg {
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: 300px;
+    width: 100%;
+    margin-top: 150px;
+}
+
+.container {
+    height: 100vh;
+    grid-auto-rows: 100vh;
+}
+
+.login-card input {
+    height: 40px;
+    border-radius: 3px;
+    border: 1px solid var(--light-gray);
+    padding: 10px;
+}
+
+.login-card .btn,
+.login-card input {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 900px){
+    .center-col {
+        grid-column: 2 / -2;
+    }
+
+    .container .center-col .card-lg {
+        margin-top: 70px;
+    }
+}
