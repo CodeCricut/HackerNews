@@ -8,6 +8,7 @@ using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,6 +34,11 @@ namespace HackerNews.Application.Boards.Commands.AddBoard
 		{
 			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+
+			// Verify the board doesn't exist
+			var boards = await UnitOfWork.Boards.GetEntitiesAsync();
+			var boardWithSameTitle = boards.FirstOrDefault(board => board.Title == request.PostBoardModel.Title);
+			if (boardWithSameTitle != null) throw new BoardTitleTakenException();
 
 			var board = Mapper.Map<Board>(request.PostBoardModel);
 			board.CreateDate = DateTime.Now;

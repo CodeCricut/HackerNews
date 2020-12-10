@@ -46,13 +46,15 @@ namespace HackerNews.Application.Boards.Commands.UpdateBoard
 				board.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null)
 				throw new UnauthorizedException();
 
-			var updatedEntity = Mapper.Map<Board>(request.PostBoardModel);
+			// Update properties
+			var updateModel = request.PostBoardModel;
+			board.Description = updateModel.Description;
 
 			// Update and save.
-			await UnitOfWork.Boards.UpdateEntityAsync(request.BoardId, updatedEntity);
+			await UnitOfWork.Boards.UpdateEntityAsync(request.BoardId, board);
 			UnitOfWork.SaveChanges();
 
-			return Mapper.Map<GetBoardModel>(updatedEntity);
+			return Mapper.Map<GetBoardModel>(board);
 		}
 	}
 }
