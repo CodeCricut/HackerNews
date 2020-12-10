@@ -2,9 +2,10 @@
 
 @{
     ViewData["Title"] = "Create Board";
+    Layout = "_CenteredLayout";
 }
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-4 mx-auto">
         <h1>Create Board</h1>
         <form asp-action="Post">
@@ -24,4 +25,22 @@
             </div>
         </form>
     </div>
-</div>
+</div>*@
+
+
+<form asp-controller="Boards" asp-action="Post" class="card card-lg login-card">
+    <h2>Create Board</h2>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <input type="text" asp-for="Board.Title" placeholder="Title">
+        <span asp-validation-for="Board.Title" class="text-danger"></span>
+
+    </div>
+
+    <div>
+        <input type="text"  asp-for="Board.Description" placeholder="Description">
+        <span asp-validation-for="Board.Description" class="text-danger"></span>
+
+    </div>
+    <input type="submit" value="Create" class="btn btn-primary" />
+</form>

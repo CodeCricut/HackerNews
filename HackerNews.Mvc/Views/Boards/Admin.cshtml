@@ -1,20 +1,24 @@
 ﻿@model HackerNews.Mvc.ViewModels.Boards.BoardAdminViewModel
- 
+
 @{
     ViewData["Title"] = $"{Model.Board.Title} - Admin Panel";
 }
 
-<div class="container-fluid">
+
+
     @await Component.InvokeAsync("BoardCard", new { boardModel = Model.Board })
 
-    | @if (Model.Board.Deleted)
+<div class="card">
+    @if (Model.Board.Deleted)
     {
-        <h2 class="text-danger">Deleted</h2>
+        <h2 class="text-danger">This board has been deleted</h2>
     }
     else if (Model.UserCreatedBoard)
     {
         <a asp-controller="Boards" asp-action="Delete" asp-route-id="@Model.Board.Id" class="btn btn-danger">Delete</a>
     }
+</div>
+   
 
     <h2>Moderators</h2>
     @foreach (var moderator in Model.ModeratorPage.Items)
@@ -27,19 +31,61 @@
     }
 
 
+<div class="card card-lg vertical-card">
     <h2>Add Moderator</h2>
     <form asp-controller="Boards" asp-action="AddModerator">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <input hidden asp-for="Board.Id" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label asp-for="ModeratorAddedId" class="control-label"></label>
-            <input asp-for="ModeratorAddedId" class="form-control" />
-            <span asp-validation-for="ModeratorAddedId" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Add Moderator" class="btn btn-primary" />
-        </div>
+        <input hidden asp-for="Board.Id" class="form-control" />
+
+        <input asp-for="ModeratorAddedUsername" class="form-control" placeholder="New Moderator Username" class="input"/>
+        <span asp-validation-for="ModeratorAddedUsername" class="text-danger"></span>
+
+        <input type="submit" value="Add Moderator" class="btn btn-primary" />
     </form>
 </div>
+    
+
+@section Sidebar {
+    @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board }) 
+} 
+
+
+@*<div class="container-fluid">
+        @await Component.InvokeAsync("BoardCard", new { boardModel = Model.Board })
+
+        | @if (Model.Board.Deleted)
+        {
+            <h2 class="text-danger">Deleted</h2>
+        }
+        else if (Model.UserCreatedBoard)
+        {
+            <a asp-controller="Boards" asp-action="Delete" asp-route-id="@Model.Board.Id" class="btn btn-danger">Delete</a>
+        }
+
+        <h2>Moderators</h2>
+        @foreach (var moderator in Model.ModeratorPage.Items)
+        {
+            @await Component.InvokeAsync("UserCard", new { userModel = moderator });
+        }
+        @if (Model.ModeratorPage.HasNext)
+        {
+            <a asp-controller="Boards" asp-action="Moderators" class="mr-auto btn btn-outline-secondary ">All Moderators</a>
+        }
+
+
+        <h2>Add Moderator</h2>
+        <form asp-controller="Boards" asp-action="AddModerator">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input hidden asp-for="Board.Id" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ModeratorAddedId" class="control-label"></label>
+                <input asp-for="ModeratorAddedId" class="form-control" />
+                <span asp-validation-for="ModeratorAddedId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Moderator" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>*@

@@ -7,10 +7,12 @@ using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Boards.Queries.GetBoardsBySearch;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
+using HackerNews.Application.Users.Queries.GetUserByUsername;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Boards;
 using HackerNews.Web.Pipeline.Filters;
@@ -79,8 +81,19 @@ namespace HackerNews.Mvc.Controllers
 		[JwtAuthorize]
 		public async Task<ActionResult> AddModerator(BoardAdminViewModel model)
 		{
-			var updatedBoard = await Mediator.Send(new AddModeratorCommand(model.Board.Id, model.ModeratorAddedId));
-			return RedirectToAction("Admin", new { id = updatedBoard.Id });
+			try
+			{
+				var toAddModerator = await Mediator.Send(new GetUserByUsernameQuery(model.ModeratorAddedUsername));
+
+				var updatedBoard = await Mediator.Send(new AddModeratorCommand(model.Board.Id, toAddModerator.Id));
+
+				return RedirectToAction("Admin", new { id = updatedBoard.Id });
+			}
+			catch (NotFoundException e )
+			{
+				return RedirectToAction("Admin", new { id = model.Board.Id });
+			}
+			
 		}
 
 		public async Task<ActionResult<BoardModeratorsViewModel>> Moderators(int id)

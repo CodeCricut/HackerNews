@@ -67,8 +67,17 @@ namespace HackerNews.Mvc.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(UserLoginViewModel viewModel)
 		{
-			await _userAuthService.LogIn(viewModel.LoginModel);
-			return RedirectToAction("Me");
+			try
+			{
+				await _userAuthService.LogIn(viewModel.LoginModel);
+				return RedirectToAction("Me");
+
+			}
+			catch (System.Exception e)
+			{
+				return RedirectToAction("Register");
+				throw;
+			}
 		}
 
 
@@ -120,7 +129,10 @@ namespace HackerNews.Mvc.Controllers
 			var user = await Mediator.Send(new GetPublicUserQuery(userId));
 			var articles = await Mediator.Send(new GetArticlesByIdsQuery(user.ArticleIds, pagingParams));
 
-			var model = new UserArticlesViewModel { ArticlePage = new FrontendPage<GetArticleModel>(articles) };
+			var model = new UserArticlesViewModel { 
+				ArticlePage = new FrontendPage<GetArticleModel>(articles) ,
+				UserId = userId
+			};
 			return View(model);
 		}
 
@@ -138,8 +150,8 @@ namespace HackerNews.Mvc.Controllers
 		{
 			var privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
 
-			var articles = await Mediator.Send(new GetArticlesByIdsQuery(privateUser.ArticleIds, pagingParams));
-			var comments = await Mediator.Send(new GetCommentsByIdsQuery(privateUser.CommentIds, pagingParams));
+			var articles = await Mediator.Send(new GetArticlesByIdsQuery(privateUser.SavedArticles, pagingParams));
+			var comments = await Mediator.Send(new GetCommentsByIdsQuery(privateUser.SavedComments, pagingParams));
 
 			var model = new UserSavedViewModel
 			{

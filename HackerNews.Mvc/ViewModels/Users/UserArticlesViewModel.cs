@@ -6,5 +6,6 @@ namespace HackerNews.Mvc.ViewModels.Users
 	public class UserArticlesViewModel
 	{
 		public FrontendPage<GetArticleModel> ArticlePage { get; set; }
+		public int UserId { get; set; }
 	}
 }

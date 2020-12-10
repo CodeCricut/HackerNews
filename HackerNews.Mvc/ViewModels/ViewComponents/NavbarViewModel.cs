@@ -12,5 +12,7 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents
 			}
 		}
 		public GetPrivateUserModel User { get; set; }
+
+		public string SearchTerm { get; set; }
 	}
 }

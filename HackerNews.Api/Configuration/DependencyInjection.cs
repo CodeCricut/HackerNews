@@ -16,7 +16,7 @@ namespace HackerNews.Api
 			services.AddCors(opt =>
 			{
 				opt.AddPolicy(name: "DefaultCorsPolicy",
-					builder => builder.AllowAnyOrigin());
+					builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 			});
 
 			services.AddControllers(opt => opt.Filters.Add(typeof(AnalysisAsyncActionFilter)));

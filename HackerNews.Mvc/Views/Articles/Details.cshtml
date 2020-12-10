@@ -1,10 +1,10 @@
 ﻿@model HackerNews.Mvc.ViewModels.Articles.ArticleDetailsViewModel
- 
+
 @{
     ViewData["Title"] = Model.Article.Title;
 }
 
-<div class="container">
+<!--<div class="container">
     <div class="row">
         <div class="vote-panel d-none d-md-block col-md-1 text-center">
             <a asp-controller="Articles" asp-action="vote" asp-route-id="@Model.Article.Id" asp-route-upvote="@true">
@@ -48,10 +48,9 @@
                 }
 
 
-            <p>@Model.Article.Text</p>
-
-            @* Add Comment*@
-            @if (Model.LoggedIn)
+            <p>@Model.Article.Text</p>-->
+@* Add Comment*@
+<!--@if (Model.LoggedIn)
             {
                 <form asp-controller="Articles" asp-action="AddComment" method="post">
                     <div class="form-group">
@@ -84,4 +83,40 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
+
+
+@await Component.InvokeAsync("ArticleCard", new { articleModel = Model.Article })
+
+@* Add Comment*@
+@if (Model.LoggedIn)
+{
+    <div class="card card-lg">
+
+        <form asp-controller="Articles" asp-action="AddComment" method="post">
+            <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
+            <input hidden asp-for="Article.BoardId" />
+            <input hidden asp-for="Article.Id" />
+            <input hidden asp-for="Article.UserId" />
+            <input type="submit" class="btn btn-primary" value="Add comment" />
+        </form>
+    </div>
+}
+else
+{
+    <p><a asp-controller="Users" asp-action="Login">Log in</a> to comment.</p>
+}
+
+<h2>Comments</h2>
+@foreach (var comment in Model.CommentPage.Items)
+{
+    @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+}
+@if (Model.CommentPage.HasPrev)
+{
+    <a asp-controller="Articles" asp-action="Details" asp-all-route-data="@Model.CommentPage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
+}
+@if (Model.CommentPage.HasNext)
+{
+    <a asp-controller="Articles" asp-action="Index" asp-all-route-data="@Model.CommentPage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
+}

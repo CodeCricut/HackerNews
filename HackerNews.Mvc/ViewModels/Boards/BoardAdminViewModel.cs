@@ -7,7 +7,7 @@ namespace HackerNews.Mvc.ViewModels.Boards
 	public class BoardAdminViewModel
 	{
 		public GetBoardModel Board { get; set; }
-		public int ModeratorAddedId { get; set; }
+		public string ModeratorAddedUsername { get; set; }
 		public bool UserCreatedBoard { get; set; }
 
 		public FrontendPage<GetPublicUserModel> ModeratorPage { get; set; }

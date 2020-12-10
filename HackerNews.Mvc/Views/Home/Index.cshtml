@@ -38,36 +38,33 @@
 </div>-->
 
 
-<main class="container main-container">
-    <div class="content">
-        @* Search Bar *@
-        <form asp-controller="Home" asp-action="Search" class="w-100">
-            <div class="input">
-                <i class="fas fa-search input-icon"></i>
-                <input type="search" class="page-search" placeholder="Search Articles" asp-for="SearchTerm">
-            </div>
-        </form>
-
-        @foreach (var article in Model.ArticlePage.Items)
-        {
-            @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-        }
-
-
-        <div class="navigation-row">
-            @* Bottom of Article List *@
-            @if (Model.ArticlePage.HasPrev)
-            {
-                <a asp-controller="Home" asp-action="Index" asp-all-route-data="Model.ArticlePage.PrevPageQuery" class="btn">Prev</a>
-            }
-            @if (Model.ArticlePage.HasNext)
-            {
-                <a asp-controller="Home" asp-action="Index" asp-all-route-data="Model.ArticlePage.NextPageQuery" class="btn">Next</a>
-            }
-        </div>
+@* Search Bar *@
+<form asp-controller="Home" asp-action="Search" class="w-100">
+    <div class="input">
+        <i class="fas fa-search input-icon"></i>
+        <input type="search" class="page-search" placeholder="Search Articles" asp-for="SearchTerm">
     </div>
+</form>
 
-    <div class="sidebar">
-        @await Component.InvokeAsync("HomeSidebarCard")
-    </div>
-</main>
+@foreach (var article in Model.ArticlePage.Items)
+{
+    @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+}
+
+
+<div class="navigation-row">
+    @* Bottom of Article List *@
+    @if (Model.ArticlePage.HasPrev)
+    {
+        <a asp-controller="Home" asp-action="Index" asp-all-route-data="Model.ArticlePage.PrevPageQuery" class="btn">Prev</a>
+    }
+    @if (Model.ArticlePage.HasNext)
+    {
+        <a asp-controller="Home" asp-action="Index" asp-all-route-data="Model.ArticlePage.NextPageQuery" class="btn">Next</a>
+    }
+</div>
+
+@section Sidebar{
+    @await Component.InvokeAsync("HomeSidebarCard")
+
+}

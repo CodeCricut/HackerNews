@@ -30,6 +30,9 @@ namespace HackerNews.Domain.Common.Models.Users
 		public List<int> LikedArticles { get; set; } = new List<int>();
 		public List<int> LikedComments { get; set; } = new List<int>();
 
+		public List<int> DislikedArticles { get; set; }
+		public List<int> DislikedComments { get; set; }
+
 		public DateTime JoinDate { get; set; }
 
 		public List<int> BoardsSubscribed { get; set; } = new List<int>();
@@ -48,6 +51,9 @@ namespace HackerNews.Domain.Common.Models.Users
 
 				.ForMember(model => model.LikedArticles, user => user.MapFrom(u => u.LikedArticles.Select(la => la.ArticleId)))
 				.ForMember(model => model.LikedComments, user => user.MapFrom(u => u.LikedComments.Select(lc => lc.CommentId)))
+
+				.ForMember(model => model.DislikedArticles, user => user.MapFrom(u => u.DislikedArticles.Select(la => la.ArticleId)))
+				.ForMember(model => model.DislikedComments, user => user.MapFrom(u => u.DislikedComments.Select(lc => lc.CommentId)))
 
 				.ForMember(model => model.BoardsModerating, user => user.MapFrom(u => u.BoardsModerating.Select(bm => bm.BoardId)))
 				.ForMember(model => model.BoardsSubscribed, user => user.MapFrom(u => u.BoardsSubscribed.Select(bs => bs.BoardId)));

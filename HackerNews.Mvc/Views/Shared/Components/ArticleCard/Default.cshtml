@@ -35,9 +35,35 @@
 
 <div class="card">
     <div class="karma-col">
-        <a href="#" class="upvote upvoted"><i class="fas fa-caret-up"></i></a>
+        @if (Model.LoggedIn)
+        {
+            <a 
+           @if (Model.UserUpvoted)
+           {
+               <text>class="upvote upvoted"</text>
+           } else {
+               <text>class="upvote"</text>
+           }
+
+           onclick="upvoteArticle('@Model.Article.Id', '@Model.Jwt', this)"><i class="fas fa-caret-up"></i></a>
+        }
+        
         <p>@Model.Article.Karma</p>
-        <a href="#" class="downvote"><i class="fas fa-caret-down"></i></a>
+
+        @if (Model.LoggedIn)
+        {
+        <a
+           @if (Model.UserDownvoted)
+           {
+                <text>class="downvote downvoted"</text>
+           }
+           else
+           {
+                <text>class="downvote"</text>
+           }
+
+           onclick="downvoteArticle('@Model.Article.Id', '@Model.Jwt', this)"><i class="fas fa-caret-down"></i></a>
+        }
     </div>
     <div class="content-col">
         <div class="sub-row">
@@ -53,11 +79,13 @@
             <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
             @if (Model.Saved)
             {
-                <a href="#" class="save-link">Saved</a>
+                <a href="#" class="save-link"
+                   onclick="unsaveArticle('@Model.Article.Id', '@Model.Jwt', this)"
+                   >Saved</a>
             }
             else
             {
-                <a href="#" class="save-link">Save</a>
+                <a  href="#"  class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
             }
         </div>
     </div>

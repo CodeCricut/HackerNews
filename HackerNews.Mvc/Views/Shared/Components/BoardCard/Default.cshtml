@@ -1,5 +1,5 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.BoardCardViewModel 
-<div class="row w-100">
+@*<div class="row w-100">
     <div class="col card article-card mb-3">
         <div class="row card-body">
             <div class="col-sm-12 col-md-11">
@@ -14,4 +14,11 @@
             </div>
         </div>
     </div>
+</div>*@
+
+<div class="card board-card">
+    <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id" class="board-title">
+        @Model.Board.Title
+    </a>
+    <p>@Model.Board.Description</p>
 </div>

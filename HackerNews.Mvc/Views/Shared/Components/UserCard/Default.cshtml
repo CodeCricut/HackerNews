@@ -1,6 +1,25 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.UserCardViewModel
  
-<div class="row w-100">
+<div class="card vertical-card">
+    <div class="card-body vertical-card">
+        <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">
+            @Model.User.Username
+        </a>
+        <p>
+            Joined @Model.User.JoinDate
+        </p>
+        <p>
+            @Model.User.Karma Karma
+        </p>
+    </div>
+    <div class="card-footer vertical-card">
+            <a asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id">@Model.User.ArticleIds.Count() articles</a>
+            <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">@Model.User.CommentIds.Count() comments</a>
+    </div>
+</div>
+
+
+@*<div class="row w-100">
     <div class="col card article-card mb-3">
         <div class="row card-body">
             <div class="col-sm-12 col-md-11">
@@ -14,4 +33,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@

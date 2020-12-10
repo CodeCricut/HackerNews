@@ -12,5 +12,11 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents
 		public GetCommentModel ParentComment { get; set; }
 		public GetBoardModel Board { get; set; }
 		public GetPublicUserModel User { get; set; }
+
+		public bool LoggedIn { get; set; }
+		public bool UserUpvoted { get; set; }
+		public bool UserDownvoted { get; set; }
+		public string Jwt { get; set; }
+		public bool Saved { get; set; }
 	}
 }
