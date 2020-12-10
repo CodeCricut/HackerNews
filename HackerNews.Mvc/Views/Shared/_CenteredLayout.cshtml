@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="https://kit.fontawesome.com/68cc03526d.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+
+<body>
+    @await Component.InvokeAsync("Navbar")
+    <div class="container main-container">
+        <div class="center-col">
+            @RenderBody()
+        </div>
+        <!-- Optional JavaScript -->
+        <script src="~/js/hackerNews.js"></script>
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+
+</html>
