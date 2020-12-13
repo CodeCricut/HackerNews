@@ -16,6 +16,8 @@ namespace HackerNews.Domain.Entities
 		public List<Article> Articles { get; set; }
 		public List<Comment> Comments { get; set; }
 
+		public Image? BoardImage { get; set; }
+
 		public Board()
 		{
 			Moderators = new List<BoardUserModerator>();

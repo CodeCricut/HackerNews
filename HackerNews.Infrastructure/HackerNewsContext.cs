@@ -10,6 +10,7 @@ namespace HackerNews.EF
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Board> Boards { get; set; }
+		public DbSet<Image> Images { get; set; }
 
 		// we will inject the configuration options in through the api/startup class
 		public HackerNewsContext(DbContextOptions<HackerNewsContext> options) : base(options)

@@ -7,6 +7,8 @@ namespace HackerNews.Domain.Entities
 {
 	public class User : BaseUser
 	{
+		public Image? ProfileImage { get; set; }
+
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public int Karma { get; set; }
