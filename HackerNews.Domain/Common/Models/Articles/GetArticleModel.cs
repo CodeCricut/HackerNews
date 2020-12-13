@@ -31,8 +31,7 @@ namespace HackerNews.Domain.Common.Models.Articles
 				.ForMember(model => model.CommentIds, article => article.MapFrom(a => a.Comments.Select(a => a.Id)))
 				.ForMember(model => model.UsersLiked, article => article.MapFrom(a => a.UsersLiked.Select(ul => ul.UserId)))
 				.ForMember(model => model.UsersDisliked, article => article.MapFrom(a => a.UsersDisliked.Select(ud => ud.UserId)))
-				//.ForMember(model => model.AssociatedImageId, article => article.MapFrom(a => a.AssociatedImage.Id));
-				;
+				.ForMember(model => model.AssociatedImageId, article => article.MapFrom(a => a.AssociatedImage.Id));
 		}
 	}
 }
