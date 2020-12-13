@@ -22,7 +22,14 @@
 
 @section Sidebar {
     <div class="card card-lg user-details-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" />
+        @if (Model.ImageDataUrl != null && Model.ImageDataUrl != "")
+        {
+            <img src="@Model.ImageDataUrl" />
+        }
+        else
+        {
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" />
+        }
         <div class="user-info">
             <h2>@Model.User.Username</h2>
             <h3>@Model.User.FirstName @Model.User.LastName</h3>

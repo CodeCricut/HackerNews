@@ -1,6 +1,8 @@
 ﻿using HackerNews.Application.Articles.Queries.GetArticlesByIds;
 using HackerNews.Application.Boards.Queries.GetBoardsByIds;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
+using HackerNews.Application.Images.Queries.GetImageById;
+using HackerNews.Application.Users.Commands.AddImage;
 using HackerNews.Application.Users.Commands.DeleteUser;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
@@ -9,6 +11,7 @@ using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
@@ -16,6 +19,7 @@ using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Users;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
@@ -23,10 +27,14 @@ namespace HackerNews.Mvc.Controllers
 	public class UsersController : FrontendController
 	{
 		private readonly IUserAuthService _userAuthService;
+		private readonly IImageFileReader _imageFileReader;
+		private readonly IImageDataHelper _imageDataHelper;
 
-		public UsersController(IUserAuthService userAuthService)
+		public UsersController(IUserAuthService userAuthService, IImageFileReader imageFileReader, IImageDataHelper imageDataHelper)
 		{
 			_userAuthService = userAuthService;
+			_imageFileReader = imageFileReader;
+			_imageDataHelper = imageDataHelper;
 		}
 
 		public ViewResult Register()
@@ -54,6 +62,14 @@ namespace HackerNews.Mvc.Controllers
 			// Login
 			var loginModel = new LoginModel { Username = registeredUser.Username, Password = registeredUser.Password };
 			await _userAuthService.LogIn(loginModel);
+
+			// Attatch image if present
+			var file = Request.Form.Files.FirstOrDefault();
+			if (file != null)
+			{
+				PostImageModel imageModel = _imageFileReader.ConvertImageFileToImageModel(file);
+				await Mediator.Send(new AddUserImageCommand(imageModel, registeredUser.Id));
+			}
 
 			return RedirectToAction("Me");
 		}
@@ -96,11 +112,19 @@ namespace HackerNews.Mvc.Controllers
 			var articles = await Mediator.Send(new GetArticlesByIdsQuery(privateModel.ArticleIds, pagingParams));
 			var comments = await Mediator.Send(new GetCommentsByIdsQuery(privateModel.CommentIds, pagingParams));
 
+			string imageDataURL = "";
+			if (privateModel.ProfileImageId > 0)
+			{
+				GetImageModel img = await Mediator.Send(new GetImageByIdQuery(privateModel.ProfileImageId));
+				imageDataURL = _imageDataHelper.ConvertImageDataToDataUrl(img.ImageData, img.ContentType);
+			}
+
 			var model = new PrivateUserDetailsViewModel
 			{
 				User = privateModel,
 				ArticlePage = new FrontendPage<GetArticleModel>(articles),
-				CommentPage = new FrontendPage<GetCommentModel>(comments)
+				CommentPage = new FrontendPage<GetCommentModel>(comments),
+				ImageDataUrl = imageDataURL
 			};
 
 			return View(model);
@@ -114,11 +138,19 @@ namespace HackerNews.Mvc.Controllers
 			var articles = await Mediator.Send(new GetArticlesByIdsQuery(user.ArticleIds, pagingParams));
 			var comments = await Mediator.Send(new GetCommentsByIdsQuery(user.CommentIds, pagingParams));
 
+			string imageDataURL = "";
+			if (user.ProfileImageId > 0)
+			{
+				GetImageModel img = await Mediator.Send(new GetImageByIdQuery(user.ProfileImageId));
+				imageDataURL = _imageDataHelper.ConvertImageDataToDataUrl(img.ImageData, img.ContentType);
+			}
+
 			var returnModel = new PublicUserDetailsViewModel
 			{
 				User = user,
 				ArticlePage = new FrontendPage<GetArticleModel>(articles),
-				CommentPage = new FrontendPage<GetCommentModel>(comments)
+				CommentPage = new FrontendPage<GetCommentModel>(comments),
+				ImageDataUrl = imageDataURL
 			};
 			return View(returnModel);
 		}

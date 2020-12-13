@@ -70,51 +70,43 @@ namespace HackerNews.Mvc.Controllers
 
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
-			try
+			var articleModel = await Mediator.Send(new GetArticleQuery(id));
+			var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
+			var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
+			var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
+
+			var privateUser = await TryGetPrivateUser();
+
+			var loggedIn = privateUser != null && privateUser.Id != 0;
+
+			var savedArticle = loggedIn
+				? privateUser.SavedArticles.Contains(id)
+				: false;
+
+			var wroteArticle = loggedIn
+				? privateUser.ArticleIds.Contains(id)
+				: false;
+
+			string imageDataURL = "";
+			if (articleModel.AssociatedImageId > 0)
 			{
-				var articleModel = await Mediator.Send(new GetArticleQuery(id));
-				var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
-				var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
-				var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
-
-				var privateUser = await TryGetPrivateUser();
-
-				var loggedIn = privateUser != null && privateUser.Id != 0;
-
-				var savedArticle = loggedIn
-					? privateUser.SavedArticles.Contains(id)
-					: false;
-
-				var wroteArticle = loggedIn
-					? privateUser.ArticleIds.Contains(id)
-					: false;
-
-				string imageDataURL = "";
-				if (articleModel.AssociatedImageId > 0)
-				{
-					GetImageModel img = await Mediator.Send(new GetImageByIdQuery(articleModel.AssociatedImageId));
-					imageDataURL = _imageDataHelper.ConvertImageDataToDataUrl(img.ImageData, img.ContentType);
-				}
-
-				var viewModel = new ArticleDetailsViewModel
-				{
-					Article = articleModel,
-					Board = board,
-					CommentPage = new FrontendPage<GetCommentModel>(articleComments),
-					LoggedIn = loggedIn,
-					User = user,
-					UserSavedArticle = savedArticle,
-					UserWroteArticle = wroteArticle,
-					AssociatedImageDataUrl = imageDataURL
-				};
-
-				return View(viewModel);
+				GetImageModel img = await Mediator.Send(new GetImageByIdQuery(articleModel.AssociatedImageId));
+				imageDataURL = _imageDataHelper.ConvertImageDataToDataUrl(img.ImageData, img.ContentType);
 			}
-			catch (Exception e)
+
+			var viewModel = new ArticleDetailsViewModel
 			{
+				Article = articleModel,
+				Board = board,
+				CommentPage = new FrontendPage<GetCommentModel>(articleComments),
+				LoggedIn = loggedIn,
+				User = user,
+				UserSavedArticle = savedArticle,
+				UserWroteArticle = wroteArticle,
+				AssociatedImageDataUrl = imageDataURL
+			};
 
-				throw;
-			}
+			return View(viewModel);
 		}
 
 		[HttpPost]

@@ -6,11 +6,12 @@ namespace HackerNews.Mvc.ViewComponents
 {
 	public class UserCardViewComponent : ViewComponent
 	{
-		public IViewComponentResult Invoke(GetPublicUserModel userModel)
+		public IViewComponentResult Invoke(GetPublicUserModel userModel, string imageDataUrl)
 		{
 			var model = new UserCardViewModel
 			{
 				User = userModel,
+				ImageDataUrl = imageDataUrl
 			};
 			return View(model);
 		}

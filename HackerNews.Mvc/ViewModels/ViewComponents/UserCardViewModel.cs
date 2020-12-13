@@ -5,5 +5,6 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents
 	public class UserCardViewModel
 	{
 		public GetPublicUserModel User { get; set; }
+		public string ImageDataUrl { get; set; }
 	}
 }

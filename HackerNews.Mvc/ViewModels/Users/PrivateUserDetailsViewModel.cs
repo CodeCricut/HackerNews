@@ -11,5 +11,6 @@ namespace HackerNews.Mvc.ViewModels.Users
 
 		public FrontendPage<GetArticleModel> ArticlePage { get; set; }
 		public FrontendPage<GetCommentModel> CommentPage { get; set; }
+		public string ImageDataUrl { get; set; }
 	}
 }

@@ -25,7 +25,7 @@ namespace HackerNews.Infrastructure.Repository.Users
 					.Include(u => u.LikedComments)
 					.Include(u => u.BoardsModerating)
 					.Include(u => u.BoardsSubscribed)
-					//.Include(u => u.ProfileImage)
+					.Include(u => u.ProfileImage)
 					.AsQueryable()
 				);
 		}
@@ -42,7 +42,7 @@ namespace HackerNews.Infrastructure.Repository.Users
 					.Include(u => u.LikedComments)
 					.Include(u => u.BoardsModerating)
 					.Include(u => u.BoardsSubscribed)
-					//.Include(u => u.ProfileImage)
+					.Include(u => u.ProfileImage)
 					.FirstOrDefault(user => user.Id == id)
 				);
 		}
