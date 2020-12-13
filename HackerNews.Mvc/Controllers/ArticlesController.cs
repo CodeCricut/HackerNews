@@ -169,40 +169,5 @@ namespace HackerNews.Mvc.Controllers
 				return null;
 			}
 		}
-
-		[JwtAuthorize]
-		public ActionResult<ArticleAddImageViewModel> AddImage(int id)
-		{
-			var model = new ArticleAddImageViewModel
-			{
-				ArticleId = id,
-				PostImageModel = new PostImageModel()
-			};
-			return View(model);
-		}
-
-		[HttpPost]
-		[JwtAuthorize]
-		public async Task<ActionResult> PostImage(ArticleAddImageViewModel postModel)
-		{
-			var file = Request.Form.Files.FirstOrDefault();
-			if (file == null) return RedirectToAction("Details", new { id = postModel.ArticleId });
-
-			// Copy the image data to the image object
-			// TODO: refactor
-			PostImageModel img = new PostImageModel();
-			using MemoryStream ms = new MemoryStream();
-			file.CopyTo(ms);
-			img.ImageData = ms.ToArray();
-			ms.Close();
-
-			// Add other image fields
-			img.ImageTitle = postModel.PostImageModel.ImageTitle;
-			img.ImageDescription = postModel.PostImageModel.ImageDescription;
-
-
-			var updateArticle = await Mediator.Send(new AddArticleImageCommand(img, postModel.ArticleId));
-			return RedirectToAction("Details", new { id = updateArticle.Id });
-		} 
 	}
 }
