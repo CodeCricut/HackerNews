@@ -46,10 +46,12 @@ namespace HackerNews.Application.Articles.Commands.AddImage
 
 			// Create image
 			var imageToAdd = Mapper.Map<Image>(request.ImageModel);
+			imageToAdd.ArticleId = article.Id;
+			imageToAdd.UserId = user.Id;
 			await UnitOfWork.Images.AddEntityAsync(imageToAdd);
 
 			// Add image to article
-			//article.AssociatedImage = imageToAdd;
+			article.AssociatedImage = imageToAdd;
 
 			// Save
 			UnitOfWork.SaveChanges();

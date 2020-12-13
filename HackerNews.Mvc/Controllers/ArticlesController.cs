@@ -7,6 +7,7 @@ using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Comments.Commands.AddComment;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
+using HackerNews.Application.Images.Queries.GetImageById;
 using HackerNews.Application.Users.Commands.SaveArticleToUser;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
@@ -21,6 +22,7 @@ using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,35 +49,54 @@ namespace HackerNews.Mvc.Controllers
 
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
-			var articleModel = await Mediator.Send(new GetArticleQuery(id));
-			var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
-			var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
-			var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
-
-			var privateUser = await TryGetPrivateUser();
-
-			var loggedIn = privateUser != null && privateUser.Id != 0;
-
-			var savedArticle = loggedIn
-				? privateUser.SavedArticles.Contains(id)
-				: false;
-
-			var wroteArticle = loggedIn
-				? privateUser.ArticleIds.Contains(id)
-				: false;
-
-			var viewModel = new ArticleDetailsViewModel
+			try
 			{
-				Article = articleModel,
-				Board = board,
-				CommentPage = new FrontendPage<GetCommentModel>(articleComments),
-				LoggedIn = loggedIn,
-				User = user,
-				UserSavedArticle = savedArticle,
-				UserWroteArticle = wroteArticle
-			};
+				var articleModel = await Mediator.Send(new GetArticleQuery(id));
+				var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
+				var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
+				var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
 
-			return View(viewModel);
+				var privateUser = await TryGetPrivateUser();
+
+				var loggedIn = privateUser != null && privateUser.Id != 0;
+
+				var savedArticle = loggedIn
+					? privateUser.SavedArticles.Contains(id)
+					: false;
+
+				var wroteArticle = loggedIn
+					? privateUser.ArticleIds.Contains(id)
+					: false;
+
+				// TODO: refactor out somewhere
+				string imageDataURL = "";
+				if(articleModel.AssociatedImageId > 0)
+				{
+					GetImageModel img = await Mediator.Send(new GetImageByIdQuery(articleModel.AssociatedImageId));
+					string imageBase64Data = Convert.ToBase64String(img.ImageData);
+					imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+				}
+
+
+				var viewModel = new ArticleDetailsViewModel
+				{
+					Article = articleModel,
+					Board = board,
+					CommentPage = new FrontendPage<GetCommentModel>(articleComments),
+					LoggedIn = loggedIn,
+					User = user,
+					UserSavedArticle = savedArticle,
+					UserWroteArticle = wroteArticle,
+					AssociatedImageDataUrl = imageDataURL
+				};
+
+				return View(viewModel);
+			}
+			catch (Exception e)
+			{
+
+				throw;
+			}
 		}
 
 		[HttpPost]

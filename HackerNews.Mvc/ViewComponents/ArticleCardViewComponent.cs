@@ -28,7 +28,7 @@ namespace HackerNews.Mvc.ViewComponents
 			_jwtService = jwtService;
 		}
 
-		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel)
+		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel, string imageDataUrl)
 		{
 			GetBoardModel board;
 			GetPublicUserModel user;
@@ -37,7 +37,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				board = await _mediator.Send(new GetBoardQuery(articleModel.BoardId));
 			}
-			catch (NotFoundException ex)
+			catch 
 			{
 				board = new GetBoardModel();
 			}
@@ -86,7 +86,8 @@ namespace HackerNews.Mvc.ViewComponents
 				LoggedIn = loggedIn,
 				Saved = saved,
 				UserUpvoted = userUpvoted,
-				UserDownvoted = userDownvoted
+				UserDownvoted = userDownvoted,
+				ImageDataUrl = imageDataUrl
 			};
 			return View(viewModel);
 		}

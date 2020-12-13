@@ -8,6 +8,8 @@ namespace HackerNews.Infrastructure.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Board> builder)
 		{
+			// to ensure unique values
+			// builder.HasAlternateKey(b => b.Title);
 		}
 	}
 }

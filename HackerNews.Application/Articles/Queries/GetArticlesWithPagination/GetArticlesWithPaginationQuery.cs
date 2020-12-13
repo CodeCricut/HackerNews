@@ -30,10 +30,19 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesWithPagination
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesWithPaginationQuery request, CancellationToken cancellationToken)
 		{
-			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
-			var paginatedArticles = await articles.PaginatedListAsync(request.PagingParams);
+			try
+			{
+				var articles = await UnitOfWork.Articles.GetEntitiesAsync();
+				var paginatedArticles = await articles.PaginatedListAsync(request.PagingParams);
 
-			return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
+				return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
+			}
+			catch (System.Exception e)
+			{
+
+				throw;
+			}
+			
 		}
 	}
 }

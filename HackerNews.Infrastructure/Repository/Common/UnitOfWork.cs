@@ -2,6 +2,7 @@
 using HackerNews.Infrastructure.Repository.Articles;
 using HackerNews.Infrastructure.Repository.Boards;
 using HackerNews.Infrastructure.Repository.Comments;
+using HackerNews.Infrastructure.Repository.Images;
 using HackerNews.Infrastructure.Repository.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,7 @@ namespace HackerNews.Infrastructure.Repository.Common
 			Boards = new BoardRepository(db);
 			Comments = new CommentRepository(db);
 			Users = new UserRepository(db);
+			Images = new ImageRepository(db);
 		}
 
 		public bool SaveChanges()

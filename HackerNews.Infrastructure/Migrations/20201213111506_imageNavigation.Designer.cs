@@ -4,14 +4,16 @@ using HackerNews.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HackerNews.Infrastructure.Migrations
 {
     [DbContext(typeof(HackerNewsContext))]
-    partial class HackerNewsContextModelSnapshot : ModelSnapshot
+    [Migration("20201213111506_imageNavigation")]
+    partial class imageNavigation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,10 +156,10 @@ namespace HackerNews.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ArticleId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BoardId")
+                    b.Property<int>("BoardId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Deleted")
@@ -172,22 +174,19 @@ namespace HackerNews.Infrastructure.Migrations
                     b.Property<string>("ImageTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId")
-                        .IsUnique()
-                        .HasFilter("[ArticleId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("BoardId")
-                        .IsUnique()
-                        .HasFilter("[BoardId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Images");
                 });
@@ -401,15 +400,21 @@ namespace HackerNews.Infrastructure.Migrations
                 {
                     b.HasOne("HackerNews.Domain.Entities.Article", "Article")
                         .WithOne("AssociatedImage")
-                        .HasForeignKey("HackerNews.Domain.Entities.Image", "ArticleId");
+                        .HasForeignKey("HackerNews.Domain.Entities.Image", "ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HackerNews.Domain.Entities.Board", "Board")
                         .WithOne("BoardImage")
-                        .HasForeignKey("HackerNews.Domain.Entities.Image", "BoardId");
+                        .HasForeignKey("HackerNews.Domain.Entities.Image", "BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HackerNews.Domain.Entities.User", "User")
                         .WithOne("ProfileImage")
-                        .HasForeignKey("HackerNews.Domain.Entities.Image", "UserId");
+                        .HasForeignKey("HackerNews.Domain.Entities.Image", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HackerNews.Domain.Entities.JoinEntities.BoardUserModerator", b =>

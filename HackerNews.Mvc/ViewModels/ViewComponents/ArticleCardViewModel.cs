@@ -7,6 +7,7 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard
 	public class ArticleCardViewModel
 	{
 		public GetArticleModel Article { get; set; }
+		public string ImageDataUrl { get; set; }
 		public GetBoardModel Board { get; set; }
 		public GetPublicUserModel User { get; set; }
 		public string Jwt { get; set; }

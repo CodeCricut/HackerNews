@@ -16,8 +16,7 @@ namespace HackerNews.Domain.Entities
 		public List<Article> Articles { get; set; }
 		public List<Comment> Comments { get; set; }
 
-		public int BoardImageId { get; set; }
-		public Image? BoardImage { get; set; }
+		public Image BoardImage { get; set; }
 
 		public Board()
 		{

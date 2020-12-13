@@ -37,8 +37,7 @@ namespace HackerNews.Domain.Entities
 		public int BoardId { get; set; }
 		public Board Board { get; set; }
 
-		public int AssociatedImageId { get; set; }
-		public Image? AssociatedImage { get; set; }
+		public Image AssociatedImage { get; set; }
 
 		public Article()
 		{

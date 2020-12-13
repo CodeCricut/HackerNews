@@ -1,38 +1,5 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard.ArticleCardViewModel
 
-@*<div class="row w-100">
-    <div class="col card article-card mb-3">
-        <div class="row card-body">
-            <div class="d-none d-md-block col-md-1 text-center">
-                @Model.Article.Karma
-            </div>
-            <div class="col-sm-12 col-md-11">
-                <a class="article-card-title" asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">
-                    @Model.Article.Title
-                </a>
-                <div>
-
-                    <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">@Model.Board.Title</a>
-                    | Posted by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a>
-                    at <a asp-controller="Articles" asp-action="Past" asp-route-date="@Model.Article.PostDate">@Model.Article.PostDate</a>
-                    @if (Model.Article.CommentIds.Count() >= 1)
-                    {
-                        <text>| <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">@Model.Article.CommentIds.Count() comments</a></text>
-                    }
-                    @if (Model.Article.Deleted)
-                    {
-                        <text>| <span class="text-danger">Deleted</span></text>
-                    }
-
-                </div>
-                <p>
-                    @Model.Article.Text
-                </p>
-            </div>
-        </div>
-    </div>
-</div>*@
-
 <div class="card">
     <div class="karma-col">
         @if (Model.LoggedIn)
@@ -72,20 +39,26 @@
         </div>
         <div class="title-row">
             <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">
-            @Model.Article.Title
-                </a>
+                @Model.Article.Title
+            </a>
+
         </div>
+        @if (Model.ImageDataUrl != null && Model.ImageDataUrl != "")
+        {
+        <div class="img-row">
+            <img src="@Model.ImageDataUrl" />
+        </div>
+        }
         <div class="more-row">
             <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
             @if (Model.Saved)
             {
                 <a href="#" class="save-link"
-                   onclick="unsaveArticle('@Model.Article.Id', '@Model.Jwt', this)"
-                   >Saved</a>
+                   onclick="unsaveArticle('@Model.Article.Id', '@Model.Jwt', this)">Saved</a>
             }
             else
             {
-                <a  href="#"  class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
+                <a href="#" class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
             }
         </div>
     </div>

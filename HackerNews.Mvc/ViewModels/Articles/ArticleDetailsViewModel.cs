@@ -19,5 +19,7 @@ namespace HackerNews.Mvc.ViewModels.Articles
 		public bool UserSavedArticle { get; set; }
 
 		public bool UserWroteArticle { get; set; }
+
+		public string AssociatedImageDataUrl { get; set; }
 	}
 }
