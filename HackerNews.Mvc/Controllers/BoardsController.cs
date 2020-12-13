@@ -1,5 +1,6 @@
 ﻿using HackerNews.Application.Articles.Queries.GetArticlesByIds;
 using HackerNews.Application.Boards.Commands.AddBoard;
+using HackerNews.Application.Boards.Commands.AddImage;
 using HackerNews.Application.Boards.Commands.AddModerator;
 using HackerNews.Application.Boards.Commands.AddSubscriber;
 using HackerNews.Application.Boards.Commands.DeleteBoard;
@@ -11,18 +12,28 @@ using HackerNews.Application.Users.Queries.GetUserByUsername;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
+using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Boards;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
 {
 	public class BoardsController : FrontendController
 	{
+		private readonly IImageFileReader _imageFileReader;
+
+		public BoardsController(IImageFileReader imageFileReader)
+		{
+			_imageFileReader = imageFileReader;
+		}
+
 		[JwtAuthorize]
 		public ViewResult Create()
 		{
@@ -35,6 +46,14 @@ namespace HackerNews.Mvc.Controllers
 		public async Task<ActionResult> Post(BoardCreateModel boardCreateModel)
 		{
 			GetBoardModel addedBoard = await Mediator.Send(new AddBoardCommand(boardCreateModel.Board));
+
+			var file = Request.Form.Files.FirstOrDefault();
+			if (file != null)
+			{
+				PostImageModel imageModel = _imageFileReader.ConvertImageFileToImageModel(file);
+				await Mediator.Send(new AddBoardImageCommand(imageModel, addedBoard.Id));
+			}
+
 			return RedirectToAction("Details", new { id = addedBoard.Id });
 		}
 

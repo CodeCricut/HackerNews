@@ -24,7 +24,7 @@
             @Html.DropDownListFor(model => model.Article.Type, Model.ArticleTypeList)
             <span asp-validation-for="Article.Type" class="text-danger"></span>
 
-            <input type="file" id="boardImage" name="boardImage" placeholder="Board Image"/>
+            <input type="file" id="articleImage" name="articleImage" placeholder="Article Image"/>
 
             <input hidden asp-for="Article.BoardId" class="form-control" />
 
