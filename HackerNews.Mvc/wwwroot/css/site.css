@@ -275,6 +275,7 @@ a,
 
 .karma-col > * {
     color: var(--link-dark);
+    margin: 10px 0;
 }
 
 .karma-col .upvote:hover,
@@ -291,6 +292,7 @@ a,
     padding: 10px;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .content-col * {
@@ -321,6 +323,12 @@ a,
 
 .title-row > * {
     color: var(--dark);
+}
+
+.card .img-row {
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 .card .img-row img {

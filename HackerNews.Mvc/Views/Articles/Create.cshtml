@@ -9,7 +9,7 @@
 }
 
 <div class="card card-lg">
-    <form asp-controller="Articles" asp-action="Post" method="post">
+    <form asp-controller="Articles" asp-action="Post" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <label asp-for="Article.Title" class="control-label"></label>
@@ -24,7 +24,9 @@
             @Html.DropDownListFor(model => model.Article.Type, Model.ArticleTypeList)
             <span asp-validation-for="Article.Type" class="text-danger"></span>
 
-        <input hidden asp-for="Article.BoardId" class="form-control" />
+            <input type="file" id="boardImage" name="boardImage" placeholder="Board Image"/>
+
+            <input hidden asp-for="Article.BoardId" class="form-control" />
 
             <input type="submit" value="Create" class="btn btn-primary" />
     </form>

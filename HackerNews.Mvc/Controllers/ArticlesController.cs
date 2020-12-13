@@ -42,8 +42,29 @@ namespace HackerNews.Mvc.Controllers
 		[JwtAuthorize]
 		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
 		{
+			// Create the article
 			GetArticleModel model = await Mediator.Send(new AddArticleCommand(viewModel.Article));
 
+			// If image attatched
+			var file = Request.Form.Files.FirstOrDefault();
+			if (file != null) 
+			{
+				// Copy the image data to the image object
+				PostImageModel img = new PostImageModel();
+				using MemoryStream ms = new MemoryStream();
+				file.CopyTo(ms);
+				img.ImageData = ms.ToArray();
+
+				// Add other image fields
+				img.ImageTitle = file.FileName;
+				img.ImageDescription = "Article image";
+
+				ms.Close();
+
+				// Add the image to the article
+				await Mediator.Send(new AddArticleImageCommand(img, model.Id));
+			}
+			
 			return RedirectToAction("Details", new { model.Id });
 		}
 
@@ -170,6 +191,7 @@ namespace HackerNews.Mvc.Controllers
 			if (file == null) return RedirectToAction("Details", new { id = postModel.ArticleId });
 
 			// Copy the image data to the image object
+			// TODO: refactor
 			PostImageModel img = new PostImageModel();
 			using MemoryStream ms = new MemoryStream();
 			file.CopyTo(ms);
