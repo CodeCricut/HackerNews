@@ -19,6 +19,7 @@ using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
+using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,13 @@ namespace HackerNews.Mvc.Controllers
 {
 	public class ArticlesController : FrontendController
 	{
+		private readonly IImageFileReader _imageFileReader;
+
+		public ArticlesController(IImageFileReader imageFileReader)
+		{
+			_imageFileReader = imageFileReader;
+		}
+
 		[JwtAuthorize]
 		public ViewResult Create(int boardId)
 		{
@@ -49,20 +57,10 @@ namespace HackerNews.Mvc.Controllers
 			var file = Request.Form.Files.FirstOrDefault();
 			if (file != null) 
 			{
-				// Copy the image data to the image object
-				PostImageModel img = new PostImageModel();
-				using MemoryStream ms = new MemoryStream();
-				file.CopyTo(ms);
-				img.ImageData = ms.ToArray();
-
-				// Add other image fields
-				img.ImageTitle = file.FileName;
-				img.ImageDescription = "Article image";
-
-				ms.Close();
+				PostImageModel imageModel = _imageFileReader.ConvertImageFileToImageModel(file);
 
 				// Add the image to the article
-				await Mediator.Send(new AddArticleImageCommand(img, model.Id));
+				await Mediator.Send(new AddArticleImageCommand(imageModel, model.Id));
 			}
 			
 			return RedirectToAction("Details", new { model.Id });
