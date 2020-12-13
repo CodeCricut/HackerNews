@@ -23,12 +23,15 @@ namespace HackerNews.Domain.Common.Models.Articles
 		public int BoardId { get; set; }
 		public bool Deleted { get; set; }
 
+		public int AssociatedImageId { get; set; }
+
 		public void Mapping(Profile profile)
 		{
 			profile.CreateMap<Article, GetArticleModel>()
 				.ForMember(model => model.CommentIds, article => article.MapFrom(a => a.Comments.Select(a => a.Id)))
 				.ForMember(model => model.UsersLiked, article => article.MapFrom(a => a.UsersLiked.Select(ul => ul.UserId)))
-				.ForMember(model => model.UsersDisliked, article => article.MapFrom(a => a.UsersDisliked.Select(ud => ud.UserId)));
+				.ForMember(model => model.UsersDisliked, article => article.MapFrom(a => a.UsersDisliked.Select(ud => ud.UserId)))
+				.ForMember(model => model.AssociatedImageId, article => article.MapFrom(a => a.AssociatedImage.Id));
 		}
 	}
 }

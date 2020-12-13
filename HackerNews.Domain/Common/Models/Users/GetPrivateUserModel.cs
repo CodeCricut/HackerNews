@@ -39,6 +39,7 @@ namespace HackerNews.Domain.Common.Models.Users
 		public List<int> BoardsModerating { get; set; } = new List<int>();
 		public bool Deleted { get; set; }
 
+		public int ProfileImageId { get; set; }
 
 		public void Mapping(Profile profile)
 		{
@@ -56,7 +57,9 @@ namespace HackerNews.Domain.Common.Models.Users
 				.ForMember(model => model.DislikedComments, user => user.MapFrom(u => u.DislikedComments.Select(lc => lc.CommentId)))
 
 				.ForMember(model => model.BoardsModerating, user => user.MapFrom(u => u.BoardsModerating.Select(bm => bm.BoardId)))
-				.ForMember(model => model.BoardsSubscribed, user => user.MapFrom(u => u.BoardsSubscribed.Select(bs => bs.BoardId)));
+				.ForMember(model => model.BoardsSubscribed, user => user.MapFrom(u => u.BoardsSubscribed.Select(bs => bs.BoardId)))
+				
+				.ForMember(model => model.ProfileImageId, user => user.MapFrom(u => u.ProfileImage.Id));
 		}
 	}
 }
