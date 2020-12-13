@@ -65,12 +65,12 @@
         <div class="more-row">
             @if (Model.Saved)
             {
-                <a  href="#"  class="save-link"
+                <a class="save-link"
                    onclick="unsaveComment('@Model.Comment.Id', '@Model.Jwt', this)">Saved</a>
             }
             else
             {
-                <a  href="#"  class="save-link" onclick="saveComment('@Model.Comment.Id', '@Model.Jwt', this)">Save</a>
+                <a class="save-link" onclick="saveComment('@Model.Comment.Id', '@Model.Jwt', this)">Save</a>
             }
         </div>
     </div>

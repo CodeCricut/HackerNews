@@ -53,12 +53,12 @@
             <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
             @if (Model.Saved)
             {
-                <a href="#" class="save-link"
+                <a class="save-link"
                    onclick="unsaveArticle('@Model.Article.Id', '@Model.Jwt', this)">Saved</a>
             }
             else
             {
-                <a href="#" class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
+                <a class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
             }
         </div>
     </div>
