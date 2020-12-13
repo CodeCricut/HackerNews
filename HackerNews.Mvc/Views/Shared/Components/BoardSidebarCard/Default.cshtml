@@ -6,6 +6,12 @@
     <div class="card-top">
         HackerNews
     </div>
+    @if (Model.ImageDataUrl != null && Model.ImageDataUrl != "")
+    {
+        <div class="board-sidebar-img">
+            <img src="@Model.ImageDataUrl" />
+        </div>
+    }
     <div class="card-body">
         <h4>@Model.Board.Title</h4>
         <p>

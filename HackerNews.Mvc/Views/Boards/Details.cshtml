@@ -29,50 +29,5 @@
 </div>
 
 @section Sidebar {
-            @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board })
+            @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board, imageDataUrl = Model.ImageDataUrl })
 }
-       
-
-
-
-
-
-
-<!--<div class="container-fluid">
-    <div class="row p-4">-->
-@* Articles *@
-<!--<div class="col-sm-12 col-md-7 col-lg-9 main-content card-deck">
-    <h1>@Model.Board.Title</h1>
-    @if (Model.Board.Deleted)
-    {
-        <p class="text-danger">Deleted</p>
-    }
-    @foreach (var article in Model.ArticlePage.Items)
-    {
-        @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-    }-->
-@* Bottom of Article List *@
-<!--<div class="row w-100">
-        <div class="col">
-            @if (Model.ArticlePage.HasPrev)
-            {
-                <a asp-action="Details" asp-all-route-data="@Model.ArticlePage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
-            }
-            @if (Model.ArticlePage.HasNext)
-            {
-                <a asp-action="Details" asp-all-route-data="@Model.ArticlePage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
-            }
-        </div>
-    </div>
-    <div class="row h-100"></div>
-</div>-->
-@* Sidebar *@
-<!--<div class="d-none d-md-block col-md-5 col-lg-3 sidebar">
-    @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board })
-</div>-->
-@* Footer *@
-<!--</div>
-    <div class="card-footer">
-
-    </div>
-</div>-->

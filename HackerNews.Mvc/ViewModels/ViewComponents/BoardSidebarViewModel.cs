@@ -11,5 +11,6 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents
 		public bool LoggedIn { get; set; }
 		public bool Subscribed { get; set; }
 		public bool Moderating { get; set; }
+		public string ImageDataUrl { get; set; }
 	}
 }

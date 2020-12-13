@@ -1,20 +1,4 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.BoardCardViewModel 
-@*<div class="row w-100">
-    <div class="col card article-card mb-3">
-        <div class="row card-body">
-            <div class="col-sm-12 col-md-11">
-                <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id">
-                    @Model.Board.Title
-                </a>
-                @if (Model.Board.Deleted)
-                {
-                    <text>| <span class="text-danger">Deleted</span></text>
-                }
-                <p>@Model.Board.Description</p>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 <div class="card board-card">
     <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id" class="board-title">

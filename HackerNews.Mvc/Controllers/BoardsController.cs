@@ -6,6 +6,7 @@ using HackerNews.Application.Boards.Commands.AddSubscriber;
 using HackerNews.Application.Boards.Commands.DeleteBoard;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Boards.Queries.GetBoardsBySearch;
+using HackerNews.Application.Images.Queries.GetImageById;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Application.Users.Queries.GetUserByUsername;
@@ -28,10 +29,12 @@ namespace HackerNews.Mvc.Controllers
 	public class BoardsController : FrontendController
 	{
 		private readonly IImageFileReader _imageFileReader;
+		private readonly IImageDataHelper _imageDataHelper;
 
-		public BoardsController(IImageFileReader imageFileReader)
+		public BoardsController(IImageFileReader imageFileReader, IImageDataHelper imageDataHelper)
 		{
 			_imageFileReader = imageFileReader;
+			_imageDataHelper = imageDataHelper;
 		}
 
 		[JwtAuthorize]
@@ -65,11 +68,20 @@ namespace HackerNews.Mvc.Controllers
 			var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
 			var boardModerators = await Mediator.Send(new GetPublicUsersByIdsQuery(getBoardModel.ModeratorIds, moderatorPagingParams));
 
+			string imageDataURL = "";
+			if (getBoardModel.BoardImageId > 0)
+			{
+				GetImageModel img = await Mediator.Send(new GetImageByIdQuery(getBoardModel.BoardImageId));
+				imageDataURL = _imageDataHelper.ConvertImageDataToDataUrl(img.ImageData, img.ContentType);
+			}
+
+
 			var model = new BoardDetailsViewModel
 			{
 				Board = getBoardModel,
 				ArticlePage = new FrontendPage<GetArticleModel>(boardArticles),
-				Moderators = new FrontendPage<GetPublicUserModel>(boardModerators)
+				Moderators = new FrontendPage<GetPublicUserModel>(boardModerators),
+				ImageDataUrl = imageDataURL
 			};
 
 			return View(model);

@@ -22,6 +22,7 @@ namespace HackerNews.Mvc.Configuration
 			services.AddScoped<IJwtSetterService, JwtCookieSetterService>();
 			services.AddScoped<IUserAuthService, CookieUserAuthService>();
 			services.AddSingleton<IImageFileReader, ImageFileReader>();
+			services.AddSingleton<IImageDataHelper, ImageDataHelper>();
 
 			return services;
 		}

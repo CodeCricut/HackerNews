@@ -33,10 +33,12 @@ namespace HackerNews.Mvc.Controllers
 	public class ArticlesController : FrontendController
 	{
 		private readonly IImageFileReader _imageFileReader;
+		private readonly IImageDataHelper _imageDataHelper;
 
-		public ArticlesController(IImageFileReader imageFileReader)
+		public ArticlesController(IImageFileReader imageFileReader, IImageDataHelper imageDataHelper)
 		{
 			_imageFileReader = imageFileReader;
+			_imageDataHelper = imageDataHelper;
 		}
 
 		[JwtAuthorize]
@@ -87,15 +89,12 @@ namespace HackerNews.Mvc.Controllers
 					? privateUser.ArticleIds.Contains(id)
 					: false;
 
-				// TODO: refactor out somewhere
 				string imageDataURL = "";
-				if(articleModel.AssociatedImageId > 0)
+				if (articleModel.AssociatedImageId > 0)
 				{
 					GetImageModel img = await Mediator.Send(new GetImageByIdQuery(articleModel.AssociatedImageId));
-					string imageBase64Data = Convert.ToBase64String(img.ImageData);
-					imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+					imageDataURL = _imageDataHelper.ConvertImageDataToDataUrl(img.ImageData, img.ContentType);
 				}
-
 
 				var viewModel = new ArticleDetailsViewModel
 				{

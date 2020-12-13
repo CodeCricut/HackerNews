@@ -12,6 +12,7 @@ namespace HackerNews.Domain.Common.Models.Images
 		public string ImageTitle { get; set; }
 		public string ImageDescription { get; set; }
 		public byte[] ImageData { get; set; }
+		public string ContentType { get; set; }
 
 		public void Mapping(Profile profile)
 		{

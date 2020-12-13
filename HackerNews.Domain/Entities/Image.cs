@@ -10,6 +10,7 @@ namespace HackerNews.Domain.Entities
 		public string ImageTitle { get; set; }
 		public string ImageDescription { get; set; }
 		public byte[] ImageData { get; set; }
+		public string ContentType { get; set; }
 
 		public int? ArticleId { get; set; }
 		public Article Article { get; set; }

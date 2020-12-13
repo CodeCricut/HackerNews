@@ -14,11 +14,12 @@ namespace HackerNews.Mvc.Services.Interfaces
 		{
 			// Copy the image data to the image object
 			PostImageModel img = new PostImageModel();
+			
 			using MemoryStream ms = new MemoryStream();
 			file.CopyTo(ms);
-			img.ImageData = ms.ToArray();
 
-			// Add other image fields
+			img.ImageData = ms.ToArray();
+			img.ContentType = file.ContentType;
 			img.ImageTitle = title;
 			img.ImageDescription = description;
 

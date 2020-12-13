@@ -21,7 +21,7 @@ namespace HackerNews.Mvc.ViewComponents
 			_mediator = mediator;
 		}
 
-		public async Task<IViewComponentResult> InvokeAsync(GetBoardModel boardModel)
+		public async Task<IViewComponentResult> InvokeAsync(GetBoardModel boardModel, string imageDataUrl)
 		{
 			var pagingParams = new PagingParams() { PageNumber = 1, PageSize = 5 };
 			var moderators = await _mediator.Send(new GetPublicUsersByIdsQuery(boardModel.ModeratorIds, pagingParams));
@@ -52,7 +52,8 @@ namespace HackerNews.Mvc.ViewComponents
 				ModeratorPage = new FrontendPage<GetPublicUserModel>(moderators),
 				LoggedIn = loggedIn,
 				Moderating = moderating,
-				Subscribed = subscribed
+				Subscribed = subscribed,
+				ImageDataUrl = imageDataUrl
 			};
 			return View(model);
 		}

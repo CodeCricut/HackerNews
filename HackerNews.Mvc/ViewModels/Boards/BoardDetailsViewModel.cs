@@ -10,5 +10,7 @@ namespace HackerNews.Mvc.ViewModels.Boards
 		public GetBoardModel Board { get; set; }
 		public FrontendPage<GetArticleModel> ArticlePage { get; set; }
 		public FrontendPage<GetPublicUserModel> Moderators { get; set; }
+
+		public string ImageDataUrl { get; set; }
 	}
 }
