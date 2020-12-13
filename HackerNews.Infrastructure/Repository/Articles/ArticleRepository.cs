@@ -20,7 +20,7 @@ namespace HackerNews.Infrastructure.Repository.Articles
 				.Include(a => a.Comments)
 				.Include(a => a.UsersLiked)
 				.Include(a => a.UsersDisliked)
-				.Include(a => a.AssociatedImage)
+				//.Include(a => a.AssociatedImage)
 				.AsQueryable()
 				);
 		}
@@ -32,7 +32,7 @@ namespace HackerNews.Infrastructure.Repository.Articles
 				.Include(a => a.Comments)
 				.Include(a => a.UsersLiked)
 				.Include(a => a.UsersDisliked)
-				.Include(a => a.AssociatedImage)
+				//.Include(a => a.AssociatedImage)
 				.FirstOrDefault(a => a.Id == id)
 				);
 		}

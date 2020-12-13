@@ -29,7 +29,7 @@ namespace HackerNews.Domain.Common.Models.Boards
 				.ForMember(model => model.CreatorId, board => board.MapFrom(b => b.Creator.Id))
 				.ForMember(model => model.ModeratorIds, board => board.MapFrom(b => b.Moderators.Select(m => m.UserId)))
 				.ForMember(model => model.SubscriberIds, board => board.MapFrom(b => b.Subscribers.Select(s => s.UserId)))
-				.ForMember(model => model.BoardImageId, board => board.MapFrom(a => a.BoardImage.Id));
+				//.ForMember(model => model.BoardImageId, board => board.MapFrom(a => a.BoardImage.Id));
 			;
 		}
 	}

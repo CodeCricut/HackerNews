@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HackerNews.EF.Migrations
+namespace HackerNews.Infrastructure.Migrations
 {
     [DbContext(typeof(HackerNewsContext))]
     partial class HackerNewsContextModelSnapshot : ModelSnapshot
@@ -25,9 +25,6 @@ namespace HackerNews.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AssociatedImageId")
-                        .HasColumnType("int");
 
                     b.Property<int>("BoardId")
                         .HasColumnType("int");
@@ -60,8 +57,6 @@ namespace HackerNews.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssociatedImageId");
-
                     b.HasIndex("BoardId");
 
                     b.HasIndex("UserId");
@@ -75,9 +70,6 @@ namespace HackerNews.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BoardImageId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -95,8 +87,6 @@ namespace HackerNews.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BoardImageId");
 
                     b.HasIndex("CreatorId");
 
@@ -149,30 +139,6 @@ namespace HackerNews.EF.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("HackerNews.Domain.Entities.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("ImageData")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ImageDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("HackerNews.Domain.Entities.JoinEntities.BoardUserModerator", b =>
@@ -323,26 +289,17 @@ namespace HackerNews.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileImageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfileImageId");
-
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("HackerNews.Domain.Entities.Article", b =>
                 {
-                    b.HasOne("HackerNews.Domain.Entities.Image", "AssociatedImage")
-                        .WithMany()
-                        .HasForeignKey("AssociatedImageId");
-
                     b.HasOne("HackerNews.Domain.Entities.Board", "Board")
                         .WithMany("Articles")
                         .HasForeignKey("BoardId")
@@ -358,10 +315,6 @@ namespace HackerNews.EF.Migrations
 
             modelBuilder.Entity("HackerNews.Domain.Entities.Board", b =>
                 {
-                    b.HasOne("HackerNews.Domain.Entities.Image", "BoardImage")
-                        .WithMany()
-                        .HasForeignKey("BoardImageId");
-
                     b.HasOne("HackerNews.Domain.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId");
@@ -508,13 +461,6 @@ namespace HackerNews.EF.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HackerNews.Domain.Entities.User", b =>
-                {
-                    b.HasOne("HackerNews.Domain.Entities.Image", "ProfileImage")
-                        .WithMany()
-                        .HasForeignKey("ProfileImageId");
                 });
 #pragma warning restore 612, 618
         }

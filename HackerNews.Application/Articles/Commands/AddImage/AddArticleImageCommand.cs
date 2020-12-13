@@ -49,7 +49,7 @@ namespace HackerNews.Application.Articles.Commands.AddImage
 			await UnitOfWork.Images.AddEntityAsync(imageToAdd);
 
 			// Add image to article
-			article.AssociatedImage = imageToAdd;
+			//article.AssociatedImage = imageToAdd;
 
 			// Save
 			UnitOfWork.SaveChanges();
