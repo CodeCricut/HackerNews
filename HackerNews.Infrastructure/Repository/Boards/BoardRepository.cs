@@ -22,6 +22,7 @@ namespace HackerNews.Infrastructure.Repository.Boards
 					.Include(b => b.Creator)
 					.Include(b => b.Moderators)
 					.Include(b => b.Subscribers)
+					.Include(b => b.BoardImage)
 					.AsQueryable()
 					);
 		}
@@ -35,6 +36,7 @@ namespace HackerNews.Infrastructure.Repository.Boards
 					.Include(b => b.Creator)
 					.Include(b => b.Moderators)
 					.Include(b => b.Subscribers)
+					.Include(b => b.BoardImage)
 					.FirstOrDefault(board => board.Id == id)
 					);
 		}
