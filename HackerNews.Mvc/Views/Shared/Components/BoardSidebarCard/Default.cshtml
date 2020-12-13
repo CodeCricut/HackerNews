@@ -1,7 +1,5 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.BoardSidebarViewModel
 
-
-
 <div class="card">
     <div class="card-top">
         HackerNews
@@ -46,48 +44,3 @@
         }
     </div>
 </div>
-
-@*<div class="card mb-4">
-    <img class="card-img-top" src="~/img/home-banner.png" alt="home-banner" />
-    <div class="card-body">
-        <h4 class="h4">@Model.Board.Title</h4>
-        <p>
-            @Model.Board.Description
-        </p>
-
-    </div>
-    <div class="card-footer">
-        Created @Model.Board.CreateDate
-
-        <a asp-controller="Boards" asp-action="Moderators" asp-route-id="@Model.Board.Id">Moderators</a>:
-        <ul>
-            @foreach (var moderator in Model.ModeratorPage.Items)
-            {
-                <li><a asp-controller="Users" asp-action="Details" asp-route-id="@moderator.Id">@moderator.Username</a></li>
-            }
-        </ul>
-
-        <a asp-controller="Users" asp-action="Login" class="btn btn-primary col my-1">Create Post</a>
-        @if (Model.LoggedIn)
-        {
-            @if (Model.Subscribed)
-            {
-                <a asp-controller="Boards" asp-action="Subscribe" asp-route-boardId="@Model.Board.Id" class="btn btn-primary col my-1">Unsubscribed</a>
-            }
-            else
-            {
-                <a asp-controller="Boards" asp-action="Subscribe" asp-route-boardId="@Model.Board.Id" class="btn btn-outline-primary col my-1">Subscribe</a>
-            }
-            @if (Model.Moderating)
-            {
-                <a asp-controller="Boards" asp-action="Admin" asp-route-id="@Model.Board.Id" class="btn btn-outline-dark">Admin Panel</a>
-            }
-        }
-        else
-        {
-            <a asp-controller="Users" asp-action="Login" class="btn btn-outline-primary col my-1">Login</a>
-        }
-
-
-    </div>
-</div>*@

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Mappings;
 using HackerNews.Domain.Entities;
 using System.ComponentModel.DataAnnotations;

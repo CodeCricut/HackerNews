@@ -4,17 +4,15 @@
     ViewData["Title"] = Model.Board.Title;
 }
 
-
-
-        @* Articles *@
-            <h1>@Model.Board.Title</h1>
+@* Articles *@
+<h1>@Model.Board.Title</h1>
             
-            @foreach (var article in Model.ArticlePage.Items)
-            {
-                @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-            }
+@foreach (var article in Model.ArticlePage.Items)
+{
+    @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+}
 
-            @* Bottom of Article List *@
+@* Bottom of Article List *@
 
 <div class="navigation-row">
     @* Bottom of Article List *@
@@ -29,5 +27,5 @@
 </div>
 
 @section Sidebar {
-            @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board, imageDataUrl = Model.ImageDataUrl })
+    @await Component.InvokeAsync("BoardSidebarCard", new { boardModel = Model.Board, imageDataUrl = Model.ImageDataUrl })
 }

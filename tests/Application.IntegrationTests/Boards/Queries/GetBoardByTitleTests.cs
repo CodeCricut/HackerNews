@@ -2,16 +2,11 @@
 using AutoMapper;
 using HackerNews.Application.Boards.Queries.GetBoardByTitle;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Users.Queries.GetUserByUsername;
-using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

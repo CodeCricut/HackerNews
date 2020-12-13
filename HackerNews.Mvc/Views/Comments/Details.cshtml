@@ -4,10 +4,7 @@
     ViewData["Title"] = $"{Model.Comment.Text.Take(10)}...";
 }
 
-
-
 @await Component.InvokeAsync("CommentCard", new { commentModel = Model.Comment })
-
 
 @* Add Comment*@
 @if (Model.LoggedIn)
@@ -40,10 +37,3 @@ else
 {
     <a asp-controller="Comments" asp-action="Detail" asp-all-route-data="@Model.ChildCommentPage.NextPageQuery" class="btn btn-primary">Next</a>
 }
-
-
-
-
-
-
-

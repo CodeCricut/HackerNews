@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Mappings;
 using HackerNews.Domain.Entities;
 using System;
@@ -58,7 +57,7 @@ namespace HackerNews.Domain.Common.Models.Users
 
 				.ForMember(model => model.BoardsModerating, user => user.MapFrom(u => u.BoardsModerating.Select(bm => bm.BoardId)))
 				.ForMember(model => model.BoardsSubscribed, user => user.MapFrom(u => u.BoardsSubscribed.Select(bs => bs.BoardId)))
-				
+
 				.ForMember(model => model.ProfileImageId, user => user.MapFrom(u => u.ProfileImage.Id));
 		}
 	}

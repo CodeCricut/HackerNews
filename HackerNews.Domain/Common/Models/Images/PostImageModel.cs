@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using HackerNews.Domain.Common.Mappings;
 using HackerNews.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Domain.Common.Models.Images
 {

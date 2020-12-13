@@ -1,13 +1,10 @@
 ﻿using HackerNews.Application.Boards.Queries.GetBoard;
-using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
-using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Exceptions;
-using HackerNews.Mvc.Services;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard;
 using MediatR;
@@ -37,7 +34,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				board = await _mediator.Send(new GetBoardQuery(articleModel.BoardId));
 			}
-			catch 
+			catch
 			{
 				board = new GetBoardModel();
 			}

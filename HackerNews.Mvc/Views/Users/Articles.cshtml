@@ -1,52 +1,30 @@
 ﻿@model HackerNews.Mvc.ViewModels.Users.UserArticlesViewModel
 
-<!--<div class="container-fluid">
-    <div class="row p-4">-->
-        @* Articles *@
-        <!--<div class="col main-content card-deck">
-            @foreach (var article in Model.ArticlePage.Items)
-            {
-                @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-            }
-            @if (Model.ArticlePage.HasPrev)
-            {
-                <a asp-controller="Users" asp-action="Articles" asp-all-route-data="@Model.ArticlePage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
-            }
-            @if (Model.ArticlePage.HasNext)
-            {
-                <a asp-controller="Users" asp-action="Articles" asp-all-route-data="Model.ArticlePage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
-            }
-            <div class="row h-100 w-100"></div>
-        </div>
-    </div>
-</div>-->
+@foreach (var article in Model.ArticlePage.Items)
+{
+    @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
+}
 
-
-        @foreach (var article in Model.ArticlePage.Items)
-        {
-            @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
-        }
-
-        <div class="navigation-row">
-            @* Bottom of Article List *@
-            @if (Model.ArticlePage.HasPrev)
-            {
-                <a asp-controller="Users" asp-action="Articles"
-                   asp-route-pageNumber="@Model.ArticlePage.PrevPagingParams.PageNumber"
-                   asp-route-pageSize="@Model.ArticlePage.PrevPagingParams.PageSize"
-                   asp-route-userId="@Model.UserId"
-                   class="btn">
-                    Prev
-                </a>
-            }
-            @if (Model.ArticlePage.HasNext)
-            {
-                <a asp-controller="Users" asp-action="Articles"
-                   asp-route-pageNumber="@Model.ArticlePage.NextPagingParams.PageNumber"
-                   asp-route-pageSize="@Model.ArticlePage.NextPagingParams.PageSize"
-                   asp-route-userId="@Model.UserId"
-                   class="btn">
-                    Next
-                </a>
-            }
-        </div>
+<div class="navigation-row">
+    @* Bottom of Article List *@
+    @if (Model.ArticlePage.HasPrev)
+    {
+        <a asp-controller="Users" asp-action="Articles"
+            asp-route-pageNumber="@Model.ArticlePage.PrevPagingParams.PageNumber"
+            asp-route-pageSize="@Model.ArticlePage.PrevPagingParams.PageSize"
+            asp-route-userId="@Model.UserId"
+            class="btn">
+            Prev
+        </a>
+    }
+    @if (Model.ArticlePage.HasNext)
+    {
+        <a asp-controller="Users" asp-action="Articles"
+            asp-route-pageNumber="@Model.ArticlePage.NextPagingParams.PageNumber"
+            asp-route-pageSize="@Model.ArticlePage.NextPagingParams.PageSize"
+            asp-route-userId="@Model.UserId"
+            class="btn">
+            Next
+        </a>
+    }
+</div>

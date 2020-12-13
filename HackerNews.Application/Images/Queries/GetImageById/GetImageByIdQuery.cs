@@ -5,9 +5,6 @@ using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

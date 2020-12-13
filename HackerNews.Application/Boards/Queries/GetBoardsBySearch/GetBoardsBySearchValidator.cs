@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 using HackerNews.Application.Boards.Queries.GetBoardsByIds;
 using HackerNews.Application.Common.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.Application.Boards.Queries.GetBoardsBySearch
 {

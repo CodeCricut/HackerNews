@@ -42,7 +42,7 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesWithPagination
 
 				throw;
 			}
-			
+
 		}
 	}
 }

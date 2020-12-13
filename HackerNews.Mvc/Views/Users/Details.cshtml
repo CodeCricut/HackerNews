@@ -19,7 +19,6 @@
     @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
 }
 <a asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">All Comments</a>
-<div class="row w-100 h-100"></div>
 
 @section Sidebar {
     <div class="card card-lg user-details-card">

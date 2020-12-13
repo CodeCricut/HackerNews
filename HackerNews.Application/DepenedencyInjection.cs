@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using HackerNews.Application.Common.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

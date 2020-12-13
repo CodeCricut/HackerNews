@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Mappings;
 using HackerNews.Domain.Entities;
 using System;
@@ -14,7 +13,7 @@ namespace HackerNews.Domain.Common.Models.Boards
 		public string Description { get; set; }
 		public DateTime CreateDate { get; set; }
 		public int CreatorId { get; set; }
-		public List<int> ModeratorIds { get; set; } = new List<int>(); 
+		public List<int> ModeratorIds { get; set; } = new List<int>();
 		public List<int> SubscriberIds { get; set; } = new List<int>();
 		public List<int> ArticleIds { get; set; } = new List<int>();
 		public bool Deleted { get; set; }

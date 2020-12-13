@@ -3,47 +3,16 @@
     ViewData["Title"] = "Comments";
 }
 
-
 <h2>Comments</h2>
-        @* Comments *@
-            @foreach (var comment in Model.CommentPage.Items)
-            {
-                @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
-            }
-            @if (Model.CommentPage.HasPrev)
-            {
-                <a asp-controller="Users" asp-action="Comments" asp-all-route-data="@Model.CommentPage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
-            }
-            @if (Model.CommentPage.HasNext)
-            {
-                <a asp-controller="Users" asp-action="Comments" asp-all-route-data="Model.CommentPage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
-            }
-
-
-
-
-
-
-
-<!--<h2>Comments</h2>
-
-<div class="container-fluid">
-    <div class="row p-4">-->
-@* Comments *@
-<!--<div class="col main-content card-deck">
-            @foreach (var comment in Model.CommentPage.Items)
-            {
-                @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
-            }
-            @if (Model.CommentPage.HasPrev)
-            {
-                <a asp-controller="Users" asp-action="Comments" asp-all-route-data="@Model.CommentPage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
-            }
-            @if (Model.CommentPage.HasNext)
-            {
-                <a asp-controller="Users" asp-action="Comments" asp-all-route-data="Model.CommentPage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
-            }
-            <div class="row h-100"></div>
-        </div>
-    </div>
-</div>-->
+@foreach (var comment in Model.CommentPage.Items)
+{
+    @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
+}
+@if (Model.CommentPage.HasPrev)
+{
+    <a asp-controller="Users" asp-action="Comments" asp-all-route-data="@Model.CommentPage.PrevPageQuery" class="mr-auto btn btn-outline-secondary ">Prev</a>
+}
+@if (Model.CommentPage.HasNext)
+{
+    <a asp-controller="Users" asp-action="Comments" asp-all-route-data="Model.CommentPage.NextPageQuery" class="mr-auto btn btn-outline-secondary ">Next</a>
+}

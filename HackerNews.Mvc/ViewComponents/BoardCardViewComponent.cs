@@ -8,7 +8,7 @@ namespace HackerNews.Mvc.ViewComponents
 	{
 		public IViewComponentResult Invoke(GetBoardModel boardModel)
 		{
-			var model = new BoardCardViewModel { Board = boardModel};
+			var model = new BoardCardViewModel { Board = boardModel };
 			return View(model);
 		}
 	}

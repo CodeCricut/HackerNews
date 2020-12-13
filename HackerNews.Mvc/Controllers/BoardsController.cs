@@ -120,11 +120,11 @@ namespace HackerNews.Mvc.Controllers
 
 				return RedirectToAction("Admin", new { id = updatedBoard.Id });
 			}
-			catch (NotFoundException e )
+			catch (NotFoundException e)
 			{
 				return RedirectToAction("Admin", new { id = model.Board.Id });
 			}
-			
+
 		}
 
 		public async Task<ActionResult<BoardModeratorsViewModel>> Moderators(int id)

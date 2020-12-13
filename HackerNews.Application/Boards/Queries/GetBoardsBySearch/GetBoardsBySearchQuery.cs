@@ -7,7 +7,6 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

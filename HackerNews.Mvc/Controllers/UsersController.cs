@@ -161,8 +161,9 @@ namespace HackerNews.Mvc.Controllers
 			var user = await Mediator.Send(new GetPublicUserQuery(userId));
 			var articles = await Mediator.Send(new GetArticlesByIdsQuery(user.ArticleIds, pagingParams));
 
-			var model = new UserArticlesViewModel { 
-				ArticlePage = new FrontendPage<GetArticleModel>(articles) ,
+			var model = new UserArticlesViewModel
+			{
+				ArticlePage = new FrontendPage<GetArticleModel>(articles),
 				UserId = userId
 			};
 			return View(model);

@@ -7,9 +7,6 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,10 +32,10 @@ namespace HackerNews.Application.Users.Commands.AddImage
 
 		public override async Task<GetPublicUserModel> Handle(AddUserImageCommand request, CancellationToken cancellationToken)
 		{
-			if(! await UnitOfWork.Users.EntityExistsAsync(request.CurrentUserId)) 
+			if (!await UnitOfWork.Users.EntityExistsAsync(request.CurrentUserId))
 				throw new UnauthorizedException();
 			var user = await UnitOfWork.Users.GetEntityAsync(request.CurrentUserId);
-			
+
 			// Create image
 			var imageToAdd = Mapper.Map<Image>(request.ImageModel);
 			imageToAdd.UserId = _currentUserService.UserId;

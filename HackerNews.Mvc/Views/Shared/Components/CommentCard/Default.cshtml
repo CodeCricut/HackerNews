@@ -1,4 +1,5 @@
 ﻿@model HackerNews.Mvc.ViewModels.ViewComponents.CommentCardViewModel 
+
 <div class="card comment-card">
     <div class="karma-col">
         
@@ -71,16 +72,6 @@
             {
                 <a  href="#"  class="save-link" onclick="saveComment('@Model.Comment.Id', '@Model.Jwt', this)">Save</a>
             }
-            @*TODO: add save functionality to commetns *@
-            @*<a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
-        @if (Model.Saved)
-        {
-            <a href="#" class="save-link">Saved</a>
-        }
-        else
-        {
-            <a href="#" class="save-link">Save</a>
-        }*@
         </div>
     </div>
 </div>

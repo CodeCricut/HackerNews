@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Mappings;
 using HackerNews.Domain.Entities;
 using System;
@@ -27,7 +26,7 @@ namespace HackerNews.Domain.Common.Models.Users
 			profile.CreateMap<User, GetPublicUserModel>()
 				.ForMember(model => model.ArticleIds, user => user.MapFrom(u => u.Articles.Select(a => a.Id)))
 				.ForMember(model => model.CommentIds, user => user.MapFrom(u => u.Comments.Select(c => c.Id)))
-				
+
 				.ForMember(model => model.ProfileImageId, user => user.MapFrom(u => u.ProfileImage.Id));
 		}
 	}

@@ -1,10 +1,6 @@
 ﻿using HackerNews.Domain.Common.Models.Images;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Services.Interfaces
 {
@@ -14,7 +10,7 @@ namespace HackerNews.Mvc.Services.Interfaces
 		{
 			// Copy the image data to the image object
 			PostImageModel img = new PostImageModel();
-			
+
 			using MemoryStream ms = new MemoryStream();
 			file.CopyTo(ms);
 

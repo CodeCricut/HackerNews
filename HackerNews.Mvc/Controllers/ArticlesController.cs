@@ -16,15 +16,12 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
-using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,14 +54,14 @@ namespace HackerNews.Mvc.Controllers
 
 			// If image attatched
 			var file = Request.Form.Files.FirstOrDefault();
-			if (file != null) 
+			if (file != null)
 			{
 				PostImageModel imageModel = _imageFileReader.ConvertImageFileToImageModel(file);
 
 				// Add the image to the article
 				await Mediator.Send(new AddArticleImageCommand(imageModel, model.Id));
 			}
-			
+
 			return RedirectToAction("Details", new { model.Id });
 		}
 
