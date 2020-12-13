@@ -15,7 +15,7 @@
             <input hidden asp-for="Comment.BoardId" />
             <input hidden asp-for="Comment.Id" />
             <input hidden asp-for="Comment.UserId" />
-            <input type="submit" class="btn btn-primary" value="Add comment" />
+            <input type="submit" class="btn btn-secondary" value="Add comment" />
         </form>
     </div>
 }
@@ -31,9 +31,9 @@ else
 }
 @if (Model.ChildCommentPage.HasPrev)
 {
-    <a asp-controller="Comments" asp-action="Details" asp-all-route-data="@Model.ChildCommentPage.PrevPageQuery" class="btn btn-primary">Prev</a>
+    <a asp-controller="Comments" asp-action="Details" asp-all-route-data="@Model.ChildCommentPage.PrevPageQuery" class="btn btn-secondary">Prev</a>
 }
 @if (Model.ChildCommentPage.HasNext)
 {
-    <a asp-controller="Comments" asp-action="Detail" asp-all-route-data="@Model.ChildCommentPage.NextPageQuery" class="btn btn-primary">Next</a>
+    <a asp-controller="Comments" asp-action="Detail" asp-all-route-data="@Model.ChildCommentPage.NextPageQuery" class="btn btn-secondary">Next</a>
 }

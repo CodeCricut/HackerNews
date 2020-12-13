@@ -13,11 +13,11 @@
     <div class="card-footer">
         @if (Model.LoggedIn)
         {
-            <a asp-controller="Boards" asp-action="Create" class="btn">Create Board</a>
+            <a asp-controller="Boards" asp-action="Create" class="btn btn-outline-secondary">Create Board</a>
         }
         else
         {
-            <a asp-controller="Users" asp-action="Login" class="btn">Login</a>
+            <a asp-controller="Users" asp-action="Login" class="btn btn-secondary">Login</a>
         }
     </div>
 </div>

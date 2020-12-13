@@ -8,7 +8,7 @@
     {
         @await Component.InvokeAsync("BoardCard", new { boardModel = board });
     }
-    <a asp-controller="Boards" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn">More</a>
+    <a asp-controller="Boards" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn btn-secondary">More</a>
 }
 
 @* Users *@
@@ -19,7 +19,7 @@
     {
         @await Component.InvokeAsync("UserCard", new { userModel = user });
     }
-    <a asp-controller="Users" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn">More</a>
+    <a asp-controller="Users" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn btn-secondary">More</a>
 }
 
 @* Articles *@
@@ -30,7 +30,7 @@
     {
         @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
     }
-    <a asp-controller="Articles" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn">More</a>
+    <a asp-controller="Articles" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn btn-secondary">More</a>
 }
 
 @* Comments *@
@@ -41,7 +41,7 @@
     {
         @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
     }
-    <a asp-controller="Comments" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn ">More</a>
+    <a asp-controller="Comments" asp-action="Search" asp-route-searchTerm="@Model.SearchTerm" class="btn btn-secondary">More</a>
 }
 
 

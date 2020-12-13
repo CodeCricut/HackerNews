@@ -1,6 +1,6 @@
 ﻿:root {
-    --red-orange: #ff4500;
-    --primary: #0079d3;
+    --blue: #0079d3;
+    --primary: #ff4500;
     --orange: #ffb000;
     --green: #46d160;
     --crimson: #ea0027;
@@ -19,8 +19,6 @@
 }
 
 /* General */
-
-
 html,
 body {
     background-color: var(--light-gray);
@@ -54,7 +52,9 @@ button {
     cursor: pointer;
 }
 
-.btn {
+/* Buttons */
+.btn,
+.btn-primary {
     background-color: var(--primary);
     color: var(--white);
     height: 40px;
@@ -66,22 +66,59 @@ button {
     align-items: center;
 }
 
-    .btn:hover {
-        background-color: #0078d362;
+.btn-outline-primary {
+    background-color: var(--off-white);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+    .btn:hover,
+    .btn-primary:hover,
+    .btn-outline-primary:hover {
+        background-color: #ff440075;
+        color: var(--white);
     }
 
-    .btn:active {
-        background-color: #07497ccc;
-    }
+.btn:active {
+    background-color: #e7461d;
+    color: var(--white);
+}
 
-    .btn:active,
-    .btn:focus {
-        outline: none;
-    }
+.btn:active,
+.btn:focus {
+    outline: none;
+}
 
-.card form {
+.btn-sm {
+    width: 100px;
+    height: 30px;
+    font-size: 0.8em;
+}
+
+.btn-lg {
     width: 100%;
-    height: 100%;
+}
+
+.btn-secondary {
+    background-color: var(--blue);
+}
+
+    .btn-secondary:hover,
+    .btn-outline-secondary:hover {
+        background-color: #0b87e69d;
+        color: var(--white);
+    }
+
+    .btn-secondary:active,
+    .btn-outline-secondary:active {
+        background-color: #1680d1;
+        color: var(--white);
+    }
+
+.btn-outline-secondary {
+    background-color: var(--white);
+    color: var(--blue);
+    border: 1px solid var(--blue);
 }
 
 form > * {
@@ -159,7 +196,7 @@ a,
 }
 
     .header .logo {
-        background-color: var(--red-orange);
+        background-color: var(--primary);
         color: var(--white);
         padding: 10px;
         border-radius: 5px;
@@ -241,6 +278,10 @@ a,
 }
 
 /* || Cards */
+.card form {
+    width: 100%;
+    height: 100%;
+}
 
 * > .card:first-child {
     margin: 0;
@@ -280,12 +321,12 @@ a,
 
 .karma-col .upvote:hover,
 .upvoted {
-    color: var(--red-orange);
+    color: var(--primary);
 }
 
 .karma-col .downvote:hover,
 .downvoted {
-    color: var(--primary);
+    color: var(--blue);
 }
 
 .card .content-col {
@@ -331,13 +372,11 @@ a,
     align-content: center;
 }
 
-.card .img-row img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-}
-
-
+    .card .img-row img {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+    }
 
 .more-row {
     font-size: 0.8rem;
@@ -410,12 +449,12 @@ input.page-search {
         flex-direction: column;
     }
 
-    .board-sidebar-img {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        width: 100%;
-    }
+.board-sidebar-img {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
 
     .board-sidebar-img img {
         width: 100%;
@@ -423,32 +462,32 @@ input.page-search {
         object-fit: cover;
     }
 
-        .sidebar .card > * {
-            text-align: center;
-        }
+.sidebar .card > * {
+    text-align: center;
+}
 
-        .sidebar .card .card-top {
-            font-size: 0.7rem;
-            color: var(--off-white);
-            text-align: left;
-            padding: 10px;
-            margin: -10px;
-            margin-bottom: 0;
-            border: 1px solid var(--off-white);
-            border-radius: 5px;
-            background-color: var(--light-gray);
-        }
+.sidebar .card .card-top {
+    font-size: 0.7rem;
+    color: var(--off-white);
+    text-align: left;
+    padding: 10px;
+    margin: -10px;
+    margin-bottom: 0;
+    border: 1px solid var(--off-white);
+    border-radius: 5px;
+    background-color: var(--light-gray);
+}
 
-    .sidebar .card-body h4 {
-        font-size: 1.5rem;
-        padding: 10px 0;
-    }
+.sidebar .card-body h4 {
+    font-size: 1.5rem;
+    padding: 10px 0;
+}
 
-    .sidebar .card-body p {
-        color: var(--gray);
-        margin-bottom: 10px;
-        text-align: left;
-    }
+.sidebar .card-body p {
+    color: var(--gray);
+    margin-bottom: 10px;
+    text-align: left;
+}
 
 .card-footer {
     border-top: 1px solid var(--light-gray);

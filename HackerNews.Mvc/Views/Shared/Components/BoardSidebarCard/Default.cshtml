@@ -23,11 +23,11 @@
 
         @if (Model.LoggedIn)
         {
-            <a asp-controller="Articles" asp-action="Create" asp-route-boardId="@Model.Board.Id" class="btn btn-primary col my-1">Create Post</a>
+            <a asp-controller="Articles" asp-action="Create" asp-route-boardId="@Model.Board.Id" class="btn btn-secondary col my-1">Create Post</a>
 
             @if (Model.Subscribed)
             {
-                <a asp-controller="Boards" asp-action="Subscribe" asp-route-boardId="@Model.Board.Id" class="btn btn-primary col my-1">Unsubscribe</a>
+                <a asp-controller="Boards" asp-action="Subscribe" asp-route-boardId="@Model.Board.Id" class="btn btn-secondary col my-1">Unsubscribe</a>
             }
             else
             {

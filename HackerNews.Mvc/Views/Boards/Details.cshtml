@@ -18,11 +18,11 @@
     @* Bottom of Article List *@
     @if (Model.ArticlePage.HasPrev)
     {
-        <a asp-controller="Boards" asp-action="Details" asp-all-route-data="Model.ArticlePage.PrevPageQuery" class="btn">Prev</a>
+        <a asp-controller="Boards" asp-action="Details" asp-all-route-data="Model.ArticlePage.PrevPageQuery" class="btn btn-secondary">Prev</a>
     }
     @if (Model.ArticlePage.HasNext)
     {
-        <a asp-controller="Boards" asp-action="Details" asp-all-route-data="Model.ArticlePage.NextPageQuery" class="btn">Next</a>
+        <a asp-controller="Boards" asp-action="Details" asp-all-route-data="Model.ArticlePage.NextPageQuery" class="btn btn-secondary">Next</a>
     }
 </div>
 

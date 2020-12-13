@@ -10,7 +10,7 @@
 {
     @await Component.InvokeAsync("ArticleCard", new { articleModel = article });
 }
-<a class="btn" asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id">All Articles</a>
+<a class="btn btn-outline-secondary" asp-controller="Users" asp-action="Articles" asp-route-userId="@Model.User.Id">All Articles</a>
 
 @* Comments *@
 <h4>Comments</h4>
@@ -18,7 +18,7 @@
 {
     @await Component.InvokeAsync("CommentCard", new { commentModel = comment });
 }
-<a class="btn" asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">All Comments</a>
+<a class="btn  btn-outline-secondary" asp-controller="Users" asp-action="Comments" asp-route-userId="@Model.User.Id">All Comments</a>
 
 @section Sidebar {
     <div class="card card-lg user-details-card">
