@@ -8,6 +8,7 @@ namespace HackerNews.Domain.Interfaces
 		IBoardRepository Boards { get; }
 		ICommentRepository Comments { get; }
 		IUserRepository Users { get; }
+		IImageRepository Images { get; }
 
 		bool SaveChanges();
 	}

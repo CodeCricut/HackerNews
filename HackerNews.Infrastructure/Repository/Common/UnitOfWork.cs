@@ -19,6 +19,8 @@ namespace HackerNews.Infrastructure.Repository.Common
 
 		public IUserRepository Users { get; private set; }
 
+		public IImageRepository Images { get; private set; }
+
 		public UnitOfWork(DbContext db)
 		{
 			_db = db;
