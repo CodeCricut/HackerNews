@@ -1,0 +1,13 @@
+﻿@model HackerNews.Mvc.ViewModels.Articles.ArticleAddImageViewModel
+
+<div class="card card-lg">
+    <form asp-controller="Articles" asp-action="PostImage" method="post">
+        <input hidden asp-for="ArticleId" class="form-control" />
+        <input type="text" asp-for="PostImageModel.ImageTitle" placeholder="Image Title" />
+        <input type="text" asp-for="PostImageModel.ImageDescription" placeholder="Image Description" />
+
+        <input type="file" id="imageFile" name="imageFile" />
+
+        <input type="submit" value="Add Image" class="btn btn-primary" />
+    </form>
+</div>

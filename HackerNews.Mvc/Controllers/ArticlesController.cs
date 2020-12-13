@@ -1,4 +1,5 @@
 ﻿using HackerNews.Application.Articles.Commands.AddArticle;
+using HackerNews.Application.Articles.Commands.AddImage;
 using HackerNews.Application.Articles.Commands.DeleteArticle;
 using HackerNews.Application.Articles.Commands.VoteArticle;
 using HackerNews.Application.Articles.Queries.GetArticle;
@@ -12,12 +13,16 @@ using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Controllers
@@ -101,7 +106,6 @@ namespace HackerNews.Mvc.Controllers
 
 		public async Task<ActionResult<ArticleSearchViewModel>> Search(string searchTerm, PagingParams pagingParams)
 		{
-
 			var articles = await Mediator.Send(new GetArticlesBySearchQuery(searchTerm, pagingParams));
 			var model = new ArticleSearchViewModel { SearchTerm = searchTerm, ArticlePage = new FrontendPage<GetArticleModel>(articles) };
 			return View(model);
@@ -125,5 +129,39 @@ namespace HackerNews.Mvc.Controllers
 				return null;
 			}
 		}
+
+		[JwtAuthorize]
+		public ActionResult<ArticleAddImageViewModel> AddImage(int id)
+		{
+			var model = new ArticleAddImageViewModel
+			{
+				ArticleId = id,
+				PostImageModel = new PostImageModel()
+			};
+			return View(model);
+		}
+
+		[HttpPost]
+		[JwtAuthorize]
+		public async Task<ActionResult> PostImage(ArticleAddImageViewModel postModel)
+		{
+			var file = Request.Form.Files.FirstOrDefault();
+			if (file == null) return RedirectToAction("Details", new { id = postModel.ArticleId });
+
+			// Copy the image data to the image object
+			PostImageModel img = new PostImageModel();
+			using MemoryStream ms = new MemoryStream();
+			file.CopyTo(ms);
+			img.ImageData = ms.ToArray();
+			ms.Close();
+
+			// Add other image fields
+			img.ImageTitle = postModel.PostImageModel.ImageTitle;
+			img.ImageDescription = postModel.PostImageModel.ImageDescription;
+
+
+			var updateArticle = await Mediator.Send(new AddArticleImageCommand(img, postModel.ArticleId));
+			return RedirectToAction("Details", new { id = updateArticle.Id });
+		} 
 	}
 }
