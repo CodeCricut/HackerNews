@@ -24,9 +24,9 @@ namespace HackerNews.Application.Articles.Commands.AddImage
 		public int ArticleId { get; }
 	}
 
-	public class AddImageHandler : DatabaseRequestHandler<AddArticleImageCommand, GetArticleModel>
+	public class AddArticleImageHandler : DatabaseRequestHandler<AddArticleImageCommand, GetArticleModel>
 	{
-		public AddImageHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		public AddArticleImageHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
