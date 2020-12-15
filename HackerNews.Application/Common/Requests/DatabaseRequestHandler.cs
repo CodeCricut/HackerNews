@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Application.Common.Requests
 {
+	/// <summary>
+	/// A base <see cref="IRequestHandler{TRequest, TResponse}"/> providing some common properties used in most
+	/// handlers that access the database.
+	/// </summary>
+	/// <typeparam name="TRequest"></typeparam>
+	/// <typeparam name="TReturn"></typeparam>
 	public abstract class DatabaseRequestHandler<TRequest, TReturn> : IRequestHandler<TRequest, TReturn>
 		where TRequest : IRequest<TReturn>
 	{

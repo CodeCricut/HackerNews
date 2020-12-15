@@ -11,6 +11,11 @@ namespace HackerNews.Application
 {
 	public static class DepenedencyInjection
 	{
+		/// <summary>
+		/// Register necessary CQRS services to the container.
+		/// </summary>
+		/// <param name="services"></param>
+		/// <returns></returns>
 		public static IServiceCollection AddApplication(this IServiceCollection services)
 		{
 			var assembly = Assembly.GetExecutingAssembly();
