@@ -25,6 +25,7 @@ namespace HackerNews.Application
 
 			// Add deleted entity policy validators
 			services.AddSingleton<IDeletedEntityPolicyValidator<Article>, DeletedArticlePolicyValidator>();
+			services.AddSingleton<IDeletedEntityPolicyValidator<Comment>, DeletedCommentPolicyValidator>();
 
 			return services;
 		}

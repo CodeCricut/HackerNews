@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Mappings;
@@ -24,13 +25,20 @@ namespace HackerNews.Application.Comments.Queries.GetCommentsWithPagination
 
 	public class GetCommentsWithPaginationHandler : DatabaseRequestHandler<GetCommentsWithPaginationQuery, PaginatedList<GetCommentModel>>
 	{
-		public GetCommentsWithPaginationHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Comment> _deletedCommentValidator;
+
+		public GetCommentsWithPaginationHandler(IDeletedEntityPolicyValidator<Comment> deletedCommentValidator, 
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedCommentValidator = deletedCommentValidator;
 		}
 
 		public override async Task<PaginatedList<GetCommentModel>> Handle(GetCommentsWithPaginationQuery request, CancellationToken cancellationToken)
 		{
 			var comments = await UnitOfWork.Comments.GetEntitiesAsync();
+
+			comments = _deletedCommentValidator.ValidateEntityQuerable(comments, Domain.Common.DeletedEntityPolicy.OWNER);
+
 			var paginatedComments = await comments.PaginatedListAsync(request.PagingParams);
 
 			return paginatedComments.ToMappedPagedList<Comment, GetCommentModel>(Mapper);

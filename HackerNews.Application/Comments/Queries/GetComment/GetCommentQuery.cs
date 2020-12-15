@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
@@ -22,13 +24,18 @@ namespace HackerNews.Application.Comments.Queries.GetComment
 
 	public class GetCommentHandler : DatabaseRequestHandler<GetCommentQuery, GetCommentModel>
 	{
-		public GetCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Comment> _deletedCommentValidator;
+
+		public GetCommentHandler(IDeletedEntityPolicyValidator<Comment> deletedCommentValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedCommentValidator = deletedCommentValidator;
 		}
 
 		public override async Task<GetCommentModel> Handle(GetCommentQuery request, CancellationToken cancellationToken)
 		{
 			var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
+			comment = _deletedCommentValidator.ValidateEntity(comment, Domain.Common.DeletedEntityPolicy.OWNER);
 			if (comment == null) throw new NotFoundException();
 
 			return Mapper.Map<GetCommentModel>(comment);
