@@ -21,7 +21,7 @@ namespace HackerNews.Mvc.Services
 			IMediator mediator,
 			IJwtSetterService jwtSetterService)
 		{
-			_jwtGeneratorService = jwtGeneratorService;
+			_jwtGeneratorService = jwtGeneratorService; 
 			_mediator = mediator;
 			_jwtSetterService = jwtSetterService;
 			_context = httpContextAccessor.HttpContext;
@@ -35,31 +35,6 @@ namespace HackerNews.Mvc.Services
 			// Set JWT to send with each request (used by the API)
 			_jwtSetterService.SetToken(jwt, 60);
 
-
-			var user = await _mediator.Send(new GetUserFromLoginModelQuery(loginModel));
-
-			//var claims = new List<Claim>
-			//{
-			//	new Claim(ClaimTypes.Name, user.Username),
-			//	new Claim("FirstName", user.FirstName),
-			//	new Claim("LastName", user.LastName),
-			//};
-
-			//var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-			//var authProperties = new AuthenticationProperties
-			//{
-			//	AllowRefresh = true,
-			//	ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-			//	IsPersistent = true
-			//};
-
-			//// Sign in using the default cookie authentication scheme. Used in conjunction with .UseAuthentication() and [Authorize]
-			//await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-			//	new ClaimsPrincipal(claimsIdentity),
-			//	authProperties
-			//	);
-
 			return jwt;
 
 		}
@@ -67,7 +42,6 @@ namespace HackerNews.Mvc.Services
 		public async Task LogOut()
 		{
 			if (_jwtSetterService.ContainsToken()) _jwtSetterService.RemoveToken();
-			//await _context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 		}
 	}
 }

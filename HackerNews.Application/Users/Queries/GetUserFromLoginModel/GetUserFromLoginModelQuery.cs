@@ -38,7 +38,8 @@ namespace HackerNews.Application.Users.Queries.GetUserFromLoginModel
 			var user = users.FirstOrDefault(u => u.Username == request.LoginModel.Username && u.Password == request.LoginModel.Password);
 			if (user == null) throw new NotFoundException();
 
-			user = _deletedUserValidator.ValidateEntity(user, Domain.Common.DeletedEntityPolicy.OWNER);
+			// Should be able to log into deleted accounts, for now at least
+			user = _deletedUserValidator.ValidateEntity(user, Domain.Common.DeletedEntityPolicy.PUBLIC);
 
 			return Mapper.Map<GetPrivateUserModel>(user);
 		}
