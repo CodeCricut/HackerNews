@@ -2,6 +2,9 @@
 
 namespace HackerNews.Domain.Exceptions
 {
+	/// <summary>
+	/// A JSON friendly exception wrapper.
+	/// </summary>
 	public class ErrorResponse
 	{
 		public string Type { get; set; }

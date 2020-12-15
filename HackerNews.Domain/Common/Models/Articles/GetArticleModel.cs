@@ -15,7 +15,7 @@ namespace HackerNews.Domain.Common.Models.Articles
 		public List<int> CommentIds { get; set; } = new List<int>();
 		public string Url { get; set; }
 		public int Karma { get; set; }
-		public string Title { get; set; } 
+		public string Title { get; set; }
 		public List<int> UsersLiked { get; set; } = new List<int>();
 		public List<int> UsersDisliked { get; set; } = new List<int>();
 		public DateTime PostDate { get; set; }

@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Domain.Common.Models
 {
+	/// <summary>
+	/// A portion of a potentially larger list of <typeparamref name="T"/>. 
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class PaginatedList<T>
 	{
 		public List<T> Items { get; set; } = new List<T>();

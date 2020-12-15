@@ -3,7 +3,6 @@ using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Users;
-using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;

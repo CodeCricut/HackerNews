@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Mappings;
@@ -27,7 +26,7 @@ namespace HackerNews.Application.Comments.Queries.GetCommentsWithPagination
 	{
 		private readonly IDeletedEntityPolicyValidator<Comment> _deletedCommentValidator;
 
-		public GetCommentsWithPaginationHandler(IDeletedEntityPolicyValidator<Comment> deletedCommentValidator, 
+		public GetCommentsWithPaginationHandler(IDeletedEntityPolicyValidator<Comment> deletedCommentValidator,
 			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 			_deletedCommentValidator = deletedCommentValidator;

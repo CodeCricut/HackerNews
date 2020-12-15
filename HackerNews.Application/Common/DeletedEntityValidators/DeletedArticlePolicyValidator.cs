@@ -4,13 +4,11 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.Application.Common.DeletedEntityValidators
 {
-	
+
 
 	public class DeletedArticlePolicyValidator : IDeletedEntityPolicyValidator<Article>
 	{
@@ -26,11 +24,11 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 			if (entity.Deleted)
 			{
 				switch (policy)
-				{                            
+				{
 					case DeletedEntityPolicy.INACCESSIBLE:
 						throw new EntityDeletedException();
 					case DeletedEntityPolicy.OWNER:
-						if (entity.UserId != _currentUserService.UserId) 
+						if (entity.UserId != _currentUserService.UserId)
 							throw new EntityDeletedException();
 						break;
 					case DeletedEntityPolicy.RESTRICTED:
@@ -68,7 +66,7 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 							break;
 					}
 				}
-				
+
 				return entity;
 			};
 

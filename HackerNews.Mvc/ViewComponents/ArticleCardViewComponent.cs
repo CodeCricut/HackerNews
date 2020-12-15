@@ -4,7 +4,6 @@ using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Users;
-using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard;
 using MediatR;

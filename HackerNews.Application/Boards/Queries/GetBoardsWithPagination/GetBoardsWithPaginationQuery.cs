@@ -26,7 +26,7 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsWithPagination
 	{
 		private readonly IDeletedEntityPolicyValidator<Board> _deletedBoardValidator;
 
-		public GetBoardsWithPaginationHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator, 
+		public GetBoardsWithPaginationHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator,
 			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 			_deletedBoardValidator = deletedBoardValidator;

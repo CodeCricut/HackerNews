@@ -4,9 +4,7 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.Application.Common.DeletedEntityValidators
 {

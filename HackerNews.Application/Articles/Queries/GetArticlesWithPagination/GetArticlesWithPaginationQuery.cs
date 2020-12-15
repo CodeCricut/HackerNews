@@ -7,7 +7,6 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +37,7 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesWithPagination
 			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
 
 			articles = _deletedEntityValidator.ValidateEntityQuerable(articles, Domain.Common.DeletedEntityPolicy.OWNER);
-			
+
 			var paginatedArticles = await articles.PaginatedListAsync(request.PagingParams);
 
 			return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);

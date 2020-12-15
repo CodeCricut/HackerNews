@@ -1,5 +1,4 @@
 ﻿using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
-using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +23,7 @@ namespace HackerNews.Mvc.ViewComponents
 				var privateUser = await _mediator.Send(new GetAuthenticatedUserQuery());
 				model = new NavbarViewModel { User = privateUser };
 			}
-			catch 
+			catch
 			{
 				model = new NavbarViewModel();
 			}

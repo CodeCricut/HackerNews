@@ -1,6 +1,5 @@
 ﻿using Application.IntegrationTests.Common;
 using AutoMapper;
-using HackerNews.Application.Articles.Commands.AddArticle;
 using HackerNews.Application.Articles.Commands.AddImage;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Domain.Common.Models.Articles;

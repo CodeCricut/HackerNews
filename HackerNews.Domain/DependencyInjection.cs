@@ -9,11 +9,6 @@ namespace HackerNews.Domain
 	{
 		public static IServiceCollection AddDomain(this IServiceCollection services)
 		{
-			//var mapperConfig = new MapperConfiguration(cfg =>
-			//{
-			//	cfg.AddProfile<MappingProfile>();
-			//});
-
 			services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 			return services;
 		}

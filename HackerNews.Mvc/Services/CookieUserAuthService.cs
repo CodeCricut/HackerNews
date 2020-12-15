@@ -1,5 +1,4 @@
 ﻿using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.Services.Interfaces;
@@ -21,7 +20,7 @@ namespace HackerNews.Mvc.Services
 			IMediator mediator,
 			IJwtSetterService jwtSetterService)
 		{
-			_jwtGeneratorService = jwtGeneratorService; 
+			_jwtGeneratorService = jwtGeneratorService;
 			_mediator = mediator;
 			_jwtSetterService = jwtSetterService;
 			_context = httpContextAccessor.HttpContext;

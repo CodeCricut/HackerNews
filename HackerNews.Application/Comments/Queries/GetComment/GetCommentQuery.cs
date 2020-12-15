@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Comments;

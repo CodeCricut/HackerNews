@@ -5,7 +5,6 @@ using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Comments;
-using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;
@@ -36,7 +35,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				parentArticle = await _mediator.Send(new GetArticleQuery(commentModel.ParentArticleId));
 			}
-			catch 
+			catch
 			{
 				parentArticle = new GetArticleModel();
 			}
@@ -45,7 +44,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				parentComment = await _mediator.Send(new GetCommentQuery(commentModel.ParentCommentId));
 			}
-			catch 
+			catch
 			{
 				parentComment = new GetCommentModel();
 			}

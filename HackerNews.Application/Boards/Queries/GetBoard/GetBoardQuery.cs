@@ -25,7 +25,7 @@ namespace HackerNews.Application.Boards.Queries.GetBoard
 	{
 		private readonly IDeletedEntityPolicyValidator<Board> _deletedBoardValidator;
 
-		public GetBoardHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator, 
+		public GetBoardHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator,
 			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 			_deletedBoardValidator = deletedBoardValidator;

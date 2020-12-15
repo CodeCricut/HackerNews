@@ -12,6 +12,11 @@ namespace HackerNews.Domain.Common.Mappings
 			ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 		}
 
+		/// <summary>
+		/// Add all mappings in the assembly. Maps are classes that implement <see cref="IMapFrom{T}"/> and optionally
+		/// override the default mapping behavior.
+		/// </summary>
+		/// <param name="assembly"></param>
 		private void ApplyMappingsFromAssembly(Assembly assembly)
 		{
 			var types = assembly.GetExportedTypes()
@@ -27,7 +32,6 @@ namespace HackerNews.Domain.Common.Mappings
 					?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
 
 				methodInfo?.Invoke(instance, new object[] { this });
-
 			}
 		}
 	}
