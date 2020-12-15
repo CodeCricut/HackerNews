@@ -35,8 +35,9 @@ namespace HackerNews.Application.Comments.Queries.GetComment
 		public override async Task<GetCommentModel> Handle(GetCommentQuery request, CancellationToken cancellationToken)
 		{
 			var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
-			comment = _deletedCommentValidator.ValidateEntity(comment, Domain.Common.DeletedEntityPolicy.OWNER);
 			if (comment == null) throw new NotFoundException();
+
+			comment = _deletedCommentValidator.ValidateEntity(comment, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			return Mapper.Map<GetCommentModel>(comment);
 		}

@@ -81,6 +81,15 @@
             {
                 <a class="save-link" onclick="saveComment('@Model.Comment.Id', '@Model.Jwt', this)">Save</a>
             }
+            @if (Model.Comment.Deleted)
+            {
+                <span class="text-danger">Deleted</span>
+            }
+            else if (Model.UserCreatedComment)
+            {
+                <a class="save-link text-danger" asp-controller="Comments" asp-action="Delete" asp-route-id="@Model.Comment.Id">Delete</a>
+            }
+
         </div>
     </div>
 </div>
