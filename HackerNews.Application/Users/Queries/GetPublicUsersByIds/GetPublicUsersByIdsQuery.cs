@@ -29,17 +29,23 @@ namespace HackerNews.Application.Users.Queries.GetPublicUsersByIds
 
 	public class GetPublicUsersByIdsHandler : DatabaseRequestHandler<GetPublicUsersByIdsQuery, PaginatedList<GetPublicUserModel>>
 	{
-		public GetPublicUsersByIdsHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<User> _deletedEntityValidator;
+
+		public GetPublicUsersByIdsHandler(IDeletedEntityPolicyValidator<User> deletedEntityValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedEntityValidator = deletedEntityValidator;
 		}
 
 		public override async Task<PaginatedList<GetPublicUserModel>> Handle(GetPublicUsersByIdsQuery request, CancellationToken cancellationToken)
 		{
 			var users = await UnitOfWork.Users.GetEntitiesAsync();
 			var usersByIds = users.Where(user => request.Ids.Contains(user.Id));
+
+			usersByIds = _deletedEntityValidator.ValidateEntityQuerable(usersByIds, Domain.Common.DeletedEntityPolicy.OWNER);
+
 			var paginatedUsers = await usersByIds.PaginatedListAsync(request.PagingParams);
 
-			// Fourth bug caught by tests
 			return paginatedUsers.ToMappedPagedList<User, GetPublicUserModel>(Mapper);
 		}
 	}

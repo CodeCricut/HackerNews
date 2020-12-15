@@ -24,13 +24,20 @@ namespace HackerNews.Application.Users.Queries.GetPublicUsersWithPagination
 
 	public class GetPublicUsersWithPaginationHandler : DatabaseRequestHandler<GetPublicUsersWithPaginationQuery, PaginatedList<GetPublicUserModel>>
 	{
-		public GetPublicUsersWithPaginationHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<User> _deletedEntityValidator;
+
+		public GetPublicUsersWithPaginationHandler(IDeletedEntityPolicyValidator<User> deletedEntityValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedEntityValidator = deletedEntityValidator;
 		}
 
 		public override async Task<PaginatedList<GetPublicUserModel>> Handle(GetPublicUsersWithPaginationQuery request, CancellationToken cancellationToken)
 		{
 			var users = await UnitOfWork.Users.GetEntitiesAsync();
+
+			users = _deletedEntityValidator.ValidateEntityQuerable(users, Domain.Common.DeletedEntityPolicy.OWNER);
+
 			var paginatedUsers = await users.PaginatedListAsync(request.PagingParams);
 
 			return paginatedUsers.ToMappedPagedList<User, GetPublicUserModel>(Mapper);

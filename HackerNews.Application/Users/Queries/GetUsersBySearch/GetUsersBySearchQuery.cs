@@ -27,8 +27,12 @@ namespace HackerNews.Application.Users.Queries.GetUsersBySearch
 
 	public class GetUsersBySearchHandler : DatabaseRequestHandler<GetUsersBySearchQuery, PaginatedList<GetPublicUserModel>>
 	{
-		public GetUsersBySearchHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<User> _deletedUserValidator;
+
+		public GetUsersBySearchHandler(IDeletedEntityPolicyValidator<User> deletedUserValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedUserValidator = deletedUserValidator;
 		}
 
 		public override async Task<PaginatedList<GetPublicUserModel>> Handle(GetUsersBySearchQuery request, CancellationToken cancellationToken)
@@ -37,6 +41,8 @@ namespace HackerNews.Application.Users.Queries.GetUsersBySearch
 			var searchedUsers = users.Where(
 				u => u.Username.Contains(request.SearchTerm)
 			);
+
+			searchedUsers = _deletedUserValidator.ValidateEntityQuerable(searchedUsers, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			var paginatedSearchedUsers = await PaginatedList<User>.CreateAsync(searchedUsers,
 				request.PagingParams.PageNumber, request.PagingParams.PageSize);
