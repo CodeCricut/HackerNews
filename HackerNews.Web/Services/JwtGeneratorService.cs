@@ -27,6 +27,7 @@ namespace HackerNews.Web.Services
 		}
 
 
+		// TODO: this should really just generate the JWT from a user, seeing as the user could be retrieved using GetUserFromLoginModelQuery
 		public async Task<Jwt> GenererateJwtFromLoginModelAsync(LoginModel loginModel)
 		{
 			var user = await _mediator.Send(new GetUserFromLoginModelQuery(loginModel));
