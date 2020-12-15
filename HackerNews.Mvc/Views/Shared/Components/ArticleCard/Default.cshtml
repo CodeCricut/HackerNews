@@ -60,6 +60,10 @@
             {
                 <a class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
             }
+            @if(Model.UserCreatedArticle)
+            {
+                <a class="save-link" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Article.Id">Edit</a>
+            }
         </div>
     </div>
 </div>

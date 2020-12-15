@@ -17,5 +17,6 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard
 		public bool Saved { get; set; }
 		public bool UserUpvoted { get; set; }
 		public bool UserDownvoted { get; set; }
+		public bool UserCreatedArticle { get; set; }
 	}
 }

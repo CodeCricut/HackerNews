@@ -1,0 +1,48 @@
+﻿@model HackerNews.Mvc.ViewModels.Articles.ArticleEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Article";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+
+<h2>Update article</h2>
+<div class="card card-lg">
+    <form asp-controller="Articles" asp-action="Update" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <label asp-for="PostArticleModel.Title" class="control-label"></label>
+        <input asp-for="PostArticleModel.Title" class="input" />
+        <span asp-validation-for="PostArticleModel.Title" class="text-danger"></span>
+
+        <label asp-for="PostArticleModel.Text" class="control-label"></label>
+        <textarea asp-for="PostArticleModel.Text" class="input"></textarea>
+        <span asp-validation-for="PostArticleModel.Text" class="text-danger"></span>
+
+        <label asp-for="PostArticleModel.Type" class="control-label"></label>
+        @Html.DropDownListFor(model => model.PostArticleModel.Type,
+            new SelectList(Enum.GetValues(typeof(HackerNews.Domain.Entities.ArticleType))))
+        <span asp-validation-for="PostArticleModel.Type" class="text-danger"></span>
+
+        <input hidden asp-for="PostArticleModel.BoardId" class="form-control" />
+        <input hidden asp-for="ArticleId" class="form-control" />
+
+        <input type="submit" value="Update" class="btn btn-secondary" />
+    </form>
+</div>
+
+
+@section Sidebar {
+    <div class="card">
+        <h4 class="h4">Posting to HackerNews</h4>
+        <ol>
+            <li>Remember the human</li>
+            <li>Behave like you would in real life</li>
+            <li>Look for the original source of content</li>
+            <li>Search for duplicates before posting</li>
+            <li>Read the community's rules</li>
+        </ol>
+    </div>
+}

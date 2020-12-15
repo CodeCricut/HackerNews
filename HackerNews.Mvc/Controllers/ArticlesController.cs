@@ -1,6 +1,7 @@
 ﻿using HackerNews.Application.Articles.Commands.AddArticle;
 using HackerNews.Application.Articles.Commands.AddImage;
 using HackerNews.Application.Articles.Commands.DeleteArticle;
+using HackerNews.Application.Articles.Commands.UpdateArticle;
 using HackerNews.Application.Articles.Commands.VoteArticle;
 using HackerNews.Application.Articles.Queries.GetArticle;
 using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
@@ -63,6 +64,33 @@ namespace HackerNews.Mvc.Controllers
 			}
 
 			return RedirectToAction("Details", new { model.Id });
+		}
+
+		[JwtAuthorize]
+		public async Task<ViewResult> Edit(int id)
+		{
+			var article = await Mediator.Send(new GetArticleQuery(id));
+
+			var model = new ArticleEditViewModel
+			{
+				ArticleId = id,
+				PostArticleModel = new PostArticleModel
+				{
+					BoardId = article.BoardId,
+					Text = article.Text,
+					Title = article.Title,
+					Type = article.Type.ToString()
+				}
+			};
+			return View(model);
+		}
+
+		[JwtAuthorize]
+		[HttpPost]
+		public async Task<ActionResult> Update(ArticleEditViewModel editModel)
+		{
+			GetArticleModel updatedModel = await Mediator.Send(new UpdateArticleCommand(editModel.ArticleId, editModel.PostArticleModel));
+			return RedirectToAction("Details", new { id = updatedModel.Id });
 		}
 
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)

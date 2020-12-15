@@ -32,4 +32,8 @@
     <ProjectReference Include="..\..\HackerNews.Infrastructure\HackerNews.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\Queries\GetImageById\" />
+  </ItemGroup>
+
 </Project>

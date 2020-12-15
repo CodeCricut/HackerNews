@@ -16,8 +16,6 @@
 }
 
 .container {
-    height: 100vh;
-    grid-auto-rows: 100vh;
 }
 
 .login-card input {

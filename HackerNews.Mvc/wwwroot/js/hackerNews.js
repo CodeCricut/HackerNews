@@ -33,6 +33,7 @@ for (let i = 0; i < menuToggles.length; i++) {
 async function upvoteArticle(articleId, jwt, voteArrowElement) {
     // Update the style
     const karmaElement = voteArrowElement.nextElementSibling;
+    const downvoteArrowElement = karmaElement.nextElementSibling;
 
     if (voteArrowElement.classList.contains("upvoted")) {
         voteArrowElement.classList.remove("upvoted");
@@ -40,10 +41,12 @@ async function upvoteArticle(articleId, jwt, voteArrowElement) {
 
     } else {
         voteArrowElement.classList.add("upvoted");
-        karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 1;
+        if (downvoteArrowElement.classList.contains("downvoted"))
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 2;
+        else 
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 1;
     }
 
-    const downvoteArrowElement = karmaElement.nextElementSibling;
     clearDownvote(downvoteArrowElement);
 
     // Send a server update request
@@ -67,16 +70,19 @@ function clearUpvote(voteArrowElement) {
 async function downvoteArticle(articleId, jwt, voteArrowElement) {
     // Update styles
     const karmaElement = voteArrowElement.previousElementSibling;
+    const upvoteArrowElement = karmaElement.previousElementSibling;
 
     if (voteArrowElement.classList.contains("downvoted")) {
         voteArrowElement.classList.remove("downvoted");
         karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 1;
     } else {
         voteArrowElement.classList.add("downvoted");
-        karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 1;
+        if (upvoteArrowElement.classList.contains("upvoted"))
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 2;
+        else
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 1;
     }
 
-    const upvoteArrowElement = karmaElement.previousElementSibling;
     clearUpvote(upvoteArrowElement);
 
     // Send server req
