@@ -10,6 +10,8 @@ namespace HackerNews.Web
 	{
 		public static IServiceCollection AddWeb(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddHttpContextAccessor();
+
 			services.Configure<JwtSettings>(options => configuration.GetSection("JwtSettings").Bind(options));
 			services.AddScoped<IJwtGeneratorService, JwtGeneratorService>();
 			services.AddSingleton<ICurrentUserService, CurrentUserService>();

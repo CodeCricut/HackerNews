@@ -10,6 +10,12 @@ namespace HackerNews.Infrastructure
 {
 	public static class DependencyInjection
 	{
+		/// <summary>
+		/// Add the required DB services to the container.
+		/// </summary>
+		/// <param name="services"></param>
+		/// <param name="configuration"></param>
+		/// <returns></returns>
 		public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
 		{
 			if (configuration.GetValue<bool>("UseInMemoryDatabase"))
@@ -28,10 +34,6 @@ namespace HackerNews.Infrastructure
 			}
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-			services.AddHttpContextAccessor();
-
-			// I choose not to register the repositories manually, because they should really only be used in conjunction with IUnitOfWork
 
 			return services;
 		}
