@@ -24,7 +24,7 @@ namespace HackerNews.Mvc.ViewComponents
 				var privateUser = await _mediator.Send(new GetAuthenticatedUserQuery());
 				model = new NavbarViewModel { User = privateUser };
 			}
-			catch (NotFoundException ex)
+			catch 
 			{
 				model = new NavbarViewModel();
 			}

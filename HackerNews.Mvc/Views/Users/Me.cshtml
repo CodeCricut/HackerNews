@@ -45,7 +45,14 @@
                     @Model.User.SavedComments.Count() comments
                 </a>
             </p>
-            <a asp-controller="Users" asp-action="Delete" class="btn btn-outline-danger">Delete Account</a>
+            @if (Model.User.Deleted)
+            {
+                <p class="text-danger">Deleted</p>
+            }
+            else
+            {
+                <a asp-controller="Users" asp-action="Delete" class="text-danger">Delete Account</a>
+            }
         </div>
     </div>
 }

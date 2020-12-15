@@ -11,6 +11,7 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard
 		public GetBoardModel Board { get; set; }
 		public GetPublicUserModel User { get; set; }
 		public string Jwt { get; set; }
+		public bool DisplayText { get; set; }
 
 		// TODO: properly bind value and add js action to make save button work
 		public bool LoggedIn { get; set; }

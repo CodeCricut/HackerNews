@@ -4,7 +4,7 @@
     ViewData["Title"] = Model.Article.Title;
 }
 
-@await Component.InvokeAsync("ArticleCard", new { articleModel = Model.Article, imageDataUrl = Model.AssociatedImageDataUrl })
+@await Component.InvokeAsync("ArticleCard", new { articleModel = Model.Article, imageDataUrl = Model.AssociatedImageDataUrl, displayText = true })
 
 @* Add Comment*@
 @if (Model.LoggedIn)

@@ -34,20 +34,38 @@
     </div>
     <div class="content-col">
         <div class="sub-row">
-            <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id" class="sub-link">@Model.Board.Title</a>
-            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id" class="user-link">Posted by @Model.User.Username 10 hours ago</a>
+            @if (Model.Board.Id > 0)
+            {
+                <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id" class="sub-link">@Model.Board.Title</a>
+            }
+            @if (Model.User.Id > 0)
+            {
+                <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id" class="user-link">Posted by @Model.User.Username 10 hours ago</a>
+            }
         </div>
         <div class="title-row">
-            <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">
-                @Model.Article.Title
-            </a>
-
+            @if (Model.DisplayText)
+            {
+                <h2 asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">
+                    @Model.Article.Title
+                </h2>
+            }
+            else
+            {
+                <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id">
+                    @Model.Article.Title
+                </a>
+            }
         </div>
         @if (Model.ImageDataUrl != null && Model.ImageDataUrl != "")
         {
         <div class="img-row">
             <img src="@Model.ImageDataUrl" />
         </div>
+        }
+        @if (Model.DisplayText)
+        {
+            <p>@Model.Article.Text</p>
         }
     <div class="more-row">
         <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>

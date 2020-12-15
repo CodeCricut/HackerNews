@@ -9,7 +9,7 @@ namespace HackerNews.Domain.Common.Models.Users
 {
 	public class GetPublicUserModel : GetModelDto, IMapFrom<User>
 	{
-		public string Username { get; set; }
+		public string Username { get; set; } 
 		public int Karma { get; set; }
 
 		public List<int> ArticleIds { get; set; } = new List<int>();

@@ -25,7 +25,7 @@ namespace HackerNews.Mvc.ViewComponents
 			_jwtService = jwtService;
 		}
 
-		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel, string imageDataUrl)
+		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel, string imageDataUrl, bool displayText = false)
 		{
 			GetBoardModel board;
 			GetPublicUserModel user;
@@ -43,7 +43,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				user = await _mediator.Send(new GetPublicUserQuery(articleModel.UserId));
 			}
-			catch (NotFoundException ex)
+			catch
 			{
 				user = new GetPublicUserModel();
 			}
@@ -57,7 +57,7 @@ namespace HackerNews.Mvc.ViewComponents
 				jwt = "";
 			}
 
-			bool loggedIn = true;
+			bool loggedIn = false;
 			bool saved = false;
 			bool userUpvoted = false;
 			bool userDownvoted = false;
@@ -71,10 +71,7 @@ namespace HackerNews.Mvc.ViewComponents
 				userDownvoted = loggedInUser.DislikedArticles.Any(articleId => articleId == articleModel.Id);
 				userCreatedArticle = loggedInUser.ArticleIds.Any(articleId => articleId == articleModel.Id);
 			}
-			catch (System.Exception)
-			{
-				loggedIn = false;
-			}
+			catch { }
 
 			var viewModel = new ArticleCardViewModel
 			{
@@ -88,6 +85,7 @@ namespace HackerNews.Mvc.ViewComponents
 				UserDownvoted = userDownvoted,
 				UserCreatedArticle = userCreatedArticle,
 				ImageDataUrl = imageDataUrl,
+				DisplayText = displayText
 			};
 			return View(viewModel);
 		}

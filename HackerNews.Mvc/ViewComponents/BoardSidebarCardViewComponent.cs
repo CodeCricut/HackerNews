@@ -44,7 +44,7 @@ namespace HackerNews.Mvc.ViewComponents
 					? user.BoardsSubscribed.Contains(boardModel.Id)
 					: false;
 			}
-			catch (NotFoundException ex) { }
+			catch { }
 
 			var model = new BoardSidebarViewModel
 			{

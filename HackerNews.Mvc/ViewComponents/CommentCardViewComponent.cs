@@ -36,11 +36,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				parentArticle = await _mediator.Send(new GetArticleQuery(commentModel.ParentArticleId));
 			}
-			catch (NotFoundException ex)
-			{
-				parentArticle = new GetArticleModel();
-			}
-			catch (EntityDeletedException)
+			catch 
 			{
 				parentArticle = new GetArticleModel();
 			}
@@ -49,11 +45,7 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				parentComment = await _mediator.Send(new GetCommentQuery(commentModel.ParentCommentId));
 			}
-			catch (NotFoundException)
-			{
-				parentComment = new GetCommentModel();
-			}
-			catch (EntityDeletedException)
+			catch 
 			{
 				parentComment = new GetCommentModel();
 			}

@@ -214,7 +214,7 @@ namespace HackerNews.Mvc.Controllers
 		public async Task<IActionResult> Delete()
 		{
 			await Mediator.Send(new DeleteCurrentUserCommand());
-			return RedirectToAction("users/me");
+			return RedirectToAction("me");
 		}
 	}
 }

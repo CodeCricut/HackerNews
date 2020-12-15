@@ -35,16 +35,19 @@
     </div>
     <div class="content-col">
         <div class="sub-row">
+            @if (Model.User.Id > 0)
+            {
+                <div>
+
+                    Posted by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a>at @Model.Comment.PostDate
+                </div>
+            }
             <div>
-                Posted by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a> at
-                @Model.Comment.PostDate
-            </div>
-            <div>
-                @if (Model.ParentArticle != null && Model.ParentArticle.Id != 0)
+                @if (Model.ParentArticle != null && Model.ParentArticle.Id > 0)
                 {
                     <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.ParentArticle.Id">Parent</a>
                 }
-                @if (Model.ParentComment != null && Model.ParentComment.Id != 0)
+                @if (Model.ParentComment != null && Model.ParentComment.Id > 0)
                 {
                     <a asp-controller="Comments" asp-action="Details" asp-route-id="@Model.ParentComment.Id">Parent</a>
 
