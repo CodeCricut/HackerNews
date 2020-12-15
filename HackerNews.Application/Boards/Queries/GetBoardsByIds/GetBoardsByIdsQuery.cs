@@ -29,14 +29,20 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsByIds
 
 	public class GetBoardsByIdsHandler : DatabaseRequestHandler<GetBoardsByIdsQuery, PaginatedList<GetBoardModel>>
 	{
-		public GetBoardsByIdsHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Board> _deletedBoardValidator;
+
+		public GetBoardsByIdsHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedBoardValidator = deletedBoardValidator;
 		}
 
 		public override async Task<PaginatedList<GetBoardModel>> Handle(GetBoardsByIdsQuery request, CancellationToken cancellationToken)
 		{
 			var boards = await UnitOfWork.Boards.GetEntitiesAsync();
 			var boardsByIds = boards.Where(b => request.Ids.Contains(b.Id));
+
+			boardsByIds = _deletedBoardValidator.ValidateEntityQuerable(boardsByIds, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			var paginatedBoards = await boardsByIds.PaginatedListAsync(request.PagingParams);
 

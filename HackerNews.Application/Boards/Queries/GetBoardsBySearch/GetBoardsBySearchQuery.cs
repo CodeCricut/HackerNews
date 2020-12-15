@@ -27,8 +27,12 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsBySearch
 
 	public class GetBoardsBySearchHandler : DatabaseRequestHandler<GetBoardsBySearchQuery, PaginatedList<GetBoardModel>>
 	{
-		public GetBoardsBySearchHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Board> _deletedBoardValidator;
+
+		public GetBoardsBySearchHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedBoardValidator = deletedBoardValidator;
 		}
 
 		public override async Task<PaginatedList<GetBoardModel>> Handle(GetBoardsBySearchQuery request, CancellationToken cancellationToken)
@@ -40,6 +44,8 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsBySearch
 				b.Title.Contains(request.SearchTerm) ||
 				b.Description.Contains(request.SearchTerm)
 			);
+
+			searchedBoards = _deletedBoardValidator.ValidateEntityQuerable(searchedBoards, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			var paginatedSearchedBoards = await PaginatedList<Board>.CreateAsync(searchedBoards,
 				request.PagingParams.PageNumber, request.PagingParams.PageSize);

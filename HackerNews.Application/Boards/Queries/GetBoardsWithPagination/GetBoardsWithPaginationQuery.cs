@@ -24,13 +24,20 @@ namespace HackerNews.Application.Boards.Queries.GetBoardsWithPagination
 
 	public class GetBoardsWithPaginationHandler : DatabaseRequestHandler<GetBoardsWithPaginationQuery, PaginatedList<GetBoardModel>>
 	{
-		public GetBoardsWithPaginationHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Board> _deletedBoardValidator;
+
+		public GetBoardsWithPaginationHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator, 
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedBoardValidator = deletedBoardValidator;
 		}
 
 		public override async Task<PaginatedList<GetBoardModel>> Handle(GetBoardsWithPaginationQuery request, CancellationToken cancellationToken)
 		{
 			var boards = await UnitOfWork.Boards.GetEntitiesAsync();
+
+			boards = _deletedBoardValidator.ValidateEntityQuerable(boards, Domain.Common.DeletedEntityPolicy.OWNER);
+
 			var paginatedBoards = await boards.PaginatedListAsync(request.PagingParams);
 
 			return paginatedBoards.ToMappedPagedList<Board, GetBoardModel>(Mapper);

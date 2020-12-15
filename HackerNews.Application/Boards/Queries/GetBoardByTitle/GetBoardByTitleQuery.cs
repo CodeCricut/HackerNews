@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
@@ -23,8 +24,12 @@ namespace HackerNews.Application.Boards.Queries.GetBoardByTitle
 
 	public class GetBoardByTitleHandler : DatabaseRequestHandler<GetBoardByTitleQuery, GetBoardModel>
 	{
-		public GetBoardByTitleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Board> _deletedBoardValidator;
+
+		public GetBoardByTitleHandler(IDeletedEntityPolicyValidator<Board> deletedBoardValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedBoardValidator = deletedBoardValidator;
 		}
 
 		public override async Task<GetBoardModel> Handle(GetBoardByTitleQuery request, CancellationToken cancellationToken)
@@ -33,6 +38,7 @@ namespace HackerNews.Application.Boards.Queries.GetBoardByTitle
 			var boardByTitle = boards.FirstOrDefault(board => board.Title == request.Title);
 
 			if (boardByTitle == null) throw new NotFoundException();
+			boardByTitle = _deletedBoardValidator.ValidateEntity(boardByTitle, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			return Mapper.Map<GetBoardModel>(boardByTitle);
 		}
