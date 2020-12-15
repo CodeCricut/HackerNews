@@ -16,7 +16,7 @@ namespace HackerNews.Web.Pipeline.Middleware
 	///
 	/// <list type="bullet">
 	///		<item>Validate the token</item>
-	///		<item> Extract the user id from the token</item>
+	///		<item>Extract the user id from the token</item>
 	///		<item>Attach the authenticated user to the current HttpContext.Items 
 	///		collection to make it accessible within the scope of the current request</item>
 	/// </list>
@@ -33,7 +33,6 @@ namespace HackerNews.Web.Pipeline.Middleware
 			_next = next;
 			_jwtSettings = jwtSettings.Value;
 		}
-
 
 		/// <summary>
 		/// Attatches UserId to the context, if a valid JWT token is present in the request headers.

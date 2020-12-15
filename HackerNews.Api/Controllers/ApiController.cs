@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HackerNews.Api.Controllers
 {
+	/// <summary>
+	/// A base controller for all API Controllers.
+	/// </summary>
 	public class ApiController : ControllerBase
 	{
 		private IMediator _mediator;

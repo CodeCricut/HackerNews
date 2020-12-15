@@ -9,14 +9,20 @@ namespace HackerNews.Api
 {
 	static class ApplicationConfiguration
 	{
+		/// <summary>
+		/// Configure the pipeline, including calling subconfigurations.
+		/// </summary>
+		/// <param name="app"></param>
+		/// <param name="env"></param>
+		/// <param name="dbContext"></param>
+		/// <returns></returns>
 		public static IApplicationBuilder ConfigureApp(this IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{
 
 			if (env.IsDevelopment())
 			{
-				// create the db if it doesn't exist
-				// TODO: THIS MUST BE COMMENTED OUT WHENEVER YOU ARE MAKING MIGRATIONS111!!1!! :/
-				//dbContext.Database.EnsureCreated();
+				// Create the db if it doesn't exist.
+				dbContext.Database.EnsureCreated();
 			}
 			app.UseHttpsRedirection();
 

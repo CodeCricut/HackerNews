@@ -12,6 +12,9 @@ namespace HackerNews.Api.Helpers.Filters
 			Using an attribute on a controller or Razor Page.
 			Globally for all controllers, actions, and Razor Pages. Add filter in ConfigureServices
 	 */
+	/// <summary>
+	/// More of a plaything than anything. Logs how long actions took to complete.
+	/// </summary>
 	public class AnalysisAsyncActionFilter : IAsyncActionFilter
 	{
 		private readonly ILogger<AnalysisAsyncActionFilter> _logger;

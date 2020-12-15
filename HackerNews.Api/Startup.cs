@@ -19,6 +19,7 @@ namespace HackerNews.Api
 			Configuration = configuration;
 		}
 
+		// Register services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDomain();
