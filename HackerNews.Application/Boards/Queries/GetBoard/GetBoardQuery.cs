@@ -35,7 +35,17 @@ namespace HackerNews.Application.Boards.Queries.GetBoard
 		{
 			var board = await UnitOfWork.Boards.GetEntityAsync(request.Id);
 			if (board == null) throw new NotFoundException();
-			board = _deletedBoardValidator.ValidateEntity(board, Domain.Common.DeletedEntityPolicy.OWNER);
+
+			// TODO
+			try
+			{
+				board = _deletedBoardValidator.ValidateEntity(board, Domain.Common.DeletedEntityPolicy.OWNER);
+			}
+			catch (System.Exception e)
+			{
+
+				throw;
+			}
 
 			return Mapper.Map<GetBoardModel>(board);
 		}

@@ -5,4 +5,8 @@
         @Model.Board.Title
     </a>
     <p>@Model.Board.Description</p>
+    @if (Model.Board.Deleted)
+    {
+        <p class="text-danger">Deleted</p>
+    }
 </div>

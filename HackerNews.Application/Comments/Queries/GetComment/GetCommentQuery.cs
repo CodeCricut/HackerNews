@@ -37,6 +37,7 @@ namespace HackerNews.Application.Comments.Queries.GetComment
 			var comment = await UnitOfWork.Comments.GetEntityAsync(request.Id);
 			if (comment == null) throw new NotFoundException();
 
+			// TODO
 			comment = _deletedCommentValidator.ValidateEntity(comment, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			return Mapper.Map<GetCommentModel>(comment);

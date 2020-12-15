@@ -10,16 +10,16 @@ using System.Text;
 
 namespace HackerNews.Application.Common.DeletedEntityValidators
 {
-	public class DeletedBoardPolicyValidator : IDeletedEntityPolicyValidator<Board>
+	public class DeletedUserPolicyValidator : IDeletedEntityPolicyValidator<User>
 	{
 		private readonly ICurrentUserService _currentUserService;
 
-		public DeletedBoardPolicyValidator(ICurrentUserService currentUserService)
+		public DeletedUserPolicyValidator(ICurrentUserService currentUserService)
 		{
 			_currentUserService = currentUserService;
 		}
 
-		public Board ValidateEntity(Board entity, DeletedEntityPolicy policy)
+		public User ValidateEntity(User entity, DeletedEntityPolicy policy)
 		{
 			if (entity.Deleted)
 			{
@@ -28,13 +28,14 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 					case DeletedEntityPolicy.INACCESSIBLE:
 						throw new EntityDeletedException();
 					case DeletedEntityPolicy.OWNER:
-						if (!entity.Moderators.Any(m => m.UserId == _currentUserService.UserId))
+						if (entity.Id != _currentUserService.UserId)
 							throw new EntityDeletedException();
 						break;
 					case DeletedEntityPolicy.RESTRICTED:
-						entity.Creator = null;
-						entity.Moderators = new List<Domain.Entities.JoinEntities.BoardUserModerator>();
-						entity.Subscribers = new List<Domain.Entities.JoinEntities.BoardUserSubscriber>();
+						entity.Username = null;
+						entity.FirstName = null;
+						entity.LastName = null;
+						entity.ProfileImage = null;
 						break;
 					case DeletedEntityPolicy.PUBLIC:
 					default:
@@ -44,9 +45,9 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 			return entity;
 		}
 
-		public IQueryable<Board> ValidateEntityQuerable(IQueryable<Board> entities, DeletedEntityPolicy policy)
+		public IQueryable<User> ValidateEntityQuerable(IQueryable<User> entities, DeletedEntityPolicy policy)
 		{
-			Func<Board, Board> policySelector = entity =>
+			Func<User, User> policySelector = entity =>
 			{
 				if (entity.Deleted)
 				{
@@ -55,13 +56,14 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 						case DeletedEntityPolicy.INACCESSIBLE:
 							return null;
 						case DeletedEntityPolicy.OWNER:
-							if (!entity.Moderators.Any(m => m.UserId == _currentUserService.UserId))
+							if (entity.Id != _currentUserService.UserId)
 								return null;
 							break;
 						case DeletedEntityPolicy.RESTRICTED:
-							entity.Creator = null;
-							entity.Moderators = new List<Domain.Entities.JoinEntities.BoardUserModerator>();
-							entity.Subscribers = new List<Domain.Entities.JoinEntities.BoardUserSubscriber>();
+							entity.Username = null;
+							entity.FirstName = null;
+							entity.LastName = null;
+							entity.ProfileImage = null;
 							break;
 						case DeletedEntityPolicy.PUBLIC:
 						default:
@@ -73,7 +75,7 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 			};
 
 			// TODO: not effiecient to use where and convert to queryable
-			IQueryable<Board> validatedEntities = entities.Select(policySelector).Where(entity => entity != null).AsQueryable();
+			IQueryable<User> validatedEntities = entities.Select(policySelector).Where(entity => entity != null).AsQueryable();
 			return validatedEntities;
 		}
 	}

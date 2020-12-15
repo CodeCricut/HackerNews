@@ -27,6 +27,7 @@ namespace HackerNews.Application
 			services.AddSingleton<IDeletedEntityPolicyValidator<Article>, DeletedArticlePolicyValidator>();
 			services.AddSingleton<IDeletedEntityPolicyValidator<Comment>, DeletedCommentPolicyValidator>();
 			services.AddSingleton<IDeletedEntityPolicyValidator<Board>, DeletedBoardPolicyValidator>();
+			services.AddSingleton<IDeletedEntityPolicyValidator<User>, DeletedUserPolicyValidator>();
 
 			return services;
 		}

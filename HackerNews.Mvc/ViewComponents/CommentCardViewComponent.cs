@@ -40,11 +40,20 @@ namespace HackerNews.Mvc.ViewComponents
 			{
 				parentArticle = new GetArticleModel();
 			}
+			catch (EntityDeletedException)
+			{
+				parentArticle = new GetArticleModel();
+			}
+
 			try
 			{
 				parentComment = await _mediator.Send(new GetCommentQuery(commentModel.ParentCommentId));
 			}
-			catch (NotFoundException ex)
+			catch (NotFoundException)
+			{
+				parentComment = new GetCommentModel();
+			}
+			catch (EntityDeletedException)
 			{
 				parentComment = new GetCommentModel();
 			}
