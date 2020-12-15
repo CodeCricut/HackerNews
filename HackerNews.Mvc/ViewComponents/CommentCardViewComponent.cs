@@ -67,6 +67,7 @@ namespace HackerNews.Mvc.ViewComponents
 			bool saved = false;
 			bool userUpvoted = false;
 			bool userDownvoted = false;
+			bool userCreatedComment = false;
 			try
 			{
 				var loggedInUser = await _mediator.Send(new GetAuthenticatedUserQuery());
@@ -74,6 +75,7 @@ namespace HackerNews.Mvc.ViewComponents
 				saved = loggedInUser.SavedComments.Any(commentId => commentId == commentModel.Id);
 				userUpvoted = loggedInUser.LikedComments.Any(commentId => commentId == commentModel.Id);
 				userDownvoted = loggedInUser.DislikedComments.Any(commentId => commentId == commentModel.Id);
+				userCreatedComment = commentModel.UserId == loggedInUser.Id;
 			}
 			catch (System.Exception)
 			{
@@ -93,7 +95,8 @@ namespace HackerNews.Mvc.ViewComponents
 				LoggedIn = loggedIn,
 				Saved = saved,
 				UserUpvoted = userUpvoted,
-				UserDownvoted = userDownvoted
+				UserDownvoted = userDownvoted,
+				UserCreatedComment = userCreatedComment
 			};
 			return View(model);
 		}

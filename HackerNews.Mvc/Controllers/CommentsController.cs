@@ -2,6 +2,7 @@
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Comments.Commands.AddComment;
 using HackerNews.Application.Comments.Commands.DeleteComment;
+using HackerNews.Application.Comments.Commands.UpdateComment;
 using HackerNews.Application.Comments.Commands.VoteComment;
 using HackerNews.Application.Comments.Queries.GetComment;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
@@ -16,6 +17,7 @@ using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Comments;
+using HackerNews.Mvc.ViewModels.ViewComponents;
 using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -89,6 +91,19 @@ namespace HackerNews.Mvc.Controllers
 			viewModel.PostCommentModel.ParentCommentId = viewModel.Comment.Id;
 
 			await Mediator.Send(new AddCommentCommand(viewModel.PostCommentModel));
+			return RedirectToAction("Details", new { id = viewModel.Comment.Id });
+		}
+
+		[HttpPost]
+		[JwtAuthorize]
+		public async Task<ActionResult> Update(CommentCardViewModel viewModel)
+		{
+			// messy, should be a PostCommentModel on the viewModel
+			PostCommentModel updateModel = new PostCommentModel
+			{
+				Text = viewModel.Comment.Text
+			};
+			await Mediator.Send(new UpdateCommentCommand(viewModel.Comment.Id, updateModel));
 			return RedirectToAction("Details", new { id = viewModel.Comment.Id });
 		}
 

@@ -61,6 +61,15 @@
         </div>
         <div class="title-row">
             @Model.Comment.Text
+
+            @if (Model.UserCreatedComment)
+            {
+            <form asp-controller="Comments" asp-action="Update" method="post">
+                <textarea class="form-control" asp-for="Comment.Text"></textarea>
+                <input hidden asp-for="Comment.Id" />
+                <input type="submit" class="btn btn-secondary" value="Update comment" />
+            </form>
+            }
         </div>
         <div class="more-row">
             @if (Model.Saved)

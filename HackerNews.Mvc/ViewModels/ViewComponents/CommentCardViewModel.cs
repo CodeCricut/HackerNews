@@ -18,5 +18,6 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents
 		public bool UserDownvoted { get; set; }
 		public string Jwt { get; set; }
 		public bool Saved { get; set; }
+		public bool UserCreatedComment { get; set; }
 	}
 }

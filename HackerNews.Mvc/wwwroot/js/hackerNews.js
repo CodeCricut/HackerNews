@@ -123,16 +123,19 @@ async function unsaveArticle(articleId, jwt, unsaveArticleElement) {
 // Comments
 async function upvoteComment(commentId, jwt, voteArrowElement) {
     const karmaElement = voteArrowElement.nextElementSibling;
+    const downvoteArrowElement = karmaElement.nextElementSibling;
 
     if (voteArrowElement.classList.contains("upvoted")) {
         voteArrowElement.classList.remove("upvoted");
         karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 1;
     } else {
         voteArrowElement.classList.add("upvoted");
-        karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 1;
+        if (downvoteArrowElement.classList.contains("downvoted")) 
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 2;
+        else
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 1;
     }
 
-    const downvoteArrowElement = karmaElement.nextElementSibling;
     clearDownvote(downvoteArrowElement);
 
     await fetch(`https://localhost:44300/api/comments/vote?commentId=${commentId}&upvote=true`, {
@@ -148,16 +151,19 @@ async function upvoteComment(commentId, jwt, voteArrowElement) {
 
 async function downvoteComment(commentId, jwt, voteArrowElement) {
     const karmaElement = voteArrowElement.previousElementSibling;
+    const upvoteArrowElement = karmaElement.previousElementSibling;
 
     if (voteArrowElement.classList.contains("downvoted")) {
         voteArrowElement.classList.remove("downvoted");
         karmaElement.innerHTML = parseInt(karmaElement.innerHTML) + 1;
     } else {
         voteArrowElement.classList.add("downvoted");
-        karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 1;
+        if (upvoteArrowElement.classList.contains("upvoted"))
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 2;
+        else
+            karmaElement.innerHTML = parseInt(karmaElement.innerHTML) - 1;
     }
 
-    const upvoteArrowElement = karmaElement.previousElementSibling;
     clearUpvote(upvoteArrowElement);
 
     await fetch(`https://localhost:44300/api/comments/vote?commentId=${commentId}&upvote=false`, {
