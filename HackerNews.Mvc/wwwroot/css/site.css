@@ -51,6 +51,17 @@ button {
     font-style: inherit;
     cursor: pointer;
 }
+/* Text */
+.text-info {
+    color: var(--sky-blue);
+}
+
+.text-warning {
+   color: var(--gold);
+}
+.text-danger {
+    color: var(--crimson);
+}
 
 /* Buttons */
 .btn,

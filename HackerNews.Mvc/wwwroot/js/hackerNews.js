@@ -105,6 +105,7 @@ function clearDownvote(voteArrowElement) {
 
 async function saveArticle(articleId, jwt, saveArticleElement) {
     invertSaveText(saveArticleElement);
+
     await fetch(`https://localhost:44300/api/users/save-article?articleId=${articleId}`, {
         method: "POST",
         headers: {
@@ -116,9 +117,6 @@ async function saveArticle(articleId, jwt, saveArticleElement) {
     });
 }
 
-async function unsaveArticle(articleId, jwt, unsaveArticleElement) {
-    await saveArticle(articleId, jwt, unsaveArticleElement);
-}
 
 // Comments
 async function upvoteComment(commentId, jwt, voteArrowElement) {
@@ -198,7 +196,9 @@ async function unsaveComment(commentId, jwt, unsaveCommentElement) {
 function invertSaveText(saveArticleElement) {
     if (saveArticleElement.innerHTML === "Saved") {
         saveArticleElement.innerHTML = "Save"
+        saveArticleElement.classList.remove("text-info");
     } else {
         saveArticleElement.innerHTML = "Saved";
+        saveArticleElement.classList.add("text-info");
     }
 }

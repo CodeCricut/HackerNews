@@ -49,21 +49,29 @@
             <img src="@Model.ImageDataUrl" />
         </div>
         }
-        <div class="more-row">
-            <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
-            @if (Model.Saved)
-            {
-                <a class="save-link"
-                   onclick="unsaveArticle('@Model.Article.Id', '@Model.Jwt', this)">Saved</a>
-            }
-            else
-            {
-                <a class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
-            }
-            @if(Model.UserCreatedArticle)
-            {
-                <a class="save-link" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Article.Id">Edit</a>
-            }
-        </div>
+    <div class="more-row">
+        <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
+        @if (Model.Saved)
+        {
+            <a class="save-link text-info"
+               onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Saved</a>
+        }
+        else
+        {
+            <a class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
+        }
+        @if (Model.UserCreatedArticle)
+        {
+            <a class="save-link text-warning" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Article.Id">Edit</a>
+        }
+        @if (Model.Article.Deleted)
+        {
+            <span class="text-danger">Deleted</span>
+        }
+        else if (Model.UserCreatedArticle)
+        {
+            <a class="save-link text-danger" asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Article.Id">Delete</a>
+        }
+    </div>
     </div>
 </div>
