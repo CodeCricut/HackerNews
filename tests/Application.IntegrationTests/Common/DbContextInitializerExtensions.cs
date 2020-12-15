@@ -5,6 +5,10 @@ namespace Application.IntegrationTests
 {
 	public static class DbContextInitializerExtensions
 	{
+		/// <summary>
+		/// Seed the database.
+		/// </summary>
+		/// <param name="context"></param>
 		public static void InitializeForTests(this HackerNewsContext context)
 		{
 			User user = new User
@@ -46,6 +50,10 @@ namespace Application.IntegrationTests
 			context.SaveChanges();
 		}
 
+		/// <summary>
+		/// Remove all entities from the database.
+		/// </summary>
+		/// <param name="context"></param>
 		public static void ClearDatabase(this HackerNewsContext context)
 		{
 			context.Users.RemoveRange(context.Users);

@@ -7,19 +7,23 @@ using System.Net.Http;
 
 namespace Application.IntegrationTests.Common
 {
+	/// <summary>
+	/// A base integration test.
+	/// </summary>
 	public abstract class AppIntegrationTest
 		: IDisposable
-	//, IClassFixture<CustomWebApplicationFactory<Startup>>,
-	// CustomWebApplicationFactory<Startup>
 	{
-		public AppIntegrationTest(/* CustomWebApplicationFactory<Startup> factory */)
+		/// <summary>
+		/// Bootstraps the app into memory through <see cref="HackerNews.Api.Startup"/>. <seealso cref="CustomWebApplicationFactory{TStartup}"/> 
+		/// </summary>
+		public CustomWebApplicationFactory<Startup> Factory { get; }
+		public HttpClient Client { get; private set; }
+
+		public AppIntegrationTest()
 		{
 			Factory = new CustomWebApplicationFactory<Startup>();
 			Client = Factory.CreateClient();
 		}
-
-		public CustomWebApplicationFactory<Startup> Factory { get; }
-		public HttpClient Client { get; private set; }
 
 		public void Dispose()
 		{

@@ -17,6 +17,7 @@ namespace Application.IntegrationTests
 			var projectDir = Directory.GetCurrentDirectory();
 			var configPath = Path.Combine(projectDir, "appsettings.json");
 
+			// Add the appsettings.json in this project to the app.
 			builder.ConfigureAppConfiguration(config =>
 			{
 				var integrationConfig = new ConfigurationBuilder()
@@ -37,11 +38,13 @@ namespace Application.IntegrationTests
 					var logger = scopedServices
 						.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
+					// Reset the database
 					db.Database.EnsureDeleted();
 					db.Database.EnsureCreated();
 
 					try
 					{
+						// Seed the database
 						db.InitializeForTests();
 					}
 					catch (Exception ex)
