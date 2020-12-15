@@ -1,5 +1,8 @@
 ﻿using FluentValidation;
 using HackerNews.Application.Common.Behaviors;
+using HackerNews.Application.Common.DeletedEntityValidators;
+using HackerNews.Domain.Entities;
+using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -19,6 +22,9 @@ namespace HackerNews.Application
 
 			// Add validation behavior
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+			// Add deleted entity policy validators
+			services.AddSingleton<IDeletedEntityPolicyValidator<Article>, DeletedArticlePolicyValidator>();
 
 			return services;
 		}

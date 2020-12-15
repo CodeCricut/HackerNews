@@ -29,17 +29,23 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesByIds
 
 	public class GetArticlesByIdsQueryHandler : DatabaseRequestHandler<GetArticlesByIdsQuery, PaginatedList<GetArticleModel>>
 	{
-		public GetArticlesByIdsQueryHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Article> _deletedEntityValidator;
+
+		public GetArticlesByIdsQueryHandler(IDeletedEntityPolicyValidator<Article> deletedEntityValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedEntityValidator = deletedEntityValidator;
 		}
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesByIdsQuery request, CancellationToken cancellationToken)
 		{
 			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
 			var articlesByIds = articles.Where(article => request.Ids.Contains(article.Id));
+
+			articlesByIds = _deletedEntityValidator.ValidateEntityQuerable(articlesByIds, Domain.Common.DeletedEntityPolicy.OWNER);
+
 			var paginatedArticles = await articlesByIds.PaginatedListAsync(request.PagingParams);
 
-			// Second bug caught by tests!
 			return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
 		}
 	}

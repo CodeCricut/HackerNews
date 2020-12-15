@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
@@ -22,14 +23,20 @@ namespace HackerNews.Application.Articles.Queries.GetArticle
 
 	public class GetArticleHandler : DatabaseRequestHandler<GetArticleQuery, GetArticleModel>
 	{
-		public GetArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Article> _deletedEntityValidator;
+
+		public GetArticleHandler(IDeletedEntityPolicyValidator<Article> deletedEntityValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedEntityValidator = deletedEntityValidator;
 		}
 
 		public override async Task<GetArticleModel> Handle(GetArticleQuery request, CancellationToken cancellationToken)
 		{
 			var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
 			if (article == null) throw new NotFoundException();
+
+			article = _deletedEntityValidator.ValidateEntity(article, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			return Mapper.Map<GetArticleModel>(article);
 		}

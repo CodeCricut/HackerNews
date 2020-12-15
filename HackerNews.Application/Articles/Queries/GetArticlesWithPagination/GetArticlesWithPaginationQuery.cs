@@ -7,6 +7,7 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,25 +25,23 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesWithPagination
 
 	public class GetArticlesWithPaginationQueryHandler : DatabaseRequestHandler<GetArticlesWithPaginationQuery, PaginatedList<GetArticleModel>>
 	{
-		public GetArticlesWithPaginationQueryHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Article> _deletedEntityValidator;
+
+		public GetArticlesWithPaginationQueryHandler(IDeletedEntityPolicyValidator<Article> deletedEntityValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedEntityValidator = deletedEntityValidator;
 		}
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesWithPaginationQuery request, CancellationToken cancellationToken)
 		{
-			try
-			{
-				var articles = await UnitOfWork.Articles.GetEntitiesAsync();
-				var paginatedArticles = await articles.PaginatedListAsync(request.PagingParams);
+			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
 
-				return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
-			}
-			catch (System.Exception e)
-			{
+			articles = _deletedEntityValidator.ValidateEntityQuerable(articles, Domain.Common.DeletedEntityPolicy.OWNER);
+			
+			var paginatedArticles = await articles.PaginatedListAsync(request.PagingParams);
 
-				throw;
-			}
-
+			return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
 		}
 	}
 }

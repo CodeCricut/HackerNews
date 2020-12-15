@@ -27,8 +27,12 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesBySearch
 
 	public class GetArticlesBySearchHandler : DatabaseRequestHandler<GetArticlesBySearchQuery, PaginatedList<GetArticleModel>>
 	{
-		public GetArticlesBySearchHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IDeletedEntityPolicyValidator<Article> _deletedEntityValidator;
+
+		public GetArticlesBySearchHandler(IDeletedEntityPolicyValidator<Article> deletedEntityValidator,
+			IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_deletedEntityValidator = deletedEntityValidator;
 		}
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesBySearchQuery request, CancellationToken cancellationToken)
@@ -38,6 +42,8 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesBySearch
 				a.Title.Contains(request.SearchTerm) ||
 				a.Text.Contains(request.SearchTerm)
 			);
+
+			searchArticles = _deletedEntityValidator.ValidateEntityQuerable(searchArticles, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			var paginatedSearchedArticles = await PaginatedList<Article>.CreateAsync(searchArticles,
 				request.PagingParams.PageNumber, request.PagingParams.PageSize);
