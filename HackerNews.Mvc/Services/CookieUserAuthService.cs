@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Services
 {
+	/// <summary>
+	/// Implement <see cref="IUserAuthService"/> using JWT cookies.
+	/// </summary>
 	public class CookieUserAuthService : IUserAuthService
 	{
 		private readonly IJwtGeneratorService _jwtGeneratorService;
@@ -26,6 +29,11 @@ namespace HackerNews.Mvc.Services
 			_context = httpContextAccessor.HttpContext;
 		}
 
+		/// <summary>
+		/// Set the JWT cookie if a valid login.
+		/// </summary>
+		/// <param name="loginModel"></param>
+		/// <returns></returns>
 		public async Task<Jwt> LogIn(LoginModel loginModel)
 		{
 			if (_jwtSetterService.ContainsToken()) _jwtSetterService.RemoveToken();
@@ -38,6 +46,10 @@ namespace HackerNews.Mvc.Services
 
 		}
 
+		/// <summary>
+		/// Remove the JWT cookie if present.
+		/// </summary>
+		/// <returns></returns>
 		public async Task LogOut()
 		{
 			if (_jwtSetterService.ContainsToken()) _jwtSetterService.RemoveToken();

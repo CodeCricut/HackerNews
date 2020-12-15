@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace HackerNews.Mvc.Services
 {
+	/// <summary>
+	/// Implement the <see cref="ICookieService"/> using the cookies available through the <see cref="HttpContext"/>.
+	/// </summary>
 	public class CookieService : ICookieService
 	{
 		private readonly HttpContext _httpContext;

@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HackerNews.Mvc.Controllers
 {
+	/// <summary>
+	/// A base MVC controller.
+	/// </summary>
 	public class FrontendController : Controller
 	{
 		private IMediator _mediator;

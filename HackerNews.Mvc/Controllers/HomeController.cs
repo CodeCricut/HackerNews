@@ -9,8 +9,10 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Home;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -53,6 +55,26 @@ namespace HackerNews.Mvc.Controllers
 			var boardModels = await Mediator.Send(new GetBoardsWithPaginationQuery(pagingParams));
 			var viewModel = new HomeBoardsViewModel { BoardPage = new FrontendPage<GetBoardModel>(boardModels) };
 			return View(viewModel);
+		}
+
+		public async Task<ActionResult> Error()
+		{
+			var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+			var error = exceptionHandlerPathFeature?.Error;
+			string exceptionMessage = "There was an internal error.";
+
+			if (error is UnauthorizedException)
+			{
+				return RedirectToAction("Login", "Users");
+			} else { 
+				exceptionMessage = error.Message;
+			}
+
+			var model = new ErrorViewModel
+			{
+				ExceptionMessage = exceptionMessage
+			};
+			return View(model);
 		}
 	}
 }

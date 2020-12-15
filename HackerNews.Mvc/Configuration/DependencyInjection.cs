@@ -8,6 +8,12 @@ namespace HackerNews.Mvc.Configuration
 {
 	public static class DependencyInjection
 	{
+		/// <summary>
+		/// Register MVC specific services to the container.
+		/// </summary>
+		/// <param name="services"></param>
+		/// <param name="configuration"></param>
+		/// <returns></returns>
 		public static IServiceCollection AddMvcProject(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

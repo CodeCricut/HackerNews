@@ -36,7 +36,10 @@ namespace HackerNews.Mvc
 		{
 			if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
+				// TODO: remember to remove thsi
+				app.UseExceptionHandler("/Home/Error");
+
+				//app.UseDeveloperExceptionPage();
 			}
 			else
 			{
@@ -50,9 +53,11 @@ namespace HackerNews.Mvc
 			app.UseRouting();
 
 			app.ConfigureWebLayer();
+			// app.UseMvcExceptionHandler();
 
-			//app.UseAuthentication();
-			//app.UseAuthorization();
+
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

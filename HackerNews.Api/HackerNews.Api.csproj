@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pipeline\Middleware\**" />
+    <Content Remove="Pipeline\Middleware\**" />
+    <EmbeddedResource Remove="Pipeline\Middleware\**" />
+    <None Remove="Pipeline\Middleware\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
@@ -21,10 +28,6 @@
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
     <ProjectReference Include="..\HackerNews.Infrastructure\HackerNews.Infrastructure.csproj" />
     <ProjectReference Include="..\HackerNews.Web\HackerNews.Web.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pipeline\Middleware\" />
   </ItemGroup>
 
   <PropertyGroup>

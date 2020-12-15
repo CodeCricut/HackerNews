@@ -1,0 +1,12 @@
+﻿@model HackerNews.Mvc.ViewModels.Home.ErrorViewModel;
+
+@{
+    Layout = "_CenteredLayout";
+    ViewData["Title"] = "Error";
+}
+
+<div class="card">
+    <h2>Error</h2>
+    <p>There was a problem when performing an action in the app:</p>
+    <p class="text-danger">@Model.ExceptionMessage</p>
+</div>
