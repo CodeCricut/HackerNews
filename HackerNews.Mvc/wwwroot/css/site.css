@@ -4,25 +4,50 @@
     --orange: #ffb000;
     --green: #46d160;
     --crimson: #ea0027;
-    --dark: #1a1a1b;
-    --link-dark: #161657b0;
-    --dark-transparent: #12122bd8;
-    --white: white;
-    --off-white: #f6f7f8;
-    --light-gray: #dae0e6;
+    --text: #1a1a1b;
+    --link: #161657b0;
+    --background: white;
+    --background-secondary: #f6f7f8;
+    --background-tertiary: #dae0e6;
     --gray: #898c8e;
     --purple: #886ce4;
     --sky-blue: #91c5ec;
     --dark-cyan: #0aa18f;
     --brown: #582918;
     --gold: #9a7d2e;
+
+    --dark-transparent: #12122bd8;
+
+
+    /* lightest */
+    --color-l5: #000;
+    --color-l4: #000;
+    --color-l3: #000;
+    --color-l2: #fff;
+    --color-l1: #fff;
+    --background-l5: #fff;
+    --background-l4: #f6f6f6;
+    --background-l3: #dfdfdf;
+    --background-l2: #c0c0c0;
+    --background-l1: #a0a0a0;
+    --color-d1: #fff;
+    --color-d2: #fff;
+    --color-d3: #fff;
+    --color-d4: #fff;
+    --color-d5: #fff;
+    --background-d1: #575757;
+    --background-d2: #4e4e4e;
+    --background-d3: #444;
+    --background-d4: #3a3a3a;
+    --background-d5: #303030;
+    /* darkest */
 }
 
 /* General */
 html,
 body {
-    background-color: var(--light-gray);
-    color: var(--dark);
+    background-color: var(--background-l4);
+    color: var(--color-l4);
     font-family: Verdana, arial, helvetica, sans-serif;
 }
 
@@ -67,7 +92,7 @@ button {
 .btn,
 .btn-primary {
     background-color: var(--primary);
-    color: var(--white);
+    color: var(--background);
     height: 40px;
     width: 120px;
     border-radius: 5px;
@@ -78,7 +103,7 @@ button {
 }
 
 .btn-outline-primary {
-    background-color: var(--off-white);
+    background-color: var(--background-secondary);
     border: 1px solid var(--primary);
     color: var(--primary);
 }
@@ -87,12 +112,12 @@ button {
     .btn-primary:hover,
     .btn-outline-primary:hover {
         background-color: #ff440075;
-        color: var(--white);
+        color: var(--background);
     }
 
 .btn:active {
     background-color: #e7461d;
-    color: var(--white);
+    color: var(--background);
 }
 
 .btn:active,
@@ -117,17 +142,17 @@ button {
     .btn-secondary:hover,
     .btn-outline-secondary:hover {
         background-color: #0b87e69d;
-        color: var(--white);
+        color: var(--background);
     }
 
     .btn-secondary:active,
     .btn-outline-secondary:active {
         background-color: #1680d1;
-        color: var(--white);
+        color: var(--background);
     }
 
 .btn-outline-secondary {
-    background-color: var(--white);
+    background-color: var(--background);
     color: var(--blue);
     border: 1px solid var(--blue);
 }
@@ -146,7 +171,7 @@ form textarea {
     padding: 0 10px;
     border-radius: 5px;
     border: 1px solid var(--gray);
-    background-color: var(--off-white);
+    background-color: var(--background-secondary);
     display: flex;
     justify-content: left;
     align-content: center;
@@ -154,7 +179,7 @@ form textarea {
 }
 
     .input > * {
-        background-color: var(--off-white);
+        background-color: var(--background-secondary);
     }
 
     .input .input-icon {
@@ -171,18 +196,18 @@ form textarea {
 
         .input input:focus {
             outline: none;
-            color: var(--dark);
+            color: var(--text);
             font-size: 0.85rem;
         }
 
 a,
 .a {
-    color: var(--link-dark);
+    color: var(--link);
     text-decoration: none;
 }
 
     a:active {
-        color: var(--dark);
+        color: var(--text);
     }
 
 /* | Container */
@@ -198,7 +223,7 @@ a,
     width: 100%;
     height: fit-content;
     padding: 5px 20px;
-    background-color: var(--white);
+    background-color: var(--background);
     display: flex;
     justify-content: space-between;
     align-content: center;
@@ -208,7 +233,7 @@ a,
 
     .header .logo {
         background-color: var(--primary);
-        color: var(--white);
+        color: var(--background);
         padding: 10px;
         border-radius: 5px;
         font-size: 1rem;
@@ -237,7 +262,7 @@ a,
 .dropdown-menu {
     display: flex;
     flex-direction: column;
-    background-color: var(--light-gray);
+    background-color: var(--background-tertiary);
     position: absolute;
     top: 30px;
     right: 0px;
@@ -265,7 +290,7 @@ a,
 }
 
     .dropdown-menu > *:hover {
-        background-color: var(--off-white);
+        background-color: var(--background-secondary);
     }
 
     .dropdown-menu > *:first-child {
@@ -299,11 +324,12 @@ a,
 }
 
 .card {
-    background-color: var(--white);
+    background-color: var(--background);
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
     display: flex;
+    box-shadow: -2.5px 2.5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .card-lg {
@@ -326,7 +352,7 @@ a,
 }
 
 .karma-col > * {
-    color: var(--link-dark);
+    color: var(--link);
     margin: 10px 0;
 }
 
@@ -366,15 +392,15 @@ a,
 }
 
 .sub-row a.sub-link {
-    color: var(--dark);
+    color: var(--text);
 }
 
 .sub-row a.user-link:hover {
-    color: var(--dark);
+    color: var(--text);
 }
 
 .title-row > * {
-    color: var(--dark);
+    color: var(--text);
 }
 
 .card .img-row {
@@ -406,7 +432,7 @@ a,
 
     .board-card > * {
         margin: 10px;
-        border-left: 1px solid var(--light-gray);
+        border-left: 1px solid var(--background-tertiary);
         padding-left: 15px;
     }
 
@@ -479,14 +505,14 @@ input.page-search {
 
 .sidebar .card .card-top {
     font-size: 0.7rem;
-    color: var(--off-white);
+    color: var(--background-secondary);
     text-align: left;
     padding: 10px;
     margin: -10px;
     margin-bottom: 0;
-    border: 1px solid var(--off-white);
+    border: 1px solid var(--background-secondary);
     border-radius: 5px;
-    background-color: var(--light-gray);
+    background-color: var(--background-tertiary);
 }
 
 .sidebar .card-body h4 {
@@ -501,7 +527,7 @@ input.page-search {
 }
 
 .card-footer {
-    border-top: 1px solid var(--light-gray);
+    border-top: 1px solid var(--background-tertiary);
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -552,7 +578,7 @@ input.page-search {
         position: absolute;
         flex-direction: column;
         background-color: var(--dark-transparent);
-        border: 1px solid var(--light-gray);
+        border: 1px solid var(--background-tertiary);
         border-radius: 5px;
         top: 80px;
         left: 0;
@@ -567,7 +593,7 @@ input.page-search {
 
         .header-links .header-link,
         .header-links .header-link > * {
-            color: var(--off-white);
+            color: var(--background-secondary);
             margin: 10px 0;
             padding: 0;
         }

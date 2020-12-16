@@ -21,7 +21,7 @@
 .login-card input {
     height: 40px;
     border-radius: 3px;
-    border: 1px solid var(--light-gray);
+    border: 1px solid var(--background-tertiary);
     padding: 10px;
 }
 
