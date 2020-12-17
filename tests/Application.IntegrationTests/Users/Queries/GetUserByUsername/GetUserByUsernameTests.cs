@@ -1,8 +1,11 @@
 ﻿using Application.IntegrationTests.Common;
 using AutoMapper;
+using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Queries.GetUserByUsername;
+using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +35,10 @@ namespace Application.IntegrationTests.Users.Queries.GetUserByUsername
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
 
-			var sut = new GetUserByUsernameHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var deletedPolicyValidator = new Mock<DeletedUserPolicyValidator>();
+			deletedPolicyValidator.Setup(pv => pv.ValidateEntity(It.IsAny<User>(), It.IsAny<DeletedEntityPolicy>()));
+
+			var sut = new GetUserByUsernameHandler(deletedPolicyValidator.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			// Act
 			GetPublicUserModel sutResult = await sut.Handle(

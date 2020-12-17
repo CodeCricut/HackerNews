@@ -4,6 +4,7 @@ using HackerNews.Infrastructure;
 using HackerNews.Mvc.Configuration;
 using HackerNews.Web;
 using HackerNews.Web.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -52,7 +53,8 @@ namespace HackerNews.Mvc
 
 			app.UseRouting();
 
-			app.ConfigureWebLayer();
+			// TODO: ConfigureWebLayer should be removed; configs should be registered manually in all dependent projects
+			// app.ConfigureWebLayer();
 			// app.UseMvcExceptionHandler();
 
 

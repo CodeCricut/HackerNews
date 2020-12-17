@@ -16,12 +16,13 @@ namespace HackerNews.Mvc.Configuration
 		/// <returns></returns>
 		public static IServiceCollection AddMvcProject(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+			services.AddAuthentication(defaultScheme: CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(opt =>
 				{
 					opt.LoginPath = "/users/login";
 					opt.LogoutPath = "/users/logout";
-				});
+				}); 
+				// .AddJwtBearer(;
 
 			services.AddControllersWithViews();
 			services.AddScoped<ICookieService, CookieService>();

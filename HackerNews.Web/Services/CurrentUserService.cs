@@ -1,5 +1,7 @@
 ﻿using HackerNews.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Linq;
 
 namespace HackerNews.Web.Services
 {
@@ -13,14 +15,15 @@ namespace HackerNews.Web.Services
 		}
 
 		/// <summary>
-		/// Generated from the HttpContext.Items["UserID"]
+		/// Generated from "id" claim of the current IdentityPrincipal. 
 		/// </summary>
 		public int UserId
 		{
 			get
 			{
-				var userId = _httpContextAccessor.HttpContext.Items["UserId"];
-				if (userId != null) return (int)userId;
+				string userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
+
+				if (! string.IsNullOrEmpty(userId)) return Int32.Parse(userId);
 				return -1;
 			}
 		}

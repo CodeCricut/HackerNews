@@ -18,6 +18,7 @@ using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Users;
 using HackerNews.Web.Pipeline.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +63,7 @@ namespace HackerNews.Mvc.Controllers
 
 			// Login
 			var loginModel = new LoginModel { Username = registeredUser.Username, Password = registeredUser.Password };
-			await _userAuthService.LogIn(loginModel);
+			await _userAuthService.LogInAsync(loginModel);
 
 			// Attatch image if present
 			var file = Request.Form.Files.FirstOrDefault();
@@ -86,7 +87,7 @@ namespace HackerNews.Mvc.Controllers
 		{
 			try
 			{
-				await _userAuthService.LogIn(viewModel.LoginModel);
+				await _userAuthService.LogInAsync(viewModel.LoginModel);
 				return RedirectToAction("Me");
 
 			}
@@ -100,11 +101,11 @@ namespace HackerNews.Mvc.Controllers
 
 		public async Task<IActionResult> Logout()
 		{
-			await _userAuthService.LogOut();
+			await _userAuthService.LogOutAsync();
 			return RedirectToAction("Register");
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ViewResult> Me()
 		{
 			GetPrivateUserModel privateModel = await Mediator.Send(new GetAuthenticatedUserQuery());
@@ -179,7 +180,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<UserSavedViewModel>> Saved(PagingParams pagingParams)
 		{
 			var privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
@@ -195,7 +196,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<UserBoardsViewModel>> Boards(PagingParams pagingParams)
 		{
 			var privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
@@ -211,7 +212,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<IActionResult> Delete()
 		{
 			await Mediator.Send(new DeleteCurrentUserCommand());

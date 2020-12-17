@@ -20,6 +20,7 @@ using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Boards;
 using HackerNews.Web.Pipeline.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace HackerNews.Mvc.Controllers
 			_imageDataHelper = imageDataHelper;
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public ViewResult Create()
 		{
 			var model = new BoardCreateModel { Board = new PostBoardModel() };
@@ -45,7 +46,7 @@ namespace HackerNews.Mvc.Controllers
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Post(BoardCreateModel boardCreateModel)
 		{
 			GetBoardModel addedBoard = await Mediator.Send(new AddBoardCommand(boardCreateModel.Board));
@@ -87,7 +88,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<BoardAdminViewModel>> Admin(int id)
 		{
 			var user = await Mediator.Send(new GetAuthenticatedUserQuery());
@@ -109,7 +110,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(viewModel);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> AddModerator(BoardAdminViewModel model)
 		{
 			try
@@ -138,7 +139,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Subscribe(int boardId)
 		{
 			var updatedBoard = await Mediator.Send(new AddSubscriberCommand(boardId));
@@ -152,7 +153,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<IActionResult> Delete(int id)
 		{
 			await Mediator.Send(new DeleteBoardCommand(id));

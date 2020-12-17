@@ -9,7 +9,7 @@ namespace HackerNews.Mvc.Services.Interfaces
 	/// </summary>
 	public interface IUserAuthService
 	{
-		Task<Jwt> LogIn(LoginModel loginModel);
-		Task LogOut();
+		Task LogInAsync(LoginModel loginModel);
+		Task LogOutAsync();
 	}
 }

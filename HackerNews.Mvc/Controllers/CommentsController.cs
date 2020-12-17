@@ -19,6 +19,7 @@ using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Comments;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using HackerNews.Web.Pipeline.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -85,7 +86,7 @@ namespace HackerNews.Mvc.Controllers
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> AddComment(CommentDetailsViewModel viewModel)
 		{
 			viewModel.PostCommentModel.ParentCommentId = viewModel.Comment.Id;
@@ -95,7 +96,7 @@ namespace HackerNews.Mvc.Controllers
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Update(CommentCardViewModel viewModel)
 		{
 			// messy, should be a PostCommentModel on the viewModel
@@ -107,14 +108,14 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Details", new { id = viewModel.Comment.Id });
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Vote(int id, bool upvote)
 		{
 			await Mediator.Send(new VoteCommentCommand(id, upvote));
 			return RedirectToAction("Details", new { id });
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> SaveComment(int id)
 		{
 			await Mediator.Send(new SaveCommentToUserCommand(id));
@@ -128,7 +129,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<IActionResult> Delete(int id)
 		{
 			await Mediator.Send(new DeleteCommentCommand(id));

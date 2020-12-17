@@ -1,10 +1,13 @@
 ﻿using Application.IntegrationTests.Common;
 using AutoMapper;
+using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersWithPagination;
+using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,7 +64,10 @@ namespace Application.IntegrationTests.Users.Queries.GetPublicUsersWithPaginatio
 				.Handle(new RegisterUserCommand(registermodel), new CancellationToken(false));
 			}
 
-			var sut = new GetPublicUsersWithPaginationHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var deletedPolicyValidator = new Mock<DeletedUserPolicyValidator>();
+			deletedPolicyValidator.Setup(pv => pv.ValidateEntity(It.IsAny<User>(), It.IsAny<DeletedEntityPolicy>()));
+
+			var sut = new GetPublicUsersWithPaginationHandler(deletedPolicyValidator.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			var allUsers = await unitOfWork.Users.GetEntitiesAsync();
 			var pagingParams = new PagingParams

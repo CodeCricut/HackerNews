@@ -22,6 +22,7 @@ using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Articles;
 using HackerNews.Web.Pipeline.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace HackerNews.Mvc.Controllers
 			_imageDataHelper = imageDataHelper;
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public ViewResult Create(int boardId)
 		{
 			var model = new ArticleCreateViewModel { Article = new PostArticleModel() { BoardId = boardId } };
@@ -47,7 +48,7 @@ namespace HackerNews.Mvc.Controllers
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
 		{
 			// Create the article
@@ -66,7 +67,7 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Details", new { model.Id });
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ViewResult> Edit(int id)
 		{
 			var article = await Mediator.Send(new GetArticleQuery(id));
@@ -85,7 +86,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		[HttpPost]
 		public async Task<ActionResult> Update(ArticleEditViewModel editModel)
 		{
@@ -135,7 +136,7 @@ namespace HackerNews.Mvc.Controllers
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> AddComment(ArticleDetailsViewModel viewModel)
 		{
 			var comment = viewModel.PostCommentModel;
@@ -146,14 +147,14 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Details", new { id = viewModel.Article.Id });
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Vote(int id, bool upvote)
 		{
 			await Mediator.Send(new VoteArticleCommand(id, upvote));
 			return RedirectToAction("Details", new { id });
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> SaveArticle(int id)
 		{
 			await Mediator.Send(new SaveArticleToUserCommand(id));
@@ -167,7 +168,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(model);
 		}
 
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<IActionResult> Delete(int id)
 		{
 			await Mediator.Send(new DeleteArticleCommand(id));

@@ -1,4 +1,20 @@
-﻿// My Stuff Toggle
+﻿// Theme toggle
+let lightTheme = true;
+const toggleTheme = () => {
+    if (lightTheme) {
+        // root.style.setProperty('--primary', )
+
+        lightTheme = false;
+    }
+    else {
+        root.style.setProperty('--dark', '#1a1a1b');
+        root.style.setProperty('--dark-transparent', '#12122bd8');
+        root.style.setProperty('--')
+        lightTheme = true;
+    }
+}
+
+// My Stuff Toggle
 const myStuffToggle = document.getElementById("my-stuff-toggle");
 const myStuffMenu = document.getElementById("my-stuff-menu");
 
