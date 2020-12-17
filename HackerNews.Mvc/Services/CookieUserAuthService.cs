@@ -36,6 +36,8 @@ namespace HackerNews.Mvc.Services
 		/// <returns></returns>
 		public async Task<Jwt> LogIn(LoginModel loginModel)
 		{
+			// signInManager.SignInAsync(user, false);
+
 			if (_jwtSetterService.ContainsToken()) _jwtSetterService.RemoveToken();
 			var jwt = await _jwtGeneratorService.GenererateJwtFromLoginModelAsync(loginModel);
 

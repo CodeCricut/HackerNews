@@ -31,6 +31,8 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 
 		public override async Task<GetPrivateUserModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 		{
+			// var use r= new IdentityUser { ... }
+			// var result = await userManager.CreateAsync(user, model.password);
 			var user = Mapper.Map<User>(request.RegisterUserModel);
 
 			// Verify username isn't taken

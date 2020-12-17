@@ -55,6 +55,7 @@ namespace HackerNews.Mvc.Controllers
 			}
 			catch (NotFoundException) { }
 			catch (UnauthorizedException) { }
+			if (privateUser != null) return RedirectToAction("Login");
 
 			// Regiser
 			GetPrivateUserModel registeredUser = await Mediator.Send(new RegisterUserCommand(viewModel.RegisterModel));
