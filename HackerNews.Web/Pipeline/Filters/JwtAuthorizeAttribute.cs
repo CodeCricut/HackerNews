@@ -1,6 +1,8 @@
 ﻿using HackerNews.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace HackerNews.Web.Pipeline.Filters
 {
@@ -36,8 +38,10 @@ namespace HackerNews.Web.Pipeline.Filters
 		{
 			if (_authorize)
 			{
-				var userId = context.HttpContext.Items["UserId"];
-				if (userId == null)
+				//var userId = context.HttpContext.Items["UserId"];
+				ClaimsPrincipal user = context.HttpContext.User;
+				string userId = user.Claims.FirstOrDefault(c => c.Type.Equals("id"))?.Value;
+				if (string.IsNullOrEmpty(userId))
 					throw new UnauthorizedException();
 			}
 		}

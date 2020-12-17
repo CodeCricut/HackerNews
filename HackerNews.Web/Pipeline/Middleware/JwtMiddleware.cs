@@ -1,10 +1,13 @@
 ﻿using HackerNews.Api.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,7 +73,12 @@ namespace HackerNews.Web.Pipeline.Middleware
 				var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
 				// attach user to context on successful jwt validation
-				context.Items["UserId"] = userId;
+				var identity = new ClaimsIdentity(new[] { new Claim("id", userId.ToString()) }, JwtBearerDefaults.AuthenticationScheme);
+
+				var user = new ClaimsPrincipal(identity);
+				context.User = user;
+
+				//context.Items["UserId"] = userId;
 			}
 			catch
 			{

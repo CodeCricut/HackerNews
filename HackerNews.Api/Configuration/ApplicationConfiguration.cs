@@ -1,5 +1,5 @@
 ﻿using HackerNews.Api.Pipeline.Extensions;
-using HackerNews.Web.Configuration;
+using HackerNews.Web.Pipeline.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,11 @@ namespace HackerNews.Api
 
 			app.UseApiExceptionHandler();
 
-			app.ConfigureWebLayer();
+			// app.ConfigureWebLayer();
+			app.UseMiddleware<JwtMiddleware>();
+
+			//app.UseAuthentication();
+			//app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
