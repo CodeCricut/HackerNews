@@ -2,8 +2,11 @@
 
 namespace HackerNews.Domain.Entities
 {
-	public class Image : DomainEntity
+	public class Image : IDomainEntity
 	{
+		public int Id { get; set; }
+		public bool Deleted { get; set; }
+
 		public string ImageTitle { get; set; }
 		public string ImageDescription { get; set; }
 		public byte[] ImageData { get; set; }

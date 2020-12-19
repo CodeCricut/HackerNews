@@ -36,7 +36,6 @@ namespace HackerNews.Application.Users.Commands.UpdateUser
 			var updateModel = request.UpdateUserModel;
 			currentUser.FirstName = updateModel.FirstName;
 			currentUser.LastName = updateModel.LastName;
-			currentUser.Password = updateModel.Password;
 
 			// Update and save.
 			await UnitOfWork.Users.UpdateEntityAsync(userid, currentUser);

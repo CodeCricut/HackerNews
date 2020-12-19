@@ -42,12 +42,12 @@ namespace Application.IntegrationTests.Users.Queries.GetUserByUsername
 
 			// Act
 			GetPublicUserModel sutResult = await sut.Handle(
-				new GetUserByUsernameQuery(user.Username), new System.Threading.CancellationToken(false));
+				new GetUserByUsernameQuery(user.UserName), new System.Threading.CancellationToken(false));
 
 			// Assert
 			Assert.NotNull(sutResult);
 
-			Assert.Equal(user.Username, sutResult.Username);
+			Assert.Equal(user.UserName, sutResult.Username);
 			Assert.Equal(user.Id, sutResult.Id);
 		}
 	}

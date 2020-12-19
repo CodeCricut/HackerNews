@@ -13,7 +13,7 @@ namespace HackerNews.Domain.Entities
 		Meta
 	}
 
-	public class Article : DomainEntity
+	public class Article : IDomainEntity
 	{
 		public ArticleType Type { get; set; }
 
@@ -38,6 +38,8 @@ namespace HackerNews.Domain.Entities
 		public Board Board { get; set; }
 
 		public Image AssociatedImage { get; set; }
+		public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		public bool Deleted { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 		public Article()
 		{

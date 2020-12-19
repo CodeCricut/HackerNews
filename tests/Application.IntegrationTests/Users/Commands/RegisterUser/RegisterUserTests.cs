@@ -56,7 +56,7 @@ namespace Application.IntegrationTests.Users.Commands.RegisterUser
 
 			Assert.Equal(registerUserModel.FirstName, addedUser.FirstName);
 			Assert.Equal(registerUserModel.LastName, addedUser.LastName);
-			Assert.Equal(registerUserModel.Username, addedUser.Username);
+			Assert.Equal(registerUserModel.Username, addedUser.UserName);
 			Assert.Equal(registerUserModel.Password, addedUser.Password);
 
 			Assert.Equal(registerUserModel.FirstName, sutResult.FirstName);

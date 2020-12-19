@@ -18,6 +18,7 @@ namespace HackerNews.Api
 		/// <returns></returns>
 		public static IApplicationBuilder ConfigureApp(this IApplicationBuilder app, IWebHostEnvironment env, DbContext dbContext)
 		{
+			app.UseApiExceptionHandler();
 
 			if (env.IsDevelopment())
 			{
@@ -36,13 +37,12 @@ namespace HackerNews.Api
 			app.UseRouting();
 			app.UseCors("DefaultCorsPolicy");
 
-			app.UseApiExceptionHandler();
 
 			// app.ConfigureWebLayer();
 			app.UseMiddleware<JwtMiddleware>();
 
-			//app.UseAuthentication();
-			//app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

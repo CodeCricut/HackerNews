@@ -52,7 +52,7 @@ namespace Application.IntegrationTests.Users.Commands.UpdateUser
 			var updatedUser = await unitOfWork.Users.GetEntityAsync(sutResult.Id);
 			Assert.NotNull(updatedUser);
 			Assert.False(updatedUser.Deleted);
-			Assert.Equal(updatedUser.Username, user.Username);
+			Assert.Equal(updatedUser.UserName, user.UserName);
 
 			Assert.Equal(updatedUser.FirstName, updateUserModel.FirstName);
 			Assert.Equal(updatedUser.LastName, updateUserModel.LastName);

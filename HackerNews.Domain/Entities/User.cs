@@ -1,12 +1,17 @@
 ﻿using HackerNews.Domain.Common;
 using HackerNews.Domain.Entities.JoinEntities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HackerNews.Domain.Entities
 {
-	public class User : BaseUser
+	public class User : IdentityUser<int>, IDomainEntity
 	{
+		public bool Deleted { get; set; }
+
 		public Image ProfileImage { get; set; }
 
 		public string FirstName { get; set; }

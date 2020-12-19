@@ -39,7 +39,7 @@ namespace HackerNews.Application.Users.Queries.GetUsersBySearch
 		{
 			var users = await UnitOfWork.Users.GetEntitiesAsync();
 			var searchedUsers = users.Where(
-				u => u.Username.Contains(request.SearchTerm)
+				u => u.UserName.Contains(request.SearchTerm)
 			);
 
 			searchedUsers = _deletedUserValidator.ValidateEntityQuerable(searchedUsers, Domain.Common.DeletedEntityPolicy.OWNER);

@@ -37,7 +37,7 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 
 			// Verify username isn't taken
 			var users = await UnitOfWork.Users.GetEntitiesAsync();
-			var userWithUsername = users.FirstOrDefault(u => u.Username == user.Username);
+			var userWithUsername = users.FirstOrDefault(u => u.UserName == user.UserName);
 			if (userWithUsername != null) throw new UsernameTakenException();
 
 

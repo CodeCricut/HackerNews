@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 namespace HackerNews.Domain.Entities
 {
-	public class Board : DomainEntity
+	public class Board : IDomainEntity
 	{
+		public int Id { get; set; }
+		public bool Deleted { get; set; }
+
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public DateTime CreateDate { get; set; }
@@ -17,6 +20,7 @@ namespace HackerNews.Domain.Entities
 		public List<Comment> Comments { get; set; }
 
 		public Image BoardImage { get; set; }
+		
 
 		public Board()
 		{

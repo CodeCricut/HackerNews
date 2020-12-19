@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 namespace HackerNews.Domain.Entities
 {
-	public class Comment : DomainEntity
+	public class Comment : IDomainEntity
 	{
+		public int Id { get; set; }
+		public bool Deleted { get; set; }
+
 		public int UserId { get; set; }
 		public User User { get; set; }
 		public string Text { get; set; }

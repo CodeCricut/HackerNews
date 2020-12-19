@@ -2,6 +2,7 @@ using HackerNews.Application;
 using HackerNews.Domain;
 using HackerNews.Infrastructure;
 using HackerNews.Mvc.Configuration;
+using HackerNews.Mvc.Pipeline.Extensions;
 using HackerNews.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,16 +34,10 @@ namespace HackerNews.Mvc
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			if (env.IsDevelopment())
-			{
-				// TODO: remember to remove thsi
-				app.UseExceptionHandler("/Home/Error");
+			app.UseMvcExceptionHandler();
 
-				//app.UseDeveloperExceptionPage();
-			}
-			else
+			if (!env.IsDevelopment())
 			{
-				app.UseExceptionHandler("/Home/Error");
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
@@ -50,11 +45,6 @@ namespace HackerNews.Mvc
 			app.UseStaticFiles();
 
 			app.UseRouting();
-
-			// TODO: ConfigureWebLayer should be removed; configs should be registered manually in all dependent projects
-			// app.ConfigureWebLayer();
-			// app.UseMvcExceptionHandler();
-
 
 			app.UseAuthentication();
 			app.UseAuthorization();

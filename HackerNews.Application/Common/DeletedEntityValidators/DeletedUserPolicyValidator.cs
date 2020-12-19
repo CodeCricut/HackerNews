@@ -30,7 +30,7 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 							throw new EntityDeletedException();
 						break;
 					case DeletedEntityPolicy.RESTRICTED:
-						entity.Username = null;
+						entity.UserName = null;
 						entity.FirstName = null;
 						entity.LastName = null;
 						entity.ProfileImage = null;
@@ -58,7 +58,7 @@ namespace HackerNews.Application.Common.DeletedEntityValidators
 								return null;
 							break;
 						case DeletedEntityPolicy.RESTRICTED:
-							entity.Username = null;
+							entity.UserName = null;
 							entity.FirstName = null;
 							entity.LastName = null;
 							entity.ProfileImage = null;

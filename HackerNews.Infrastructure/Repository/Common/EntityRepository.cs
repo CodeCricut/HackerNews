@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Infrastructure.Repository.Common
 {
-	abstract class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : DomainEntity
+	abstract class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class, IDomainEntity
 	{
 		protected readonly DbContext _context;
 
@@ -41,7 +41,7 @@ namespace HackerNews.Infrastructure.Repository.Common
 
 				return true;
 			}
-			catch (Exception ex)
+			catch 
 			{
 				return false;
 			}

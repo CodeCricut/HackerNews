@@ -38,7 +38,7 @@ namespace Application.IntegrationTests.Users.Queries.GetUserFromLoginModel
 
 			var loginModel = new LoginModel
 			{
-				Username = user.Username,
+				Username = user.UserName,
 				Password = user.Password
 			};
 
@@ -54,7 +54,7 @@ namespace Application.IntegrationTests.Users.Queries.GetUserFromLoginModel
 			// Assert
 			Assert.NotNull(sutResult);
 
-			Assert.Equal(user.Username, sutResult.Username);
+			Assert.Equal(user.UserName, sutResult.Username);
 			Assert.Equal(user.Id, sutResult.Id);
 		}
 	}

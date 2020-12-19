@@ -9,7 +9,7 @@ namespace HackerNews.Domain.Interfaces
 	/// The base interface for interacting with <typeparamref name="TEntity"/>s in the database.
 	/// </summary>
 	/// <typeparam name="TEntity"></typeparam>
-	public interface IEntityRepository<TEntity> where TEntity : DomainEntity
+	public interface IEntityRepository<TEntity> where TEntity : class, IDomainEntity
 	{
 		/// <summary>
 		/// Add the <paramref name="entity"/> to the database then return it. Returned entities will have properties set by 

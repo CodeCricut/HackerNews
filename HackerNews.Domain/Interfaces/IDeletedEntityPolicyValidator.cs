@@ -7,7 +7,7 @@ namespace HackerNews.Domain.Interfaces
 	/// Implements the validation behavior associated with each value in <see cref="DeletedEntityPolicy"/>. 
 	/// </summary>
 	/// <typeparam name="TEntity"></typeparam>
-	public interface IDeletedEntityPolicyValidator<TEntity> where TEntity : DomainEntity
+	public interface IDeletedEntityPolicyValidator<TEntity> where TEntity : IDomainEntity
 	{
 		/// <summary>
 		/// Validate every <typeparamref name="TEntity"/> in <paramref name="entities"/>. If an entity cannot be validated

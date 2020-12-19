@@ -36,7 +36,7 @@ namespace HackerNews.Application.Users.Queries.GetUserByUsername
 		{
 			var users = await UnitOfWork.Users.GetEntitiesAsync();
 
-			var user = users.FirstOrDefault(u => u.Username == request.Username);
+			var user = users.FirstOrDefault(u => u.UserName == request.Username);
 
 			if (user == null || user.Id <= 0) throw new NotFoundException();
 

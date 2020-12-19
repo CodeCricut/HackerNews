@@ -15,7 +15,7 @@ namespace Application.IntegrationTests
 			{
 				FirstName = "user 1",
 				LastName = "user 1",
-				Username = "user 1",
+				UserName = "user 1",
 				Password = "user 1 password"
 			};
 			context.Users.Add(user);

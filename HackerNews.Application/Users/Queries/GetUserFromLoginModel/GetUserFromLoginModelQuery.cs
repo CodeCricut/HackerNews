@@ -6,6 +6,7 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,14 +35,16 @@ namespace HackerNews.Application.Users.Queries.GetUserFromLoginModel
 
 		public override async Task<GetPrivateUserModel> Handle(GetUserFromLoginModelQuery request, CancellationToken cancellationToken)
 		{
-			var users = await UnitOfWork.Users.GetEntitiesAsync();
-			var user = users.FirstOrDefault(u => u.Username == request.LoginModel.Username && u.Password == request.LoginModel.Password);
-			if (user == null) throw new NotFoundException();
+			// TODO: update this method to work with identity; 
+			throw new NotImplementedException();
+			//var users = await UnitOfWork.Users.GetEntitiesAsync();
+			//var user = users.FirstOrDefault(u => u.UserName == request.LoginModel.Username && u.Password == request.LoginModel.Password);
+			//if (user == null) throw new NotFoundException();
 
-			// Should be able to log into deleted accounts, for now at least
-			user = _deletedUserValidator.ValidateEntity(user, Domain.Common.DeletedEntityPolicy.PUBLIC);
+			//// Should be able to log into deleted accounts, for now at least
+			//user = _deletedUserValidator.ValidateEntity(user, Domain.Common.DeletedEntityPolicy.PUBLIC);
 
-			return Mapper.Map<GetPrivateUserModel>(user);
+			//return Mapper.Map<GetPrivateUserModel>(user);
 		}
 	}
 }

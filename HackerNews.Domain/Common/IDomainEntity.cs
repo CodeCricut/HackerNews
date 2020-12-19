@@ -3,9 +3,9 @@
 	/// <summary>
 	/// The base type for all entities stored in the database.
 	/// </summary>
-	public abstract class DomainEntity
+	public interface IDomainEntity
 	{
-		public int Id { get; set; }
-		public bool Deleted { get; set; }
+		int Id { get; set; }
+		bool Deleted { get; set; }
 	}
 }
