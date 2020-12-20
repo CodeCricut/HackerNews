@@ -5,12 +5,13 @@
     Layout = "_CenteredLayout";
 }
 
-<form asp-controller="Boards" asp-action="Post" class="card card-lg login-card" enctype="multipart/form-data">
+<form asp-controller="Boards" asp-action="Create" class="card card-lg login-card" enctype="multipart/form-data">
     <h2>Create Board</h2>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div>
         <input type="text" asp-for="Board.Title" placeholder="Title">
         <span asp-validation-for="Board.Title" class="text-danger"></span>
+        <span asp-validation-for="Board" class="text-danger"></span>
 
     </div>
     <div>

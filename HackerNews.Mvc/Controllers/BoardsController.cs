@@ -46,8 +46,10 @@ namespace HackerNews.Mvc.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<ActionResult> Post(BoardCreateModel boardCreateModel)
+		public async Task<ActionResult> Create(BoardCreateModel boardCreateModel)
 		{
+			if (!ModelState.IsValid) return View(boardCreateModel);
+
 			GetBoardModel addedBoard = await Mediator.Send(new AddBoardCommand(boardCreateModel.Board));
 
 			var file = Request.Form.Files.FirstOrDefault();

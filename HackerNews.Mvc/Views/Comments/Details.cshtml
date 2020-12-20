@@ -12,6 +12,7 @@
     <div class="card card-lg">
         <form asp-controller="Comments" asp-action="AddComment" method="post">
             <textarea class="form-control" asp-for="PostCommentModel.Text"></textarea>
+            <span class="text-danger" asp-validation-for="PostCommentModel.Text"></span>
             <input hidden asp-for="Comment.BoardId" />
             <input hidden asp-for="Comment.Id" />
             <input hidden asp-for="Comment.UserId" />

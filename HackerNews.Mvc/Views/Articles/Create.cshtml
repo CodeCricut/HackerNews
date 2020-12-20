@@ -9,9 +9,8 @@
 }
 
 <div class="card card-lg">
-    <form asp-controller="Articles" asp-action="Post" method="post" enctype="multipart/form-data">
+    <form asp-controller="Articles" asp-action="Create" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <label asp-for="Article.Title" class="control-label"></label>
             <input asp-for="Article.Title" class="input"/>
             <span asp-validation-for="Article.Title" class="text-danger"></span>

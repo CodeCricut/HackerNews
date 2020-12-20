@@ -88,6 +88,8 @@ namespace HackerNews.Mvc.Controllers
 		[Authorize]
 		public async Task<ActionResult> AddComment(CommentDetailsViewModel viewModel)
 		{
+			if (!ModelState.IsValid) return RedirectToAction("Details", new { viewModel.Comment.Id });
+
 			viewModel.PostCommentModel.ParentCommentId = viewModel.Comment.Id;
 
 			await Mediator.Send(new AddCommentCommand(viewModel.PostCommentModel));
@@ -96,8 +98,10 @@ namespace HackerNews.Mvc.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<ActionResult> Update(CommentCardViewModel viewModel)
+		public async Task<ActionResult> Edit(CommentCardViewModel viewModel)
 		{
+			if (!ModelState.IsValid) return RedirectToAction("Details", new { viewModel.Comment.Id });
+
 			// messy, should be a PostCommentModel on the viewModel
 			PostCommentModel updateModel = new PostCommentModel
 			{

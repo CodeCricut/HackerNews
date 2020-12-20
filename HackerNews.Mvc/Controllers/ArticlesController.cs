@@ -48,8 +48,10 @@ namespace HackerNews.Mvc.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<ActionResult> Post(ArticleCreateViewModel viewModel)
+		public async Task<ActionResult> Create(ArticleCreateViewModel viewModel)
 		{
+			if (!ModelState.IsValid) return View(viewModel);
+
 			// Create the article
 			GetArticleModel model = await Mediator.Send(new AddArticleCommand(viewModel.Article));
 
@@ -87,8 +89,10 @@ namespace HackerNews.Mvc.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public async Task<ActionResult> Update(ArticleEditViewModel editModel)
+		public async Task<ActionResult> Edit(ArticleEditViewModel editModel)
 		{
+			if (!ModelState.IsValid) return View(editModel);
+
 			GetArticleModel updatedModel = await Mediator.Send(new UpdateArticleCommand(editModel.ArticleId, editModel.PostArticleModel));
 			return RedirectToAction("Details", new { id = updatedModel.Id });
 		}
@@ -96,6 +100,8 @@ namespace HackerNews.Mvc.Controllers
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
 			var articleModel = await Mediator.Send(new GetArticleQuery(id));
+
+			// TODO: handle deleted entities
 			var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
 			var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
 			var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
@@ -138,6 +144,8 @@ namespace HackerNews.Mvc.Controllers
 		[Authorize]
 		public async Task<ActionResult> AddComment(ArticleDetailsViewModel viewModel)
 		{
+			if (!ModelState.IsValid) return RedirectToAction("Details", new { Id = viewModel.Article.Id });
+
 			var comment = viewModel.PostCommentModel;
 			comment.ParentArticleId = viewModel.Article.Id;
 

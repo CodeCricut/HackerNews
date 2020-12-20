@@ -166,6 +166,11 @@ form textarea {
     resize: vertical;
 }
 
+form .text-danger {
+    display: block;
+    font-size: .7em;
+}
+
 .input {
     height: 40px;
     padding: 0 10px;

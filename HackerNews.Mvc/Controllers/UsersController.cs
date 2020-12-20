@@ -48,6 +48,8 @@ namespace HackerNews.Mvc.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(UserRegisterViewModel viewModel)
 		{
+			if (!ModelState.IsValid) return View(viewModel);
+
 			// Verify not logged in
 			GetPrivateUserModel privateUser = null;
 			try
@@ -85,6 +87,8 @@ namespace HackerNews.Mvc.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(UserLoginViewModel viewModel)
 		{
+			if (!ModelState.IsValid) return View(viewModel);
+
 			try
 			{
 				await _userAuthService.LogInAsync(viewModel.LoginModel);

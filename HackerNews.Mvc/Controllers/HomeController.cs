@@ -20,7 +20,6 @@ namespace HackerNews.Mvc.Controllers
 {
 	public class HomeController : FrontendController
 	{
-
 		public async Task<IActionResult> Index(PagingParams pagingParams)
 		{
 			var articles = await Mediator.Send(new GetArticlesWithPaginationQuery(pagingParams));
