@@ -11,11 +11,10 @@ using HackerNews.Application.Boards.Queries.GetBoardsWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Exceptions;
-using HackerNews.Web.Pipeline.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HackerNews.Api.Controllers
 {

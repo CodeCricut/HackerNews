@@ -13,7 +13,7 @@ namespace Application.IntegrationTests
 		/// Seed the database.
 		/// </summary>
 		/// <param name="context"></param>
-		public static async Task InitializeForTestsAsync(this HackerNewsContext context, UserManager<User> userManager) 
+		public static async Task InitializeForTestsAsync(this HackerNewsContext context, UserManager<User> userManager)
 		{
 			User user = new User
 			{

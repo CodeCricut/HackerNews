@@ -9,7 +9,6 @@ using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
-using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

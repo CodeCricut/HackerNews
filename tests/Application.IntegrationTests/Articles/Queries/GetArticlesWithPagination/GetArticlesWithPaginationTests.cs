@@ -1,16 +1,9 @@
 ﻿using Application.IntegrationTests.Common;
-using AutoMapper;
 using HackerNews.Application.Articles.Commands.AddArticles;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
-using HackerNews.Application.Common.Interfaces;
-using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
-using HackerNews.Domain.Entities;
-using HackerNews.Domain.Interfaces;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,19 +20,30 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticlesWithPaginatio
 		{
 			using var scope = Factory.Services.CreateScope();
 
-			var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-			var user = (await unitOfWork.Users.GetEntitiesAsync()).First();
-			var board = (await unitOfWork.Boards.GetEntitiesAsync()).First();
-			var article = (await unitOfWork.Articles.GetEntitiesAsync()).First();
-			var comment = (await unitOfWork.Comments.GetEntitiesAsync()).First();
+			await AddArticlesToQueryFrom();
 
-			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-			var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+			var sut = new GetArticlesWithPaginationQueryHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
-			var currentUserServiceMock = new Mock<ICurrentUserService>();
-			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
+			var pagingParams = new PagingParams
+			{
+				PageSize = (int)Math.Ceiling((decimal)articles.Count() / 2),
+				PageNumber = 1
+			};
 
-			// Add articles to query from.
+			// Act
+			PaginatedList<GetArticleModel> sutResult = await sut.Handle(
+				new GetArticlesWithPaginationQuery(pagingParams), new CancellationToken(false));
+
+			// Assert
+			Assert.NotNull(sutResult);
+
+			Assert.Equal(pagingParams.PageSize, sutResult.PageSize);
+			Assert.Equal(pagingParams.PageSize, sutResult.Items.Count());
+			if (pagingParams.PageSize < articles.Count()) Assert.True(sutResult.HasNextPage);
+		}
+
+		private async Task AddArticlesToQueryFrom()
+		{
 			var postArticleModels = new List<PostArticleModel>
 			{
 				new PostArticleModel
@@ -59,30 +63,6 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticlesWithPaginatio
 			};
 			await new AddArticlesCommandHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object)
 				.Handle(new AddArticlesCommand(postArticleModels), new CancellationToken(false));
-
-			var allArticles = await unitOfWork.Articles.GetEntitiesAsync();
-
-			var deletedArticleValidatorMock = new Mock<IDeletedEntityPolicyValidator<Article>>();
-			deletedArticleValidatorMock.Setup(m => m.ValidateEntityQuerable(It.IsAny<IQueryable<Article>>(), It.IsAny<DeletedEntityPolicy>())).Returns(allArticles);
-
-			var sut = new GetArticlesWithPaginationQueryHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
-
-			var pagingParams = new PagingParams
-			{
-				PageSize = (int)Math.Ceiling((decimal)allArticles.Count() / 2),
-				PageNumber = 1
-			};
-
-			// Act
-			PaginatedList<GetArticleModel> sutResult = await sut.Handle(
-				new GetArticlesWithPaginationQuery(pagingParams), new CancellationToken(false));
-
-			// Assert
-			Assert.NotNull(sutResult);
-
-			Assert.Equal(pagingParams.PageSize, sutResult.PageSize);
-			Assert.Equal(pagingParams.PageSize, sutResult.Items.Count());
-			if (pagingParams.PageSize < allArticles.Count()) Assert.True(sutResult.HasNextPage);
 		}
 	}
 }

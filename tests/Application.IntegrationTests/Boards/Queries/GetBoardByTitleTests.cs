@@ -1,14 +1,6 @@
 ﻿using Application.IntegrationTests.Common;
-using AutoMapper;
 using HackerNews.Application.Boards.Queries.GetBoardByTitle;
-using HackerNews.Application.Common.Interfaces;
-using HackerNews.Domain.Common;
-using HackerNews.Domain.Entities;
-using HackerNews.Domain.Interfaces;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -20,21 +12,6 @@ namespace Application.IntegrationTests.Boards.Queries
 		public async Task ShouldGetValidBoard()
 		{
 			using var scope = Factory.Services.CreateScope();
-
-			var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-			var user = (await unitOfWork.Users.GetEntitiesAsync()).First();
-			var board = (await unitOfWork.Boards.GetEntitiesAsync()).First();
-			var article = (await unitOfWork.Articles.GetEntitiesAsync()).First();
-			var comment = (await unitOfWork.Comments.GetEntitiesAsync()).First();
-
-			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-			var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
-
-			var currentUserServiceMock = new Mock<ICurrentUserService>();
-			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
-
-			var deletedBoardValidatorMock = new Mock<IDeletedEntityPolicyValidator<Board>>();
-			deletedBoardValidatorMock.Setup(m => m.ValidateEntity(It.IsAny<Board>(), It.IsAny<DeletedEntityPolicy>())).Returns(board);
 
 			var sut = new GetBoardByTitleHandler(deletedBoardValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 

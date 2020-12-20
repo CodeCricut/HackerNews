@@ -1,7 +1,6 @@
 ﻿using HackerNews.Domain.Common;
 using HackerNews.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,7 +69,7 @@ namespace HackerNews.Infrastructure.Repository.Common
 
 					return true;
 				}
-				catch 
+				catch
 				{
 					return false;
 				}

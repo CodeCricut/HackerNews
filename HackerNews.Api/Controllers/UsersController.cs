@@ -12,7 +12,6 @@ using HackerNews.Application.Users.Queries.GetUsersBySearch;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
-using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

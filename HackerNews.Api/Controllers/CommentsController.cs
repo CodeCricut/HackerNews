@@ -9,11 +9,10 @@ using HackerNews.Application.Comments.Queries.GetCommentsBySearch;
 using HackerNews.Application.Comments.Queries.GetCommentsWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
-using HackerNews.Web.Pipeline.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HackerNews.Api.Controllers
 {

@@ -1,13 +1,10 @@
 ﻿using Application.IntegrationTests.Common;
-using AutoMapper;
 using HackerNews.Application.Articles.Commands.AddArticles;
 using HackerNews.Application.Articles.Queries.GetArticlesByIds;
-using HackerNews.Application.Common.Interfaces;
+using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
-using HackerNews.Domain.Interfaces;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Collections.Generic;
@@ -25,19 +22,28 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticlesByIds
 		{
 			using var scope = Factory.Services.CreateScope();
 
-			var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-			var user = (await unitOfWork.Users.GetEntitiesAsync()).First();
-			var board = (await unitOfWork.Boards.GetEntitiesAsync()).First();
-			var article = (await unitOfWork.Articles.GetEntitiesAsync()).First();
-			var comment = (await unitOfWork.Comments.GetEntitiesAsync()).First();
+			await AddArticlesToQueryFrom();
 
-			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-			var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
 
-			var currentUserServiceMock = new Mock<ICurrentUserService>();
-			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
+			var oddArticles = articles.Where(a => a.Id % 2 == 1);
+			deletedArticleValidatorMock.Setup(m => m.ValidateEntityQuerable(It.IsAny<IQueryable<Article>>(), It.IsAny<DeletedEntityPolicy>())).Returns(oddArticles);
 
-			// Add articles to query from.
+			var sut = new GetArticlesByIdsQueryHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+
+			// Act
+			PaginatedList<GetArticleModel> sutResult = await sut.Handle(
+				new GetArticlesByIdsQuery(oddArticles.Select(a => a.Id),
+				new PagingParams(1, 20)), new CancellationToken(false));
+
+			// Assert
+			Assert.NotNull(sutResult);
+
+			// Ids should all be odd
+			Assert.True(sutResult.Items.All(a => a.Id % 2 == 1));
+		}
+
+		private async Task AddArticlesToQueryFrom()
+		{
 			var postArticleModels = new List<PostArticleModel>
 			{
 				new PostArticleModel
@@ -57,25 +63,6 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticlesByIds
 			};
 			await new AddArticlesCommandHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object)
 				.Handle(new AddArticlesCommand(postArticleModels), new CancellationToken(false));
-
-			var deletedArticleValidatorMock = new Mock<IDeletedEntityPolicyValidator<Article>>();
-
-			var sut = new GetArticlesByIdsQueryHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
-
-			var allArticles = await unitOfWork.Articles.GetEntitiesAsync();
-			var oddArticles = allArticles.Where(a => a.Id % 2 == 1);
-
-			// Act
-			PaginatedList<GetArticleModel> sutResult = await sut.Handle(
-				new GetArticlesByIdsQuery(oddArticles.Select(a => a.Id),
-				new PagingParams(1, 20)), new CancellationToken(false));
-
-
-			// Assert
-			Assert.NotNull(sutResult);
-
-			// Ids should all be odd
-			Assert.True(sutResult.Items.All(a => a.Id % 2 == 1));
 		}
 	}
 }

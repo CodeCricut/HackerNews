@@ -1,12 +1,6 @@
 ﻿using Application.IntegrationTests.Common;
-using AutoMapper;
-using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Commands.DeleteUser;
-using HackerNews.Domain.Interfaces;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,14 +13,6 @@ namespace Application.IntegrationTests.Users.Commands.DeleteUser
 		{
 			// Arrange
 			using var scope = Factory.Services.CreateScope();
-
-			var unitOfWork = scope.ServiceProvider.GetService<IUnitOfWork>();
-			var mediator = scope.ServiceProvider.GetService<IMediator>();
-			var mapper = scope.ServiceProvider.GetService<IMapper>();
-			var currentUserServiceMock = new Mock<ICurrentUserService>();
-
-			var user = (await unitOfWork.Users.GetEntitiesAsync()).First();
-			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
 
 			Assert.False(user.Deleted);
 

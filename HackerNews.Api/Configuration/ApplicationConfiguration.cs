@@ -1,5 +1,4 @@
 ﻿using HackerNews.Api.Pipeline.Extensions;
-using HackerNews.Web.Pipeline.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
