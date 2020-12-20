@@ -1,4 +1,5 @@
 ﻿using HackerNews.Application.Boards.Queries.GetBoard;
+using HackerNews.Application.Common.Helpers;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models.Articles;
@@ -27,36 +28,13 @@ namespace HackerNews.Mvc.ViewComponents
 
 		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel, string imageDataUrl, bool displayText = false)
 		{
-			GetBoardModel board;
-			GetPublicUserModel user;
-			string jwt;
-			try
-			{
-				board = await _mediator.Send(new GetBoardQuery(articleModel.BoardId));
-			}
-			catch
-			{
-				board = new GetBoardModel();
-			}
+			var getBoardQuery = new GetBoardQuery(articleModel.BoardId);
+			GetBoardModel board = await getBoardQuery.DefaultIfExceptionAsync(_mediator);
 
-			try
-			{
-				user = await _mediator.Send(new GetPublicUserQuery(articleModel.UserId));
-			}
-			catch
-			{
-				user = new GetPublicUserModel();
-			}
-
-			try
-			{
-				jwt = _apiJwtManager.GetToken();
-					//_iDentityCookieSetterService.GetIdentityCookie();
-			}
-			catch (System.Exception)
-			{
-				jwt = "";
-			}
+			var getuserQuery = new GetPublicUserQuery(articleModel.UserId);
+			GetPublicUserModel user = await getuserQuery.DefaultIfExceptionAsync(_mediator);
+			
+			string jwt = _apiJwtManager.GetToken();
 
 			bool loggedIn = false;
 			bool saved = false;

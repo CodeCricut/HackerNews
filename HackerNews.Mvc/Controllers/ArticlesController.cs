@@ -8,21 +8,24 @@ using HackerNews.Application.Articles.Queries.GetArticlesBySearch;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Comments.Commands.AddComment;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
+using HackerNews.Application.Common.Helpers;
 using HackerNews.Application.Images.Queries.GetImageById;
 using HackerNews.Application.Users.Commands.SaveArticleToUser;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
-using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Articles;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -97,26 +100,28 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Details", new { id = updatedModel.Id });
 		}
 
+		
+
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{
 			var articleModel = await Mediator.Send(new GetArticleQuery(id));
 
-			// TODO: handle deleted entities
-			var articleComments = await Mediator.Send(new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams));
-			var board = await Mediator.Send(new GetBoardQuery(articleModel.BoardId));
-			var user = await Mediator.Send(new GetPublicUserQuery(articleModel.UserId));
+			var getArticleCommentsQuery = new GetCommentsByIdsQuery(articleModel.CommentIds, pagingParams);
+			var articleComments = await getArticleCommentsQuery.DefaultIfExceptionAsync(Mediator);
 
-			var privateUser = await TryGetPrivateUser();
+			var getBoardQuery = new GetBoardQuery(articleModel.BoardId);
+			GetBoardModel board = await getBoardQuery.DefaultIfExceptionAsync(Mediator);
+
+			var getUserQuery = new GetPublicUserQuery(articleModel.UserId);
+			GetPublicUserModel user = await getUserQuery.DefaultIfExceptionAsync(Mediator);
+
+			var privateUser = await new GetAuthenticatedUserQuery().DefaultIfExceptionAsync(Mediator);
 
 			var loggedIn = privateUser != null && privateUser.Id != 0;
 
-			var savedArticle = loggedIn
-				? privateUser.SavedArticles.Contains(id)
-				: false;
+			var savedArticle = loggedIn && privateUser.SavedArticles.Contains(id);
 
-			var wroteArticle = loggedIn
-				? privateUser.ArticleIds.Contains(id)
-				: false;
+			var wroteArticle = loggedIn && privateUser.ArticleIds.Contains(id);
 
 			string imageDataURL = "";
 			if (articleModel.AssociatedImageId > 0)
@@ -180,18 +185,6 @@ namespace HackerNews.Mvc.Controllers
 		{
 			await Mediator.Send(new DeleteArticleCommand(id));
 			return RedirectToAction("Details", new { id });
-		}
-
-		private async Task<GetPrivateUserModel> TryGetPrivateUser()
-		{
-			try
-			{
-				return await Mediator.Send(new GetAuthenticatedUserQuery());
-			}
-			catch (NotFoundException)
-			{
-				return null;
-			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using HackerNews.Application.Articles.Queries.GetArticlesByIds;
 using HackerNews.Application.Boards.Queries.GetBoardsByIds;
 using HackerNews.Application.Comments.Queries.GetCommentsByIds;
+using HackerNews.Application.Common.Helpers;
 using HackerNews.Application.Images.Queries.GetImageById;
 using HackerNews.Application.Users.Commands.AddImage;
 using HackerNews.Application.Users.Commands.DeleteUser;
@@ -51,14 +52,8 @@ namespace HackerNews.Mvc.Controllers
 			if (!ModelState.IsValid) return View(viewModel);
 
 			// Verify not logged in
-			GetPrivateUserModel privateUser = null;
-			try
-			{
-				privateUser = await Mediator.Send(new GetAuthenticatedUserQuery());
-			}
-			catch (NotFoundException) { }
-			catch (UnauthorizedException) { }
-			if (privateUser != null) return RedirectToAction("Login");
+			GetPrivateUserModel privateUser = await new GetAuthenticatedUserQuery().DefaultIfExceptionAsync(Mediator);
+			if (privateUser != null && privateUser.Id > 0) return RedirectToAction("Login");
 
 			// Regiser
 			User registeredUser = await Mediator.Send(new RegisterUserCommand(viewModel.RegisterModel));

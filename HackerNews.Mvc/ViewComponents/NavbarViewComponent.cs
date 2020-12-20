@@ -1,4 +1,5 @@
-﻿using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
+﻿using HackerNews.Application.Common.Helpers;
+using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,16 +18,12 @@ namespace HackerNews.Mvc.ViewComponents
 
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			NavbarViewModel model;
-			try
+			var privateUser = await new GetAuthenticatedUserQuery().DefaultIfExceptionAsync(_mediator);
+
+			NavbarViewModel model = new NavbarViewModel
 			{
-				var privateUser = await _mediator.Send(new GetAuthenticatedUserQuery());
-				model = new NavbarViewModel { User = privateUser };
-			}
-			catch
-			{
-				model = new NavbarViewModel();
-			}
+				User = privateUser
+			};
 
 			return View(model);
 		}

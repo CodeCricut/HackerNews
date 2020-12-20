@@ -1,6 +1,7 @@
 ﻿using HackerNews.Application.Articles.Queries.GetArticle;
 using HackerNews.Application.Boards.Queries.GetBoard;
 using HackerNews.Application.Comments.Queries.GetComment;
+using HackerNews.Application.Common.Helpers;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Domain.Common.Models.Articles;
@@ -31,44 +32,17 @@ namespace HackerNews.Mvc.ViewComponents
 		{
 			var board = await _mediator.Send(new GetBoardQuery(commentModel.BoardId));
 
-			GetArticleModel parentArticle;
-			GetCommentModel parentComment;
-			try
-			{
-				parentArticle = await _mediator.Send(new GetArticleQuery(commentModel.ParentArticleId));
-			}
-			catch
-			{
-				parentArticle = new GetArticleModel();
-			}
+			var getArticleQuery = new GetArticleQuery(commentModel.ParentArticleId);
+			GetArticleModel parentArticle = await getArticleQuery.DefaultIfExceptionAsync(_mediator);
 
-			try
-			{
-				parentComment = await _mediator.Send(new GetCommentQuery(commentModel.ParentCommentId));
-			}
-			catch
-			{
-				parentComment = new GetCommentModel();
-			}
+			var getCommentQuery = new GetCommentQuery(commentModel.ParentCommentId);
+			GetCommentModel parentComment = await getCommentQuery.DefaultIfExceptionAsync(_mediator);
+
+			var getUserQuery = new GetPublicUserQuery(commentModel.UserId);
+			GetPublicUserModel user = await getUserQuery.DefaultIfExceptionAsync(_mediator);
 
 
-			GetPublicUserModel user = new GetPublicUserModel();
-			try
-			{
-				user = await _mediator.Send(new GetPublicUserQuery(commentModel.UserId));
-			}
-			catch { }
-
-
-			string jwt = "";
-			try
-			{
-				jwt = _apiJwtManager.GetToken();
-			}
-			catch (System.Exception)
-			{
-				jwt = "";
-			}
+			string jwt =  _apiJwtManager.GetToken();
 
 			bool loggedIn = false;
 			bool saved = false;
@@ -97,7 +71,6 @@ namespace HackerNews.Mvc.ViewComponents
 				ParentArticle = parentArticle,
 				ParentComment = parentComment,
 				User = user,
-
 				Jwt = jwt,
 				LoggedIn = loggedIn,
 				Saved = saved,
