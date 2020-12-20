@@ -30,12 +30,13 @@ namespace HackerNews.Mvc.Configuration
 
 			services.AddControllersWithViews();
 			services.AddScoped<ICookieService, CookieService>();
-			services.AddScoped<IJwtSetterService, JwtCookieSetterService>();
-			services.AddScoped<IIdentityCookieSetterService, IdentityCookieSetterService>();
 
 			services.AddScoped<IUserAuthService, IdentityUserAuthService>();
 			services.AddSingleton<IImageFileReader, ImageFileReader>();
 			services.AddSingleton<IImageDataHelper, ImageDataHelper>();
+
+			services.AddSingleton<IGenericHttpClient, GenericHttpClient>();
+			services.AddSingleton<IApiJwtManager, ApiJwtManager>();
 
 			return services;
 		}

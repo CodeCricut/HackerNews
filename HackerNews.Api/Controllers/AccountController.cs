@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
 {
-	[Route("[controller]/[action]")]
+	[Route("api/[controller]")]
 	public class AccountController : ApiController
 	{
 		private readonly IMapper _mapper;
@@ -33,7 +33,7 @@ namespace HackerNews.Api.Controllers
 			_jwtSettings = jwtSettings.Value;
 		}
 
-		[HttpPost]
+		[HttpPost("Login")]
 		public async Task<Jwt> Login([FromBody] LoginModel loginModel)
 		{
 			var result = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, isPersistent: false, false);
@@ -46,7 +46,7 @@ namespace HackerNews.Api.Controllers
 			throw new NotFoundException();
 		}
 
-		[HttpPost]
+		[HttpPost("Register")]
 		public async Task<Jwt> Register([FromBody] RegisterUserModel registerModel)
 		{
 			// TODO: most mediator commands and queries should return the actual entity; another command or helper should convert to models

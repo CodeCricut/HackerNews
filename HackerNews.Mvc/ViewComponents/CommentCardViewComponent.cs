@@ -19,17 +19,12 @@ namespace HackerNews.Mvc.ViewComponents
 	public class CommentCardViewComponent : ViewComponent
 	{
 		private readonly IMediator _mediator;
-		private readonly IIdentityCookieSetterService _iDentityCookieSetterService;
+		private readonly IApiJwtManager _apiJwtManager;
 
-		//private readonly IJwtSetterService _jwtService;
-
-		public CommentCardViewComponent(IMediator mediator,
-			IIdentityCookieSetterService iDentityCookieSetterService,
-			IJwtSetterService jwtService)
+		public CommentCardViewComponent(IMediator mediator, IApiJwtManager apiJwtManager)
 		{
 			_mediator = mediator;
-			_iDentityCookieSetterService = iDentityCookieSetterService;
-			//_jwtService = jwtService;
+			_apiJwtManager = apiJwtManager;
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync(GetCommentModel commentModel)
@@ -68,7 +63,8 @@ namespace HackerNews.Mvc.ViewComponents
 			string jwt = "";
 			try
 			{
-				jwt = _iDentityCookieSetterService.GetIdentityCookie();
+				jwt = _apiJwtManager.ApiJwt.Token;
+					//_iDentityCookieSetterService.GetIdentityCookie();
 				//_jwtService.GetToken();
 			}
 			catch (System.Exception)

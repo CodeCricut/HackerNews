@@ -17,25 +17,12 @@ namespace HackerNews.Mvc.Services
 	public class IdentityUserAuthService : IUserAuthService
 	{
 		private readonly SignInManager<User> _signInManager;
-		private readonly IJwtGeneratorService _jwtGeneratorService;
-		private readonly IMediator _mediator;
-		private readonly IJwtSetterService _jwtSetterService;
-		private readonly IMapper _mapper;
-		private readonly HttpContext _context;
+		private readonly IApiJwtManager _apiJwtManager;
 
-		public IdentityUserAuthService(SignInManager<User> signInManager,
-			IJwtGeneratorService jwtGeneratorService,
-			IHttpContextAccessor httpContextAccessor,
-			IMediator mediator,
-			IJwtSetterService jwtSetterService,
-			IMapper mapper)
+		public IdentityUserAuthService(SignInManager<User> signInManager, IApiJwtManager apiJwtManager)
 		{
 			_signInManager = signInManager;
-			_jwtGeneratorService = jwtGeneratorService;
-			_mediator = mediator;
-			_jwtSetterService = jwtSetterService;
-			_mapper = mapper;
-			_context = httpContextAccessor.HttpContext;
+			_apiJwtManager = apiJwtManager;
 		}
 
 		/// <summary>
@@ -47,13 +34,14 @@ namespace HackerNews.Mvc.Services
 		{
 			var result = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, isPersistent: true, false);
 			if (!result.Succeeded) throw new InvalidPostException("Invalid login credentials.");
+
+			await _apiJwtManager.LogInAsync(loginModel);
 		}
 
 		public async Task LogOutAsync()
 		{
-			//await _context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-			//if (_jwtSetterService.ContainsToken()) _jwtSetterService.RemoveToken();
 			await _signInManager.SignOutAsync();
+			await _apiJwtManager.LogOutAsync();
 		}
 	}
 }
