@@ -5,5 +5,6 @@ namespace HackerNews.Mvc.ViewModels.Users
 	public class UserLoginViewModel
 	{
 		public LoginModel LoginModel { get; set; }
+		public string ReturnUrl { get; set; }
 	}
 }

@@ -64,8 +64,6 @@ namespace HackerNews.Mvc.ViewComponents
 			try
 			{
 				jwt = _apiJwtManager.GetToken();
-					//_iDentityCookieSetterService.GetIdentityCookie();
-				//_jwtService.GetToken();
 			}
 			catch (System.Exception)
 			{

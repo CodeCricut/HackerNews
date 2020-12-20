@@ -76,18 +76,20 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Me");
 		}
 
-		public ViewResult Login()
+		public ViewResult Login(string returnUrl)
 		{
-			var model = new UserLoginViewModel { LoginModel = new LoginModel() };
+			var model = new UserLoginViewModel { LoginModel = new LoginModel(), ReturnUrl = returnUrl };
 			return View(model);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Login([FromQuery] string ReturnUrl, UserLoginViewModel viewModel)
+		public async Task<IActionResult> Login(UserLoginViewModel viewModel)
 		{
 			try
 			{
 				await _userAuthService.LogInAsync(viewModel.LoginModel);
+				if (!string.IsNullOrEmpty(viewModel.ReturnUrl))
+					return LocalRedirect(viewModel.ReturnUrl);
 				return RedirectToAction("Me");
 			}
 			catch

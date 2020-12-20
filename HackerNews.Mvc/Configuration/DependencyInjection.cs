@@ -1,7 +1,9 @@
 ﻿using HackerNews.Mvc.Services;
 using HackerNews.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +30,15 @@ namespace HackerNews.Mvc.Configuration
 					opt.LoginPath = "/Users/Login";
 				});
 
-			services.AddControllersWithViews();
+			services.AddControllersWithViews(opt =>
+			{
+				// Optionally require authorization by default on all actions
+				// If you go this route, decorate actions such as Login with [AllowAnonymous]
+				//var policy = new AuthorizationPolicyBuilder()
+				//	.RequireAuthenticatedUser()
+				//	.Build();
+				//opt.Filters.Add(new AuthorizeFilter(policy));
+			});
 			services.AddScoped<ICookieService, CookieService>();
 
 			services.AddScoped<IUserAuthService, IdentityUserAuthService>();
