@@ -36,11 +36,11 @@ namespace HackerNews.Api.Controllers
 		[HttpPost]
 		public async Task<Jwt> Login([FromBody] LoginModel loginModel)
 		{
-			var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, isPersistent: false, false);
+			var result = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, isPersistent: false, false);
 
 			if (result.Succeeded)
 			{
-				var user = _userManager.Users.SingleOrDefault(u => u.UserName == loginModel.Username);
+				var user = _userManager.Users.SingleOrDefault(u => u.UserName == loginModel.UserName);
 				return await _jwtGeneratorService.GenererateJwtFromUser(user);
 			}
 			throw new NotFoundException();

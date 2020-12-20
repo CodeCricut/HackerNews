@@ -5,6 +5,7 @@ using HackerNews.Application.Articles.Queries.GetArticlesByIds;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,8 +58,9 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticlesByIds
 			await new AddArticlesCommandHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object)
 				.Handle(new AddArticlesCommand(postArticleModels), new CancellationToken(false));
 
+			var deletedArticleValidatorMock = new Mock<IDeletedEntityPolicyValidator<Article>>();
 
-			var sut = new GetArticlesByIdsQueryHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var sut = new GetArticlesByIdsQueryHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			var allArticles = await unitOfWork.Articles.GetEntitiesAsync();
 			var oddArticles = allArticles.Where(a => a.Id % 2 == 1);

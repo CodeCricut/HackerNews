@@ -3,8 +3,10 @@ using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Linq;
@@ -30,12 +32,12 @@ namespace Application.IntegrationTests.Users.Queries
 
 			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 			var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
 
-
-			var sut = new GetAuthenticatedUserHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var sut = new GetAuthenticatedUserHandler(userManager, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			// Act
 			GetPrivateUserModel sutResult = await sut.Handle(new GetAuthenticatedUserQuery(), new CancellationToken(false));

@@ -2,7 +2,9 @@
 using AutoMapper;
 using HackerNews.Application.Articles.Queries.GetArticle;
 using HackerNews.Application.Common.Interfaces;
+using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +34,10 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticle
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
 
-			var sut = new GetArticleHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var deletedArticleValidatorMock = new Mock<IDeletedEntityPolicyValidator<Article>>();
+			deletedArticleValidatorMock.Setup(m => m.ValidateEntity(It.IsAny<Article>(), It.IsAny<DeletedEntityPolicy>())).Returns(article);
+
+			var sut = new GetArticleHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			// Act
 			GetArticleModel sutResult = await sut.Handle(new GetArticleQuery(article.Id), new CancellationToken(false));

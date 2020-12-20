@@ -35,8 +35,8 @@ namespace Application.IntegrationTests.Users.Queries.GetUserByUsername
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
 
-			var deletedPolicyValidator = new Mock<DeletedUserPolicyValidator>();
-			deletedPolicyValidator.Setup(pv => pv.ValidateEntity(It.IsAny<User>(), It.IsAny<DeletedEntityPolicy>()));
+			var deletedPolicyValidator = new Mock<IDeletedEntityPolicyValidator<User>>();
+			deletedPolicyValidator.Setup(pv => pv.ValidateEntity(It.IsAny<User>(), It.IsAny<DeletedEntityPolicy>())).Returns(user);
 
 			var sut = new GetUserByUsernameHandler(deletedPolicyValidator.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 

@@ -2,6 +2,8 @@
 using AutoMapper;
 using HackerNews.Application.Boards.Queries.GetBoardByTitle;
 using HackerNews.Application.Common.Interfaces;
+using HackerNews.Domain.Common;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +33,10 @@ namespace Application.IntegrationTests.Boards.Queries
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
 
-			var sut = new GetBoardByTitleHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var deletedBoardValidatorMock = new Mock<IDeletedEntityPolicyValidator<Board>>();
+			deletedBoardValidatorMock.Setup(m => m.ValidateEntity(It.IsAny<Board>(), It.IsAny<DeletedEntityPolicy>())).Returns(board);
+
+			var sut = new GetBoardByTitleHandler(deletedBoardValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			// Act
 			var sutResult = await sut.Handle(

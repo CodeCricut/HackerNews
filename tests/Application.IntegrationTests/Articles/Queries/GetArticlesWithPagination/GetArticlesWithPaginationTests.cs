@@ -3,8 +3,10 @@ using AutoMapper;
 using HackerNews.Application.Articles.Commands.AddArticles;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
 using HackerNews.Application.Common.Interfaces;
+using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,10 +60,13 @@ namespace Application.IntegrationTests.Articles.Queries.GetArticlesWithPaginatio
 			await new AddArticlesCommandHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object)
 				.Handle(new AddArticlesCommand(postArticleModels), new CancellationToken(false));
 
-
-			var sut = new GetArticlesWithPaginationQueryHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
-
 			var allArticles = await unitOfWork.Articles.GetEntitiesAsync();
+
+			var deletedArticleValidatorMock = new Mock<IDeletedEntityPolicyValidator<Article>>();
+			deletedArticleValidatorMock.Setup(m => m.ValidateEntityQuerable(It.IsAny<IQueryable<Article>>(), It.IsAny<DeletedEntityPolicy>())).Returns(allArticles);
+
+			var sut = new GetArticlesWithPaginationQueryHandler(deletedArticleValidatorMock.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+
 			var pagingParams = new PagingParams
 			{
 				PageSize = (int)Math.Ceiling((decimal)allArticles.Count() / 2),

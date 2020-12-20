@@ -1,5 +1,7 @@
-﻿using HackerNews.EF;
+﻿using HackerNews.Domain.Entities;
+using HackerNews.EF;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +36,9 @@ namespace Application.IntegrationTests
 				using (var scope = sp.CreateScope())
 				{
 					var scopedServices = scope.ServiceProvider;
-					var db = (HackerNewsContext)scopedServices.GetRequiredService<DbContext>();
+					var db = scopedServices.GetRequiredService<HackerNewsContext>();
+					var userManager = scopedServices.GetRequiredService<UserManager<User>>();
+
 					var logger = scopedServices
 						.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
@@ -45,7 +49,7 @@ namespace Application.IntegrationTests
 					try
 					{
 						// Seed the database
-						db.InitializeForTests();
+						db.InitializeForTestsAsync(userManager).GetAwaiter().GetResult();
 					}
 					catch (Exception ex)
 					{

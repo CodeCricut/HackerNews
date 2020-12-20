@@ -1,5 +1,7 @@
 ﻿using HackerNews.Api;
+using HackerNews.Domain.Entities;
 using HackerNews.EF;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,9 +30,10 @@ namespace Application.IntegrationTests.Common
 		public void Dispose()
 		{
 			using var scope = Factory.Services.CreateScope();
-			var context = (HackerNewsContext)scope.ServiceProvider.GetService<DbContext>();
+			var context = scope.ServiceProvider.GetService<HackerNewsContext>();
+			var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
 			context.ClearDatabase();
-			context.InitializeForTests();
+			context.InitializeForTestsAsync(userManager).GetAwaiter().GetResult();
 		}
 	}
 }

@@ -9,8 +9,6 @@ namespace HackerNews.Application.Users.CommonValidators
 		{
 			RuleFor(model => model.FirstName).NotEmpty();
 			RuleFor(model => model.LastName).NotEmpty();
-			RuleFor(model => model.Password).NotEmpty();
-			RuleFor(model => model.Password.Length).GreaterThan(5);
 		}
 	}
 }

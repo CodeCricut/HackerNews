@@ -7,7 +7,7 @@ namespace HackerNews.Application.Users.CommonValidators
 	{
 		public LoginModelValidator()
 		{
-			RuleFor(model => model.Username).NotEmpty();
+			RuleFor(model => model.UserName).NotEmpty();
 			RuleFor(model => model.Password).NotEmpty();
 		}
 	}

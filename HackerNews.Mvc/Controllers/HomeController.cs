@@ -57,7 +57,7 @@ namespace HackerNews.Mvc.Controllers
 			return View(viewModel);
 		}
 
-		public async Task<ActionResult> Error()
+		public ActionResult Error()
 		{
 			var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 			var error = exceptionHandlerPathFeature?.Error;

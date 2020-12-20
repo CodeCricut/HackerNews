@@ -1,5 +1,9 @@
 ﻿using HackerNews.Domain.Entities;
 using HackerNews.EF;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Application.IntegrationTests
 {
@@ -9,16 +13,19 @@ namespace Application.IntegrationTests
 		/// Seed the database.
 		/// </summary>
 		/// <param name="context"></param>
-		public static void InitializeForTests(this HackerNewsContext context)
+		public static async Task InitializeForTestsAsync(this HackerNewsContext context, UserManager<User> userManager) 
 		{
 			User user = new User
 			{
-				FirstName = "user 1",
-				LastName = "user 1",
-				UserName = "user 1",
-				Password = "user 1 password"
+				FirstName = "user1",
+				LastName = "user1",
+				UserName = "user1",
 			};
-			context.Users.Add(user);
+			IdentityResult result = await userManager.CreateAsync(user, password: user.UserName);
+			if (!result.Succeeded) throw new Exception();
+			context.SaveChanges();
+			user = userManager.Users.FirstOrDefault(u => u.UserName == user.UserName);
+			//context.Users.Add(user);
 
 			Board board = new Board
 			{

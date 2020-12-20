@@ -10,6 +10,7 @@ using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
@@ -36,6 +37,7 @@ namespace Application.IntegrationTests.Users.Queries.GetPublicUsersWithPaginatio
 
 			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 			var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
@@ -45,31 +47,33 @@ namespace Application.IntegrationTests.Users.Queries.GetPublicUsersWithPaginatio
 			{
 				new RegisterUserModel
 				{
-					FirstName = "first name 0",
-					LastName = "last name 0",
-					UserName = "username 0",
-					Password = "password 0"
+					FirstName = "username0",
+					LastName = "username0",
+					UserName = "username0",
+					Password = "username0"
 				},
 				new RegisterUserModel
 				{
-					FirstName = "first name 1",
-					LastName = "last name 1",
-					UserName = "username 1",
-					Password = "password 1"
+					FirstName = "username1",
+					LastName = "username1",
+					UserName = "username1",
+					Password = "username1"
 				},
 			};
+
 			foreach (var registermodel in postUserModels)
 			{
-				await new RegisterUserHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object)
+				await new RegisterUserHandler(userManager, unitOfWork, mediator, mapper, currentUserServiceMock.Object)
 				.Handle(new RegisterUserCommand(registermodel), new CancellationToken(false));
 			}
 
-			var deletedPolicyValidator = new Mock<DeletedUserPolicyValidator>();
-			deletedPolicyValidator.Setup(pv => pv.ValidateEntity(It.IsAny<User>(), It.IsAny<DeletedEntityPolicy>()));
+			var allUsers = await unitOfWork.Users.GetEntitiesAsync();
+
+			var deletedPolicyValidator = new Mock<IDeletedEntityPolicyValidator<User>>();
+			deletedPolicyValidator.Setup(pv => pv.ValidateEntityQuerable(It.IsAny<IQueryable<User>>(), It.IsAny<DeletedEntityPolicy>())).Returns(allUsers);
 
 			var sut = new GetPublicUsersWithPaginationHandler(deletedPolicyValidator.Object, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
-			var allUsers = await unitOfWork.Users.GetEntitiesAsync();
 			var pagingParams = new PagingParams
 			{
 				PageSize = (int)Math.Ceiling((decimal)allUsers.Count() / 2),

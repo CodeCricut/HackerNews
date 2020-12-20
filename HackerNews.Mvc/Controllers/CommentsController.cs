@@ -36,7 +36,7 @@ namespace HackerNews.Mvc.Controllers
 			{
 				parentArticle = await Mediator.Send(new GetArticleQuery(commentModel.ParentArticleId));
 			}
-			catch (NotFoundException ex)
+			catch (NotFoundException)
 			{
 				parentArticle = new GetArticleModel();
 			}
@@ -46,7 +46,7 @@ namespace HackerNews.Mvc.Controllers
 			{
 				parentComment = await Mediator.Send(new GetCommentQuery(commentModel.ParentCommentId));
 			}
-			catch (NotFoundException ex)
+			catch (NotFoundException)
 			{
 				parentComment = new GetCommentModel();
 			}

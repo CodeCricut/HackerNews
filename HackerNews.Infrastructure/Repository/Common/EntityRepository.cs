@@ -70,7 +70,7 @@ namespace HackerNews.Infrastructure.Repository.Common
 
 					return true;
 				}
-				catch (Exception ex)
+				catch 
 				{
 					return false;
 				}

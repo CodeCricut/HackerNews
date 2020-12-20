@@ -28,7 +28,9 @@ namespace HackerNews.Infrastructure
 				var inMemoryDbName = $"HackerNewsDb{Guid.NewGuid()}";
 
 				services.AddDbContext<DbContext, HackerNewsContext>(options =>
-					options.UseInMemoryDatabase(inMemoryDbName)); ;
+					options.UseInMemoryDatabase(inMemoryDbName));
+				services.AddDbContext<HackerNewsContext>(options =>
+					options.UseInMemoryDatabase(inMemoryDbName));
 			}
 			else
 			{

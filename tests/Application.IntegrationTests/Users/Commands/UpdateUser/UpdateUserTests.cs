@@ -38,7 +38,7 @@ namespace Application.IntegrationTests.Users.Commands.UpdateUser
 			{
 				FirstName = "updated first name",
 				LastName = "updated last name",
-				Password = "updated password"
+				//Password = "updated password"
 			};
 
 			var sut = new UpdateUserHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
@@ -56,7 +56,7 @@ namespace Application.IntegrationTests.Users.Commands.UpdateUser
 
 			Assert.Equal(updatedUser.FirstName, updateUserModel.FirstName);
 			Assert.Equal(updatedUser.LastName, updateUserModel.LastName);
-			Assert.Equal(updatedUser.Password, updateUserModel.Password);
+			//Assert.Equal(updatedUser.Password, updateUserModel.Password);
 		}
 	}
 }

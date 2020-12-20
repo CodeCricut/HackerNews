@@ -62,7 +62,7 @@ namespace HackerNews.Mvc.Controllers
 			User registeredUser = await Mediator.Send(new RegisterUserCommand(viewModel.RegisterModel));
 
 			// Login
-			var loginModel = new LoginModel { Username = registeredUser.UserName, Password = viewModel.RegisterModel.Password };
+			var loginModel = new LoginModel { UserName = registeredUser.UserName, Password = viewModel.RegisterModel.Password };
 			await _userAuthService.LogInAsync(loginModel);
 
 			// Attatch image if present

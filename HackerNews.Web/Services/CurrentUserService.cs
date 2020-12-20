@@ -28,7 +28,7 @@ namespace HackerNews.Web.Services
 					//string userId = user.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
 					if (!string.IsNullOrEmpty(userId)) return Int32.Parse(userId);
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 				}
 				return -1;

@@ -3,8 +3,10 @@ using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
@@ -31,6 +33,7 @@ namespace Application.IntegrationTests.Users.Commands.RegisterUser
 
 			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 			var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
 			var currentUserServiceMock = new Mock<ICurrentUserService>();
 			//currentUserServiceMock.Setup(mock => mock.UserId).Returns(user.Id);
@@ -43,10 +46,11 @@ namespace Application.IntegrationTests.Users.Commands.RegisterUser
 				UserName = Guid.NewGuid().ToString()
 			};
 
-			var sut = new RegisterUserHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+
+			var sut = new RegisterUserHandler(userManager, unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 
 			// Act
-			GetPrivateUserModel sutResult = await sut.Handle(new RegisterUserCommand(registerUserModel), new CancellationToken(false));
+			User sutResult = await sut.Handle(new RegisterUserCommand(registerUserModel), new CancellationToken(false));
 
 			// Assert
 			Assert.NotNull(sutResult);
@@ -57,12 +61,10 @@ namespace Application.IntegrationTests.Users.Commands.RegisterUser
 			Assert.Equal(registerUserModel.FirstName, addedUser.FirstName);
 			Assert.Equal(registerUserModel.LastName, addedUser.LastName);
 			Assert.Equal(registerUserModel.UserName, addedUser.UserName);
-			Assert.Equal(registerUserModel.Password, addedUser.Password);
 
 			Assert.Equal(registerUserModel.FirstName, sutResult.FirstName);
 			Assert.Equal(registerUserModel.LastName, sutResult.LastName);
 			Assert.Equal(registerUserModel.UserName, sutResult.UserName);
-			Assert.Equal(registerUserModel.Password, sutResult.Password);
 		}
 	}
 }

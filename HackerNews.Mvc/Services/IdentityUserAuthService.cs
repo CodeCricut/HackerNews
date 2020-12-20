@@ -45,7 +45,7 @@ namespace HackerNews.Mvc.Services
 		/// <returns></returns>
 		public async Task LogInAsync(LoginModel loginModel)
 		{
-			var result = await _signInManager.PasswordSignInAsync(loginModel.Username, loginModel.Password, isPersistent: true, false);
+			var result = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, isPersistent: true, false);
 			if (!result.Succeeded) throw new InvalidPostException("Invalid login credentials.");
 		}
 
