@@ -1,7 +1,6 @@
 ﻿using HackerNews.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Linq;
 using System.Security.Claims;
 
 namespace HackerNews.Web.Services
@@ -29,7 +28,7 @@ namespace HackerNews.Web.Services
 					//string userId = user.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
 					if (!string.IsNullOrEmpty(userId)) return Int32.Parse(userId);
 				}
-				catch  (Exception e)
+				catch (Exception e)
 				{
 				}
 				return -1;

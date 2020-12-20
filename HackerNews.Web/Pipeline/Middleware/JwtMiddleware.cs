@@ -7,7 +7,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +25,7 @@ namespace HackerNews.Web.Pipeline.Middleware
 	/// 
 	/// If no valid JWT token is provided, then no user will be attached to the context.
 	/// </summary>
+	[Obsolete("This middleware should be swapped out for the Identity system.")]
 	public class JwtMiddleware
 	{
 		private readonly RequestDelegate _next;
@@ -58,7 +58,7 @@ namespace HackerNews.Web.Pipeline.Middleware
 			try
 			{
 				var tokenHandler = new JwtSecurityTokenHandler();
-				var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+				var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
 				tokenHandler.ValidateToken(token, new TokenValidationParameters
 				{
 					ValidateIssuerSigningKey = true,

@@ -13,11 +13,11 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Users;
-using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -59,10 +59,10 @@ namespace HackerNews.Mvc.Controllers
 			if (privateUser != null) return RedirectToAction("Login");
 
 			// Regiser
-			GetPrivateUserModel registeredUser = await Mediator.Send(new RegisterUserCommand(viewModel.RegisterModel));
+			User registeredUser = await Mediator.Send(new RegisterUserCommand(viewModel.RegisterModel));
 
 			// Login
-			var loginModel = new LoginModel { Username = registeredUser.Username, Password = registeredUser.Password };
+			var loginModel = new LoginModel { Username = registeredUser.UserName, Password = viewModel.RegisterModel.Password };
 			await _userAuthService.LogInAsync(loginModel);
 
 			// Attatch image if present
@@ -90,7 +90,7 @@ namespace HackerNews.Mvc.Controllers
 				await _userAuthService.LogInAsync(viewModel.LoginModel);
 				return RedirectToAction("Me");
 			}
-			catch 
+			catch
 			{
 				return RedirectToAction("Register");
 			}

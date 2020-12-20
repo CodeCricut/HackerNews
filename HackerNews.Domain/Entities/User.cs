@@ -3,8 +3,6 @@ using HackerNews.Domain.Entities.JoinEntities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace HackerNews.Domain.Entities
 {

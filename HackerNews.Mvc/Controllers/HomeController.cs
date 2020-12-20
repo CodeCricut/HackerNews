@@ -66,7 +66,9 @@ namespace HackerNews.Mvc.Controllers
 			if (error is UnauthorizedException)
 			{
 				return RedirectToAction("Login", "Users");
-			} else { 
+			}
+			else
+			{
 				exceptionMessage = error.Message;
 			}
 

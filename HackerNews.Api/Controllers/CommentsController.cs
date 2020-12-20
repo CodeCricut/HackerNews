@@ -10,10 +10,10 @@ using HackerNews.Application.Comments.Queries.GetCommentsWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Web.Pipeline.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HackerNews.Api.Controllers
 {
@@ -45,35 +45,35 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> VoteEntityAsync([FromQuery] int commentId, [FromQuery] bool upvote)
 		{
 			return Ok(await Mediator.Send(new VoteCommentCommand(commentId, upvote)));
 		}
 
 		[HttpDelete("{key:int}")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Delete(int key)
 		{
 			return Ok(await Mediator.Send(new DeleteCommentCommand(key)));
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetCommentModel>> PostAsync([FromBody] PostCommentModel postModel)
 		{
 			return Ok(await Mediator.Send(new AddCommentCommand(postModel)));
 		}
 
 		[HttpPost("range")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<PostCommentModel> postModels)
 		{
 			return Ok(await Mediator.Send(new AddCommentsCommand(postModels)));
 		}
 
 		[HttpPut("{key:int}")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetCommentModel>> Put(int key, [FromBody] PostCommentModel updateModel)
 		{
 			return Ok(await Mediator.Send(new UpdateCommentCommand(key, updateModel)));

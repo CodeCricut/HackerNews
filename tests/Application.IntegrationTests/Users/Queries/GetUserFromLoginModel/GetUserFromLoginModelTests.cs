@@ -2,7 +2,6 @@
 using AutoMapper;
 using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
 using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
@@ -54,7 +53,7 @@ namespace Application.IntegrationTests.Users.Queries.GetUserFromLoginModel
 			// Assert
 			Assert.NotNull(sutResult);
 
-			Assert.Equal(user.UserName, sutResult.Username);
+			Assert.Equal(user.UserName, sutResult.UserName);
 			Assert.Equal(user.Id, sutResult.Id);
 		}
 	}

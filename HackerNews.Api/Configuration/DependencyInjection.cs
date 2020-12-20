@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace HackerNews.Api
@@ -21,23 +23,27 @@ namespace HackerNews.Api
 		{
 			var jwtTokenConfig = services.BuildServiceProvider().GetRequiredService<IOptions<JwtSettings>>().Value;
 
-			//services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-			//	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
-			//	{
-			//		// TODO: I think I need to bind the JWT secret here but IDK how...
-			//		opt.RequireHttpsMetadata = true;
-			//		opt.TokenValidationParameters = new TokenValidationParameters
-			//		{
-			//			ValidateIssuer = false,
-			//			// ValidIssuer = jwtTokenConfig.Issuer,
-			//			ValidateIssuerSigningKey = true,
-			//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret)),
-			//			// ValidAudience = jwtTokenConfig.Audience,
-			//			// ValidateAudience = true,
-			//			ValidateLifetime = true,
-			//			// ClockSkew = TimeSpan.FromMinutes(1)
-			//		};
-			//	});
+			// Configure Identity to use JWT
+			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // remove default claims
+			services
+				.AddAuthentication(opt =>
+				{
+					opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+					opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				})
+				.AddJwtBearer(cfg =>
+				{
+					cfg.RequireHttpsMetadata = false;
+					cfg.SaveToken = true;
+					cfg.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidIssuer = jwtTokenConfig.Issuer,
+						ValidAudience = jwtTokenConfig.Issuer,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenConfig.Key)),
+						ClockSkew = TimeSpan.Zero // remove delay of token when expire
+					};
+				});
 
 			services.AddCors(opt =>
 			{

@@ -1,5 +1,4 @@
-﻿using HackerNews.Domain.Common;
-using HackerNews.Domain.Entities;
+﻿using HackerNews.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -23,7 +23,7 @@ namespace HackerNews.Mvc.ViewComponents
 
 		//private readonly IJwtSetterService _jwtService;
 
-		public CommentCardViewComponent(IMediator mediator, 
+		public CommentCardViewComponent(IMediator mediator,
 			IIdentityCookieSetterService iDentityCookieSetterService,
 			IJwtSetterService jwtService)
 		{
@@ -69,7 +69,7 @@ namespace HackerNews.Mvc.ViewComponents
 			try
 			{
 				jwt = _iDentityCookieSetterService.GetIdentityCookie();
-					//_jwtService.GetToken();
+				//_jwtService.GetToken();
 			}
 			catch (System.Exception e)
 			{

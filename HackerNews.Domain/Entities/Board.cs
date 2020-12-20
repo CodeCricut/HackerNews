@@ -20,7 +20,7 @@ namespace HackerNews.Domain.Entities
 		public List<Comment> Comments { get; set; }
 
 		public Image BoardImage { get; set; }
-		
+
 
 		public Board()
 		{

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using Microsoft.OpenApi.Models;
+using System;
 using System.IO;
 using System.Reflection;
 

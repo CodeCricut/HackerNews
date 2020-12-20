@@ -37,10 +37,6 @@ namespace HackerNews.Api
 			app.UseRouting();
 			app.UseCors("DefaultCorsPolicy");
 
-
-			// app.ConfigureWebLayer();
-			app.UseMiddleware<JwtMiddleware>();
-
 			app.UseAuthentication();
 			app.UseAuthorization();
 

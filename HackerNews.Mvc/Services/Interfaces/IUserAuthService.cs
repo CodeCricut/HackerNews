@@ -1,5 +1,4 @@
-﻿using HackerNews.Domain.Common.Models;
-using HackerNews.Domain.Common.Models.Users;
+﻿using HackerNews.Domain.Common.Models.Users;
 using System.Threading.Tasks;
 
 namespace HackerNews.Mvc.Services.Interfaces

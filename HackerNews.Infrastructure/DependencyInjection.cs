@@ -1,5 +1,4 @@
-﻿using HackerNews.Domain.Common;
-using HackerNews.Domain.Entities;
+﻿using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using HackerNews.EF;
 using HackerNews.Infrastructure.Identity;
@@ -48,7 +47,7 @@ namespace HackerNews.Infrastructure
 				UserStore<User, IdentityRole<int>, HackerNewsContext, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>,
 				ApplicationUserStore>();
 			services.AddScoped<UserManager<User>, ApplicationUserManager>();
-			services.AddScoped < RoleManager<IdentityRole<int>>, ApplicationRoleManager>();
+			services.AddScoped<RoleManager<IdentityRole<int>>, ApplicationRoleManager>();
 			services.AddScoped<SignInManager<User>, ApplicationSignInManager>();
 			services.AddScoped<
 				RoleStore<IdentityRole<int>, HackerNewsContext, int, IdentityUserRole<int>, IdentityRoleClaim<int>>,

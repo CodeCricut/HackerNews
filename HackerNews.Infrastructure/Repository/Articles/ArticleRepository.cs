@@ -1,5 +1,4 @@
-﻿using HackerNews.Domain.Common;
-using HackerNews.Domain.Entities;
+﻿using HackerNews.Domain.Entities;
 using HackerNews.Domain.Interfaces;
 using HackerNews.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;

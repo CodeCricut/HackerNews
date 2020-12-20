@@ -1,13 +1,12 @@
 ﻿using HackerNews.Api.Configuration;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Domain.Common.Models;
-using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
-using HackerNews.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -26,23 +25,30 @@ namespace HackerNews.Web.Services
 			_mediator = mediator;
 		}
 
-
-		// TODO: this should really just generate the JWT from a user, seeing as the user could be retrieved using GetUserFromLoginModelQuery
 		public async Task<Jwt> GenererateJwtFromUser(User user)
 		{
 			return await Task.Factory.StartNew(() =>
 			{
-				// generate token that is valid for 7 days
-				var tokenHandler = new JwtSecurityTokenHandler();
-				var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-				var tokenDescriptor = new SecurityTokenDescriptor
+				var claims = new List<Claim>
 				{
-					Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-					Expires = DateTime.UtcNow.AddDays(7),
-					SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+					new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+					new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
 				};
-				SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
-				string tokenString = tokenHandler.WriteToken(securityToken);
+
+				var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+				var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+				var expires = DateTime.Now.AddDays(Convert.ToDouble(7));
+
+				var securityToken = new JwtSecurityToken(
+					_jwtSettings.Issuer,
+					_jwtSettings.Issuer,
+					claims,
+					expires: expires,
+					signingCredentials: creds
+				);
+
+				string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
 				Jwt token = new Jwt(securityToken.ValidTo, tokenString);
 				return token;
 			});

@@ -45,35 +45,35 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("vote")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> VoteEntityAsync([FromQuery] int articleId, [FromQuery] bool upvote)
 		{
 			return Ok(await Mediator.Send(new VoteArticleCommand(articleId, upvote)));
 		}
 
 		[HttpDelete("{key:int}")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Delete(int key)
 		{
 			return Ok(await Mediator.Send(new DeleteArticleCommand(key)));
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetArticleModel>> PostAsync([FromBody] PostArticleModel postModel)
 		{
 			return Ok(await Mediator.Send(new AddArticleCommand(postModel)));
 		}
 
 		[HttpPost("range")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<PostArticleModel> postModels)
 		{
 			return Ok(await Mediator.Send(new AddArticlesCommand(postModels)));
 		}
 
 		[HttpPut("{key:int}")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetArticleModel>> Put(int key, [FromBody] PostArticleModel updateModel)
 		{
 			return Ok(await Mediator.Send(new UpdateArticleCommand(key, updateModel)));

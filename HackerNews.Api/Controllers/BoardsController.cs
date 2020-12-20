@@ -12,10 +12,10 @@ using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Web.Pipeline.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HackerNews.Api.Controllers
 {
@@ -23,21 +23,21 @@ namespace HackerNews.Api.Controllers
 	public class BoardsController : ApiController
 	{
 		[HttpDelete("{key:int}")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Delete(int key)
 		{
 			return Ok(await Mediator.Send(new DeleteBoardCommand(key)));
 		}
 
 		[HttpPost]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetBoardModel>> PostAsync([FromBody] PostBoardModel postModel)
 		{
 			return Ok(await Mediator.Send(new AddBoardCommand(postModel)));
 		}
 
 		[HttpPost("range")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> PostRangeAsync([FromBody] IEnumerable<PostBoardModel> postModels)
 		{
 			return Ok(await Mediator.Send(new AddBoardsCommand(postModels)));
@@ -45,7 +45,7 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPut("{key:int}")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetBoardModel>> Put(int key, [FromBody] PostBoardModel updateModel)
 		{
 			return Ok(await Mediator.Send(new UpdateBoardCommand(key, updateModel)));
@@ -76,14 +76,14 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("add-moderator")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetBoardModel>> AddModeratorAsync([FromQuery] int boardId, [FromQuery] int moderatorId)
 		{
 			return Ok(await Mediator.Send(new AddModeratorCommand(boardId, moderatorId)));
 		}
 
 		[HttpPost("add-subscriber")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetBoardModel>> AddSubscriberAsync([FromQuery] int boardId)
 		{
 			if (!ModelState.IsValid) throw new InvalidPostException(ModelState);

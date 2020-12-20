@@ -41,7 +41,7 @@ namespace HackerNews.Infrastructure.Repository.Common
 
 				return true;
 			}
-			catch 
+			catch
 			{
 				return false;
 			}

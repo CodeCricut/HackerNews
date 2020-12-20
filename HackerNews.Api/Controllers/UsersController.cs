@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Commands.DeleteUser;
-using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Application.Users.Commands.SaveArticleToUser;
 using HackerNews.Application.Users.Commands.SaveCommentToUser;
 using HackerNews.Application.Users.Commands.UpdateUser;
@@ -9,7 +8,6 @@ using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
 using HackerNews.Application.Users.Queries.GetPublicUser;
 using HackerNews.Application.Users.Queries.GetPublicUsersByIds;
 using HackerNews.Application.Users.Queries.GetPublicUsersWithPagination;
-using HackerNews.Application.Users.Queries.GetUserByUsername;
 using HackerNews.Application.Users.Queries.GetUsersBySearch;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
@@ -40,32 +38,10 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpGet("me")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetPrivateUserModel>> GetAuthenticatedUser()
 		{
 			return Ok(await Mediator.Send(new GetAuthenticatedUserQuery()));
-		}
-
-		[HttpGet("jwt")]
-		public async Task<ActionResult<Jwt>> GetJwt(LoginModel loginModel)
-		{
-			// Log in
-			var userModel = await Mediator.Send(new GetUserByUsernameQuery(loginModel.Username));
-
-			var publicUser = new User
-			{
-				UserName = userModel.Username,
-				Id = userModel.Id
-			};
-
-			await _signInManager.PasswordSignInAsync(publicUser, loginModel.Password, isPersistent: false, lockoutOnFailure: false);
-
-			// Get auth user
-			var loggedInUserModel = await Mediator.Send(new GetAuthenticatedUserQuery());
-			var loggedInUser = _mapper.Map<User>(loggedInUserModel);
-
-			// Return JWT
-			return await _jwtGeneratorService.GenererateJwtFromUser(loggedInUser);
 		}
 
 		[HttpGet]
@@ -93,14 +69,14 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpPost("save-article")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetPrivateUserModel>> SaveArticleAsync([FromQuery] int articleId)
 		{
 			return Ok(await Mediator.Send(new SaveArticleToUserCommand(articleId)));
 		}
 
 		[HttpPost("save-comment")]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult<GetPrivateUserModel>> SaveCommentAsync([FromQuery] int commentId)
 		{
 			return Ok(await Mediator.Send(new SaveCommentToUserCommand(commentId)));
@@ -108,16 +84,10 @@ namespace HackerNews.Api.Controllers
 		}
 
 		[HttpDelete]
-		[JwtAuthorize]
+		[Authorize]
 		public async Task<ActionResult> Delete()
 		{
 			return Ok(await Mediator.Send(new DeleteCurrentUserCommand()));
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<GetPrivateUserModel>> PostAsync([FromBody] RegisterUserModel postModel)
-		{
-			return Ok(await Mediator.Send(new RegisterUserCommand(postModel)));
 		}
 
 		[HttpPut]

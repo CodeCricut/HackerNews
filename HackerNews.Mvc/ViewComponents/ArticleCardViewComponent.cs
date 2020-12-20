@@ -21,7 +21,7 @@ namespace HackerNews.Mvc.ViewComponents
 
 		//private readonly IJwtSetterService _jwtService;
 
-		public ArticleCardViewComponent(IMediator mediator, 
+		public ArticleCardViewComponent(IMediator mediator,
 			IIdentityCookieSetterService iDentityCookieSetterService,
 			IJwtSetterService jwtService)
 		{
@@ -56,7 +56,7 @@ namespace HackerNews.Mvc.ViewComponents
 			try
 			{
 				jwt = _iDentityCookieSetterService.GetIdentityCookie();
-					//_jwtService.GetToken();
+				//_jwtService.GetToken();
 			}
 			catch (System.Exception e)
 			{

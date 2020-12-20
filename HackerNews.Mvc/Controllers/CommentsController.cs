@@ -18,7 +18,6 @@ using HackerNews.Domain.Exceptions;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.ViewModels.Comments;
 using HackerNews.Mvc.ViewModels.ViewComponents;
-using HackerNews.Web.Pipeline.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

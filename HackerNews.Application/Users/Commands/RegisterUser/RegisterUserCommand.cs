@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.Application.Users.Commands.RegisterUser
 {
-	public class RegisterUserCommand : IRequest<GetPrivateUserModel>
+	public class RegisterUserCommand : IRequest<User>
 	{
 		public RegisterUserCommand(RegisterUserModel registerUserModel)
 		{
@@ -24,7 +24,7 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 		public RegisterUserModel RegisterUserModel { get; }
 	}
 
-	public class RegisterUserHandler : DatabaseRequestHandler<RegisterUserCommand, GetPrivateUserModel>
+	public class RegisterUserHandler : DatabaseRequestHandler<RegisterUserCommand, User>
 	{
 		private readonly UserManager<User> _userManager;
 
@@ -33,7 +33,7 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 			_userManager = userManager;
 		}
 
-		public override async Task<GetPrivateUserModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+		public override async Task<User> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 		{
 			// Map user
 			var user = Mapper.Map<User>(request.RegisterUserModel);
@@ -47,14 +47,13 @@ namespace HackerNews.Application.Users.Commands.RegisterUser
 			// Create user	
 			var result = await _userManager.CreateAsync(user, request.RegisterUserModel.Password);
 
-			// Just in case
-			UnitOfWork.SaveChanges();
-
 			if (!result.Succeeded)
 				throw new InvalidPostException("There was an error registering.");
 
+			// Just in case
+			UnitOfWork.SaveChanges();
 
-			return Mapper.Map<GetPrivateUserModel>(user);
+			return user;
 		}
 	}
 }
