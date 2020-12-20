@@ -63,7 +63,7 @@ namespace HackerNews.Mvc.ViewComponents
 			string jwt = "";
 			try
 			{
-				jwt = _apiJwtManager.ApiJwt.Token;
+				jwt = _apiJwtManager.GetToken();
 					//_iDentityCookieSetterService.GetIdentityCookie();
 				//_jwtService.GetToken();
 			}

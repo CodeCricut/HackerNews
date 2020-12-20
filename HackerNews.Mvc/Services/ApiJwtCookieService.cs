@@ -6,33 +6,35 @@ namespace HackerNews.Mvc.Services
 	/// <summary>
 	/// Interact with a JWT cookie with the "JWT" key.
 	/// </summary>
-	public class JwtCookieSetterService : IJwtSetterService
+	public class ApiJwtCookieService : IApiJwtCookieService
 	{
+		private static readonly string KEY = ".Api.Token.";
+
 		private readonly ICookieService _cookieService;
 
-		public JwtCookieSetterService(ICookieService cookieService)
+		public ApiJwtCookieService(ICookieService cookieService)
 		{
 			_cookieService = cookieService;
 		}
 
 		public void SetToken(Jwt token, int expiresMinutes)
 		{
-			_cookieService.Set("JWT", token.Token, expiresMinutes);
+			_cookieService.Set(KEY, token.Token, expiresMinutes);
 		}
 
 		public string GetToken()
 		{
-			return _cookieService.Get("JWT");
+			return _cookieService.Get(KEY);
 		}
 
 		public bool ContainsToken()
 		{
-			return _cookieService.Contains("JWT");
+			return _cookieService.Contains(KEY);
 		}
 
 		public void RemoveToken()
 		{
-			_cookieService.Remove("JWT");
+			_cookieService.Remove(KEY);
 		}
 	}
 }

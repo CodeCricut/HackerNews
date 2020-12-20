@@ -1,5 +1,6 @@
 ﻿using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Mvc.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,33 +14,40 @@ namespace HackerNews.Mvc.Services
 	/// </summary>
 	public interface IApiJwtManager
 	{
-		Jwt ApiJwt { get;set; }
-		Task<Jwt> LogInAsync(LoginModel loginModel);
+		Task<string> LogInAsync(LoginModel loginModel);
 		Task LogOutAsync();
+		string GetToken();
 	}
 
 	public class ApiJwtManager : IApiJwtManager
 	{
 		private readonly IGenericHttpClient _httpClient;
+		private readonly IApiJwtCookieService _apiJwtCookieService;
 
-		public ApiJwtManager(IGenericHttpClient httpClient)
+		public ApiJwtManager(IGenericHttpClient httpClient, IApiJwtCookieService apiJwtCookieService)
 		{
 			_httpClient = httpClient;
+			_apiJwtCookieService = apiJwtCookieService;
 		}
 
-		public Jwt ApiJwt { get; set; }
+		public string GetToken()
+		{
+			return _apiJwtCookieService.GetToken();
+		}
 
-		public async Task< Jwt> LogInAsync(LoginModel loginModel)
+		public async Task< string> LogInAsync(LoginModel loginModel)
 		{
 			Jwt jwt = await _httpClient.PostRequestAsync<LoginModel, Jwt>("https://localhost:44300/api/account/login", loginModel);
-			ApiJwt = jwt;
+			
+			// TODO: add token expiration time to appsettings.json
+			_apiJwtCookieService.SetToken(jwt, 6000000);
 
-			return ApiJwt;
+			return jwt.Token;
 		}
 
 		public Task LogOutAsync()
 		{
-			return Task.Factory.StartNew(() => ApiJwt = null);
+			return Task.Factory.StartNew(() => _apiJwtCookieService.RemoveToken());
 		}
 	}
 }
