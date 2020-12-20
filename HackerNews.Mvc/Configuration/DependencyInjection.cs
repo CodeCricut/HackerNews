@@ -1,6 +1,7 @@
 ﻿using HackerNews.Mvc.Services;
 using HackerNews.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,17 +18,22 @@ namespace HackerNews.Mvc.Configuration
 		public static IServiceCollection AddMvcProject(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddAuthentication(defaultScheme: CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(opt =>
+				.AddCookie();
+
+			services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme,
+				opt =>
 				{
-					opt.LoginPath = "/users/login";
-					opt.LogoutPath = "/users/logout";
-				}); 
-				// .AddJwtBearer(;
+					//configure your other properties
+					opt.AccessDeniedPath = "/Users/Login";
+					opt.LoginPath = "/Users/Login";
+				});
 
 			services.AddControllersWithViews();
 			services.AddScoped<ICookieService, CookieService>();
 			services.AddScoped<IJwtSetterService, JwtCookieSetterService>();
-			services.AddScoped<IUserAuthService, CookieUserAuthService>();
+			services.AddScoped<IIdentityCookieSetterService, IdentityCookieSetterService>();
+
+			services.AddScoped<IUserAuthService, IdentityUserAuthService>();
 			services.AddSingleton<IImageFileReader, ImageFileReader>();
 			services.AddSingleton<IImageDataHelper, ImageDataHelper>();
 

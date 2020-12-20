@@ -21,7 +21,6 @@ namespace HackerNews.Domain.Entities
 		public User User { get; set; }
 
 		public string Text { get; set; }
-		//[InverseProperty("ParentArticle")]
 		public List<Comment> Comments { get; set; }
 		public string Url { get; set; }
 		public int Karma { get; set; }
@@ -38,8 +37,8 @@ namespace HackerNews.Domain.Entities
 		public Board Board { get; set; }
 
 		public Image AssociatedImage { get; set; }
-		public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		public bool Deleted { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		public int Id { get; set; }
+		public bool Deleted { get; set; }
 
 		public Article()
 		{

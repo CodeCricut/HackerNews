@@ -40,7 +40,7 @@ namespace Application.IntegrationTests.Users.Commands.RegisterUser
 				FirstName = "first name",
 				LastName = "last name",
 				Password = "unique password",
-				Username = Guid.NewGuid().ToString()
+				UserName = Guid.NewGuid().ToString()
 			};
 
 			var sut = new RegisterUserHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
@@ -56,12 +56,12 @@ namespace Application.IntegrationTests.Users.Commands.RegisterUser
 
 			Assert.Equal(registerUserModel.FirstName, addedUser.FirstName);
 			Assert.Equal(registerUserModel.LastName, addedUser.LastName);
-			Assert.Equal(registerUserModel.Username, addedUser.UserName);
+			Assert.Equal(registerUserModel.UserName, addedUser.UserName);
 			Assert.Equal(registerUserModel.Password, addedUser.Password);
 
 			Assert.Equal(registerUserModel.FirstName, sutResult.FirstName);
 			Assert.Equal(registerUserModel.LastName, sutResult.LastName);
-			Assert.Equal(registerUserModel.Username, sutResult.Username);
+			Assert.Equal(registerUserModel.UserName, sutResult.Username);
 			Assert.Equal(registerUserModel.Password, sutResult.Password);
 		}
 	}

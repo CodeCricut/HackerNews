@@ -56,7 +56,15 @@ namespace HackerNews.Infrastructure
 			//services.AddScoped<IEmailSender, AuthMessageSender>();
 			//services.AddScoped<ISmsSender, AuthMessageSender>();
 
-			services.AddIdentity<User, IdentityRole<int>>()
+			services.AddIdentity<User, IdentityRole<int>>(opt =>
+			{
+				opt.Password.RequireDigit = false;
+				opt.Password.RequiredLength = 3;
+				opt.Password.RequiredUniqueChars = 3;
+				opt.Password.RequireLowercase = false;
+				opt.Password.RequireNonAlphanumeric = false;
+				opt.Password.RequireUppercase = false;
+			})
 				.AddUserStore<ApplicationUserStore>()
 				.AddUserManager<ApplicationUserManager>()
 				.AddRoleStore<ApplicationRoleStore>()

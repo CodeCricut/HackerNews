@@ -46,14 +46,14 @@ namespace Application.IntegrationTests.Users.Queries.GetPublicUsersByIds
 				{
 					FirstName = "first name 0",
 					LastName = "last name 0",
-					Username = "username 0",
+					UserName = "username 0",
 					Password = "password 0"
 				},
 				new RegisterUserModel
 				{
 					FirstName = "first name 1",
 					LastName = "last name 1",
-					Username = "username 1",
+					UserName = "username 1",
 					Password = "password 1"
 				},
 			};

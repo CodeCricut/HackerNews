@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
+using System.Security.Claims;
 
 namespace HackerNews.Web.Services
 {
@@ -21,9 +22,16 @@ namespace HackerNews.Web.Services
 		{
 			get
 			{
-				string userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
-
-				if (! string.IsNullOrEmpty(userId)) return Int32.Parse(userId);
+				try
+				{
+					var user = _httpContextAccessor.HttpContext.User;
+					string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+					//string userId = user.Claims.FirstOrDefault(c => c.Type.Equals("id")).Value;
+					if (!string.IsNullOrEmpty(userId)) return Int32.Parse(userId);
+				}
+				catch  (Exception e)
+				{
+				}
 				return -1;
 			}
 		}

@@ -1,8 +1,8 @@
 ﻿using HackerNews.Api.Configuration;
 using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Users.Queries.GetUserFromLoginModel;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -28,24 +28,24 @@ namespace HackerNews.Web.Services
 
 
 		// TODO: this should really just generate the JWT from a user, seeing as the user could be retrieved using GetUserFromLoginModelQuery
-		public async Task<Jwt> GenererateJwtFromLoginModelAsync(LoginModel loginModel)
+		public async Task<Jwt> GenererateJwtFromUser(User user)
 		{
-			var user = await _mediator.Send(new GetUserFromLoginModelQuery(loginModel));
-			if (user == null) throw new NotFoundException();
-
-			// generate token that is valid for 7 days
-			var tokenHandler = new JwtSecurityTokenHandler();
-			var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-			var tokenDescriptor = new SecurityTokenDescriptor
+			return await Task.Factory.StartNew(() =>
 			{
-				Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-				Expires = DateTime.UtcNow.AddDays(7),
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-			};
-			SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
-			string tokenString = tokenHandler.WriteToken(securityToken);
-			Jwt token = new Jwt(securityToken.ValidTo, tokenString);
-			return token;
+				// generate token that is valid for 7 days
+				var tokenHandler = new JwtSecurityTokenHandler();
+				var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+				var tokenDescriptor = new SecurityTokenDescriptor
+				{
+					Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+					Expires = DateTime.UtcNow.AddDays(7),
+					SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+				};
+				SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
+				string tokenString = tokenHandler.WriteToken(securityToken);
+				Jwt token = new Jwt(securityToken.ValidTo, tokenString);
+				return token;
+			});
 		}
 	}
 }

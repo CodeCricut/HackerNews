@@ -83,18 +83,16 @@ namespace HackerNews.Mvc.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Login(UserLoginViewModel viewModel)
+		public async Task<IActionResult> Login([FromQuery] string ReturnUrl, UserLoginViewModel viewModel)
 		{
 			try
 			{
 				await _userAuthService.LogInAsync(viewModel.LoginModel);
 				return RedirectToAction("Me");
-
 			}
-			catch (System.Exception e)
+			catch 
 			{
 				return RedirectToAction("Register");
-				throw;
 			}
 		}
 
