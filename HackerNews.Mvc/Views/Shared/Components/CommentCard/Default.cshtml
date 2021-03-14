@@ -35,10 +35,15 @@
     </div>
     <div class="content-col">
         <div class="sub-row">
-            @if (Model.User.Id > 0)
+            @if (Model.User == null || Model.User.Id <= 0)
             {
                 <div>
-
+                    Posted by <a href="#">[deleted user]</a> at @Model.Comment.PostDate
+                </div>
+            }
+            else
+            {
+                <div>
                     Posted by <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Username</a>at @Model.Comment.PostDate
                 </div>
             }
@@ -56,7 +61,7 @@
                 {
                     <a asp-controller="Comments" asp-action="Details" asp-route-id="@Model.Comment.Id">Start discussion</a>
                 }
-                @if (Model.Comment.CommentIds.Count() >= 1)
+                @if (Model.Comment.CommentIds.Count() > 0)
                 {
                     <a asp-controller="Comments" asp-action="Details" asp-route-id="@Model.Comment.Id">@Model.Comment.CommentIds.Count() comments</a>
                 }

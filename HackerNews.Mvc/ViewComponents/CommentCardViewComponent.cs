@@ -30,7 +30,9 @@ namespace HackerNews.Mvc.ViewComponents
 
 		public async Task<IViewComponentResult> InvokeAsync(GetCommentModel commentModel)
 		{
-			var board = await _mediator.Send(new GetBoardQuery(commentModel.BoardId));
+			// TODO: test with deleted boards
+			var getBoardQuery = new GetBoardQuery(commentModel.BoardId);
+			var board = await getBoardQuery.DefaultIfExceptionAsync(_mediator);
 
 			var getArticleQuery = new GetArticleQuery(commentModel.ParentArticleId);
 			GetArticleModel parentArticle = await getArticleQuery.DefaultIfExceptionAsync(_mediator);
@@ -38,6 +40,7 @@ namespace HackerNews.Mvc.ViewComponents
 			var getCommentQuery = new GetCommentQuery(commentModel.ParentCommentId);
 			GetCommentModel parentComment = await getCommentQuery.DefaultIfExceptionAsync(_mediator);
 
+			// TODO: will most likely return null when user is deleted
 			var getUserQuery = new GetPublicUserQuery(commentModel.UserId);
 			GetPublicUserModel user = await getUserQuery.DefaultIfExceptionAsync(_mediator);
 

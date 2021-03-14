@@ -34,13 +34,23 @@
     </div>
     <div class="content-col">
         <div class="sub-row">
-            @if (Model.Board.Id > 0)
+            @if (Model.Board == null || Model.Board.Id <= 0)
+            {
+                <a href="#" class="sub-link">[deleted board]</a>
+            }
+            else
             {
                 <a asp-controller="Boards" asp-action="Details" asp-route-id="@Model.Board.Id" class="sub-link">@Model.Board.Title</a>
             }
-            @if (Model.User.Id > 0)
+
+            @* TODO: use actual time since posted*@
+            @if (Model.User == null || Model.User.Id <= 0)
             {
-                <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id" class="user-link">Posted by @Model.User.Username 10 hours ago</a>
+                <a href="#" class="user-link">Posted by [deleted user] at @Model.Article.PostDate</a>
+            }
+            else
+            {
+                <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id" class="user-link">Posted by @Model.User.Username at @Model.Article.PostDate</a>
             }
         </div>
         <div class="title-row">
@@ -67,29 +77,29 @@
         {
             <p>@Model.Article.Text</p>
         }
-    <div class="more-row">
-        <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
-        @if (Model.Saved)
-        {
-            <a class="save-link text-info"
-               onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Saved</a>
-        }
-        else
-        {
-            <a class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
-        }
-        @if (Model.UserCreatedArticle)
-        {
-            <a class="save-link text-warning" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Article.Id">Edit</a>
-        }
-        @if (Model.Article.Deleted)
-        {
-            <span class="text-danger">Deleted</span>
-        }
-        else if (Model.UserCreatedArticle)
-        {
-            <a class="save-link text-danger" asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Article.Id">Delete</a>
-        }
-    </div>
+        <div class="more-row">
+            <a asp-controller="Articles" asp-action="Details" asp-route-id="@Model.Article.Id" class="comment-link">@Model.Article.CommentIds.Count() comments</a>
+            @if (Model.Saved)
+            {
+                <a class="save-link text-info"
+                   onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Saved</a>
+            }
+            else
+            {
+                <a class="save-link" onclick="saveArticle('@Model.Article.Id', '@Model.Jwt', this)">Save</a>
+            }
+            @if (Model.UserCreatedArticle)
+            {
+                <a class="save-link text-warning" asp-controller="Articles" asp-action="Edit" asp-route-id="@Model.Article.Id">Edit</a>
+            }
+            @if (Model.Article.Deleted)
+            {
+                <span class="text-danger">Deleted</span>
+            }
+            else if (Model.UserCreatedArticle)
+            {
+                <a class="save-link text-danger" asp-controller="Articles" asp-action="Delete" asp-route-id="@Model.Article.Id">Delete</a>
+            }
+        </div>
     </div>
 </div>

@@ -28,9 +28,11 @@ namespace HackerNews.Mvc.ViewComponents
 
 		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel, string imageDataUrl, bool displayText = false)
 		{
+			// TODO: test with deleted boards
 			var getBoardQuery = new GetBoardQuery(articleModel.BoardId);
 			GetBoardModel board = await getBoardQuery.DefaultIfExceptionAsync(_mediator);
 
+			// TODO: returns null, which throws exception in view, if user is deleted
 			var getuserQuery = new GetPublicUserQuery(articleModel.UserId);
 			GetPublicUserModel user = await getuserQuery.DefaultIfExceptionAsync(_mediator);
 			
