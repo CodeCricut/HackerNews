@@ -40,32 +40,35 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			if (!await UnitOfWork.Articles.EntityExistsAsync(request.ArticleId)) throw new NotFoundException();
 			var article = await UnitOfWork.Articles.GetEntityAsync(request.ArticleId);
 
+			if (!await UnitOfWork.Users.EntityExistsAsync(article.UserId)) throw new NotFoundException();
+			var articleUser = await UnitOfWork.Users.GetEntityAsync(article.UserId);
+
 			if (request.Upvote)
 			{
 				// if the user has liked the entity, unlike it (not dislike)
 				if (UserLikedEntity(currentUser, article))
-					UnlikeEntity(currentUser, article);
+					UnlikeEntity(currentUser, articleUser, article);
 				// if the user hasn't liked the entity, like it
 				else
 				{
 					// if the user dislike the entity, un-dislike it then like it
 					if (UserDislikedEntity(currentUser, article))
-						UndislikeEntity(currentUser, article);
-					LikeEntity(currentUser, article);
+						UndislikeEntity(currentUser, articleUser, article);
+					LikeEntity(currentUser, articleUser, article);
 				}
 			}
 			else
 			{
 				// if the user has dislike the entity, un-dislike it (not like)
 				if (UserDislikedEntity(currentUser, article))
-					UndislikeEntity(currentUser, article);
+					UndislikeEntity(currentUser, articleUser, article);
 				// if the user hasn't disliked the entity, dislike it
 				else
 				{
 					// if the user liked the entity, unlike it then dislike it
 					if (UserLikedEntity(currentUser, article))
-						UnlikeEntity(currentUser, article);
-					DislikeEntity(currentUser, article);
+						UnlikeEntity(currentUser, articleUser, article);
+					DislikeEntity(currentUser, articleUser, article);
 				}
 			}
 
@@ -85,17 +88,19 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			return article.UsersLiked.FirstOrDefault(ul => ul.UserId == currentUser.Id) != null;
 		}
 
-		private static void UndislikeEntity(User currentUser, Article article)
+		private static void UndislikeEntity(User currentUser, User articleUser, Article article)
 		{
 			article.Karma++;
-			currentUser.Karma++;
+
+			articleUser.Karma++;
+
 			var joinEntity = article.UsersDisliked.FirstOrDefault(ud => ud.UserId == currentUser.Id);
 
 			article.UsersDisliked.Remove(joinEntity);
 			currentUser.DislikedArticles.Remove(joinEntity);
 		}
 
-		private static void DislikeEntity(User currentUser, Article article)
+		private static void DislikeEntity(User currentUser, User articleUser, Article article)
 		{
 			var userDislike = new UserArticleDislikes
 			{
@@ -104,16 +109,18 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			};
 
 			article.Karma--;
-			currentUser.Karma--;
+
+			articleUser.Karma--;
 
 			article.UsersDisliked.Add(userDislike);
 			currentUser.DislikedArticles.Add(userDislike);
 		}
 
-		private static void UnlikeEntity(User currentUser, Article article)
+		private static void UnlikeEntity(User currentUser, User articleUser, Article article)
 		{
 			article.Karma--;
-			currentUser.Karma--;
+
+			articleUser.Karma--;
 
 			var joinEntity = article.UsersLiked.FirstOrDefault(ul => ul.UserId == currentUser.Id);
 
@@ -121,7 +128,7 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			currentUser.LikedArticles.Remove(joinEntity);
 		}
 
-		private static void LikeEntity(User currentUser, Article article)
+		private static void LikeEntity(User currentUser, User articleUser, Article article)
 		{
 			var userLike = new UserArticleLikes
 			{
@@ -130,7 +137,8 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 			};
 
 			article.Karma++;
-			currentUser.Karma++;
+
+			articleUser.Karma++;
 
 			article.UsersLiked.Add(userLike);
 			currentUser.LikedArticles.Add(userLike);
