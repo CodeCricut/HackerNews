@@ -72,7 +72,7 @@
 
             @if (Model.UserCreatedComment)
             {
-            <form asp-controller="Comments" asp-action="Update" method="post">
+            <form asp-controller="Comments" asp-action="Edit" method="post">
                 <textarea class="form-control" asp-for="Comment.Text"></textarea>
                 <input hidden asp-for="Comment.Id" />
                 <input type="submit" class="btn btn-secondary" value="Update comment" />
