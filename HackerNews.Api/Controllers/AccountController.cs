@@ -49,10 +49,8 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("Register")]
 		public async Task<Jwt> Register([FromBody] RegisterUserModel registerModel)
 		{
-			// TODO: most mediator commands and queries should return the actual entity; another command or helper should convert to models
 			User user = await Mediator.Send(new RegisterUserCommand(registerModel));
-			// should use UserAuthService. => should be in web project
-			await _signInManager.SignInAsync(user, isPersistent: false);
+
 			return await _jwtGeneratorService.GenererateJwtFromUser(user);
 		}
 	}

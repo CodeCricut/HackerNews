@@ -1,18 +1,25 @@
 ﻿// Theme toggle
-let lightTheme = true;
-const toggleTheme = () => {
-    if (lightTheme) {
-        // root.style.setProperty('--primary', )
+function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.documentElement.className = themeName;
+}
 
-        lightTheme = false;
-    }
-    else {
-        root.style.setProperty('--dark', '#1a1a1b');
-        root.style.setProperty('--dark-transparent', '#12122bd8');
-        root.style.setProperty('--')
-        lightTheme = true;
+function toggleTheme() {
+    if (localStorage.getItem('theme') === 'theme-dark') {
+        setTheme('theme-light');
+    } else {
+        setTheme('theme-dark');
     }
 }
+
+// Immediately invoked function to set the theme on initial load
+(() => {
+    if (localStorage.getItem('theme') === 'theme-dark') {
+        setTheme('theme-dark');
+    } else {
+        setTheme('theme-light');
+    }
+})();
 
 // My Stuff Toggle
 const myStuffToggle = document.getElementById("my-stuff-toggle");

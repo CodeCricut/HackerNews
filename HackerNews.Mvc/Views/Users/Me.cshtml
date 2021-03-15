@@ -30,29 +30,30 @@
         {
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" />
         }
-        <div class="user-info">
-            <h2>@Model.User.UserName</h2>
-            <h3>@Model.User.FirstName @Model.User.LastName</h3>
-            <p>
-                @Model.User.Karma karma | Joined at @Model.User.JoinDate
-            </p>
-            <p>
-                Moderating <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsModerating.Count() boards</a>
-                | Subscribed to <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsSubscribed.Count() boards</a>
-            </p>
-            <p>
-                Saved <a asp-controller="Users" asp-action="Saved">@Model.User.SavedArticles.Count() articles</a> and <a asp-controller="Users" asp-action="Saved">
-                    @Model.User.SavedComments.Count() comments
-                </a>
-            </p>
-            @if (Model.User.Deleted)
-            {
-                <p class="text-danger">Deleted</p>
-            }
-            else
-            {
-                <a asp-controller="Users" asp-action="Delete" class="text-danger">Delete Account</a>
-            }
-        </div>
+    <div class="user-info">
+        <h2>@Model.User.UserName</h2>
+        <h3>@Model.User.FirstName @Model.User.LastName</h3>
+        <p>
+            @Model.User.Karma karma | Joined at @Model.User.JoinDate
+        </p>
+        <p>
+            Moderating <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsModerating.Count() boards</a>
+            | Subscribed to <a asp-controller="Users" asp-action="Boards">@Model.User.BoardsSubscribed.Count() boards</a>
+        </p>
+        <p>
+            Saved <a asp-controller="Users" asp-action="Saved">@Model.User.SavedArticles.Count() articles</a> and <a asp-controller="Users" asp-action="Saved">
+                @Model.User.SavedComments.Count() comments
+            </a>
+        </p>
+        @if (Model.User.Deleted)
+        {
+            <p class="text-danger">Deleted</p>
+        }
+        else
+        {
+            <a asp-controller="Users" asp-action="Delete" class="text-danger">Delete Account</a>
+        }
+        <button class="btn btn-outline-primary" onclick="toggleTheme()">Toggle theme</button>
+    </div>
     </div>
 }
