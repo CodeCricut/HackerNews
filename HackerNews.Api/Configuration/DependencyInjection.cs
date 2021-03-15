@@ -1,5 +1,6 @@
 ﻿using HackerNews.Api.Configuration;
 using HackerNews.Api.Helpers.Filters;
+using HackerNews.Web.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

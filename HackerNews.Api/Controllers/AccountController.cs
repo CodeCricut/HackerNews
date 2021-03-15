@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using HackerNews.Api.Configuration;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
+using HackerNews.Web.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

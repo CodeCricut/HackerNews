@@ -1,7 +1,7 @@
-﻿using HackerNews.Api.Configuration;
-using HackerNews.Application.Common.Interfaces;
+﻿using HackerNews.Application.Common.Interfaces;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Entities;
+using HackerNews.Web.Configuration;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +25,7 @@ namespace HackerNews.Web.Services
 			_mediator = mediator;
 		}
 
+		// TODO: should be moved to api project
 		public async Task<Jwt> GenererateJwtFromUser(User user)
 		{
 			return await Task.Factory.StartNew(() =>

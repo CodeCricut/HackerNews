@@ -1,5 +1,5 @@
-﻿using HackerNews.Api.Configuration;
-using HackerNews.Application.Common.Interfaces;
+﻿using HackerNews.Application.Common.Interfaces;
+using HackerNews.Web.Configuration;
 using HackerNews.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿namespace HackerNews.Api.Configuration
+﻿namespace HackerNews.Web.Configuration
 {
 	public class JwtSettings
 	{
