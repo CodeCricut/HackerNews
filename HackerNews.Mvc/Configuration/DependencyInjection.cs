@@ -46,7 +46,7 @@ namespace HackerNews.Mvc.Configuration
 			services.AddSingleton<IImageDataHelper, ImageDataHelper>();
 
 			services.AddScoped<IGenericHttpClient, GenericHttpClient>();
-			services.AddScoped<IApiJwtManager, ApiJwtManager>();
+			services.AddScoped<IApiSignInManager, ApiSignInManager>();
 			services.AddScoped<IApiJwtCookieService, ApiJwtCookieService>();
 
 			return services;

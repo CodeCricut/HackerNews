@@ -26,12 +26,15 @@ namespace HackerNews.Api
 			// Configure Identity to use JWT
 			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // remove default claims
 			services
+				// Essentially configure the application to use the JWT scheme for everything
 				.AddAuthentication(opt =>
 				{
 					opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 					opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 					opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 				})
+				// For any incoming request that has to be authenticated/authorized, reconstruct the user
+				// by decrypting the JWT header.
 				.AddJwtBearer(cfg =>
 				{
 					cfg.RequireHttpsMetadata = false;

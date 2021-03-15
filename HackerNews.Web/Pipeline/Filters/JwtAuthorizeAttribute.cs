@@ -15,6 +15,7 @@ namespace HackerNews.Web.Pipeline.Filters
 	/// Verify the the UserId is attatched to the context. Works in conjunction with <see cref="Middleware.JwtMiddleware"/>, which attatches
 	/// the UserId when the request contains a valid JWT.
 	/// </summary>
+	[Obsolete("This attribute has been swapped out for the [Authorize] attribute as part of the Identity framework.")]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public class JwtAuthorizeAttribute : Attribute, IAuthorizationFilter
 	{

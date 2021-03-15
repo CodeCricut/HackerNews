@@ -20,9 +20,9 @@ namespace HackerNews.Mvc.ViewComponents
 	public class CommentCardViewComponent : ViewComponent
 	{
 		private readonly IMediator _mediator;
-		private readonly IApiJwtManager _apiJwtManager;
+		private readonly IApiSignInManager _apiJwtManager;
 
-		public CommentCardViewComponent(IMediator mediator, IApiJwtManager apiJwtManager)
+		public CommentCardViewComponent(IMediator mediator, IApiSignInManager apiJwtManager)
 		{
 			_mediator = mediator;
 			_apiJwtManager = apiJwtManager;

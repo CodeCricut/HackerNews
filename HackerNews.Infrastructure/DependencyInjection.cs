@@ -35,12 +35,12 @@ namespace HackerNews.Infrastructure
 			else
 			{
 				services.AddDbContext<DbContext, HackerNewsContext>(options =>
-				options.UseSqlServer(configuration.GetConnectionString("HackerNews")
+					options.UseSqlServer(configuration.GetConnectionString("HackerNews")
 				));
 
 				// by god i spent ages tracking down this bug. Identity needs the explicit HackerNewsContext service. the above registration was not sufficient
 				services.AddDbContext<HackerNewsContext>(options =>
-				options.UseSqlServer(configuration.GetConnectionString("HackerNews")
+					options.UseSqlServer(configuration.GetConnectionString("HackerNews")
 				));
 			}
 

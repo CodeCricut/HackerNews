@@ -18,9 +18,9 @@ namespace HackerNews.Mvc.ViewComponents
 	public class ArticleCardViewComponent : ViewComponent
 	{
 		private readonly IMediator _mediator;
-		private readonly IApiJwtManager _apiJwtManager;
+		private readonly IApiSignInManager _apiJwtManager;
 
-		public ArticleCardViewComponent(IMediator mediator, IApiJwtManager apiAccountClient)
+		public ArticleCardViewComponent(IMediator mediator, IApiSignInManager apiAccountClient)
 		{
 			_mediator = mediator;
 			_apiJwtManager = apiAccountClient;
