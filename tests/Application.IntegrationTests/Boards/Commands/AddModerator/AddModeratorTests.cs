@@ -30,5 +30,29 @@ namespace Application.IntegrationTests.Boards.Commands.AddModerator
 
 			Assert.Contains(user.Id, updatedBoard.Moderators.Select(bm => bm.UserId));
 		}
+
+		[Fact]
+		public async Task ShouldRemoveModerator()
+		{
+			// Arrange
+			using var scope = Factory.Services.CreateScope();
+			
+			var addModHandler = new AddModeratorHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			await addModHandler.Handle(new AddModeratorCommand(board.Id, user.Id), new CancellationToken());
+			
+			Assert.Contains(user.Id, board.Moderators.Select(boardUserMod => boardUserMod.UserId));
+
+			var sut = new AddModeratorHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+
+			// Act
+			GetBoardModel sutResult = await sut.Handle(new AddModeratorCommand(board.Id, user.Id), new CancellationToken(false));
+
+			// Assert
+			Assert.NotNull(sutResult);
+
+			var updatedBoard = await unitOfWork.Boards.GetEntityAsync(sutResult.Id);
+
+			Assert.DoesNotContain(user.Id, updatedBoard.Moderators.Select(bm => bm.UserId));
+		}
 	}
 }

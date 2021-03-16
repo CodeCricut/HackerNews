@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +30,7 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 		public override async Task<bool> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
 		{
 			var userId = _currentUserService.UserId;
+			var user = (await UnitOfWork.Users.GetEntityAsync(userId));
 
 			if (!await UnitOfWork.Articles.EntityExistsAsync(request.Id)) throw new NotFoundException();
 
