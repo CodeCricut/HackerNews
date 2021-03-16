@@ -21,7 +21,15 @@
 @foreach (var moderator in Model.ModeratorPage.Items)
 {
     @await Component.InvokeAsync("UserCard", new { userModel = moderator });
+    
+<form asp-controller="Boards" asp-action="AddModerator">
+    <input hidden asp-for="Board.Id" class="form-control" />
+    <input hidden asp-for="ModeratorAddedUsername" value="@moderator.Username" class="form-control" />
+
+    <input type="submit" value="Remove @@@moderator.Username" class="btn-lg btn-outline-danger" />
+</form>
 }
+
 @if (Model.ModeratorPage.HasNext)
 {
     <a asp-controller="Boards" asp-action="Moderators" class="mr-auto btn btn-outline-secondary ">All Moderators</a>

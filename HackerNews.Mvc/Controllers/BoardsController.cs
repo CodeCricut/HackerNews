@@ -93,22 +93,27 @@ namespace HackerNews.Mvc.Controllers
 		public async Task<ActionResult<BoardAdminViewModel>> Admin(int id)
 		{
 			var user = await Mediator.Send(new GetAuthenticatedUserQuery());
-
-			if (!user.BoardsModerating.Contains(id)) return RedirectToAction("Details", new { id });
-
 			var board = await Mediator.Send(new GetBoardQuery(id));
 
-			var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
-			var moderators = await Mediator.Send(new GetPublicUsersByIdsQuery(board.ModeratorIds, moderatorPagingParams));
-
-			var viewModel = new BoardAdminViewModel
+			bool userCreatedBoard = board.CreatorId == user.Id;
+			if (userCreatedBoard || user.BoardsModerating.Contains(id))
 			{
-				Board = board,
-				ModeratorPage = new FrontendPage<GetPublicUserModel>(moderators),
-				UserCreatedBoard = board.CreatorId == user.Id
-			};
+				var moderatorPagingParams = new PagingParams { PageNumber = 1, PageSize = 5 };
+				var moderators = await Mediator.Send(new GetPublicUsersByIdsQuery(board.ModeratorIds, moderatorPagingParams));
 
-			return View(viewModel);
+				var viewModel = new BoardAdminViewModel
+				{
+					Board = board,
+					ModeratorPage = new FrontendPage<GetPublicUserModel>(moderators),
+					UserCreatedBoard = board.CreatorId == user.Id
+				};
+
+				return View(viewModel);
+			} else
+			{
+				// Redirect if not creator or moderator of board
+				return RedirectToAction("Details", new { id });
+			}
 		}
 
 		[Authorize]
