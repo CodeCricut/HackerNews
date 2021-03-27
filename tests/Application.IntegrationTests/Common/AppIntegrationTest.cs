@@ -61,6 +61,7 @@ namespace Application.IntegrationTests.Common
 			Factory = new CustomWebApplicationFactory<Startup>();
 			Client = Factory.CreateClient();
 
+
 			InstantiateCommonProperties().GetAwaiter().GetResult();
 		}
 

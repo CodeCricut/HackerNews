@@ -8,7 +8,7 @@ namespace HackerNews.Web.Services
 	class CurrentUserService : ICurrentUserService
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
-
+		// Must be registered as service
 		public CurrentUserService(IHttpContextAccessor httpContextAccessor)
 		{
 			_httpContextAccessor = httpContextAccessor;
