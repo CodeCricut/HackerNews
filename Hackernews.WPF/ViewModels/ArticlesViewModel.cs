@@ -16,10 +16,28 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class ArticlesViewModel : BaseViewModel
 	{
-		public ICommand LoadCommand { get; }
+		private readonly IMediator _mediator;
+		private PaginatedList<GetArticleModel> _articlePage;
+		private PagingParams _pagingParams;
 
+		public ArticlesViewModel(GetArticleModel article, IMediator mediator)
+		{
+			Article = article;
+			_mediator = mediator;
+			_pagingParams = new PagingParams();
+			_articlePage = new PaginatedList<GetArticleModel>();
+
+			Articles = new ObservableCollection<GetArticleModel>();
+
+			LoadCommand = new AsyncDelegateCommand(LoadArticlesAsync);
+			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, CanLoadNextPage);
+			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, CanLoadPrevPage);
+		}
+
+		#region Public Properties
 		public ObservableCollection<GetArticleModel> Articles { get; private set; }
-		
+
+		private GetArticleModel _article;
 		public GetArticleModel Article
 		{
 			get => _article;
@@ -32,18 +50,6 @@ namespace Hackernews.WPF.ViewModels
 					RaisePropertyChanged(string.Empty); // update all props
 				}
 			}
-		}
-
-		private GetArticleModel _article;
-		private readonly IMediator _mediator;
-
-		public ArticlesViewModel(GetArticleModel article, IMediator mediator)
-		{
-			Article = article;
-			_mediator = mediator;
-			Articles = new ObservableCollection<GetArticleModel>();
-
-			LoadCommand = new AsyncDelegateCommand(LoadArticlesAsync);
 		}
 
 		public string Title
@@ -61,7 +67,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public string Text
 		{
-			get => _article?.Text ?? ""; 
+			get => _article?.Text ?? "";
 			set
 			{
 				if (_article.Text != value)
@@ -117,7 +123,7 @@ namespace Hackernews.WPF.ViewModels
 			get => _article?.PostDate ?? new DateTime(0);
 			set
 			{
-				if (! _article.PostDate.Equals(value.DateTime))
+				if (!_article.PostDate.Equals(value.DateTime))
 				{
 					_article.PostDate = value.DateTime;
 					RaisePropertyChanged();
@@ -158,15 +164,56 @@ namespace Hackernews.WPF.ViewModels
 
 		public bool IsArticleSelected { get => Article != null; }
 
+		#endregion
+
+		#region Load Command
+		public ICommand LoadCommand { get; }
+
 		public async Task LoadArticlesAsync()
 		{
 			Articles.Clear();
 
-			var articlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(new PagingParams()));
-			foreach (var article in articlePage.Items)
+			_articlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(_pagingParams));
+			foreach (var article in _articlePage.Items)
 			{
 				Articles.Add(article);
 			}
+
+			NextPageCommand.RaiseCanExecuteChanged();
+			PrevPageCommand.RaiseCanExecuteChanged();
 		}
+		#endregion
+
+		#region NextPage Command
+		public AsyncDelegateCommand NextPageCommand { get; }
+
+		private async Task NextPageAsync()
+		{
+			_pagingParams = _articlePage.NextPagingParams;
+			await LoadArticlesAsync();
+
+		}
+
+		private bool CanLoadNextPage()
+		{
+			return _articlePage.HasNextPage;
+		}
+		#endregion
+
+		#region PrevPage Command
+		public AsyncDelegateCommand PrevPageCommand { get; }
+
+		private async Task PrevPageAsync()
+		{
+			_pagingParams = _articlePage.PreviousPagingParams;
+			await LoadArticlesAsync();
+
+		}
+
+		private bool CanLoadPrevPage()
+		{
+			return _articlePage.HasPreviousPage;
+		}
+		#endregion
 	}
 }
