@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ViewModels;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +24,19 @@ namespace Hackernews.WPF
 	{
 		public MainWindowViewModel MainWindowVM { get; }
 
-		public MainWindow()
+		public MainWindow(IMediator mediator)
 		{
 			InitializeComponent();
 
-			MainWindowVM = new MainWindowViewModel();
+			MainWindowVM = new MainWindowViewModel(mediator);
 			DataContext = MainWindowVM;
 
 			this.Loaded += MainWindow_Loaded;
 		}
 
-		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+		private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			MainWindowVM.ArticleViewModel.LoadArticles();
+			await MainWindowVM.ArticleViewModel.LoadArticlesAsync();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,9 +13,9 @@ namespace Hackernews.WPF.ViewModels
 	{
 		public ArticlesViewModel ArticleViewModel { get; set; }
 
-		public MainWindowViewModel()
+		public MainWindowViewModel(IMediator mediator)
 		{
-			ArticleViewModel = new ArticlesViewModel(new GetArticleModel());
+			ArticleViewModel = new ArticlesViewModel(new GetArticleModel(), mediator);
 		}
 	}
 }

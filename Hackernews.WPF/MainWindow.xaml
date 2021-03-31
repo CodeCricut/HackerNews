@@ -47,7 +47,12 @@
             </Grid.RowDefinitions>
 
             <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">List View</TextBlock>
+                <Button Grid.Column="1" Command="{Binding ArticleViewModel.LoadCommand}">Load Articles</Button>
             </Grid>
             <ListView Grid.Row="1" DisplayMemberPath="Title"
                       ItemsSource="{Binding ArticleViewModel.Articles, Mode=OneWay}"

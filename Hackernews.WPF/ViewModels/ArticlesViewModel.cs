@@ -1,19 +1,28 @@
-﻿using HackerNews.Domain.Common.Models.Articles;
+﻿using Hackernews.WPF.Helpers;
+using HackerNews.Application.Articles.Queries.GetArticle;
+using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
+using HackerNews.Domain.Common.Models;
+using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
 	public class ArticlesViewModel : BaseViewModel
 	{
-		public ObservableCollection<GetArticleModel> Articles { get; private set; }
+		public ICommand LoadCommand { get; }
 
-		private GetArticleModel _article;
-		public GetArticleModel Article { 
-			get => _article; 
+		public ObservableCollection<GetArticleModel> Articles { get; private set; }
+		
+		public GetArticleModel Article
+		{
+			get => _article;
 			set
 			{
 				if (_article != value)
@@ -22,13 +31,19 @@ namespace Hackernews.WPF.ViewModels
 					RaisePropertyChanged();
 					RaisePropertyChanged(string.Empty); // update all props
 				}
-			} 
+			}
 		}
 
-		public ArticlesViewModel(GetArticleModel article)
+		private GetArticleModel _article;
+		private readonly IMediator _mediator;
+
+		public ArticlesViewModel(GetArticleModel article, IMediator mediator)
 		{
 			Article = article;
+			_mediator = mediator;
 			Articles = new ObservableCollection<GetArticleModel>();
+
+			LoadCommand = new AsyncDelegateCommand(LoadArticlesAsync);
 		}
 
 		public string Title
@@ -143,32 +158,12 @@ namespace Hackernews.WPF.ViewModels
 
 		public bool IsArticleSelected { get => Article != null; }
 
-		public void LoadArticles()
+		public async Task LoadArticlesAsync()
 		{
-			var articles = new List<GetArticleModel>()
-			{
-					new GetArticleModel
-				{
-					Title = "title 1",
-					Text = "text 1",
-					Karma = 69,
-					PostDate = DateTime.Now,
-					Type = HackerNews.Domain.Entities.ArticleType.News,
-					Deleted = true
-				},
+			Articles.Clear();
 
-				new GetArticleModel
-				{
-					Title = "title 2",
-					Text = "text 2",
-					Karma = 420,
-					PostDate = DateTime.Now,
-					Type = HackerNews.Domain.Entities.ArticleType.Opinion,
-					Deleted = false
-				}
-			};
-
-			foreach (var article in articles)
+			var articlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(new PagingParams()));
+			foreach (var article in articlePage.Items)
 			{
 				Articles.Add(article);
 			}
