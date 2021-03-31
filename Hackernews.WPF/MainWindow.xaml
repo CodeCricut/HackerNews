@@ -1,0 +1,64 @@
+﻿<Window x:Class="Hackernews.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hackernews.WPF"
+        mc:Ignorable="d"
+        xmlns:articles="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain" xmlns:controls="clr-namespace:Hackernews.WPF.Controls" xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+        Title="MainWindow" Height="450" Width="800"
+        Name="MainWindowView">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Header-->
+        <Grid Background="Orange" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="30" Foreground="White" FontWeight="Bold" Margin="10 10 10 0">Hacker News</TextBlock>
+            <TextBlock Grid.Row="1" Foreground="White"  Margin="10 0 10 10">Administrative Panel V1</TextBlock>
+
+            <StackPanel Grid.Column="1" Grid.RowSpan="2">
+                <Button >Boards</Button>
+                <Button >Articles</Button>
+                <Button >Users</Button>
+            </StackPanel>
+        </Grid>
+        
+        <!--List-->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Margin="10">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">List View</TextBlock>
+            </Grid>
+            <ListView Grid.Row="1" DisplayMemberPath="Title"
+                      ItemsSource="{Binding ArticleViewModel.Articles, Mode=OneWay}"
+                      SelectedItem="{Binding ArticleViewModel.Article, Mode=TwoWay}"
+                      />
+        </Grid>
+
+        <controls:ArticleDetailsControl 
+            Grid.Row="1" Grid.Column="1"
+            ArticleViewModel="{Binding ArticleViewModel, Mode=OneWay}"
+            Visibility="{Binding ArticleViewModel.IsArticleSelected}"
+            />
+    </Grid>
+</Window>

@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Hackernews.WPF.Controls.ArticleDetailsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hackernews.WPF.Controls" xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
+             xmlns:articleModels="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Name="RootLayout"  d:DataContext="{d:DesignInstance local:ArticleDetailsControl}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1">Title</TextBlock>
+        <TextBlock Grid.Row="2" Text="{Binding ArticleViewModel.Title, Mode=OneWay}"/>
+        <TextBlock Grid.Row="3">Text</TextBlock>
+        <TextBlock Grid.Row="4" Text="{Binding ArticleViewModel.Text, Mode=OneWay}"/>
+        <TextBlock Grid.Row="5">Karma</TextBlock>
+        <TextBlock Grid.Row="6" Text="{Binding ArticleViewModel.Karma, Mode=OneWay}"/>
+        <TextBlock Grid.Row="7" >Type</TextBlock>
+        <TextBlock Grid.Row="8" Text="{Binding ArticleViewModel.TypeName, Mode=OneWay}"/>
+        <TextBlock Grid.Row="9">Posted at</TextBlock>
+        <TextBlock Grid.Row="10" Text="{Binding ArticleViewModel.PostDate, Mode=OneWay}"/>
+        <CheckBox  Grid.Row="11" Content="{Binding ArticleViewModel.IsDeleted, Mode=OneWay}"/>
+    </Grid>
+</UserControl>
