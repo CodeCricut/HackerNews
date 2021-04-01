@@ -53,7 +53,7 @@ namespace Hackernews.WPF.ViewModels
 		public int TotalPages { get => BoardPage.TotalPages; }
 		public int NumberArticles { get => BoardPage.TotalCount; }
 
-		public ObservableCollection<GetBoardModel> Boards { get; private set; }
+		public ObservableCollection<GetBoardModel> Boards { get; private set; } = new ObservableCollection<GetBoardModel>();
 		#endregion
 
 		#region Load Command
@@ -73,7 +73,6 @@ namespace Hackernews.WPF.ViewModels
 			PrevPageCommand.RaiseCanExecuteChanged();
 		}
 		#endregion
-
 
 		#region NextPage Command
 		public AsyncDelegateCommand NextPageCommand { get; }

@@ -53,7 +53,7 @@ namespace Hackernews.WPF.ViewModels
 		public int TotalPages { get => ArticlePage.TotalPages; }
 		public int NumberArticles { get => ArticlePage.TotalCount; }
 
-		public ObservableCollection<GetArticleModel> Articles { get; private set; }
+		public ObservableCollection<GetArticleModel> Articles { get; private set; } = new ObservableCollection<GetArticleModel>();
 		#endregion
 
 		#region Load Command

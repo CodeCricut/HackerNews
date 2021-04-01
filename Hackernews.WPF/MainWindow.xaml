@@ -21,7 +21,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
         <!--Header-->
         <Grid Background="Orange" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
@@ -47,6 +47,7 @@
                     HoverBackground="Transparent"
                     Foreground="White"
                     FontSize="18"
+                    BorderBrush="Transparent"
                     >Boards</controls:ButtonEx>
                 <controls:ButtonEx 
                     Command="{Binding NavigationViewModel.SelectArticlesCommand}"
@@ -55,6 +56,7 @@
                     HoverBackground="Transparent"
                     Foreground="White"
                     FontSize="18"
+                    BorderBrush="Transparent"
                     >Articles</controls:ButtonEx>
                 <controls:ButtonEx 
                     Command="{Binding NavigationViewModel.SelectCommentsCommand}"
@@ -63,19 +65,35 @@
                     HoverBackground="Transparent"
                     Foreground="White"
                     FontSize="18"
+                    BorderBrush="Transparent"
                     >Comments</controls:ButtonEx>
             </Grid>
         </Grid>
+
+        <!-- Boards List-->
+        <controls:BoardListControl Grid.Row="1"
+              Visibility="{Binding NavigationViewModel.AreBoardsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
+                             BoardsListViewModel="{Binding BoardsListViewModel}"/>
+
+        <!--Board Details-->
+        <controls:BoardDetailsControl
+            Grid.Row="1" Grid.Column="1"
+            BoardsListViewModel="{Binding BoardsListViewModel, Mode=OneWay}"
+            Visibility="{Binding NavigationViewModel.AreBoardsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"/>
+
 
         <!-- Articles List-->
         <controls:ArticleListControl Grid.Row="1"
               Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
                              ArticlesViewModel="{Binding ArticlesViewModel}"/>
-
+     
+        <!--Article Details-->
         <controls:ArticleDetailsControl 
             Grid.Row="1" Grid.Column="1"
             ArticlesViewModel="{Binding ArticlesViewModel, Mode=OneWay}"
             Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
             />
+
+
     </Grid>
 </Window>

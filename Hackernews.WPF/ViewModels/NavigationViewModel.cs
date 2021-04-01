@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
@@ -14,21 +16,27 @@ namespace Hackernews.WPF.ViewModels
 
 	public class NavigationViewModel : BaseViewModel
 	{
-		public NavigationViewModel()
+		public NavigationViewModel(BoardsListViewModel boardsListViewModel, ArticlesViewModel articlesViewModel)
 		{
 			NavigationModelType = NavigationModelType.Boards;
 
-			SelectBoardsCommand = new DelegateCommand(SelectBoards);
-			SelectArticlesCommand = new DelegateCommand(SelectArticles);
-			SelectCommentsCommand = new DelegateCommand(SelectComments);
+			SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
+			SelectArticlesCommand = new AsyncDelegateCommand(SelectArticlesAsync);
+			SelectCommentsCommand = new AsyncDelegateCommand(SelectCommentsAsync);
+
+			_boardsListViewModel = boardsListViewModel;
+			_articlesViewModel = articlesViewModel;
 		}
 
 		#region Public Properties
-		public DelegateCommand SelectBoardsCommand { get; }
-		public DelegateCommand SelectArticlesCommand { get; }
-		public DelegateCommand SelectCommentsCommand { get; }
+		public ICommand SelectBoardsCommand { get; }
+		public ICommand SelectArticlesCommand { get; }
+		public ICommand SelectCommentsCommand { get; }
 
 		private NavigationModelType _navigationModelType;
+		private readonly BoardsListViewModel _boardsListViewModel;
+		private readonly ArticlesViewModel _articlesViewModel;
+
 		public NavigationModelType NavigationModelType
 		{
 			get => _navigationModelType;
@@ -55,19 +63,22 @@ namespace Hackernews.WPF.ViewModels
 		public bool AreCommentsSelected { get => NavigationModelType == NavigationModelType.Comments; }
 		#endregion
 
-		public void SelectBoards()
+		public async Task SelectBoardsAsync()
 		{
 			NavigationModelType = NavigationModelType.Boards;
+			await _boardsListViewModel.LoadBoardsAsync();
 		}
 
-		public void SelectArticles()
+		public async Task SelectArticlesAsync()
 		{
 			NavigationModelType = NavigationModelType.Articles;
+			await _articlesViewModel.LoadArticlesAsync();
 		}
 
-		public void SelectComments()
+		public Task SelectCommentsAsync()
 		{
 			NavigationModelType = NavigationModelType.Comments;
+			return Task.CompletedTask;
 		}
 	}
 }

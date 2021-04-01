@@ -7,8 +7,9 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class BoardViewModel : BaseViewModel
 	{
-		private GetBoardModel _board;
+		public bool IsBoardSelected { get => Board != null; }
 
+		private GetBoardModel _board;
 		public GetBoardModel Board
 		{
 			get => _board; 
@@ -24,7 +25,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public string Title
 		{
-			get => _board.Title;
+			get => _board?.Title ?? "";
 			set
 			{
 				if (_board.Title != value)
@@ -37,7 +38,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public string Description
 		{
-			get => _board.Description; 
+			get => _board?.Description ?? ""; 
 			set {
 				if (_board.Description != value)
 				{
@@ -49,7 +50,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public DateTime CreateDate
 		{
-			get => _board.CreateDate;
+			get => _board?.CreateDate ?? new DateTime(0);
 			set
 			{
 				if (_board.CreateDate != value)
