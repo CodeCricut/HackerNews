@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Hackernews.WPF.Controls.ArticleListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hackernews.WPF.Controls" xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=local:ArticleListControl}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
+    <Grid x:Name="rootElement">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">List View</TextBlock>
+            <Button Grid.Column="1" Command="{Binding ArticlesViewModel.PrevPageCommand}">Previous Page</Button>
+            <Button Grid.Column="2" Command="{Binding ArticlesViewModel.NextPageCommand}">Next Page</Button>
+            <Button Grid.Column="3" Command="{Binding ArticlesViewModel.LoadCommand}">Load Articles</Button>
+        </Grid>
+
+        <!--Articles List-->
+        <ListView
+                
+                Grid.Row="1" DisplayMemberPath="Title"
+                      ItemsSource="{Binding ArticlesViewModel.Articles, Mode=OneWay}"
+                      SelectedItem="{Binding ArticlesViewModel.Article, Mode=TwoWay}"
+                      />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding ArticlesViewModel.CurrentPageNumber}"/>
+
+            <TextBlock Text="/"/>
+            <TextBlock Text="{Binding ArticlesViewModel.TotalPages}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
