@@ -70,12 +70,12 @@
         <!-- Articles List-->
         <controls:ArticleListControl Grid.Row="1"
               Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-                             ArticlesViewModel="{Binding ArticleViewModel}"/>
+                             ArticlesViewModel="{Binding ArticlesViewModel}"/>
 
         <controls:ArticleDetailsControl 
             Grid.Row="1" Grid.Column="1"
-            ArticleViewModel="{Binding ArticleViewModel, Mode=OneWay}"
-            Visibility="{Binding ArticleViewModel.IsArticleSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}"
+            ArticlesViewModel="{Binding ArticlesViewModel, Mode=OneWay}"
+            Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
             />
     </Grid>
 </Window>

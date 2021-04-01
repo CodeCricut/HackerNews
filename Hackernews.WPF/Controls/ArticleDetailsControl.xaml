@@ -7,7 +7,12 @@
              xmlns:articleModels="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Name="RootLayout"  d:DataContext="{d:DesignInstance local:ArticleDetailsControl}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+    </UserControl.Resources>
+    <Grid Name="RootLayout"  d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
+            Visibility="{Binding ArticlesViewModel.ArticleViewModel.IsArticleSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}"
+          >
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -25,15 +30,15 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="1">Title</TextBlock>
-        <TextBlock Grid.Row="2" Text="{Binding ArticleViewModel.Title, Mode=OneWay}"/>
+        <TextBlock Grid.Row="2" Text="{Binding ArticlesViewModel.ArticleViewModel.Title, Mode=OneWay}"/>
         <TextBlock Grid.Row="3">Text</TextBlock>
-        <TextBlock Grid.Row="4" Text="{Binding ArticleViewModel.Text, Mode=OneWay}"/>
+        <TextBlock Grid.Row="4" Text="{Binding ArticlesViewModel.ArticleViewModel.Text, Mode=OneWay}"/>
         <TextBlock Grid.Row="5">Karma</TextBlock>
-        <TextBlock Grid.Row="6" Text="{Binding ArticleViewModel.Karma, Mode=OneWay}"/>
+        <TextBlock Grid.Row="6" Text="{Binding ArticlesViewModel.ArticleViewModel.Karma, Mode=OneWay}"/>
         <TextBlock Grid.Row="7" >Type</TextBlock>
-        <TextBlock Grid.Row="8" Text="{Binding ArticleViewModel.TypeName, Mode=OneWay}"/>
+        <TextBlock Grid.Row="8" Text="{Binding ArticlesViewModel.ArticleViewModel.TypeName, Mode=OneWay}"/>
         <TextBlock Grid.Row="9">Posted at</TextBlock>
-        <TextBlock Grid.Row="10" Text="{Binding ArticleViewModel.PostDate, Mode=OneWay}"/>
-        <CheckBox  Grid.Row="11" Content="{Binding ArticleViewModel.IsDeleted, Mode=OneWay}"/>
+        <TextBlock Grid.Row="10" Text="{Binding ArticlesViewModel.ArticleViewModel.PostDate, Mode=OneWay}"/>
+        <CheckBox  Grid.Row="11" Content="{Binding ArticlesViewModel.ArticleViewModel.IsDeleted, Mode=OneWay}"/>
     </Grid>
 </UserControl>

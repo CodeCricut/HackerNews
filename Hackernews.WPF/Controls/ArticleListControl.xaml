@@ -33,7 +33,7 @@
                 
                 Grid.Row="1" DisplayMemberPath="Title"
                       ItemsSource="{Binding ArticlesViewModel.Articles, Mode=OneWay}"
-                      SelectedItem="{Binding ArticlesViewModel.Article, Mode=TwoWay}"
+                      SelectedItem="{Binding ArticlesViewModel.ArticleViewModel.Article, Mode=TwoWay}"
                       />
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

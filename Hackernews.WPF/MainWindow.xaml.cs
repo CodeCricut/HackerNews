@@ -36,7 +36,7 @@ namespace Hackernews.WPF
 
 		private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			await MainWindowVM.ArticleViewModel.LoadArticlesAsync();
+			await MainWindowVM.ArticlesViewModel.LoadArticlesAsync();
 		}
 	}
 }
