@@ -9,6 +9,9 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         Title="MainWindow" Height="450" Width="800"
         Name="MainWindowView">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -39,12 +42,14 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <controls:ButtonEx 
+                    Command="{Binding NavigationViewModel.SelectBoardsCommand}"
                     Background="Transparent"
                     HoverBackground="Transparent"
                     Foreground="White"
                     FontSize="18"
                     >Boards</controls:ButtonEx>
                 <controls:ButtonEx 
+                    Command="{Binding NavigationViewModel.SelectArticlesCommand}"
                     Grid.Column="1"
                     Background="Transparent"
                     HoverBackground="Transparent"
@@ -52,6 +57,7 @@
                     FontSize="18"
                     >Articles</controls:ButtonEx>
                 <controls:ButtonEx 
+                    Command="{Binding NavigationViewModel.SelectCommentsCommand}"
                     Grid.Column="2"
                     Background="Transparent"
                     HoverBackground="Transparent"
@@ -81,7 +87,11 @@
                 <Button Grid.Column="2" Command="{Binding ArticleViewModel.NextPageCommand}">Next Page</Button>
                 <Button Grid.Column="3" Command="{Binding ArticleViewModel.LoadCommand}">Load Articles</Button>
             </Grid>
-            <ListView Grid.Row="1" DisplayMemberPath="Title"
+            
+            <!--Articles List-->
+            <ListView
+                Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
+                Grid.Row="1" DisplayMemberPath="Title"
                       ItemsSource="{Binding ArticleViewModel.Articles, Mode=OneWay}"
                       SelectedItem="{Binding ArticleViewModel.Article, Mode=TwoWay}"
                       />
@@ -98,7 +108,7 @@
         <controls:ArticleDetailsControl 
             Grid.Row="1" Grid.Column="1"
             ArticleViewModel="{Binding ArticleViewModel, Mode=OneWay}"
-            Visibility="{Binding ArticleViewModel.IsArticleSelected}"
+            Visibility="{Binding ArticleViewModel.IsArticleSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}"
             />
     </Grid>
 </Window>
