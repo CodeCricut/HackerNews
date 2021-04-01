@@ -18,6 +18,21 @@ namespace Hackernews.WPF.ViewModels
 	{
 		private readonly IMediator _mediator;
 		private PaginatedList<GetArticleModel> _articlePage;
+		private PaginatedList<GetArticleModel> ArticlePage
+		{
+			get => _articlePage;
+			set
+			{
+				if (_articlePage != value)
+				{
+					_articlePage = value;
+					RaisePropertyChanged();
+					RaisePropertyChanged(nameof(CurrentPageNumber));
+					RaisePropertyChanged(nameof(TotalPages));
+					RaisePropertyChanged(nameof(NumberArticles));
+				}
+			}
+		}
 		private PagingParams _pagingParams;
 
 		public ArticlesViewModel(GetArticleModel article, IMediator mediator)
@@ -25,7 +40,7 @@ namespace Hackernews.WPF.ViewModels
 			Article = article;
 			_mediator = mediator;
 			_pagingParams = new PagingParams();
-			_articlePage = new PaginatedList<GetArticleModel>();
+			ArticlePage = new PaginatedList<GetArticleModel>();
 
 			Articles = new ObservableCollection<GetArticleModel>();
 
@@ -35,6 +50,10 @@ namespace Hackernews.WPF.ViewModels
 		}
 
 		#region Public Properties
+		public int CurrentPageNumber { get => ArticlePage.PageIndex; }
+		public int TotalPages { get => ArticlePage.TotalPages; }
+		public int NumberArticles { get => ArticlePage.TotalCount; }
+
 		public ObservableCollection<GetArticleModel> Articles { get; private set; }
 
 		private GetArticleModel _article;
@@ -173,8 +192,8 @@ namespace Hackernews.WPF.ViewModels
 		{
 			Articles.Clear();
 
-			_articlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(_pagingParams));
-			foreach (var article in _articlePage.Items)
+			ArticlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(_pagingParams));
+			foreach (var article in ArticlePage.Items)
 			{
 				Articles.Add(article);
 			}
@@ -189,14 +208,14 @@ namespace Hackernews.WPF.ViewModels
 
 		private async Task NextPageAsync()
 		{
-			_pagingParams = _articlePage.NextPagingParams;
+			_pagingParams = ArticlePage.NextPagingParams;
 			await LoadArticlesAsync();
 
 		}
 
 		private bool CanLoadNextPage()
 		{
-			return _articlePage.HasNextPage;
+			return ArticlePage.HasNextPage;
 		}
 		#endregion
 
@@ -205,14 +224,14 @@ namespace Hackernews.WPF.ViewModels
 
 		private async Task PrevPageAsync()
 		{
-			_pagingParams = _articlePage.PreviousPagingParams;
+			_pagingParams = ArticlePage.PreviousPagingParams;
 			await LoadArticlesAsync();
 
 		}
 
 		private bool CanLoadPrevPage()
 		{
-			return _articlePage.HasPreviousPage;
+			return ArticlePage.HasPreviousPage;
 		}
 		#endregion
 	}
