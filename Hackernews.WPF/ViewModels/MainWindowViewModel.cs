@@ -10,7 +10,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public MainWindowViewModel(IMediator mediator)
 		{
-			ArticlesViewModel = new ArticlesViewModel(new GetArticleModel(), mediator);
+			ArticlesViewModel = new ArticlesViewModel(mediator);
 			NavigationViewModel = new NavigationViewModel();
 		}
 	}

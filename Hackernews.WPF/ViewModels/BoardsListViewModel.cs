@@ -1,8 +1,7 @@
 ﻿using Hackernews.WPF.Helpers;
-using HackerNews.Application.Articles.Queries.GetArticle;
-using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
+using HackerNews.Application.Boards.Queries.GetBoardsWithPagination;
 using HackerNews.Domain.Common.Models;
-using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Entities;
 using MediatR;
 using System;
@@ -14,21 +13,21 @@ using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
-	public class ArticlesViewModel : BaseViewModel
+	public class BoardsListViewModel : BaseViewModel
 	{
-		public ArticleViewModel ArticleViewModel { get; }
+		public BoardViewModel BoardViewModel { get; set; }
 
 		private readonly IMediator _mediator;
 
-		private PaginatedList<GetArticleModel> _articlePage = new PaginatedList<GetArticleModel>();
-		private PaginatedList<GetArticleModel> ArticlePage
+		private PaginatedList<GetBoardModel> _boardPage = new PaginatedList<GetBoardModel>();
+		private PaginatedList<GetBoardModel> BoardPage
 		{
-			get => _articlePage;
+			get => _boardPage;
 			set
 			{
-				if (_articlePage != value)
+				if (_boardPage != value)
 				{
-					_articlePage = value;
+					_boardPage = value;
 					RaisePropertyChanged();
 					RaisePropertyChanged(nameof(CurrentPageNumber));
 					RaisePropertyChanged(nameof(TotalPages));
@@ -38,35 +37,36 @@ namespace Hackernews.WPF.ViewModels
 		}
 		private PagingParams _pagingParams = new PagingParams();
 
-		public ArticlesViewModel(IMediator mediator)
+		public BoardsListViewModel(IMediator mediator)
 		{
-			ArticleViewModel = new ArticleViewModel();
 			_mediator = mediator;
-			
-			LoadCommand = new AsyncDelegateCommand(LoadArticlesAsync);
+
+			BoardViewModel = new BoardViewModel();
+
+			LoadCommand = new AsyncDelegateCommand(LoadBoardsAsync);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, CanLoadNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, CanLoadPrevPage);
 		}
 
 		#region Public Properties
-		public int CurrentPageNumber { get => ArticlePage.PageIndex; }
-		public int TotalPages { get => ArticlePage.TotalPages; }
-		public int NumberArticles { get => ArticlePage.TotalCount; }
+		public int CurrentPageNumber { get => BoardPage.PageIndex; }
+		public int TotalPages { get => BoardPage.TotalPages; }
+		public int NumberArticles { get => BoardPage.TotalCount; }
 
-		public ObservableCollection<GetArticleModel> Articles { get; private set; }
+		public ObservableCollection<GetBoardModel> Boards { get; private set; }
 		#endregion
 
 		#region Load Command
 		public ICommand LoadCommand { get; }
 
-		public async Task LoadArticlesAsync()
+		public async Task LoadBoardsAsync()
 		{
-			Articles.Clear();
+			Boards.Clear();
 
-			ArticlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(_pagingParams));
-			foreach (var article in ArticlePage.Items)
+			BoardPage = await _mediator.Send(new GetBoardsWithPaginationQuery(_pagingParams));
+			foreach (var article in BoardPage.Items)
 			{
-				Articles.Add(article);
+				Boards.Add(article);
 			}
 
 			NextPageCommand.RaiseCanExecuteChanged();
@@ -74,19 +74,20 @@ namespace Hackernews.WPF.ViewModels
 		}
 		#endregion
 
+
 		#region NextPage Command
 		public AsyncDelegateCommand NextPageCommand { get; }
 
 		private async Task NextPageAsync()
 		{
-			_pagingParams = ArticlePage.NextPagingParams;
-			await LoadArticlesAsync();
+			_pagingParams = BoardPage.NextPagingParams;
+			await LoadBoardsAsync();
 
 		}
 
 		private bool CanLoadNextPage()
 		{
-			return ArticlePage.HasNextPage;
+			return BoardPage.HasNextPage;
 		}
 		#endregion
 
@@ -95,14 +96,14 @@ namespace Hackernews.WPF.ViewModels
 
 		private async Task PrevPageAsync()
 		{
-			_pagingParams = ArticlePage.PreviousPagingParams;
-			await LoadArticlesAsync();
+			_pagingParams = BoardPage.PreviousPagingParams;
+			await LoadBoardsAsync();
 
 		}
 
 		private bool CanLoadPrevPage()
 		{
-			return ArticlePage.HasPreviousPage;
+			return BoardPage.HasPreviousPage;
 		}
 		#endregion
 	}
