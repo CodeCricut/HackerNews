@@ -12,53 +12,36 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVis"/>
     </UserControl.Resources>
-        <Grid Name="rootElement">
+    <Border Name="rootElement" BorderThickness="1" BorderBrush="LightGray" CornerRadius="5" Margin="5" Padding="0 20" Background="{StaticResource cardBackground}"
+             Visibility="{Binding CommentListViewModel.CommentViewModel.IsCommentSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Karma column-->
-            <TextBlock VerticalAlignment="Center" Text="{Binding CommentListViewModel.CommentViewModel.Karma}"/>
-            
+            <TextBlock VerticalAlignment="Center" 
+                       Text="{Binding CommentListViewModel.CommentViewModel.Karma}"
+                       Margin="20 0"/>
+
             <!--Main Column-->
             <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Posted at "/>
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.PostDate}"/>
-            </StackPanel>
-            <ScrollViewer Grid.Row="1">
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Text}" TextWrapping="Wrap"/>
-            </ScrollViewer>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Posted at " Foreground="Gray"/>
+                    <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.PostDate}"
+                           Foreground="Gray"/>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Text}" 
+                           TextWrapping="Wrap" FontSize="14" Margin="0 0 10 0"/>
+                </ScrollViewer>
             </Grid>
 
         </Grid>
-        <!--<Grid  d:DataContext="{d:DesignInstance local:CommentDetailsControl}"
-            Visibility="{Binding CommentListViewModel.CommentViewModel.IsCommentSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}"
-          >
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <ScrollViewer >
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Text, Mode=OneWay}" TextWrapping="Wrap" />
-            </ScrollViewer>
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Karma, Mode=OneWay}"/>
-                <TextBlock Text=" Points"/>
-            </StackPanel>
-
-
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <TextBlock Text="Posted at "/>
-                <TextBlock Grid.Row="5" Text="{Binding CommentListViewModel.CommentViewModel.PostDate, Mode=OneWay}"/>
-            </StackPanel>
-        </Grid>-->
+    </Border>
 </UserControl>
