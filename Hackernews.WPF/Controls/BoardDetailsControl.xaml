@@ -9,26 +9,28 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVis"/>
     </UserControl.Resources>
-    <Grid Name="rootElement"  d:DataContext="{d:DesignInstance local:BoardDetailsControl}"
-            Visibility="{Binding BoardsListViewModel.BoardViewModel.IsBoardSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}"
-          >
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
 
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0">Title</TextBlock>
-        <TextBlock Grid.Row="1" Text="{Binding BoardsListViewModel.BoardViewModel.Title, Mode=OneWay}"/>
-        
-        <TextBlock Grid.Row="2">Description</TextBlock>
-        <TextBlock Grid.Row="3" Text="{Binding BoardsListViewModel.BoardViewModel.Description, Mode=OneWay}"/>
-       
-        <TextBlock Grid.Row="4">Created at</TextBlock>
-        <TextBlock Grid.Row="5" Text="{Binding BoardsListViewModel.BoardViewModel.CreateDate, Mode=OneWay}"/>
-    </Grid>
+    <Border Name="rootElement"  d:DataContext="{d:DesignInstance local:BoardDetailsControl}"
+            BorderThickness="1" BorderBrush="LightGray" CornerRadius="5" Margin="5" Padding="20" Background="{StaticResource cardBackground}"
+             Visibility="{Binding BoardsListViewModel.BoardViewModel.IsBoardSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock Foreground="Gray" Text="Created at "/>
+                <TextBlock Foreground="Gray" Text="{Binding BoardsListViewModel.BoardViewModel.CreateDate, Mode=OneWay}"/>
+            </StackPanel>
+           
+            <TextBlock Grid.Row="1" TextWrapping="Wrap" FontSize="18" 
+                       Text="{Binding BoardsListViewModel.BoardViewModel.Title}"/>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding BoardsListViewModel.BoardViewModel.Description}" 
+                           TextWrapping="Wrap"  Margin="0 0 10 0" Foreground="Gray"/>
+            </ScrollViewer>
+        </Grid>
+    </Border>
 </UserControl>
