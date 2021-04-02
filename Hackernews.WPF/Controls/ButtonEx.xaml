@@ -48,7 +48,8 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{Binding Path=HoverBackground, ElementName=buttonExtension}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{Binding Path=HoverBorderColor, ElementName=buttonExtension}"/>
+                                <Setter Property="TextBlock.FontSize" TargetName="contentPresenter" Value="{Binding Path=HoverFontSize, ElementName=buttonExtension}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>

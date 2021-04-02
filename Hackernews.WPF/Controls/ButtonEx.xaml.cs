@@ -18,12 +18,14 @@ namespace Hackernews.WPF.Controls
     /// </summary>
     public partial class ButtonEx : Button
     {
-        readonly static Brush DefaultHoverBackgroundValue = new BrushConverter().ConvertFromString("#FFBEE6FD") as Brush;
 
         public ButtonEx()
         {
             InitializeComponent();
         }
+
+        #region HoverBackground
+        readonly static Brush DefaultHoverBackgroundValue = new BrushConverter().ConvertFromString("#FFBEE6FD") as Brush;
 
         public Brush HoverBackground
         {
@@ -32,5 +34,32 @@ namespace Hackernews.WPF.Controls
         }
         public static readonly DependencyProperty HoverBackgroundProperty = DependencyProperty.Register(
           "HoverBackground", typeof(Brush), typeof(ButtonEx), new PropertyMetadata(DefaultHoverBackgroundValue));
-    }
+		#endregion
+
+		#region HoverBorderColor
+		readonly static Brush DefaultHoverBorderColorValue = new BrushConverter().ConvertFromString("Transparent") as Brush;
+        public Brush HoverBorderColor
+		{
+			get { return (Brush)GetValue(HoverBorderColorProperty); }
+			set { SetValue(HoverBorderColorProperty, value); }
+		}
+
+		public static readonly DependencyProperty HoverBorderColorProperty =
+			DependencyProperty.Register("HoverBorderColor", typeof(Brush), typeof(ButtonEx), new PropertyMetadata(DefaultHoverBorderColorValue));
+        #endregion
+
+        #region HoverFontSize
+        readonly static double DefaultHoverFontSize = (double) new FontSizeConverter().ConvertFromString("12");
+		
+        public double HoverFontSize
+		{
+			get { return (double)GetValue(HoverFontSizeProperty); }
+			set { SetValue(HoverFontSizeProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for HoverFontSize.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty HoverFontSizeProperty =
+			DependencyProperty.Register("HoverFontSize", typeof(double), typeof(ButtonEx), new PropertyMetadata(DefaultHoverFontSize));
+		#endregion
+	}
 }
