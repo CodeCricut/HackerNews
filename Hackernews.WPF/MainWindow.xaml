@@ -15,6 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -71,7 +72,7 @@
         </Grid>
 
         <!-- Boards List-->
-        <controls:BoardListControl Grid.Row="1"
+        <controls:BoardListControl Grid.Row="1" Grid.RowSpan="2"
               Visibility="{Binding NavigationViewModel.AreBoardsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
                              BoardsListViewModel="{Binding BoardsListViewModel}"/>
 
@@ -83,17 +84,27 @@
 
 
         <!-- Articles List-->
-        <controls:ArticleListControl Grid.Row="1"
+        <controls:ArticleListControl Grid.Row="1"  Grid.RowSpan="2"
               Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
                              ArticlesViewModel="{Binding ArticlesViewModel}"/>
      
         <!--Article Details-->
         <controls:ArticleDetailsControl 
-            Grid.Row="1" Grid.Column="1"
+            Grid.Row="1" Grid.Column="1" 
             ArticlesViewModel="{Binding ArticlesViewModel, Mode=OneWay}"
             Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
             />
 
-
+        <!-- Comments List-->
+        <controls:CommentListControl Grid.Row="1"  Grid.RowSpan="2"
+              Visibility="{Binding NavigationViewModel.AreCommentsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
+                             CommentListViewModel="{Binding CommentListViewModel}"/>
+        
+        <!--Comment Details-->
+        <controls:CommentDetailsControl 
+            Grid.Row="1" Grid.Column="1" 
+            CommentListViewModel="{Binding CommentListViewModel, Mode=OneWay}"
+            Visibility="{Binding NavigationViewModel.AreCommentsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
+            />
     </Grid>
 </Window>

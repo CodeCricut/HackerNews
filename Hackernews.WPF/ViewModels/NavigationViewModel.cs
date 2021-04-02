@@ -16,7 +16,7 @@ namespace Hackernews.WPF.ViewModels
 
 	public class NavigationViewModel : BaseViewModel
 	{
-		public NavigationViewModel(BoardsListViewModel boardsListViewModel, ArticlesViewModel articlesViewModel)
+		public NavigationViewModel(BoardsListViewModel boardsListViewModel, ArticlesViewModel articlesViewModel, CommentListViewModel commentListViewModel)
 		{
 			NavigationModelType = NavigationModelType.Boards;
 
@@ -26,6 +26,7 @@ namespace Hackernews.WPF.ViewModels
 
 			_boardsListViewModel = boardsListViewModel;
 			_articlesViewModel = articlesViewModel;
+			_commentListViewModel = commentListViewModel;
 		}
 
 		#region Public Properties
@@ -36,6 +37,7 @@ namespace Hackernews.WPF.ViewModels
 		private NavigationModelType _navigationModelType;
 		private readonly BoardsListViewModel _boardsListViewModel;
 		private readonly ArticlesViewModel _articlesViewModel;
+		private readonly CommentListViewModel _commentListViewModel;
 
 		public NavigationModelType NavigationModelType
 		{
@@ -75,10 +77,10 @@ namespace Hackernews.WPF.ViewModels
 			await _articlesViewModel.LoadArticlesAsync();
 		}
 
-		public Task SelectCommentsAsync()
+		public async Task SelectCommentsAsync()
 		{
 			NavigationModelType = NavigationModelType.Comments;
-			return Task.CompletedTask;
+			await _commentListViewModel.LoadCommentsAsync();
 		}
 	}
 }

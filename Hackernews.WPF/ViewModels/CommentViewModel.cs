@@ -5,7 +5,7 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class CommentViewModel : BaseViewModel
 	{
-		public bool IsBoardSelected { get => Comment != null; }
+		public bool IsCommentSelected { get => Comment != null; }
 		
 		private GetCommentModel _comment;
 		public GetCommentModel Comment

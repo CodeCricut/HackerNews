@@ -7,6 +7,7 @@ namespace Hackernews.WPF.ViewModels
 	{
 		public BoardsListViewModel BoardsListViewModel { get; }
 		public ArticlesViewModel ArticlesViewModel { get; }
+		public CommentListViewModel CommentListViewModel { get; }
 
 		public NavigationViewModel NavigationViewModel { get; }
 
@@ -14,8 +15,9 @@ namespace Hackernews.WPF.ViewModels
 		{
 			BoardsListViewModel = new BoardsListViewModel(mediator);
 			ArticlesViewModel = new ArticlesViewModel(mediator);
+			CommentListViewModel = new CommentListViewModel(mediator);
 
-			NavigationViewModel = new NavigationViewModel(BoardsListViewModel, ArticlesViewModel);
+			NavigationViewModel = new NavigationViewModel(BoardsListViewModel, ArticlesViewModel, CommentListViewModel);
 		}
 	}
 }
