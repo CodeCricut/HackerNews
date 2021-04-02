@@ -33,7 +33,7 @@ namespace Hackernews.WPF.Controls
 		{
 			InitializeComponent();
 			
-			RootLayout.DataContext = this;
+			rootElement.DataContext = this;
 		}
 	}
 }

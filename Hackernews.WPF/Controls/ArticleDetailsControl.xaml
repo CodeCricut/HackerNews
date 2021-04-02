@@ -7,38 +7,47 @@
              xmlns:articleModels="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVis"/>
     </UserControl.Resources>
-    <Grid Name="RootLayout"  d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
-            Visibility="{Binding ArticlesViewModel.ArticleViewModel.IsArticleSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}"
-          >
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
 
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+    <Border Name="rootElement"  d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
+            BorderThickness="1" BorderBrush="LightGray" CornerRadius="5" Margin="5" Padding="0 20" Background="{StaticResource cardBackground}"
+             Visibility="{Binding ArticlesViewModel.ArticleViewModel.IsArticleSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="1">Title</TextBlock>
-        <TextBlock Grid.Row="2" Text="{Binding ArticlesViewModel.ArticleViewModel.Title, Mode=OneWay}"/>
-        <TextBlock Grid.Row="3">Text</TextBlock>
-        <TextBlock Grid.Row="4" Text="{Binding ArticlesViewModel.ArticleViewModel.Text, Mode=OneWay}"/>
-        <TextBlock Grid.Row="5">Karma</TextBlock>
-        <TextBlock Grid.Row="6" Text="{Binding ArticlesViewModel.ArticleViewModel.Karma, Mode=OneWay}"/>
-        <TextBlock Grid.Row="7" >Type</TextBlock>
-        <TextBlock Grid.Row="8" Text="{Binding ArticlesViewModel.ArticleViewModel.TypeName, Mode=OneWay}"/>
-        <TextBlock Grid.Row="9">Posted at</TextBlock>
-        <TextBlock Grid.Row="10" Text="{Binding ArticlesViewModel.ArticleViewModel.PostDate, Mode=OneWay}"/>
-        <CheckBox  Grid.Row="11" Content="{Binding ArticlesViewModel.ArticleViewModel.IsDeleted, Mode=OneWay}"/>
-    </Grid>
+            <!--Karma column-->
+            <TextBlock VerticalAlignment="Center" 
+                       Text="{Binding ArticlesViewModel.ArticleViewModel.Karma}"
+                       Margin="20 0"/>
+
+            <!--Main Column-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Posted at " Foreground="Gray"/>
+                    <TextBlock Text="{Binding ArticlesViewModel.ArticleViewModel.PostDate}"
+                           Foreground="Gray"/>
+                </StackPanel>
+                    <TextBlock Grid.Row="1" Text="{Binding ArticlesViewModel.ArticleViewModel.Title}" 
+                           TextWrapping="Wrap" FontSize="14" />
+
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Grid.Row="1" Text="{Binding ArticlesViewModel.ArticleViewModel.Text}" 
+                           TextWrapping="Wrap"  Margin="0 0 10 0" Foreground="Gray"/>
+                </ScrollViewer>
+            </Grid>
+
+        </Grid>
+    </Border>
 </UserControl>
