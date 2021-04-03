@@ -23,8 +23,12 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 
 	public class DeleteArticleHandler : DatabaseRequestHandler<DeleteArticleCommand, bool>
 	{
-		public DeleteArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IAdminLevelOperationValidator<Article> _articleOperationValidator;
+
+		public DeleteArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService, 
+			IAdminLevelOperationValidator<Article> articleOperationValidator) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_articleOperationValidator = articleOperationValidator;
 		}
 
 		public override async Task<bool> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
@@ -35,8 +39,13 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 			if (!await UnitOfWork.Articles.EntityExistsAsync(request.Id)) throw new NotFoundException();
 
 			var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
-			// Verify user owns the entity
-			if (article.UserId != userId) throw new UnauthorizedException();
+
+			// Verify user can delete entity
+			var userOwnsEntity = article.UserId != userId;
+			var userHasAdminAccess = await _articleOperationValidator.CanDeleteEntityAsync(article, user.AdminLevel);
+			
+			if (! (userOwnsEntity || userHasAdminAccess))
+				throw new UnauthorizedException();
 
 			// Delete article and save.
 			var successful = await UnitOfWork.Articles.DeleteEntityAsync(request.Id);

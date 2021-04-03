@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
@@ -24,8 +25,12 @@ namespace HackerNews.Application.Comments.Commands.UpdateComment
 
 	public class UpdateCommentHandler : DatabaseRequestHandler<UpdateCommentCommand, GetCommentModel>
 	{
-		public UpdateCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
+		private readonly IAdminLevelOperationValidator<Comment> _commentOperationValidator;
+
+		public UpdateCommentHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService,
+			IAdminLevelOperationValidator<Comment> commentOperationValidator) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
+			_commentOperationValidator = commentOperationValidator;
 		}
 
 		public override async Task<GetCommentModel> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
@@ -40,7 +45,10 @@ namespace HackerNews.Application.Comments.Commands.UpdateComment
 			var comment = await UnitOfWork.Comments.GetEntityAsync(request.CommentId);
 
 			// verify user owns the entity
-			if (comment.UserId != currentUser.Id) throw new UnauthorizedException();
+			bool userOwnsComment = comment.UserId != currentUser.Id;
+			bool userModeratesComment = await _commentOperationValidator.CanModifyEntityAsync(comment, currentUser.AdminLevel);
+			if (! (userOwnsComment || userModeratesComment)) throw new UnauthorizedException();
+
 
 			var updateModel = request.PostCommentModel;
 			comment.Text = updateModel.Text;

@@ -27,10 +27,12 @@ namespace HackerNews.Domain.Entities
 		public List<UserArticleDislikes> DislikedArticles { get; set; }
 		public List<UserCommentDislikes> DislikedComments { get; set; }
 
+		public DateTime JoinDate { get; set; }
+
 		public List<BoardUserModerator> BoardsModerating { get; set; }
 		public List<BoardUserSubscriber> BoardsSubscribed { get; set; }
 
-		public DateTime JoinDate { get; set; }
+		public AdminLevel AdminLevel { get; set; }
 
 		public User()
 		{
@@ -48,6 +50,8 @@ namespace HackerNews.Domain.Entities
 
 			BoardsModerating = new List<BoardUserModerator>();
 			BoardsSubscribed = new List<BoardUserSubscriber>();
+
+			AdminLevel = AdminLevel.Restricted;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HackerNews.Application.Common.AdminLevelOperationValidators;
 using HackerNews.Application.Common.Behaviors;
 using HackerNews.Application.Common.DeletedEntityValidators;
 using HackerNews.Domain.Entities;
@@ -33,6 +34,9 @@ namespace HackerNews.Application
 			services.AddSingleton<IDeletedEntityPolicyValidator<Comment>, DeletedCommentPolicyValidator>();
 			services.AddSingleton<IDeletedEntityPolicyValidator<Board>, DeletedBoardPolicyValidator>();
 			services.AddSingleton<IDeletedEntityPolicyValidator<User>, DeletedUserPolicyValidator>();
+
+			services.AddSingleton<IAdminLevelOperationValidator<Article>, AdminLevelArticleOperationValidator>();
+			services.AddSingleton<IAdminLevelOperationValidator<Comment>, AdminLevelCommentOperationValidator>();
 
 			return services;
 		}

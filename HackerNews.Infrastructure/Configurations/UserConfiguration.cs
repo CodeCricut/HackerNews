@@ -11,6 +11,7 @@ namespace HackerNews.Infrastructure.Configurations
 			builder.Property(u => u.FirstName).IsRequired();
 			builder.Property(u => u.LastName).IsRequired();
 			builder.Property(u => u.UserName).IsRequired();
+			builder.Property(u => u.AdminLevel).IsRequired();
 			//builder.Property(u => u.Password).IsRequired();
 
 			// to ensure unique usernames
