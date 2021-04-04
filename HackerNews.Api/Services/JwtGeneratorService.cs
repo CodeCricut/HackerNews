@@ -1,7 +1,8 @@
-﻿using HackerNews.Application.Common.Interfaces;
+﻿using HackerNews.Api.Configuration;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Entities;
-using HackerNews.Web.Configuration;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HackerNews.Web.Services
+namespace HackerNews.Api.Services
 {
 	class JwtGeneratorService : IJwtGeneratorService
 	{

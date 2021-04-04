@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
 using HackerNews.Application.Articles.Queries.GetArticle;
 using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
 using HackerNews.Domain.Common.Models;
@@ -16,9 +17,9 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class ArticlesViewModel : BaseViewModel
 	{
+		public IApiClient _apiClient { get; }
 		public ArticleViewModel ArticleViewModel { get; }
 
-		private readonly IMediator _mediator;
 
 		private PaginatedList<GetArticleModel> _articlePage = new PaginatedList<GetArticleModel>();
 		private PaginatedList<GetArticleModel> ArticlePage
@@ -38,10 +39,10 @@ namespace Hackernews.WPF.ViewModels
 		}
 		private PagingParams _pagingParams = new PagingParams();
 
-		public ArticlesViewModel(IMediator mediator)
+		public ArticlesViewModel(IApiClient apiClient)
 		{
+			_apiClient = apiClient;
 			ArticleViewModel = new ArticleViewModel();
-			_mediator = mediator;
 			
 			LoadCommand = new AsyncDelegateCommand(LoadArticlesAsync);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, CanLoadNextPage);
@@ -63,10 +64,11 @@ namespace Hackernews.WPF.ViewModels
 		{
 			Articles.Clear();
 
-			ArticlePage = await _mediator.Send(new GetArticlesWithPaginationQuery(_pagingParams));
-			foreach (var article in ArticlePage.Items)
+			ArticlePage = await _apiClient.GetPageAsync<GetArticleModel>(_pagingParams, "articles");
+
+			foreach (var board in ArticlePage.Items)
 			{
-				Articles.Add(article);
+				Articles.Add(board);
 			}
 
 			NextPageCommand.RaiseCanExecuteChanged();

@@ -1,6 +1,8 @@
 ﻿using HackerNews.Api.Configuration;
 using HackerNews.Api.Helpers.Filters;
-using HackerNews.Web.Configuration;
+using HackerNews.Api.Services;
+using HackerNews.Application.Common.Interfaces;
+using HackerNews.Domain.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +62,8 @@ namespace HackerNews.Api
 			services.ConfigureSwaggerGenForApp();
 
 			services.AddMvcCore();
+
+			services.AddScoped<IJwtGeneratorService, JwtGeneratorService>();
 
 			return services;
 		}

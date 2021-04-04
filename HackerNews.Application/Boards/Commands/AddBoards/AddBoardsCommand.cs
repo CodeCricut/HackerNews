@@ -52,6 +52,7 @@ namespace HackerNews.Application.Boards.Commands.AddBoards
 			}
 
 			var addedBoards = await UnitOfWork.Boards.AddEntititesAsync(boards);
+			UnitOfWork.SaveChanges();
 
 			return Mapper.Map<IEnumerable<GetBoardModel>>(addedBoards);
 		}

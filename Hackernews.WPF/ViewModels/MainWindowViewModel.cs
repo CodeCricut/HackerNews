@@ -1,5 +1,7 @@
-﻿using HackerNews.Domain.Common.Models.Articles;
+﻿using Hackernews.WPF.ApiClients;
+using HackerNews.Domain.Common.Models.Articles;
 using MediatR;
+using System;
 
 namespace Hackernews.WPF.ViewModels
 {
@@ -11,11 +13,11 @@ namespace Hackernews.WPF.ViewModels
 
 		public NavigationViewModel NavigationViewModel { get; }
 
-		public MainWindowViewModel(IMediator mediator)
+		public MainWindowViewModel(IApiClient apiClient)
 		{
-			BoardsListViewModel = new BoardsListViewModel(mediator);
-			ArticlesViewModel = new ArticlesViewModel(mediator);
-			CommentListViewModel = new CommentListViewModel(mediator);
+			BoardsListViewModel = new BoardsListViewModel(apiClient);
+			ArticlesViewModel = new ArticlesViewModel(apiClient);
+			CommentListViewModel = new CommentListViewModel(apiClient);
 
 			NavigationViewModel = new NavigationViewModel(BoardsListViewModel, ArticlesViewModel, CommentListViewModel);
 		}

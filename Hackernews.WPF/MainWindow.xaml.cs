@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.ViewModels;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.ViewModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,11 @@ namespace Hackernews.WPF
 	{
 		public MainWindowViewModel MainWindowVM { get; }
 
-		public MainWindow(IMediator mediator)
+		public MainWindow(IApiClient apiClient)
 		{
 			InitializeComponent();
 
-			MainWindowVM = new MainWindowViewModel(mediator);
+			MainWindowVM = new MainWindowViewModel(apiClient);
 			DataContext = MainWindowVM;
 
 			this.Loaded += MainWindow_Loaded;

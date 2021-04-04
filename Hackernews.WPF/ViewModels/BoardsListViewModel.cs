@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
 using HackerNews.Application.Boards.Queries.GetBoardsWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
@@ -15,9 +16,9 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class BoardsListViewModel : BaseViewModel
 	{
+		public IApiClient _apiClient { get; }
 		public BoardViewModel BoardViewModel { get; set; }
 
-		private readonly IMediator _mediator;
 
 		private PaginatedList<GetBoardModel> _boardPage = new PaginatedList<GetBoardModel>();
 		private PaginatedList<GetBoardModel> BoardPage
@@ -37,9 +38,9 @@ namespace Hackernews.WPF.ViewModels
 		}
 		private PagingParams _pagingParams = new PagingParams();
 
-		public BoardsListViewModel(IMediator mediator)
+		public BoardsListViewModel(IApiClient apiClient)
 		{
-			_mediator = mediator;
+			_apiClient = apiClient;
 
 			BoardViewModel = new BoardViewModel();
 
@@ -63,10 +64,11 @@ namespace Hackernews.WPF.ViewModels
 		{
 			Boards.Clear();
 
-			BoardPage = await _mediator.Send(new GetBoardsWithPaginationQuery(_pagingParams));
-			foreach (var article in BoardPage.Items)
+			BoardPage = await _apiClient.GetPageAsync<GetBoardModel>(_pagingParams, "boards");
+				
+			foreach (var board in BoardPage.Items)
 			{
-				Boards.Add(article);
+				Boards.Add(board);
 			}
 
 			NextPageCommand.RaiseCanExecuteChanged();

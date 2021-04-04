@@ -1,5 +1,5 @@
 ﻿using HackerNews.Application.Common.Interfaces;
-using HackerNews.Web.Configuration;
+using HackerNews.Domain.Common;
 using HackerNews.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,10 +16,6 @@ namespace HackerNews.Web
 		/// <returns></returns>
 		public static IServiceCollection AddWeb(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddHttpContextAccessor();
-
-			services.Configure<JwtSettings>(options => configuration.GetSection("JwtSettings").Bind(options));
-			services.AddScoped<IJwtGeneratorService, JwtGeneratorService>();
 			services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
 			return services;

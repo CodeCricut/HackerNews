@@ -44,6 +44,10 @@ namespace HackerNews.Infrastructure
 				));
 			}
 
+			// Necessary for identity services, unfortunately...
+			services.AddHttpContextAccessor();
+
+
 			// redirect entity services to custom
 			services.AddScoped<
 				UserStore<User, IdentityRole<int>, HackerNewsContext, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>,

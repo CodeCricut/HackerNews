@@ -24,11 +24,11 @@ namespace HackerNews.Mvc
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvcProject(Configuration);
-			services.AddDomain();
+			services.AddDomain(Configuration);
 			services.AddInfrastructure(Configuration);
 			services.AddApplication();
 			services.AddWeb(Configuration);
+			services.AddMvcProject(Configuration);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

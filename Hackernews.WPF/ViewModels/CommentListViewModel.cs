@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
 using HackerNews.Application.Comments.Queries.GetCommentsWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
@@ -16,7 +17,6 @@ namespace Hackernews.WPF.ViewModels
 	{
 		public CommentViewModel CommentViewModel { get; }
 
-		private readonly IMediator _mediator;
 
 		private PaginatedList<GetCommentModel> _commentPage = new PaginatedList<GetCommentModel>();
 		private PaginatedList<GetCommentModel> CommentPage
@@ -36,14 +36,14 @@ namespace Hackernews.WPF.ViewModels
 		}
 		private PagingParams _pagingParams = new PagingParams();
 
-		public CommentListViewModel(IMediator mediator)
+		public CommentListViewModel(IApiClient apiClient)
 		{
 			CommentViewModel = new CommentViewModel();
-			_mediator = mediator;
 
 			LoadCommand = new AsyncDelegateCommand(LoadCommentsAsync);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, CanLoadNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, CanLoadPrevPage);
+			_apiClient = apiClient;
 		}
 
 		#region Public Properties
@@ -61,14 +61,16 @@ namespace Hackernews.WPF.ViewModels
 		{
 			Comments.Clear();
 
-			CommentPage = await _mediator.Send(new GetCommentsWithPaginationQuery(_pagingParams));
-			foreach (var comment in CommentPage.Items)
+			CommentPage = await _apiClient.GetPageAsync<GetCommentModel>(_pagingParams, "comments");
+
+			foreach (var board in CommentPage.Items)
 			{
-				Comments.Add(comment);
+				Comments.Add(board);
 			}
 
 			NextPageCommand.RaiseCanExecuteChanged();
 			PrevPageCommand.RaiseCanExecuteChanged();
+
 		}
 		#endregion
 
@@ -90,6 +92,7 @@ namespace Hackernews.WPF.ViewModels
 
 		#region PrevPage Command
 		public AsyncDelegateCommand PrevPageCommand { get; }
+		public IApiClient _apiClient { get; }
 
 		private async Task PrevPageAsync()
 		{

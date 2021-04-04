@@ -2,6 +2,7 @@
 using HackerNews.Application;
 using HackerNews.Domain;
 using HackerNews.Infrastructure;
+using HackerNews.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -45,14 +46,17 @@ namespace Hackernews.WPF
 
 		private void ConfigureServices(ServiceCollection services)
 		{
-			services.AddDomain();
-			services.AddInfrastructure(_configuration);
-			services.AddApplication();
+			//services.AddDomain(_configuration);
+			//services.AddInfrastructure(_configuration);
+			//services.AddApplication();
 			services.AddWPF(_configuration);
 		}
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
+			//var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
+			//loginWindow.Show();
+
 			var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
 			mainWindow.Show();
 		}
