@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace Hackernews.WPF.ApiClients
 {
 	public interface IApiClient
 	{
+		Task<TResponse> PostAsync<TPost, TResponse>(TPost postModel, string endpoint = "") where TPost : class 
+																							where TResponse : class;
 		Task<TEntity> GetAsync<TEntity>(int id, string endpoint = "")  where TEntity : class;
 		Task<PaginatedList<TEntity>> GetPageAsync<TEntity>(PagingParams pagingParams, string endpoint = "") where TEntity : class;
 	}
@@ -39,6 +42,18 @@ namespace Hackernews.WPF.ApiClients
 
 			response.EnsureSuccessStatusCode();
 			var content = await response.Content.ReadAsAsync<PaginatedList<TEntity>>();
+			return content;
+		}
+
+		public async Task<TResponse> PostAsync<TPost, TResponse>(TPost postModel, string endpoint = "")
+			where TPost : class
+			where TResponse : class
+		{
+			string url = $"{endpoint}";
+			var response = await _httpClient.PostAsync<TPost>(url, postModel, new JsonMediaTypeFormatter());
+
+			response.EnsureSuccessStatusCode();
+			var content = await response.Content.ReadAsAsync<TResponse>();
 			return content;
 		}
 	}

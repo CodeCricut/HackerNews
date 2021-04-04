@@ -1,4 +1,6 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Services;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Domain.Entities;
 using MediatR;
@@ -16,8 +18,9 @@ namespace Hackernews.WPF.ViewModels
 	class LoginWindowViewModel : BaseViewModel
 	{
 		private readonly IServiceProvider _serviceProvider;
+		private readonly ISignInManager _signInManager;
 		private readonly Window _thisWindow;
-
+		private readonly Window _mainWindow;
 		private string _username;
 		public string Username 
 		{
@@ -49,26 +52,24 @@ namespace Hackernews.WPF.ViewModels
 		}
 
 		public AsyncDelegateCommand LoginCommand { get; set; }
-		public LoginWindowViewModel(IServiceProvider serviceProvider, Window thisWindow)
+		public LoginWindowViewModel(ISignInManager signInManager, Window thisWindow, Window mainWindow)
 		{
 			LoginCommand = new AsyncDelegateCommand(LoginAsync, CanLogin);
-			_serviceProvider = serviceProvider;
+			_signInManager = signInManager;
 			_thisWindow = thisWindow;
+			_mainWindow = mainWindow;
 		}
 
 		private async Task LoginAsync()
 		{
-			//// lol wut is sexurity?
-			//string password = new System.Net.NetworkCredential(string.Empty, _password).Password;
-			//var loginModel = new LoginModel() { UserName = _username, Password = password };
+			// lol wut is security?
+			string password = new System.Net.NetworkCredential(string.Empty, _password).Password;
+			var loginModel = new LoginModel() { UserName = _username, Password = password };
 
-			//await _signInManager.PasswordSignInAsync(Username, password, isPersistent: false, lockoutOnFailure: false);
+			await _signInManager.SignInAsync(loginModel);
 
-			//Window mainWindow = new MainWindow(_mediator);
-			//mainWindow.Show();
-
-			//_thisWindow.Close();
-			throw new NotImplementedException();
+			_mainWindow.Show();
+			_thisWindow.Close();
 		}
 
 		public bool CanLogin() => !(string.IsNullOrEmpty(Username) || Password?.Length <= 0);  

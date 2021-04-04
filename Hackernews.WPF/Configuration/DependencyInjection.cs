@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Services;
 using HackerNews.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,9 @@ namespace Hackernews.WPF.Configuration
 				string baseUrl = "https://localhost:44300/api/";
 				config.BaseAddress = new System.Uri(baseUrl);
 			});
+
+			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
+			services.AddSingleton<ISignInManager, WpfSignInManager>();
 
 			return services;
 		}

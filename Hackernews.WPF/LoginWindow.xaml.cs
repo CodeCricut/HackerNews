@@ -1,4 +1,6 @@
-﻿using Hackernews.WPF.ViewModels;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Services;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -23,11 +25,11 @@ namespace Hackernews.WPF
 	{
 		private LoginWindowViewModel ViewModel { get; }
 
-		public LoginWindow(IServiceProvider serviceProvider)
+		public LoginWindow(ISignInManager signInManager, MainWindow mainWindow)
 		{
 			InitializeComponent();
 
-			ViewModel = new LoginWindowViewModel(serviceProvider, this);
+			ViewModel = new LoginWindowViewModel(signInManager, thisWindow: this, mainWindow);
 			rootElement.DataContext = ViewModel;
 		}
 

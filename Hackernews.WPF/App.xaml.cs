@@ -54,11 +54,11 @@ namespace Hackernews.WPF
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
-			//var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
-			//loginWindow.Show();
+			var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
+			loginWindow.Show();
 
-			var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-			mainWindow.Show();
+			//var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+			//mainWindow.Show();
 		}
 	}
 }
