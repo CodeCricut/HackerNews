@@ -10,19 +10,21 @@ namespace Hackernews.WPF.ViewModels
 		public BoardsListViewModel BoardsListViewModel { get; }
 		public ArticlesViewModel ArticlesViewModel { get; }
 		public CommentListViewModel CommentListViewModel { get; }
+		public UserListViewModel UserListViewModel { get; }
 
 		public NavigationViewModel NavigationViewModel { get; }
-		public UserViewModel UserViewModel { get; }
+		public PrivateUserViewModel UserViewModel { get; }
 
 		public MainWindowViewModel(IApiClient apiClient)
 		{
+			UserListViewModel = new UserListViewModel(apiClient);
 			BoardsListViewModel = new BoardsListViewModel(apiClient);
 			ArticlesViewModel = new ArticlesViewModel(apiClient);
 			CommentListViewModel = new CommentListViewModel(apiClient);
 
-			NavigationViewModel = new NavigationViewModel(BoardsListViewModel, ArticlesViewModel, CommentListViewModel);
+			NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticlesViewModel, CommentListViewModel);
 
-			UserViewModel = new UserViewModel(apiClient);
+			UserViewModel = new PrivateUserViewModel(apiClient);
 		}
 	}
 }

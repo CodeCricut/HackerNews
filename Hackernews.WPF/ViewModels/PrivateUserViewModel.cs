@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Hackernews.WPF.ViewModels
 {
-	public class UserViewModel : BaseViewModel
+	public class PrivateUserViewModel : BaseViewModel
 	{
 		private readonly IApiClient _apiClient;
 
 		private GetPrivateUserModel _user;
-
-		public GetPrivateUserModel User
+		private GetPrivateUserModel User
 		{
 			get => _user;
 			set { 
@@ -28,7 +27,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
-		public UserViewModel(IApiClient apiClient)
+		public PrivateUserViewModel(IApiClient apiClient)
 		{
 			_apiClient = apiClient;
 			User = new GetPrivateUserModel();
