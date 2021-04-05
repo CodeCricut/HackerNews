@@ -38,6 +38,8 @@ namespace Hackernews.WPF
 		private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			await MainWindowVM.BoardsListViewModel.LoadBoardsAsync();
+			if (MainWindowVM.UserViewModel.TryLoadUserCommand.CanExecute(null))
+				MainWindowVM.UserViewModel.TryLoadUserCommand.Execute(null);
 		}
 	}
 }

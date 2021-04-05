@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -110,5 +111,13 @@
             CommentListViewModel="{Binding CommentListViewModel, Mode=OneWay}"
             Visibility="{Binding NavigationViewModel.AreCommentsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
             />
+        
+        <!--Footer-->
+        <Border Grid.Row="3" Grid.ColumnSpan="2" Background="Orange">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Logged in as " Foreground="White"/>
+                <TextBlock Text="{Binding UserViewModel.UserName, Mode=OneWay}" Foreground="White"/>
+            </StackPanel> 
+        </Border>
     </Grid>
 </Window>

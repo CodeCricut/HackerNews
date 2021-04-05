@@ -12,6 +12,7 @@ namespace Hackernews.WPF.ViewModels
 		public CommentListViewModel CommentListViewModel { get; }
 
 		public NavigationViewModel NavigationViewModel { get; }
+		public UserViewModel UserViewModel { get; }
 
 		public MainWindowViewModel(IApiClient apiClient)
 		{
@@ -20,6 +21,8 @@ namespace Hackernews.WPF.ViewModels
 			CommentListViewModel = new CommentListViewModel(apiClient);
 
 			NavigationViewModel = new NavigationViewModel(BoardsListViewModel, ArticlesViewModel, CommentListViewModel);
+
+			UserViewModel = new UserViewModel(apiClient);
 		}
 	}
 }

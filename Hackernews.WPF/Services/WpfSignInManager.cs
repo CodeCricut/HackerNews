@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +36,8 @@ namespace Hackernews.WPF.Services
 		public async Task SignInAsync(LoginModel loginModel)
 		{
 			var jwt = await _apiClient.PostAsync<LoginModel, Jwt>(loginModel, "account/login");
-			_jwtPrincipal.SetJwt(jwt);
+			_apiClient.SetAuthorizationHeader(new AuthenticationHeaderValue("Bearer", jwt.Token));
+			//_jwtPrincipal.SetJwt(jwt);
 		}
 	}
 }
