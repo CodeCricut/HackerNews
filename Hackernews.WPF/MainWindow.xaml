@@ -5,12 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hackernews.WPF"
         mc:Ignorable="d"
-        xmlns:articles="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain" xmlns:controls="clr-namespace:Hackernews.WPF.Controls" xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels" 
+        xmlns:articles="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain" 
+        xmlns:controls="clr-namespace:Hackernews.WPF.Controls" 
+        xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels" 
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         Title="MainWindow" Height="450" Width="800"
         Name="MainWindowView">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Resources/MainWindowDataTemplates.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+                <BooleanToVisibilityConverter x:Key="boolToVis"/>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
       
@@ -46,101 +53,45 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <controls:ButtonEx 
-                    Command="{Binding NavigationViewModel.SelectUsersCommand}"
+                    Command="{Binding SelectUsersCommand}"
                     Grid.Column="0"
-                    Background="Transparent"
-                    HoverBackground="Transparent"
-                    HoverFontSize="22"
-                    Foreground="White"
-                    FontSize="18"
-                    BorderBrush="Transparent"
+                    Style="{StaticResource navigationButton}"
                     >Users</controls:ButtonEx>
                 <controls:ButtonEx 
-                    Command="{Binding NavigationViewModel.SelectBoardsCommand}"
+                    Command="{Binding SelectBoardsCommand}"
                     Grid.Column="1"
-                    Background="Transparent"
-                    HoverBackground="Transparent"
-                    HoverFontSize="22"
-                    Foreground="White"
-                    FontSize="18"
-                    BorderBrush="Transparent"
+                    Style="{StaticResource navigationButton}"
                     >Boards</controls:ButtonEx>
                 <controls:ButtonEx 
-                    Command="{Binding NavigationViewModel.SelectArticlesCommand}"
+                    Command="{Binding SelectArticlesCommand}"
                     Grid.Column="2"
-                    Background="Transparent"
-                    HoverBackground="Transparent"
-                    HoverFontSize="22"
-                    Foreground="White"
-                    FontSize="18"
-                    BorderBrush="Transparent"
+                    Style="{StaticResource navigationButton}"
                     >Articles</controls:ButtonEx>
                 <controls:ButtonEx 
-                    Command="{Binding NavigationViewModel.SelectCommentsCommand}"
+                    Command="{Binding SelectCommentsCommand}"
                     Grid.Column="3"
-                    Background="Transparent"
-                    HoverBackground="Transparent"
-                    HoverFontSize="22"
-                    Foreground="White"
-                    FontSize="18"
-                    BorderBrush="Transparent"
+                    Style="{StaticResource navigationButton}"
                     >Comments</controls:ButtonEx>
             </Grid>
         </Grid>
 
-        <!-- Users List-->
-        <controls:UserListControl Grid.Row="1" Grid.RowSpan="2"
-              Visibility="{Binding NavigationViewModel.AreUsersSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-                             UserListViewModel="{Binding UserListViewModel}"/>
+        <!--List views-->
+        <ContentControl Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Content="{Binding SelectedListViewModel}"
+                        />
         
-        <!-- Boards List-->
-        <controls:BoardListControl Grid.Row="1" Grid.RowSpan="2"
-              Visibility="{Binding NavigationViewModel.AreBoardsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-                             BoardsListViewModel="{Binding BoardsListViewModel}"/>
+        <!--Detailes views-->
+        <ContentControl Grid.Row="1"
+                        Grid.Column="1"
+                        Content="{Binding SelectedDetailsViewModel}"
+                        />
 
-        <!--Board Details-->
-        <controls:BoardDetailsControl
-            Grid.Row="1" Grid.Column="1"
-            BoardsListViewModel="{Binding BoardsListViewModel, Mode=OneWay}"
-            Visibility="{Binding NavigationViewModel.AreBoardsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"/>
-
-
-       <!-- Articles List-->
-        <controls:ArticleListControl Grid.Row="1"  Grid.RowSpan="2"
-              Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-                             ArticlesViewModel="{Binding ArticlesViewModel}"/>
-
-        <!--User Details-->
-        <controls:UserDetailControl 
-            Grid.Row="1" Grid.Column="1" 
-            UserListViewModel="{Binding UserListViewModel, Mode=OneWay}"
-            Visibility="{Binding NavigationViewModel.AreUsersSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-            />
-
-        <!--Article Details-->
-        <controls:ArticleDetailsControl 
-            Grid.Row="1" Grid.Column="1" 
-            ArticlesViewModel="{Binding ArticlesViewModel, Mode=OneWay}"
-            Visibility="{Binding NavigationViewModel.AreArticlesSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-            />
-
-        <!-- Comments List-->
-        <controls:CommentListControl Grid.Row="1"  Grid.RowSpan="2"
-              Visibility="{Binding NavigationViewModel.AreCommentsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-                             CommentListViewModel="{Binding CommentListViewModel}"/>
-        
-        <!--Comment Details-->
-        <controls:CommentDetailsControl 
-            Grid.Row="1" Grid.Column="1" 
-            CommentListViewModel="{Binding CommentListViewModel, Mode=OneWay}"
-            Visibility="{Binding NavigationViewModel.AreCommentsSelected, Converter={StaticResource boolToVis}, Mode=OneWay}"
-            />
-        
         <!--Footer-->
         <Border Grid.Row="3" Grid.ColumnSpan="2" Background="Orange" Padding="10">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Logged in as " Foreground="White"/>
-                <TextBlock Text="{Binding UserViewModel.UserName, Mode=OneWay}" Foreground="White"/>
+                <TextBlock Text="{Binding PrivateUserViewModel.UserName, Mode=OneWay}" Foreground="White"/>
             </StackPanel> 
         </Border>
     </Grid>

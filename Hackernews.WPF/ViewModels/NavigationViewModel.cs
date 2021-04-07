@@ -1,88 +1,122 @@
-﻿using Hackernews.WPF.Helpers;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿//using Hackernews.WPF.Helpers;
+//using System.Threading.Tasks;
+//using System.Windows.Input;
 
-namespace Hackernews.WPF.ViewModels
-{
-	public enum NavigationModelType
-	{
-		Users,
-		Boards,
-		Articles,
-		Comments
-	}
+//namespace Hackernews.WPF.ViewModels
+//{
+//	//public enum NavigationModelType
+//	//{
+//	//	Users,
+//	//	Boards,
+//	//	Articles,
+//	//	Comments
+//	//}
 
-	public class NavigationViewModel : BaseViewModel
-	{
-		public NavigationViewModel(UserListViewModel userListViewModel, BoardsListViewModel boardsListViewModel, 
-			ArticlesViewModel articlesViewModel, CommentListViewModel commentListViewModel)
-		{
-			NavigationModelType = NavigationModelType.Users;
+//	public class NavigationViewModel : BaseViewModel
+//	{
+//		//private object _selectedListViewModel;
 
-			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);
-			SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
-			SelectArticlesCommand = new AsyncDelegateCommand(SelectArticlesAsync);
-			SelectCommentsCommand = new AsyncDelegateCommand(SelectCommentsAsync);
+//		//public object SelectedListViewModel
+//		//{
+//		//	get { return _selectedListViewModel; }
+//		//	set { 
+//		//		_selectedListViewModel = value;
+//		//		RaisePropertyChanged();
+//		//	}
+//		//}
 
-			_userListViewModel = userListViewModel;
-			_boardsListViewModel = boardsListViewModel;
-			_articlesViewModel = articlesViewModel;
-			_commentListViewModel = commentListViewModel;
-		}
+//		//private object _selectedDetailsViewModel;
 
-		#region Public Properties
-		public AsyncDelegateCommand SelectUsersCommand { get; }
-		public ICommand SelectBoardsCommand { get; }
-		public ICommand SelectArticlesCommand { get; }
-		public ICommand SelectCommentsCommand { get; }
+//		//public object SelectedDetailsViewModel
+//		//{
+//		//	get { return _selectedDetailsViewModel; }
+//		//	set
+//		//	{
+//		//		_selectedDetailsViewModel = value;
+//		//		RaisePropertyChanged();
+//		//	}
+//		//}
 
-		private readonly UserListViewModel _userListViewModel;
-		private readonly BoardsListViewModel _boardsListViewModel;
-		private readonly ArticlesViewModel _articlesViewModel;
-		private readonly CommentListViewModel _commentListViewModel;
 
-		private NavigationModelType _navigationModelType = NavigationModelType.Users;
-		public NavigationModelType NavigationModelType
-		{
-			get => _navigationModelType;
-			set
-			{
-				if (_navigationModelType != value)
-				{
-					_navigationModelType = value;
-					RaisePropertyChanged("");
-				}
-			}
-		}
+//		public NavigationViewModel(UserListViewModel userListViewModel, BoardsListViewModel boardsListViewModel, 
+//			ArticlesViewModel articlesViewModel, CommentListViewModel commentListViewModel)
+//		{
+//			//NavigationModelType = NavigationModelType.Users;
 
-		public bool AreUsersSelected	{ get => NavigationModelType == NavigationModelType.Users; }
-		public bool AreBoardsSelected	{ get => NavigationModelType == NavigationModelType.Boards; }
-		public bool AreArticlesSelected { get => NavigationModelType == NavigationModelType.Articles; }
-		public bool AreCommentsSelected { get => NavigationModelType == NavigationModelType.Comments; }
-		#endregion
+//			//SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);
+//			//SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
+//			//SelectArticlesCommand = new AsyncDelegateCommand(SelectArticlesAsync);
+//			//SelectCommentsCommand = new AsyncDelegateCommand(SelectCommentsAsync);
 
-		public async Task SelectUsersAsync()
-		{
-			NavigationModelType = NavigationModelType.Users;
-			await _userListViewModel.LoadUsersAsync();
-		}
+//			_userListViewModel = userListViewModel;
+//			_boardsListViewModel = boardsListViewModel;
+//			_articlesViewModel = articlesViewModel;
+//			_commentListViewModel = commentListViewModel;
+//		}
 
-		public async Task SelectBoardsAsync()
-		{
-			NavigationModelType = NavigationModelType.Boards;
-			await _boardsListViewModel.LoadBoardsAsync();
-		}
+//		#region Public Properties
+//		//public AsyncDelegateCommand SelectUsersCommand { get; }
+//		//public ICommand SelectBoardsCommand { get; }
+//		//public ICommand SelectArticlesCommand { get; }
+//		//public ICommand SelectCommentsCommand { get; }
 
-		public async Task SelectArticlesAsync()
-		{
-			NavigationModelType = NavigationModelType.Articles;
-			await _articlesViewModel.LoadArticlesAsync();
-		}
+//		private readonly UserListViewModel _userListViewModel;
+//		private readonly BoardsListViewModel _boardsListViewModel;
+//		private readonly ArticlesViewModel _articlesViewModel;
+//		private readonly CommentListViewModel _commentListViewModel;
 
-		public async Task SelectCommentsAsync()
-		{
-			NavigationModelType = NavigationModelType.Comments;
-			await _commentListViewModel.LoadCommentsAsync();
-		}
-	}
-}
+//		private readonly PublicUserViewModel _userViewModel;
+//		private readonly BoardViewModel _boardViewModel;
+//		private readonly ArticleViewModel _articleViewModel;
+//		private readonly CommentViewModel _commentViewModel;
+
+//		//private NavigationModelType _navigationModelType = NavigationModelType.Users;
+//		//public NavigationModelType NavigationModelType
+//		//{
+//		//	get => _navigationModelType;
+//		//	set
+//		//	{
+//		//		if (_navigationModelType != value)
+//		//		{
+//		//			_navigationModelType = value;
+//		//			RaisePropertyChanged("");
+//		//		}
+//		//	}
+//		//}
+
+//		//public bool AreUsersSelected	{ get => NavigationModelType == NavigationModelType.Users; }
+//		//public bool AreBoardsSelected	{ get => NavigationModelType == NavigationModelType.Boards; }
+//		//public bool AreArticlesSelected { get => NavigationModelType == NavigationModelType.Articles; }
+//		//public bool AreCommentsSelected { get => NavigationModelType == NavigationModelType.Comments; }
+//		#endregion
+
+//		//public async Task SelectUsersAsync()
+//		//{
+//		//	SelectedListViewModel = _userListViewModel;
+//		//	SelectedDetailsViewModel = _public
+//		//	//NavigationModelType = NavigationModelType.Users;
+//		//	await _userListViewModel.LoadUsersAsync();
+//		//}
+
+//		//public async Task SelectBoardsAsync()
+//		//{
+//		//	SelectedListViewModel = _boardsListViewModel;
+//		//	//NavigationModelType = NavigationModelType.Boards;
+//		//	await _boardsListViewModel.LoadBoardsAsync();
+//		//}
+
+//		//public async Task SelectArticlesAsync()
+//		//{
+//		//	SelectedListViewModel = _articlesViewModel;
+//		//	//NavigationModelType = NavigationModelType.Articles;
+//		//	await _articlesViewModel.LoadArticlesAsync();
+//		//}
+
+//		//public async Task SelectCommentsAsync()
+//		//{
+//		//	SelectedListViewModel = _commentListViewModel;
+//		//	//NavigationModelType = NavigationModelType.Comments;
+//		//	await _commentListViewModel.LoadCommentsAsync();
+//		//}
+//	}
+//}
