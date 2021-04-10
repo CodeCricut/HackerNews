@@ -19,10 +19,23 @@
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Margin="0 10">Articles</TextBlock>
             <!--Article List-->
             <ListView
-                Grid.Row="1" DisplayMemberPath="Title"
+                Grid.Row="1" 
                       ItemsSource="{Binding ArticlesViewModel.Articles, Mode=OneWay}"
-                      SelectedItem="{Binding ArticlesViewModel.ArticleViewModel.Article, Mode=TwoWay}"
-                      />
+                      SelectedItem="{Binding ArticlesViewModel.ArticleViewModel, Mode=TwoWay}"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:ArticleViewModel}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Title}"/>
+                            <TextBlock Text=" (user owned)" 
+                                       Visibility="{Binding UserCreatedArticle, 
+                                            Converter={StaticResource boolToVis}}"
+                                       Foreground="Gray"
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Grid.Column="1" Command="{Binding ArticlesViewModel.PrevPageCommand}"

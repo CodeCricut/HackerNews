@@ -1,14 +1,25 @@
-﻿using HackerNews.Domain.Common.Models.Articles;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Services;
+using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
 using System;
+using System.Linq;
 
 namespace Hackernews.WPF.ViewModels
 {
 	public class ArticleViewModel : BaseViewModel
 	{
+		public ArticleViewModel(PrivateUserViewModel privateUser)
+		{
+			_privateUser = privateUser;
+		}
+
 		public bool IsArticleSelected { get => Article != null; } 
 
 		private GetArticleModel _article;
+		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _privateUser;
+
 		public GetArticleModel Article
 		{
 			get => _article;
@@ -131,6 +142,10 @@ namespace Hackernews.WPF.ViewModels
 					RaisePropertyChanged();
 				}
 			}
+		}
+
+		public bool UserCreatedArticle { 
+			get => _article != null && _privateUser.ArticleIds.Contains(_article.Id); 
 		}
 	}
 }

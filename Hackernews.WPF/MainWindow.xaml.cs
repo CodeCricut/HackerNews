@@ -25,11 +25,11 @@ namespace Hackernews.WPF
 	{
 		public MainWindowViewModel MainWindowVM { get; }
 
-		public MainWindow(IApiClient apiClient)
+		public MainWindow(IApiClient apiClient, PrivateUserViewModel userVm)
 		{
 			InitializeComponent();
 
-			MainWindowVM = new MainWindowViewModel(apiClient);
+			MainWindowVM = new MainWindowViewModel(apiClient, userVm);
 			DataContext = MainWindowVM;
 
 			this.Loaded += MainWindow_Loaded;

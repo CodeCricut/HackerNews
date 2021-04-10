@@ -39,7 +39,7 @@ namespace Hackernews.WPF
 		{
 			var configBuilder = new ConfigurationBuilder();
 			configBuilder.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables();
 			return configBuilder.Build();
 		}

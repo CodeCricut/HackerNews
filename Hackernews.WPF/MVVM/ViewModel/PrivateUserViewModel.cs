@@ -2,6 +2,8 @@
 using Hackernews.WPF.Helpers;
 using HackerNews.Domain.Common.Models.Users;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.ViewModels
@@ -23,7 +25,7 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
-		
+		public bool IsLoaded { get => User != null; }
 
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
@@ -35,11 +37,11 @@ namespace Hackernews.WPF.ViewModels
 		}
 
 		public string UserName
-		{ 
-			get => User.UserName;
+		{
+			get => User?.UserName ?? "";
 			set
 			{
-				if (!User.UserName.Equals(value))
+				if (!User?.UserName.Equals(value) ?? false)
 				{
 					User.UserName = value;
 					RaisePropertyChanged();
@@ -49,7 +51,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public int Karma
 		{
-			get => User.Karma;
+			get => User?.Karma ?? 0;
 			set
 			{
 				if (User.Karma != value)
@@ -62,10 +64,10 @@ namespace Hackernews.WPF.ViewModels
 
 		public DateTime JoinDate
 		{
-			get => User.JoinDate;
+			get => User?.JoinDate ?? new DateTime(0);
 			set
 			{
-				if (User.JoinDate != value)
+				if (User?.JoinDate != value)
 				{
 					User.JoinDate = value;
 					RaisePropertyChanged();
@@ -75,16 +77,21 @@ namespace Hackernews.WPF.ViewModels
 
 		public DateTimeOffset JoinDateOffset
 		{
-			get => User.JoinDate;
+			get => User?.JoinDate ?? JoinDate;
 			set
 			{
-				if (User.JoinDate != value.DateTime)
+				if (User?.JoinDate != value.DateTime)
 				{
 					User.JoinDate = value.DateTime;
 					RaisePropertyChanged();
 				}
 			}
 		}
+
+		public IEnumerable<int> ArticleIds { get => User?.ArticleIds; }
+		public IEnumerable<int> CommentIds { get => User?.CommentIds; }
+		public IEnumerable<int> BoardModeratingIds { get => User?.BoardsModerating; }
+		public IEnumerable<int> BoardSubcribedIds { get => User?.BoardsSubscribed; }
 
 		private async Task TryLoadPrivateUser()
 		{

@@ -7,14 +7,16 @@
              xmlns:articleModels="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="boolToVis"/>
-    </UserControl.Resources>
-
-    <Border Name="rootElement"  d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
-            BorderThickness="1" BorderBrush="LightGray" CornerRadius="5" Margin="5" Padding="0 20" Background="{StaticResource cardBackground}"
-             Visibility="{Binding ArticlesViewModel.ArticleViewModel.IsArticleSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
+    <Border Name="rootElement"  
+            d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
+            BorderThickness="1" 
+            BorderBrush="LightGray" 
+            CornerRadius="5" 
+            Margin="5" 
+            Padding="0 20" 
+            Background="{StaticResource cardBackground}"
+            Visibility="{Binding ArticlesViewModel.ArticleViewModel.IsArticleSelected,  
+                        Converter={StaticResource boolToVis}, Mode=OneWay}">
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -38,6 +40,9 @@
                     <TextBlock Text="Posted at " Foreground="Gray"/>
                     <TextBlock Text="{Binding ArticlesViewModel.ArticleViewModel.PostDate}"
                            Foreground="Gray"/>
+                    <TextBlock Text="(user owned)"
+                           Foreground="Gray"
+                               Visibility="{Binding ArticlesViewModel.ArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}"/>
                 </StackPanel>
                     <TextBlock Grid.Row="1" Text="{Binding ArticlesViewModel.ArticleViewModel.Title}" 
                            TextWrapping="Wrap" FontSize="14" />

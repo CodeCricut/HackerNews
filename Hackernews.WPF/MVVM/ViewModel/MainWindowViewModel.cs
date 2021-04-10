@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using HackerNews.Domain.Common.Models.Users;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -49,16 +50,16 @@ namespace Hackernews.WPF.ViewModels
 		//public NavigationViewModel NavigationViewModel { get; }
 		public PrivateUserViewModel PrivateUserViewModel { get; }
 
-		public MainWindowViewModel(IApiClient apiClient)
+		public MainWindowViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
 		{
 			UserListViewModel = new UserListViewModel(apiClient);
 			BoardsListViewModel = new BoardsListViewModel(apiClient);
-			ArticlesViewModel = new ArticlesViewModel(apiClient);
+			ArticlesViewModel = new ArticlesViewModel(apiClient, userVM);
 			CommentListViewModel = new CommentListViewModel(apiClient);
 
 			PublicUserViewModel = new PublicUserViewModel();
 			BoardViewModel = new BoardViewModel();
-			ArticleViewModel = new ArticleViewModel();
+			ArticleViewModel = new ArticleViewModel(userVM);
 			CommentViewModel = new CommentViewModel();
 
 			//NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticlesViewModel, CommentListViewModel);

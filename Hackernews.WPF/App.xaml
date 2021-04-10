@@ -7,9 +7,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Brushes.xaml"/>
-                <ResourceDictionary Source="Resources/NavigationButtonStyle.xaml"/>
+                <ResourceDictionary Source="Theme/Brushes.xaml"/>
+                <ResourceDictionary Source="Theme/NavigationButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="boolToVis"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -14,7 +14,7 @@
     <Window.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="Resources/MainWindowDataTemplates.xaml"/>
+                    <ResourceDictionary Source="Theme/MainWindowDataTemplates.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
                 <BooleanToVisibilityConverter x:Key="boolToVis"/>
         </ResourceDictionary>

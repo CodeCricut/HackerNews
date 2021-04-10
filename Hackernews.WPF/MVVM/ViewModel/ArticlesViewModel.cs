@@ -18,7 +18,19 @@ namespace Hackernews.WPF.ViewModels
 	public class ArticlesViewModel : BaseViewModel
 	{
 		public IApiClient _apiClient { get; }
-		public ArticleViewModel ArticleViewModel { get; }
+
+		private ArticleViewModel _articleViewModel;
+		public ArticleViewModel ArticleViewModel { 
+			get => _articleViewModel; 
+			set
+			{
+				if (_articleViewModel != value)
+				{
+					_articleViewModel = value;
+					RaisePropertyChanged("");
+				}
+			}
+		}
 
 
 		private PaginatedList<GetArticleModel> _articlePage = new PaginatedList<GetArticleModel>();
@@ -38,11 +50,13 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 		private PagingParams _pagingParams = new PagingParams();
+		private readonly PrivateUserViewModel _userVM;
 
-		public ArticlesViewModel(IApiClient apiClient)
+		public ArticlesViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
 		{
 			_apiClient = apiClient;
-			ArticleViewModel = new ArticleViewModel();
+			_userVM = userVM;
+			ArticleViewModel = new ArticleViewModel(userVM);
 			
 			LoadCommand = new AsyncDelegateCommand(LoadArticlesAsync);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, CanLoadNextPage);
@@ -54,7 +68,7 @@ namespace Hackernews.WPF.ViewModels
 		public int TotalPages { get => ArticlePage.TotalPages; }
 		public int NumberArticles { get => ArticlePage.TotalCount; }
 
-		public ObservableCollection<GetArticleModel> Articles { get; private set; } = new ObservableCollection<GetArticleModel>();
+		public ObservableCollection<ArticleViewModel> Articles { get; private set; } = new ObservableCollection<ArticleViewModel>();
 		#endregion
 
 		#region Load Command
@@ -66,9 +80,13 @@ namespace Hackernews.WPF.ViewModels
 
 			ArticlePage = await _apiClient.GetPageAsync<GetArticleModel>(_pagingParams, "articles");
 
-			foreach (var board in ArticlePage.Items)
+			await Task.Factory.StartNew(() => _userVM.TryLoadUserCommand.Execute(null));
+
+			foreach (var article in ArticlePage.Items)
 			{
-				Articles.Add(board);
+				var articleVM = new ArticleViewModel( _userVM);
+				articleVM.Article = article;
+				Articles.Add(articleVM);
 			}
 
 			NextPageCommand.RaiseCanExecuteChanged();
