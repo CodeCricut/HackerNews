@@ -37,7 +37,7 @@ namespace Hackernews.WPF
 
 		private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			await MainWindowVM.UserListViewModel.LoadUsersAsync();
+			await Task.Factory.StartNew(() => MainWindowVM.UserListViewModel.LoadCommand.TryExecute());
 			if (MainWindowVM.PrivateUserViewModel.TryLoadUserCommand.CanExecute(null))
 				MainWindowVM.PrivateUserViewModel.TryLoadUserCommand.Execute(null);
 		}

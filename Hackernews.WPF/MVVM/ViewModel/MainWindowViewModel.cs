@@ -78,7 +78,7 @@ namespace Hackernews.WPF.ViewModels
 		{
 			SelectedListViewModel = UserListViewModel;
 			SelectedDetailsViewModel = PublicUserViewModel;
-			await UserListViewModel.LoadUsersAsync();
+			await Task.Factory.StartNew(() => UserListViewModel.LoadCommand.TryExecute());
 		}
 
 		public async Task SelectBoardsAsync()
