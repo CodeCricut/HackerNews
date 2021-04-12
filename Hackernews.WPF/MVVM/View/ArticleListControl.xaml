@@ -20,8 +20,8 @@
             <!--Article List-->
             <ListView
                 Grid.Row="1" 
-                      ItemsSource="{Binding ArticleListViewModel.ArticleViewModels, Mode=OneWay}"
-                      SelectedItem="{Binding ArticleListViewModel.SelectedArticleViewModel, Mode=TwoWay}"
+                      ItemsSource="{Binding ArticlesViewModel.Articles, Mode=OneWay}"
+                      SelectedItem="{Binding ArticlesViewModel.ArticleViewModel, Mode=TwoWay}"
                       >
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:ArticleViewModel}">
@@ -38,15 +38,15 @@
             </ListView>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Grid.Column="1" Command="{Binding ArticleListViewModel.ArticlePage.PrevPageCommand}"
+                <Button Grid.Column="1" Command="{Binding ArticlesViewModel.PrevPageCommand}"
                     Background="Transparent" BorderThickness="0"  Margin="0 0 10 0" Padding="0 0 0 10">Previous Page</Button>
 
-                <TextBlock Text="{Binding ArticleListViewModel.ArticlePage.EntityPage.PageIndex}"/>
+                <TextBlock Text="{Binding ArticlesViewModel.CurrentPageNumber}"/>
 
                 <TextBlock Text="/"/>
-                <TextBlock Text="{Binding ArticleListViewModel.ArticlePage.EntityPage.TotalPages}"/>
+                <TextBlock Text="{Binding ArticlesViewModel.TotalPages}"/>
 
-                <Button Grid.Column="2" Command="{Binding ArticleListViewModel.ArticlePage.NextPageCommand}"
+                <Button Grid.Column="2" Command="{Binding ArticlesViewModel.NextPageCommand}"
                     Background="Transparent"  BorderThickness="0" VerticalAlignment="Center" Margin="10 0 0 0" Padding="0 0 0 10">Next Page</Button>
             </StackPanel>
         </Grid>

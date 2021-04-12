@@ -6,8 +6,8 @@
     <DataTemplate DataType="{x:Type viewmodels:UserListViewModel}">
         <controls:UserListControl UserListViewModel="{Binding}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:ArticleListViewModel}">
-        <controls:ArticleListControl ArticleListViewModel="{Binding}"/>
+    <DataTemplate DataType="{x:Type viewmodels:ArticlesViewModel}">
+        <controls:ArticleListControl ArticlesViewModel="{Binding}"/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodels:CommentListViewModel}">
         <controls:CommentListControl CommentListViewModel="{Binding}"/>
@@ -22,7 +22,7 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodels:ArticleViewModel}">
         <controls:ArticleDetailsControl 
-                ArticleListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticleListViewModel}"/>
+                ArticlesViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticlesViewModel}"/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodels:CommentViewModel}">
         <controls:CommentDetailsControl 

@@ -38,7 +38,7 @@ namespace Hackernews.WPF.ViewModels
 		public ICommand SelectCommentsCommand { get; }
 
 		public BoardsListViewModel BoardsListViewModel { get; }
-		public ArticleListViewModel ArticleListViewModel { get; }
+		public ArticlesViewModel ArticlesViewModel { get; }
 		public CommentListViewModel CommentListViewModel { get; }
 		public UserListViewModel UserListViewModel { get; }
 
@@ -54,7 +54,7 @@ namespace Hackernews.WPF.ViewModels
 		{
 			UserListViewModel = new UserListViewModel(apiClient);
 			BoardsListViewModel = new BoardsListViewModel(apiClient);
-			ArticleListViewModel = new ArticleListViewModel(apiClient, userVM);
+			ArticlesViewModel = new ArticlesViewModel(apiClient, userVM);
 			CommentListViewModel = new CommentListViewModel(apiClient);
 
 			PublicUserViewModel = new PublicUserViewModel();
@@ -62,7 +62,7 @@ namespace Hackernews.WPF.ViewModels
 			ArticleViewModel = new ArticleViewModel(userVM);
 			CommentViewModel = new CommentViewModel();
 
-			//NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticleListViewModel, CommentListViewModel);
+			//NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticlesViewModel, CommentListViewModel);
 
 			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
 
@@ -92,10 +92,10 @@ namespace Hackernews.WPF.ViewModels
 
 		public async Task SelectArticlesAsync()
 		{
-			SelectedListViewModel = ArticleListViewModel;
+			SelectedListViewModel = ArticlesViewModel;
 			SelectedDetailsViewModel = ArticleViewModel;
 			//NavigationModelType = NavigationModelType.Articles;
-			await ArticleListViewModel.LoadArticlesAsync();
+			await ArticlesViewModel.LoadArticlesAsync();
 		}
 
 		public async Task SelectCommentsAsync()

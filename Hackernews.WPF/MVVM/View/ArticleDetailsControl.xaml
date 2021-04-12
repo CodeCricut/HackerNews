@@ -15,7 +15,7 @@
             Margin="5" 
             Padding="0 20" 
             Background="{StaticResource cardBackground}"
-            Visibility="{Binding ArticleListViewModel.SelectedArticleViewModel.IsArticleSelected,  
+            Visibility="{Binding ArticlesViewModel.ArticleViewModel.IsArticleSelected,  
                         Converter={StaticResource boolToVis}, Mode=OneWay}">
         <Grid >
             <Grid.ColumnDefinitions>
@@ -25,7 +25,7 @@
 
             <!--Karma column-->
             <TextBlock VerticalAlignment="Center" 
-                       Text="{Binding ArticleListViewModel.SelectedArticleViewModel.Karma}"
+                       Text="{Binding ArticlesViewModel.ArticleViewModel.Karma}"
                        Margin="20 0"/>
 
             <!--Main Column-->
@@ -38,17 +38,17 @@
                 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Posted at " Foreground="Gray"/>
-                    <TextBlock Text="{Binding ArticleListViewModel.SelectedArticleViewModel.PostDate}"
+                    <TextBlock Text="{Binding ArticlesViewModel.ArticleViewModel.PostDate}"
                            Foreground="Gray"/>
                     <TextBlock Text="(user owned)"
                            Foreground="Gray"
-                               Visibility="{Binding ArticleListViewModel.SelectedArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}"/>
+                               Visibility="{Binding ArticlesViewModel.ArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}"/>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Text="{Binding ArticleListViewModel.SelectedArticleViewModel.Title}" 
+                    <TextBlock Grid.Row="1" Text="{Binding ArticlesViewModel.ArticleViewModel.Title}" 
                            TextWrapping="Wrap" FontSize="14" />
 
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                    <TextBlock Grid.Row="1" Text="{Binding ArticleListViewModel.SelectedArticleViewModel.Text}" 
+                    <TextBlock Grid.Row="1" Text="{Binding ArticlesViewModel.ArticleViewModel.Text}" 
                            TextWrapping="Wrap"  Margin="0 0 10 0" Foreground="Gray"/>
                 </ScrollViewer>
             </Grid>

@@ -19,14 +19,14 @@ namespace Hackernews.WPF.Controls
 	/// </summary>
 	public partial class ArticleListControl : UserControl
 	{
-		public ArticleListViewModel ArticleListViewModel
+		public ArticlesViewModel ArticlesViewModel
 		{
-			get { return (ArticleListViewModel)GetValue(ArticleListViewModelProperty); }
-			set { SetValue(ArticleListViewModelProperty, value); }
+			get { return (ArticlesViewModel)GetValue(ArticlesViewModelProperty); }
+			set { SetValue(ArticlesViewModelProperty, value); }
 		}
 
-		public static readonly DependencyProperty ArticleListViewModelProperty =
-			DependencyProperty.Register("ArticleListViewModel", typeof(ArticleListViewModel), typeof(ArticleListControl));
+		public static readonly DependencyProperty ArticlesViewModelProperty =
+			DependencyProperty.Register("ArticlesViewModel", typeof(ArticlesViewModel), typeof(ArticleListControl));
 
 
 
