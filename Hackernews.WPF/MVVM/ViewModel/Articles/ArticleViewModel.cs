@@ -3,35 +3,38 @@ using Hackernews.WPF.Services;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Hackernews.WPF.ViewModels
 {
 	public class ArticleViewModel : BaseViewModel
 	{
-		public ArticleViewModel(PrivateUserViewModel privateUser)
-		{
-			_privateUser = privateUser;
-		}
-
-		public bool IsArticleSelected { get => Article != null; } 
+		private readonly PrivateUserViewModel _privateUserVM;
 
 		private GetArticleModel _article;
-		private readonly IApiClient _apiClient;
-		private readonly PrivateUserViewModel _privateUser;
-
 		public GetArticleModel Article
 		{
 			get => _article;
 			set
 			{
-				if (_article != value)
-				{
-					_article = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(string.Empty); // update all props
-				}
+				Set(ref _article, value);
+				RaisePropertyChanged(string.Empty); // update all props
 			}
+		}
+
+
+		public ArticleViewModel(PrivateUserViewModel privateUser)
+		{
+			_privateUserVM = privateUser;
+			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
+		}
+
+		public void RaiseUserCreatedArticleChanged() => RaisePropertyChanged(nameof(UserCreatedArticle));
+
+		public bool UserCreatedArticle
+		{
+			get => _article != null && _privateUserVM.ArticleIds.Contains(_article.Id);
 		}
 
 		public string Title
@@ -144,8 +147,5 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
-		public bool UserCreatedArticle { 
-			get => _article != null && _privateUser.ArticleIds.Contains(_article.Id); 
-		}
 	}
 }

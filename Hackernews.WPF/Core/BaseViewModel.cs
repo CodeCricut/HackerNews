@@ -10,7 +10,7 @@ namespace Hackernews.WPF.ViewModels
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public void RaisePropertyChanged<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
+		public void Set<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
 		{
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
