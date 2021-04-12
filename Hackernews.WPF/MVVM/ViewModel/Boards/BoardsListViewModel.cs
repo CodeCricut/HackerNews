@@ -14,9 +14,7 @@ namespace Hackernews.WPF.ViewModels
 	{
 		public PagingParams PagingParams = new PagingParams();
 
-		public BoardViewModel BoardViewModel { get; } = new BoardViewModel();
-
-		public bool IsBoardSelected { get => BoardViewModel != null; }
+		public BoardViewModel BoardViewModel { get; } = new BoardViewModel(); 
 
 		public ObservableCollection<GetBoardModel> Boards { get; private set; } = new ObservableCollection<GetBoardModel>();
 

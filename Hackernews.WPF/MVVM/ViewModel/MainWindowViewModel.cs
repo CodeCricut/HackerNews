@@ -78,7 +78,6 @@ namespace Hackernews.WPF.ViewModels
 		{
 			SelectedListViewModel = UserListViewModel;
 			SelectedDetailsViewModel = PublicUserViewModel;
-			//NavigationModelType = NavigationModelType.Users;
 			await UserListViewModel.LoadUsersAsync();
 		}
 
@@ -86,7 +85,6 @@ namespace Hackernews.WPF.ViewModels
 		{
 			SelectedListViewModel = BoardsListViewModel;
 			SelectedDetailsViewModel = BoardViewModel;
-			//NavigationModelType = NavigationModelType.Boards;
 			await Task.Factory.StartNew(() => BoardsListViewModel.LoadCommand.TryExecute());
 		}
 
@@ -94,7 +92,6 @@ namespace Hackernews.WPF.ViewModels
 		{
 			SelectedListViewModel = ArticleListViewModel;
 			SelectedDetailsViewModel = ArticleViewModel;
-			//NavigationModelType = NavigationModelType.Articles;
 			await Task.Factory.StartNew(() => ArticleListViewModel.LoadCommand.TryExecute());
 		}
 
@@ -102,8 +99,7 @@ namespace Hackernews.WPF.ViewModels
 		{
 			SelectedListViewModel = CommentListViewModel;
 			SelectedDetailsViewModel = CommentViewModel;
-			//NavigationModelType = NavigationModelType.Comments;
-			await CommentListViewModel.LoadCommentsAsync();
+			await Task.Factory.StartNew(() => CommentListViewModel.LoadCommand.TryExecute());
 		}
 	}
 }
