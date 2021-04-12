@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Hackernews.WPF.Controls" xmlns:helpers="clr-namespace:Hackernews.WPF.Helpers"
+             xmlns:local="clr-namespace:Hackernews.WPF.Controls" 
+             xmlns:converters="clr-namespace:Hackernews.WPF.Converters"
              d:DataContext="{d:DesignInstance Type=local:CommentListControl}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <helpers:CommentTextDisplayConverter x:Key="commentDisplayConverter"/>
+        <converters:CommentTextDisplayConverter x:Key="commentDisplayConverter"/>
     </UserControl.Resources>
 
 

@@ -1,18 +1,16 @@
 ﻿using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.MVVM.Model
 {
 	public class PaginatedListViewModel<T> : BaseViewModel
 	{
 		private PaginatedList<T> _page;
-		public PaginatedList<T> Page 
-		{ 
-			get => _page; 
-			set => Set(ref _page, value, ""); 
+		public PaginatedList<T> Page
+		{
+			get => _page;
+			set => Set(ref _page, value, "");
 		}
 
 		public IEnumerable<T> Items { get => Page?.Items; }

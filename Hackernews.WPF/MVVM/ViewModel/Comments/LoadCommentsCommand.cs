@@ -2,9 +2,6 @@
 using Hackernews.WPF.Core;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Comments;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Comments
 {

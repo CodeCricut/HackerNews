@@ -1,19 +1,16 @@
 ﻿using HackerNews.Domain.Common.Models;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.ApiClients
 {
 	public interface IApiClient
 	{
-		Task<TResponse> PostAsync<TPost, TResponse>(TPost postModel, string endpoint = "") where TPost : class 
+		Task<TResponse> PostAsync<TPost, TResponse>(TPost postModel, string endpoint = "") where TPost : class
 																							where TResponse : class;
-		Task<TEntity> GetAsync<TEntity>(int id, string endpoint = "")  where TEntity : class;
+		Task<TEntity> GetAsync<TEntity>(int id, string endpoint = "") where TEntity : class;
 		Task<TEntity> GetAsync<TEntity>(string endpoint = "") where TEntity : class;
 		Task<PaginatedList<TEntity>> GetPageAsync<TEntity>(PagingParams pagingParams, string endpoint = "") where TEntity : class;
 

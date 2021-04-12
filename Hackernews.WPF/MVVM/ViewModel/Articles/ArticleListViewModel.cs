@@ -3,18 +3,10 @@ using Hackernews.WPF.Core;
 using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.Model;
-using HackerNews.Application.Articles.Queries.GetArticle;
-using HackerNews.Application.Articles.Queries.GetArticlesWithPagination;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
-using HackerNews.Domain.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
@@ -23,8 +15,9 @@ namespace Hackernews.WPF.ViewModels
 		public PagingParams PagingParams = new PagingParams();
 
 		private ArticleViewModel _articleViewModel;
-		public ArticleViewModel ArticleViewModel { 
-			get => _articleViewModel; 
+		public ArticleViewModel ArticleViewModel
+		{
+			get => _articleViewModel;
 			set
 			{
 				if (_articleViewModel != value)
@@ -39,7 +32,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public ObservableCollection<ArticleViewModel> Articles { get; private set; } = new ObservableCollection<ArticleViewModel>();
 
-		public PaginatedListViewModel<GetArticleModel> ArticlePageVM { get;  }
+		public PaginatedListViewModel<GetArticleModel> ArticlePageVM { get; }
 
 		public BaseCommand LoadCommand { get; }
 		public AsyncDelegateCommand PrevPageCommand { get; }
@@ -53,12 +46,12 @@ namespace Hackernews.WPF.ViewModels
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, () => ArticlePageVM.HasNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, () => ArticlePageVM.HasPrevPage);
 		}
-		
+
 		private async Task NextPageAsync()
 		{
 			PagingParams = ArticlePageVM.NextPagingParams;
 
-			await Task.Factory.StartNew(() => LoadCommand.TryExecute()); 
+			await Task.Factory.StartNew(() => LoadCommand.TryExecute());
 		}
 
 		private async Task PrevPageAsync()

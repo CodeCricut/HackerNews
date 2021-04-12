@@ -1,18 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
-using HackerNews.Domain.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.Services

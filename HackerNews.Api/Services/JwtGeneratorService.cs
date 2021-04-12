@@ -1,5 +1,4 @@
-﻿using HackerNews.Api.Configuration;
-using HackerNews.Application.Common.Interfaces;
+﻿using HackerNews.Application.Common.Interfaces;
 using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Entities;

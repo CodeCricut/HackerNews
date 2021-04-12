@@ -5,7 +5,6 @@ using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +24,7 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 	{
 		private readonly IAdminLevelOperationValidator<Article> _articleOperationValidator;
 
-		public DeleteArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService, 
+		public DeleteArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService,
 			IAdminLevelOperationValidator<Article> articleOperationValidator) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 			_articleOperationValidator = articleOperationValidator;
@@ -43,8 +42,8 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 			// Verify user can delete entity
 			var userOwnsEntity = article.UserId != userId;
 			var userHasAdminAccess = await _articleOperationValidator.CanDeleteEntityAsync(article, user.AdminLevel);
-			
-			if (! (userOwnsEntity || userHasAdminAccess))
+
+			if (!(userOwnsEntity || userHasAdminAccess))
 				throw new UnauthorizedException();
 
 			// Delete article and save.

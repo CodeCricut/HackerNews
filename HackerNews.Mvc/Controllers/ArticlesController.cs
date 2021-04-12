@@ -22,10 +22,8 @@ using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.Models;
 using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.Articles;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -100,7 +98,7 @@ namespace HackerNews.Mvc.Controllers
 			return RedirectToAction("Details", new { id = updatedModel.Id });
 		}
 
-		
+
 
 		public async Task<ViewResult> Details(int id, PagingParams pagingParams)
 		{

@@ -36,10 +36,10 @@ namespace Application.IntegrationTests.Boards.Commands.AddModerator
 		{
 			// Arrange
 			using var scope = Factory.Services.CreateScope();
-			
+
 			var addModHandler = new AddModeratorHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
 			await addModHandler.Handle(new AddModeratorCommand(board.Id, user.Id), new CancellationToken());
-			
+
 			Assert.Contains(user.Id, board.Moderators.Select(boardUserMod => boardUserMod.UserId));
 
 			var sut = new AddModeratorHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);

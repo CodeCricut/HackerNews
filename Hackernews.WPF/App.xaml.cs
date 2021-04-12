@@ -1,17 +1,8 @@
 ﻿using Hackernews.WPF.Configuration;
-using HackerNews.Application;
-using HackerNews.Domain;
-using HackerNews.Infrastructure;
-using HackerNews.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hackernews.WPF
@@ -26,7 +17,7 @@ namespace Hackernews.WPF
 
 		public App()
 		{
-			 _configuration = CreateConfiguration();
+			_configuration = CreateConfiguration();
 
 			ServiceCollection services = new ServiceCollection();
 			ConfigureServices(services);

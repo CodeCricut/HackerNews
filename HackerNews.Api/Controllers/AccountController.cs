@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Api.Configuration;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Users.Commands.RegisterUser;
 using HackerNews.Domain.Common;

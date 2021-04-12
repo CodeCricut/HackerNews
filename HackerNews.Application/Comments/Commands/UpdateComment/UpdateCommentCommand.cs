@@ -47,7 +47,7 @@ namespace HackerNews.Application.Comments.Commands.UpdateComment
 			// verify user owns the entity
 			bool userOwnsComment = comment.UserId != currentUser.Id;
 			bool userModeratesComment = await _commentOperationValidator.CanModifyEntityAsync(comment, currentUser.AdminLevel);
-			if (! (userOwnsComment || userModeratesComment)) throw new UnauthorizedException();
+			if (!(userOwnsComment || userModeratesComment)) throw new UnauthorizedException();
 
 
 			var updateModel = request.PostCommentModel;

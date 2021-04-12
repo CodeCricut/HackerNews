@@ -1,7 +1,5 @@
 ﻿using HackerNews.Domain.Common.Models.Boards;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.ViewModels
 {
@@ -12,7 +10,7 @@ namespace Hackernews.WPF.ViewModels
 		private GetBoardModel _board;
 		public GetBoardModel Board
 		{
-			get => _board; 
+			get => _board;
 			set
 			{
 				if (_board != value)
@@ -38,8 +36,9 @@ namespace Hackernews.WPF.ViewModels
 
 		public string Description
 		{
-			get => _board?.Description ?? ""; 
-			set {
+			get => _board?.Description ?? "";
+			set
+			{
 				if (_board.Description != value)
 				{
 					_board.Description = value;

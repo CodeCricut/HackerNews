@@ -1,28 +1,21 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Services;
 using HackerNews.Domain.Common.Models.Users;
-using HackerNews.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
 	class LoginWindowViewModel : BaseViewModel
 	{
-		private readonly IServiceProvider _serviceProvider;
 		private readonly ISignInManager _signInManager;
 		private readonly Window _thisWindow;
 		private readonly Window _mainWindow;
+
 		private string _username;
-		public string Username 
+
+		public string Username
 		{
 			get => _username;
 			set
@@ -72,6 +65,6 @@ namespace Hackernews.WPF.ViewModels
 			_thisWindow.Close();
 		}
 
-		public bool CanLogin() => !(string.IsNullOrEmpty(Username) || Password?.Length <= 0);  
+		public bool CanLogin() => !(string.IsNullOrEmpty(Username) || Password?.Length <= 0);
 	}
 }

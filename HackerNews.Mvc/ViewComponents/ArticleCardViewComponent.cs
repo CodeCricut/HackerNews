@@ -6,7 +6,6 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.Services;
-using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +34,7 @@ namespace HackerNews.Mvc.ViewComponents
 			// TODO: returns null, which throws exception in view, if user is deleted
 			var getuserQuery = new GetPublicUserQuery(articleModel.UserId);
 			GetPublicUserModel user = await getuserQuery.DefaultIfExceptionAsync(_mediator);
-			
+
 			string jwt = _apiJwtManager.GetToken();
 
 			bool loggedIn = false;

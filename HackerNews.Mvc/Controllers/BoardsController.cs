@@ -109,7 +109,8 @@ namespace HackerNews.Mvc.Controllers
 				};
 
 				return View(viewModel);
-			} else
+			}
+			else
 			{
 				// Redirect if not creator or moderator of board
 				return RedirectToAction("Details", new { id });

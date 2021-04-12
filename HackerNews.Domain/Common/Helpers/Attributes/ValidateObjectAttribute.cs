@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 // From https://stackoverflow.com/a/28433753
 namespace HackerNews.Domain.Common.Helpers.Validation

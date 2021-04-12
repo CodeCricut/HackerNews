@@ -1,12 +1,6 @@
-﻿using HackerNews.Application.Common.Interfaces;
-using HackerNews.Application.Users.Queries.GetAuthenticatedUser;
-using HackerNews.Domain.Common;
+﻿using HackerNews.Domain.Common;
 using HackerNews.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.Application.Common.AdminLevelOperationValidators

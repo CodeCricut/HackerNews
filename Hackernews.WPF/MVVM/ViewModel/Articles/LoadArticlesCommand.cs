@@ -1,12 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.ViewModels;
-using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Hackernews.WPF.Core.Commands
 {
@@ -17,7 +11,7 @@ namespace Hackernews.WPF.Core.Commands
 		private readonly ArticleListViewModel _viewModel;
 
 		public LoadArticlesCommand(ArticleListViewModel viewModel,
-			IApiClient apiClient, 
+			IApiClient apiClient,
 			PrivateUserViewModel userVM)
 		{
 			_viewModel = viewModel;

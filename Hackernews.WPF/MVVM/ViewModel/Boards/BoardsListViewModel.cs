@@ -6,7 +6,6 @@ using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
@@ -14,7 +13,7 @@ namespace Hackernews.WPF.ViewModels
 	{
 		public PagingParams PagingParams = new PagingParams();
 
-		public BoardViewModel BoardViewModel { get; } = new BoardViewModel(); 
+		public BoardViewModel BoardViewModel { get; } = new BoardViewModel();
 
 		public ObservableCollection<GetBoardModel> Boards { get; private set; } = new ObservableCollection<GetBoardModel>();
 

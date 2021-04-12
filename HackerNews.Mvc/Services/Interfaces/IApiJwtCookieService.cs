@@ -1,5 +1,4 @@
 ﻿using HackerNews.Domain.Common.Models;
-using System;
 
 namespace HackerNews.Mvc.Services.Interfaces
 {

@@ -8,7 +8,6 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.Mvc.Services;
-using HackerNews.Mvc.Services.Interfaces;
 using HackerNews.Mvc.ViewModels.ViewComponents;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ namespace HackerNews.Mvc.ViewComponents
 			GetPublicUserModel user = await getUserQuery.DefaultIfExceptionAsync(_mediator);
 
 
-			string jwt =  _apiJwtManager.GetToken();
+			string jwt = _apiJwtManager.GetToken();
 
 			bool loggedIn = false;
 			bool saved = false;

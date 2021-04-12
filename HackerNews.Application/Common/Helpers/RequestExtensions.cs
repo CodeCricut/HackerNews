@@ -13,7 +13,7 @@ namespace HackerNews.Application.Common.Helpers
 		public static async Task<TResponse> DefaultIfExceptionAsync<TException, TResponse>(
 			this IRequest<TResponse> request,
 			IMediator mediator
-			) 
+			)
 			where TException : Exception
 		{
 			try

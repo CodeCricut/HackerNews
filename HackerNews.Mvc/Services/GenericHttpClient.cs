@@ -1,7 +1,4 @@
-﻿using HackerNews.Domain.Common.Models;
-using HackerNews.Domain.Common.Models.Users;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;

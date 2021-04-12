@@ -2,7 +2,6 @@
 using Hackernews.WPF.Helpers;
 using HackerNews.Domain.Common.Models.Users;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +15,8 @@ namespace Hackernews.WPF.ViewModels
 		private GetPrivateUserModel User
 		{
 			get => _user;
-			set { 
+			set
+			{
 				if (_user != value)
 				{
 					_user = value;
@@ -46,7 +46,7 @@ namespace Hackernews.WPF.ViewModels
 					User.UserName = value;
 					RaisePropertyChanged();
 				}
-			} 
+			}
 		}
 
 		public int Karma

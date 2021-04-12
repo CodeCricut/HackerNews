@@ -43,7 +43,7 @@ namespace HackerNews.Application.Comments.Commands.DeleteComment
 
 			bool userOwnsComment = comment.UserId != currentUser.Id;
 			bool userModeratesComment = await _commentOperationValidator.CanDeleteEntityAsync(comment, currentUser.AdminLevel);
-			if (! (userOwnsComment || userModeratesComment)) throw new UnauthorizedException();
+			if (!(userOwnsComment || userModeratesComment)) throw new UnauthorizedException();
 
 			// soft delete and save
 			var successful = await UnitOfWork.Comments.DeleteEntityAsync(request.Id);

@@ -2,13 +2,11 @@ using HackerNews.Application;
 using HackerNews.Domain;
 using HackerNews.Infrastructure;
 using HackerNews.Mvc.Configuration;
-using HackerNews.Mvc.Pipeline.Extensions;
 using HackerNews.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace HackerNews.Mvc
 {

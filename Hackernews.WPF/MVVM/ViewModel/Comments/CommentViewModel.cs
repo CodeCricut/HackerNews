@@ -6,11 +6,11 @@ namespace Hackernews.WPF.ViewModels
 	public class CommentViewModel : BaseViewModel
 	{
 		public bool IsCommentSelected { get => Comment != null; }
-		
+
 		private GetCommentModel _comment;
 		public GetCommentModel Comment
 		{
-			get => _comment; 
+			get => _comment;
 			set
 			{
 				if (_comment != value)

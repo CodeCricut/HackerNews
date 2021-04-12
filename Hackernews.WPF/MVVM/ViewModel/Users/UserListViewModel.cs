@@ -4,12 +4,8 @@ using Hackernews.WPF.MVVM.Model;
 using Hackernews.WPF.MVVM.ViewModel.Users;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {

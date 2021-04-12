@@ -1,17 +1,6 @@
 ﻿using Hackernews.WPF.ViewModels;
-using HackerNews.Domain.Common.Models.Articles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Hackernews.WPF.Controls
 {
@@ -32,7 +21,7 @@ namespace Hackernews.WPF.Controls
 		public ArticleDetailsControl()
 		{
 			InitializeComponent();
-			
+
 			rootElement.DataContext = this;
 		}
 	}

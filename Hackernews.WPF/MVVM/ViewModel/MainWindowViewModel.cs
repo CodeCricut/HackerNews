@@ -1,6 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
-using HackerNews.Domain.Common.Models.Users;
 using System.Threading.Tasks;
 using System.Windows.Input;
 

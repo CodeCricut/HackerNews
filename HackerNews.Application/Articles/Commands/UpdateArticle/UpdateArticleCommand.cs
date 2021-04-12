@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HackerNews.Application.Common.AdminLevelOperationValidators;
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Articles;
@@ -29,7 +28,7 @@ namespace HackerNews.Application.Articles.Commands.UpdateArticle
 		private readonly IAdminLevelOperationValidator<Article> _articleOperationValidator;
 
 		public UpdateArticleHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService,
-			IAdminLevelOperationValidator<Article> articleOperationValidator ) : base(unitOfWork, mediator, mapper, currentUserService)
+			IAdminLevelOperationValidator<Article> articleOperationValidator) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 			_articleOperationValidator = articleOperationValidator;
 		}
@@ -45,10 +44,10 @@ namespace HackerNews.Application.Articles.Commands.UpdateArticle
 
 			// Verify user owns the entity.
 			var article = await UnitOfWork.Articles.GetEntityAsync(request.ArticleId);
-			
+
 			bool userOwnsArticle = article.UserId != currentUser.Id;
 			bool userModeratesArticle = await _articleOperationValidator.CanModifyEntityAsync(article, currentUser.AdminLevel);
-			if (! (userOwnsArticle || userModeratesArticle)) throw new UnauthorizedException();
+			if (!(userOwnsArticle || userModeratesArticle)) throw new UnauthorizedException();
 
 			var entityFromModel = Mapper.Map<Article>(request.PostArticleModel);
 			var entityBeingUpdated = Mapper.Map<Article>(article);
