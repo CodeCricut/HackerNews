@@ -1,6 +1,4 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Services;
-using HackerNews.Domain.Common.Models.Articles;
+﻿using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
 using System;
 using System.ComponentModel;

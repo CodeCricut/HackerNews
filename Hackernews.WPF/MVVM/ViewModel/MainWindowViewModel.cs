@@ -87,7 +87,7 @@ namespace Hackernews.WPF.ViewModels
 			SelectedListViewModel = BoardsListViewModel;
 			SelectedDetailsViewModel = BoardViewModel;
 			//NavigationModelType = NavigationModelType.Boards;
-			await BoardsListViewModel.LoadBoardsAsync();
+			await Task.Factory.StartNew(() => BoardsListViewModel.LoadCommand.TryExecute());
 		}
 
 		public async Task SelectArticlesAsync()

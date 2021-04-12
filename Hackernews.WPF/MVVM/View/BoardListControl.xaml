@@ -27,10 +27,10 @@
                 <Button Grid.Column="1" Command="{Binding BoardsListViewModel.PrevPageCommand}"
                     Background="Transparent" BorderThickness="0"  Margin="0 0 10 0" Padding="0 0 0 10">Previous Page</Button>
 
-                <TextBlock Text="{Binding BoardsListViewModel.CurrentPageNumber}"/>
+                <TextBlock Text="{Binding BoardsListViewModel.BoardPageVM.CurrentPageNumber}"/>
 
                 <TextBlock Text="/"/>
-                <TextBlock Text="{Binding BoardsListViewModel.TotalPages}"/>
+                <TextBlock Text="{Binding BoardsListViewModel.BoardPageVM.TotalPages}"/>
 
                 <Button Grid.Column="2" Command="{Binding BoardsListViewModel.NextPageCommand}"
                     Background="Transparent"  BorderThickness="0" VerticalAlignment="Center" Margin="10 0 0 0" Padding="0 0 0 10">Next Page</Button>
