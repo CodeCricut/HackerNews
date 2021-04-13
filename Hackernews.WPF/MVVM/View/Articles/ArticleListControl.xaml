@@ -12,19 +12,19 @@
              d:Background="White"
              Background="Transparent">
     <Border x:Name="rootElement"
-            Padding="0 10"
-            CornerRadius="10 10 0 0"
-            Background="{StaticResource cardBackground}">
+            Style="{StaticResource listViewBorderStyle}">
         
         <!--Article List-->
-        <ListView Background="Transparent"
+        <ListView 
+                   Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ItemsSource="{Binding ArticleListViewModel.Articles, Mode=OneWay}"
-                  SelectedItem="{Binding ArticleListViewModel.ArticleViewModel, Mode=TwoWay}">
+                  SelectedItem="{Binding ArticleListViewModel.ArticleViewModel, Mode=TwoWay}"
+                  ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:ArticleViewModel}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding Title}" Foreground="White"/>
                         <TextBlock Text=" (user owned)"
                                    Visibility="{Binding UserCreatedArticle, 

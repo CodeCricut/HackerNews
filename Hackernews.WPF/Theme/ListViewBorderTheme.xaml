@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="{x:Type Border}" x:Key="listViewBorderStyle">
+        <Setter Property="Padding"
+                Value="0 10" />
+        <Setter Property="CornerRadius"
+                Value="10 10 0 0" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Background"
+                Value="{StaticResource cardBackground}" />
+    </Style>
+</ResourceDictionary>

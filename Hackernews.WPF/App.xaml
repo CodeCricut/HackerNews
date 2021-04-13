@@ -12,6 +12,8 @@
                 <ResourceDictionary Source="Theme/MenuButtonTheme.xaml" />
                 <ResourceDictionary Source="Theme/ExitButtonTheme.xaml" />
                 <ResourceDictionary Source="Theme/PaginationButtonStyle.xaml" />
+                <ResourceDictionary Source="Theme/EntityListViewItemTheme.xaml" />
+                <ResourceDictionary Source="Theme/ListViewBorderTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="boolToVis"/>
         </ResourceDictionary>

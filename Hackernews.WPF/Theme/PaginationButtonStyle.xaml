@@ -19,7 +19,7 @@
     <SolidColorBrush x:Key="Button.Static.Border"
                      Color="Transparent" />
     <SolidColorBrush x:Key="Button.MouseOver.Background"
-                     Color="#2d2b40" />
+                     Color="#22202f" />
     <SolidColorBrush x:Key="Button.MouseOver.Border"
                      Color="Transparent" />
     <SolidColorBrush x:Key="Button.Pressed.Background"
