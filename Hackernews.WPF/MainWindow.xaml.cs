@@ -24,9 +24,10 @@ namespace Hackernews.WPF
 			this.Loaded += MainWindow_Loaded;
 		}
 
-		private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			MainWindowVM.SelectHome();
+			homeNavButton.IsChecked = true;
 		}
 
 		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

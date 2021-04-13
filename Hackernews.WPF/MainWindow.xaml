@@ -89,6 +89,7 @@
                 </StackPanel.Resources>
                 <RadioButton Content="Home"
                              Command="{Binding SelectHomeCommand}"
+                             x:Name="homeNavButton"
                              />
                 <RadioButton Content="Profile" />
                 <RadioButton Content="Settings" />
