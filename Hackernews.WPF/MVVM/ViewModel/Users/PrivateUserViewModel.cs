@@ -85,14 +85,16 @@ namespace Hackernews.WPF.ViewModels
 		#endregion
 
 		public BoardsListViewModel BoardsModeratingListViewModel { get; private set; }
+		public BoardsListViewModel BoardsSubscribedListViewModel { get; private set; }
 
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
 		public PrivateUserViewModel(IApiClient apiClient)
 		{
 			_apiClient = apiClient;
-			
+
 			SetupBoardsModeratingListVM();
+			SetupBoardsSubscribedListVM();
 
 			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUserAsync);
 		}
@@ -104,11 +106,22 @@ namespace Hackernews.WPF.ViewModels
 			BoardsModeratingListViewModel.LoadCommand = loadModeratingBoardsCommand;
 		}
 
+		private void SetupBoardsSubscribedListVM()
+		{
+			BoardsSubscribedListViewModel = new BoardsListViewModel(_apiClient);
+			var loadSubscribignBoardsCommand = new LoadBoardsByIdsCommand(BoardsSubscribedListViewModel, _apiClient);
+			BoardsSubscribedListViewModel.LoadCommand = loadSubscribignBoardsCommand;
+		}
+
 
 		private async Task TryLoadPrivateUserAsync()
 		{
 			User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");
-			await Task.Factory.StartNew(() => BoardsModeratingListViewModel.LoadCommand.TryExecute(User.BoardsModerating));
+			await Task.Factory.StartNew(() =>
+			{
+				BoardsModeratingListViewModel.LoadCommand.TryExecute(User.BoardsModerating);
+				BoardsSubscribedListViewModel.LoadCommand.TryExecute(User.BoardsSubscribed);
+			});
 		}
 	}
 }
