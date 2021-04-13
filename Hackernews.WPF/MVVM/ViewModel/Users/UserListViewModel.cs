@@ -2,14 +2,14 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.Model;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.MVVM.ViewModel.Users;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace Hackernews.WPF.ViewModels
+namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class UserListViewModel : BaseViewModel, IPageNavigatorViewModel
 	{

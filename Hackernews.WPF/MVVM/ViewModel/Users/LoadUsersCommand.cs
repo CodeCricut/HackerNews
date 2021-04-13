@@ -1,9 +1,8 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
-using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Users;
 
-namespace Hackernews.WPF.MVVM.ViewModel.Users
+namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class LoadUsersCommand : BaseCommand
 	{
@@ -18,7 +17,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Users
 
 		public override async void Execute(object parameter)
 		{
-			await App.Current.Dispatcher.Invoke(async () =>
+			await System.Windows.Application.Current.Dispatcher.Invoke(async () =>
 			{
 				_viewModel.Users.Clear();
 

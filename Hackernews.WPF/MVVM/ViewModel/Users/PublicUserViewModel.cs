@@ -1,7 +1,8 @@
-﻿using HackerNews.Domain.Common.Models.Users;
+﻿using Hackernews.WPF.ViewModels;
+using HackerNews.Domain.Common.Models.Users;
 using System;
 
-namespace Hackernews.WPF.ViewModels
+namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class PublicUserViewModel : BaseViewModel
 	{

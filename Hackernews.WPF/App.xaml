@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Theme/PaginationButtonStyle.xaml" />
                 <ResourceDictionary Source="Theme/EntityListViewItemTheme.xaml" />
                 <ResourceDictionary Source="Theme/ListViewBorderTheme.xaml" />
+                <ResourceDictionary Source="Theme/NavigationSeparatorStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="boolToVis"/>
         </ResourceDictionary>

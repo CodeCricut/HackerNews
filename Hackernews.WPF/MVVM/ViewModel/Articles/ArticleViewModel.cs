@@ -1,10 +1,11 @@
-﻿using HackerNews.Domain.Common.Models.Articles;
+﻿using Hackernews.WPF.ViewModels;
+using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Entities;
 using System;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Hackernews.WPF.ViewModels
+namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class ArticleViewModel : BaseViewModel
 	{

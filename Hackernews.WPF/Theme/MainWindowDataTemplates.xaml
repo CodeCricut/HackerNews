@@ -1,34 +1,39 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:controls="clr-namespace:Hackernews.WPF.Controls"
-                    xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
+                    xmlns:viewmodel="clr-namespace:Hackernews.WPF.MVVM.ViewModel"
+                    xmlns:view="clr-namespace:Hackernews.WPF.MVVM.View"
                     >
-    <DataTemplate DataType="{x:Type viewmodels:UserListViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
+        <view:HomeControl />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:UserListViewModel}">
         <controls:UserListControl UserListViewModel="{Binding}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:ArticleListViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:ArticleListViewModel}">
         <controls:ArticleListControl ArticleListViewModel="{Binding}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:CommentListViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:CommentListViewModel}">
         <controls:CommentListControl CommentListViewModel="{Binding}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:BoardsListViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:BoardsListViewModel}">
         <controls:BoardListControl BoardsListViewModel="{Binding}"/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type viewmodels:PublicUserViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:PublicUserViewModel}">
         <controls:UserDetailControl 
                 UserListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.UserListViewModel}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:ArticleViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
         <controls:ArticleDetailsControl 
                 ArticleListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticleListViewModel}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:CommentViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:CommentViewModel}">
         <controls:CommentDetailsControl 
                 CommentListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.CommentListViewModel}"/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodels:BoardViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:BoardViewModel}">
         <controls:BoardDetailsControl 
                 BoardsListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.BoardsListViewModel}"/>
     </DataTemplate>

@@ -26,9 +26,7 @@ namespace Hackernews.WPF
 
 		private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			await Task.Factory.StartNew(() => MainWindowVM.UserListViewModel.LoadCommand.TryExecute());
-			if (MainWindowVM.PrivateUserViewModel.TryLoadUserCommand.CanExecute(null))
-				MainWindowVM.PrivateUserViewModel.TryLoadUserCommand.Execute(null);
+			MainWindowVM.SelectHome();
 		}
 
 		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Hackernews.WPF.Controls"
-             xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
+             xmlns:viewmodel="clr-namespace:Hackernews.WPF.MVVM.ViewModel"
              d:DataContext="{d:DesignInstance Type=local:ArticleListControl}"
              mc:Ignorable="d"
              d:DesignHeight="450"
@@ -23,7 +23,7 @@
                   SelectedItem="{Binding ArticleListViewModel.ArticleViewModel, Mode=TwoWay}"
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}">
             <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:ArticleViewModel}">
+                <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="{Binding Title}" Foreground="White"/>
                         <TextBlock Text=" (user owned)"

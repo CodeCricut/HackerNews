@@ -3,13 +3,14 @@ using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.Model;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace Hackernews.WPF.ViewModels
+namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class CommentListViewModel : BaseViewModel, IPageNavigatorViewModel
 	{

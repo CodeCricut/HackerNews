@@ -1,6 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
-using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Comments;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Comments

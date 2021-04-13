@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 
