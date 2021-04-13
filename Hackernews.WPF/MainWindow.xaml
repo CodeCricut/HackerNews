@@ -5,94 +5,159 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hackernews.WPF"
         mc:Ignorable="d"
-        xmlns:articles="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain" 
-        xmlns:controls="clr-namespace:Hackernews.WPF.Controls" 
-        xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels" 
+        xmlns:articles="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain"
+        xmlns:controls="clr-namespace:Hackernews.WPF.Controls"
+        xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
-        Title="MainWindow" Height="450" Width="800"
-        Name="MainWindowView">
+        Title="MainWindow"
+        Height="450"
+        Width="800"
+        Name="MainWindowView"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None">
     <Window.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="Theme/MainWindowDataTemplates.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
-                <BooleanToVisibilityConverter x:Key="boolToVis"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/MainWindowDataTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="boolToVis" />
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-      
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
-        <!--Header-->
-        <Grid Background="Orange" Grid.ColumnSpan="2">
+    <Border Background="#272537"
+            CornerRadius="20">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <TextBlock FontSize="30" Foreground="White" FontWeight="Bold" Margin="10 10 10 0">Hacker News</TextBlock>
-            <TextBlock Grid.Row="1" Foreground="White"  Margin="10 0 10 10">Administrative Panel V1</TextBlock>
 
-            <Grid Grid.Column="1" Grid.RowSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <controls:ButtonEx 
-                    Command="{Binding SelectUsersCommand}"
-                    Grid.Column="0"
-                    Style="{StaticResource navigationButton}"
-                    >Users</controls:ButtonEx>
-                <controls:ButtonEx 
-                    Command="{Binding SelectBoardsCommand}"
+            <!--Drag bar-->
+            <Rectangle x:Name="dragPanel"
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Height="50"
+                       VerticalAlignment="Top"
+                       MouseDown="dragPanel_MouseDown"
+                       Fill="Transparent" />
+
+            <!--Header-->
+            <StackPanel Orientation="Vertical"
+                        Margin="20 10"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                <TextBlock FontSize="22"
+                           Foreground="White"
+                           FontWeight="Bold">
+                    Hacker News
+                </TextBlock>
+                <TextBlock Foreground="White">
+                    Administrative Panel V1
+                </TextBlock>
+            </StackPanel>
+
+            <Button Command="{Binding CloseCommand}"
                     Grid.Column="1"
-                    Style="{StaticResource navigationButton}"
-                    >Boards</controls:ButtonEx>
-                <controls:ButtonEx 
-                    Command="{Binding SelectArticlesCommand}"
-                    Grid.Column="2"
-                    Style="{StaticResource navigationButton}"
-                    >Articles</controls:ButtonEx>
-                <controls:ButtonEx 
-                    Command="{Binding SelectCommentsCommand}"
-                    Grid.Column="3"
-                    Style="{StaticResource navigationButton}"
-                    >Comments</controls:ButtonEx>
+                    Width="25"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="20"
+                    Foreground="White"
+                    FontSize="20"
+                    Style="{StaticResource ExitButton}" />
+
+            <!--Navigation-->
+            <StackPanel Grid.Row="1">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type RadioButton}"
+                           BasedOn="{StaticResource MenuButtonTheme}">
+                        <Setter Property="FontSize"
+                                Value="14" />
+                        <Setter Property="Foreground"
+                                Value="White" />
+                        <Setter Property="Height"
+                                Value="50" />
+                    </Style>
+                </StackPanel.Resources>
+                <RadioButton Content="Users"
+                             Command="{Binding SelectUsersCommand}" />
+                <RadioButton Content="Boards"
+                             Command="{Binding SelectBoardsCommand}" />
+                <RadioButton Content="Articles"
+                             Command="{Binding SelectArticlesCommand}" />
+                <RadioButton Content="Comments"
+                             Command="{Binding SelectCommentsCommand}" />
+            </StackPanel>
+
+            <!--Main Panel-->
+            <Grid Grid.Row="1"
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <!--List views-->
+                <ContentControl 
+                    Grid.RowSpan="2"
+                    Content="{Binding SelectedListViewModel}" />
+
+                <!--Details views-->
+                <ContentControl Grid.Column="1"
+                                Content="{Binding SelectedDetailsViewModel}" />
+
+                <!--Pagination-->
+                <Grid Grid.Row="2"
+                      Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Style="{DynamicResource PaginationButtonStyle}"
+                            Command="{Binding ArticleListViewModel.PrevPageCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="10"
+                            HorizontalAlignment="Right"
+                            Foreground="White">Previous Page</Button>
+
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding ArticleListViewModel.ArticlePageVM.CurrentPageNumber}"
+                                   Foreground="White" />
+
+                        <TextBlock Text="/"
+                                   Foreground="White" />
+                        <TextBlock Text="{Binding ArticleListViewModel.ArticlePageVM.TotalPages}"
+                                   Foreground="White" />
+
+                    </StackPanel>
+
+                    <Button Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            Style="{DynamicResource PaginationButtonStyle}"
+                            Command="{Binding ArticleListViewModel.NextPageCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            VerticalAlignment="Center"
+                            Padding="10"
+                            Foreground="White">Next Page</Button>
+                </Grid>
             </Grid>
         </Grid>
-
-        <!--List views-->
-        <ContentControl Grid.Row="1"
-                        Grid.RowSpan="2"
-                        Content="{Binding SelectedListViewModel}"
-                        />
-        
-        <!--Detailes views-->
-        <ContentControl Grid.Row="1"
-                        Grid.Column="1"
-                        Content="{Binding SelectedDetailsViewModel}"
-                        />
-
-        <!--Footer-->
-        <Border Grid.Row="3" Grid.ColumnSpan="2" Background="Orange" Padding="10">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Logged in as " Foreground="White"/>
-                <TextBlock Text="{Binding PrivateUserViewModel.UserName, Mode=OneWay}" Foreground="White"/>
-            </StackPanel> 
-        </Border>
-    </Grid>
+    </Border>
 </Window>

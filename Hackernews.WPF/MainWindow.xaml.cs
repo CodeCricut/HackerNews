@@ -17,6 +17,8 @@ namespace Hackernews.WPF
 			InitializeComponent();
 
 			MainWindowVM = new MainWindowViewModel(apiClient, userVm);
+			MainWindowVM.CloseAction = () => this.Close();
+
 			DataContext = MainWindowVM;
 
 			this.Loaded += MainWindow_Loaded;
@@ -27,6 +29,14 @@ namespace Hackernews.WPF
 			await Task.Factory.StartNew(() => MainWindowVM.UserListViewModel.LoadCommand.TryExecute());
 			if (MainWindowVM.PrivateUserViewModel.TryLoadUserCommand.CanExecute(null))
 				MainWindowVM.PrivateUserViewModel.TryLoadUserCommand.Execute(null);
+		}
+
+		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+			{
+				this.DragMove();
+			}
 		}
 	}
 }

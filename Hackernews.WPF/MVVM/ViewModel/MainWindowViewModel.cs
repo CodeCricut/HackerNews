@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -8,7 +9,6 @@ namespace Hackernews.WPF.ViewModels
 	public class MainWindowViewModel : BaseViewModel
 	{
 		private object _selectedListViewModel;
-
 		public object SelectedListViewModel
 		{
 			get { return _selectedListViewModel; }
@@ -20,7 +20,6 @@ namespace Hackernews.WPF.ViewModels
 		}
 
 		private object _selectedDetailsViewModel;
-
 		public object SelectedDetailsViewModel
 		{
 			get { return _selectedDetailsViewModel; }
@@ -31,10 +30,16 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
+		public Action CloseAction { get; set; }
+
+		public ICommand CloseCommand { get; }
+
 		public AsyncDelegateCommand SelectUsersCommand { get; }
 		public ICommand SelectBoardsCommand { get; }
 		public ICommand SelectArticlesCommand { get; }
 		public ICommand SelectCommentsCommand { get; }
+
+
 
 		public BoardsListViewModel BoardsListViewModel { get; }
 		public ArticleListViewModel ArticleListViewModel { get; }
@@ -65,6 +70,7 @@ namespace Hackernews.WPF.ViewModels
 
 			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
 
+			CloseCommand = new DelegateCommand(() => CloseAction?.Invoke());
 
 			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);
 			SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
