@@ -23,7 +23,6 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
-
 		private IPageNavigatorViewModel _selectedListViewModel;
 		public IPageNavigatorViewModel SelectedListViewModel
 		{
@@ -51,6 +50,8 @@ namespace Hackernews.WPF.ViewModels
 		public ICommand CloseCommand { get; }
 
 		public ICommand SelectHomeCommand { get; }
+		public ICommand SelectProfileCommand { get; }
+
 		public AsyncDelegateCommand SelectUsersCommand { get; }
 		public ICommand SelectBoardsCommand { get; }
 		public ICommand SelectArticlesCommand { get; }
@@ -62,6 +63,7 @@ namespace Hackernews.WPF.ViewModels
 		public UserListViewModel UserListViewModel { get; }
 
 		public HomeViewModel HomeViewModel { get;  }
+		public ProfileViewModel ProfileViewModel { get; }
 
 		public BoardViewModel BoardViewModel { get; }
 		public ArticleViewModel ArticleViewModel { get; }
@@ -73,12 +75,15 @@ namespace Hackernews.WPF.ViewModels
 
 		public MainWindowViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
 		{
+			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
+
 			UserListViewModel = new UserListViewModel(apiClient);
 			BoardsListViewModel = new BoardsListViewModel(apiClient);
 			ArticleListViewModel = new ArticleListViewModel(apiClient, userVM);
 			CommentListViewModel = new CommentListViewModel(apiClient);
 
 			HomeViewModel = new HomeViewModel();
+			ProfileViewModel = new ProfileViewModel(PrivateUserViewModel);
 
 			PublicUserViewModel = new PublicUserViewModel();
 			BoardViewModel = new BoardViewModel();
@@ -87,11 +92,12 @@ namespace Hackernews.WPF.ViewModels
 
 			//NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticleListViewModel, CommentListViewModel);
 
-			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
 
 			CloseCommand = new DelegateCommand(() => CloseAction?.Invoke());
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
+			SelectProfileCommand = new DelegateCommand(SelectProfile);
+
 			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);
 			SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
 			SelectArticlesCommand = new AsyncDelegateCommand(SelectArticlesAsync);
@@ -103,6 +109,15 @@ namespace Hackernews.WPF.ViewModels
 			SelectedListViewModel = null;
 			SelectedDetailsViewModel = null;
 			SelectedFullscreenViewModel = HomeViewModel;
+		}
+
+		public void SelectProfile()
+		{
+			SelectedListViewModel = null;
+			SelectedDetailsViewModel = null;
+			SelectedFullscreenViewModel = ProfileViewModel;
+
+			PrivateUserViewModel.TryLoadUserCommand.Execute(null);
 		}
 
 		public async Task SelectUsersAsync()

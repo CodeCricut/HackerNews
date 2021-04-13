@@ -91,7 +91,7 @@
                              Command="{Binding SelectHomeCommand}"
                              x:Name="homeNavButton"
                              />
-                <RadioButton Content="Profile" />
+                <RadioButton Content="Profile" Command="{Binding SelectProfileCommand}"/>
                 <RadioButton Content="Settings" />
 
                 <Border Style="{StaticResource separatorStyle}" />

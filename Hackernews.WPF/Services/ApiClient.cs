@@ -1,4 +1,5 @@
 ﻿using HackerNews.Domain.Common.Models;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
@@ -13,6 +14,7 @@ namespace Hackernews.WPF.ApiClients
 		Task<TEntity> GetAsync<TEntity>(int id, string endpoint = "") where TEntity : class;
 		Task<TEntity> GetAsync<TEntity>(string endpoint = "") where TEntity : class;
 		Task<PaginatedList<TEntity>> GetPageAsync<TEntity>(PagingParams pagingParams, string endpoint = "") where TEntity : class;
+		Task<PaginatedList<TEntity>> GetAsync<TEntity>(List<int> ids, PagingParams pagingParams, string endpoint = "") where TEntity : class;
 
 		void SetAuthorizationHeader(AuthenticationHeaderValue value);
 	}
@@ -32,6 +34,29 @@ namespace Hackernews.WPF.ApiClients
 		{
 			var uri = $"{endpoint}/{id}";
 			return await GetAsync<TEntity>(uri);
+		}
+
+		public async Task<PaginatedList<TEntity>> GetAsync<TEntity>(List<int> ids, PagingParams pagingParams, string endpoint = "") where TEntity : class
+		{
+			SetAuthorizationHeaderForInstance();
+
+			string idQuery = "";
+
+			for(int i = 0; i < ids.Count; i++)
+			{
+				//if (i == 0)
+				//	idQuery += $"id={ids[i]}";
+				//else
+					idQuery += $"&id={ids[i]}";
+			}
+
+			string url = $"{endpoint}/range?PageNumber={pagingParams.PageNumber}&PageSize={pagingParams.PageSize}{idQuery}";
+			var response = await _httpClient.GetAsync(url);
+
+			response.EnsureSuccessStatusCode();
+			var content = await response.Content.ReadAsAsync<PaginatedList<TEntity>>();
+
+			return content;
 		}
 
 		public async Task<TEntity> GetAsync<TEntity>(string endpoint = "") where TEntity : class

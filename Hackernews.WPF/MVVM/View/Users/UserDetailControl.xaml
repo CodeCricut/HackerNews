@@ -27,7 +27,7 @@
 
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Joined"
+                <TextBlock Text="Joined "
                            Foreground="Gray" />
                 <TextBlock Text="{Binding UserListViewModel.UserViewModel.JoinDate}"
                            Foreground="Gray" />

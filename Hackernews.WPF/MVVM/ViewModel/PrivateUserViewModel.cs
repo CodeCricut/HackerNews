@@ -1,5 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Boards;
 using HackerNews.Domain.Common.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -11,30 +13,18 @@ namespace Hackernews.WPF.ViewModels
 	{
 		private readonly IApiClient _apiClient;
 
-		private GetPrivateUserModel _user;
+		#region User and User Props
+		private GetPrivateUserModel _user = new GetPrivateUserModel();
 		private GetPrivateUserModel User
 		{
-			get => _user;
-			set
+			get => _user; set
 			{
-				if (_user != value)
-				{
-					_user = value;
-					RaisePropertyChanged("");
-				}
+				_user = value;
+				RaisePropertyChanged("");
 			}
 		}
 
 		public bool IsLoaded { get => User != null; }
-
-		public AsyncDelegateCommand TryLoadUserCommand { get; }
-
-		public PrivateUserViewModel(IApiClient apiClient)
-		{
-			_apiClient = apiClient;
-			User = new GetPrivateUserModel();
-			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUser);
-		}
 
 		public string UserName
 		{
@@ -92,16 +82,33 @@ namespace Hackernews.WPF.ViewModels
 		public IEnumerable<int> CommentIds { get => User?.CommentIds; }
 		public IEnumerable<int> BoardModeratingIds { get => User?.BoardsModerating; }
 		public IEnumerable<int> BoardSubcribedIds { get => User?.BoardsSubscribed; }
+		#endregion
 
-		private async Task TryLoadPrivateUser()
+		public BoardsListViewModel BoardsModeratingListViewModel { get; private set; }
+
+		public AsyncDelegateCommand TryLoadUserCommand { get; }
+
+		public PrivateUserViewModel(IApiClient apiClient)
 		{
-			try
-			{
-				User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");
-			}
-			catch (Exception)
-			{
-			}
+			_apiClient = apiClient;
+			
+			SetupBoardsModeratingListVM();
+
+			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUserAsync);
+		}
+
+		private void SetupBoardsModeratingListVM()
+		{
+			BoardsModeratingListViewModel = new BoardsListViewModel(_apiClient);
+			var loadModeratingBoardsCommand = new LoadBoardsByIdsCommand(BoardsModeratingListViewModel, _apiClient);
+			BoardsModeratingListViewModel.LoadCommand = loadModeratingBoardsCommand;
+		}
+
+
+		private async Task TryLoadPrivateUserAsync()
+		{
+			User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");
+			await Task.Factory.StartNew(() => BoardsModeratingListViewModel.LoadCommand.TryExecute(User.BoardsModerating));
 		}
 	}
 }

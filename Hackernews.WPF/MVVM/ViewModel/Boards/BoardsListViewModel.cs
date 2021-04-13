@@ -22,7 +22,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public PaginatedListViewModel<GetBoardModel> BoardPageVM { get; set; }
 
-		public LoadBoardsCommand LoadCommand { get; }
+		public BaseLoadBoardsCommand LoadCommand { get; set; }
 		public AsyncDelegateCommand NextPageCommand { get; }
 		public AsyncDelegateCommand PrevPageCommand { get; }
 
