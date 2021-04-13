@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="Item.MouseOver.Background"
-                     Color="#222030"/>
+                     Color="#373547"/>
     <SolidColorBrush x:Key="Item.MouseOver.Border"
                      Color="Transparent" />
     <SolidColorBrush x:Key="Item.SelectedInactive.Background"

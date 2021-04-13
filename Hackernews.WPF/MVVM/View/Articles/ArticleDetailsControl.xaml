@@ -1,61 +1,68 @@
 ﻿<UserControl x:Class="Hackernews.WPF.Controls.ArticleDetailsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Hackernews.WPF.Controls" xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Hackernews.WPF.Controls"
+             xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
              xmlns:articleModels="clr-namespace:HackerNews.Domain.Common.Models.Articles;assembly=HackerNews.Domain"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Border Name="rootElement"  
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <Border Name="rootElement"
             d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
-            BorderThickness="1" 
-            CornerRadius="10" 
-            Padding="10 20" 
+            BorderThickness="1"
+            CornerRadius="10"
+            Padding="10 20"
             Background="{StaticResource cardBackground}"
             Visibility="{Binding ArticleListViewModel.IsArticleSelected,  
                         Converter={StaticResource boolToVis}, Mode=OneWay}">
-          
-            <!--Main Column-->
-            <Grid>
-                <Grid.RowDefinitions>
+
+        <!--Main Column-->
+        <Grid>
+            <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Posted at " Foreground="Gray"/>
-                    <TextBlock Text="{Binding ArticleListViewModel.ArticleViewModel.PostDate}"
-                           Foreground="Gray"/>
-                    <TextBlock Text=" (user owned)"
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Posted at "
+                           Foreground="Gray" />
+                <TextBlock Text="{Binding ArticleListViewModel.ArticleViewModel.PostDate}"
+                           Foreground="Gray" />
+                <TextBlock Text=" (user owned)"
                            Foreground="Gray"
-                               Visibility="{Binding ArticleListViewModel.ArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}"/>
-                </StackPanel>
+                           Visibility="{Binding ArticleListViewModel.ArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}" />
+            </StackPanel>
 
             <!--Karma column-->
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1">
-                <TextBlock
-                           Text="{Binding ArticleListViewModel.ArticleViewModel.Karma}"
+                <TextBlock Text="{Binding ArticleListViewModel.ArticleViewModel.Karma}"
                            Foreground="Gray" />
                 <TextBlock Text=" points"
                            Foreground="Gray" />
             </StackPanel>
-           
 
 
-            <TextBlock Grid.Row="2" Text="{Binding ArticleListViewModel.ArticleViewModel.Title}"
+
+            <TextBlock Grid.Row="2"
+                       Text="{Binding ArticleListViewModel.ArticleViewModel.Title}"
+                       TextWrapping="Wrap"
+                       FontSize="16"
+                       Margin="0 10 0 5"
+                       Foreground="White" />
+
+            <ScrollViewer Grid.Row="3"
+                          VerticalScrollBarVisibility="Auto">
+                <TextBlock 
+                           Text="{Binding ArticleListViewModel.ArticleViewModel.Text}"
                            TextWrapping="Wrap"
-                           FontSize="16"
-                               Margin="0 10 0 5"
+                           Margin="0 0 10 0"
                            Foreground="White" />
-
-                <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
-                    <TextBlock Grid.Row="1" Text="{Binding ArticleListViewModel.ArticleViewModel.Text}" 
-                           TextWrapping="Wrap"  Margin="0 0 10 0" Foreground="White"/>
-                </ScrollViewer>
-            </Grid>
+            </ScrollViewer>
+        </Grid>
     </Border>
 </UserControl>

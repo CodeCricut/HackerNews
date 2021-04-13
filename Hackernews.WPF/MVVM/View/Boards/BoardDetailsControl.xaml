@@ -1,35 +1,50 @@
 ﻿<UserControl x:Class="Hackernews.WPF.Controls.BoardDetailsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Hackernews.WPF.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="boolToVis"/>
+        <BooleanToVisibilityConverter x:Key="boolToVis" />
     </UserControl.Resources>
 
-    <Border Name="rootElement"  d:DataContext="{d:DesignInstance local:BoardDetailsControl}"
-            BorderThickness="1" BorderBrush="LightGray" CornerRadius="5" Margin="5" Padding="20" Background="{StaticResource cardBackground}"
-             Visibility="{Binding BoardsListViewModel.BoardViewModel.IsBoardSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
+    <Border Name="rootElement"
+            d:DataContext="{d:DesignInstance local:BoardDetailsControl}"
+            BorderThickness="0"
+            CornerRadius="10"
+            Margin="5"
+            Padding="10 20"
+            Background="{StaticResource cardBackground}"
+            Visibility="{Binding BoardsListViewModel.BoardViewModel.IsBoardSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <TextBlock Foreground="Gray" Text="Created at "/>
-                <TextBlock Foreground="Gray" Text="{Binding BoardsListViewModel.BoardViewModel.CreateDate, Mode=OneWay}"/>
+
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal">
+                <TextBlock Foreground="Gray"
+                           Text="Created at " />
+                <TextBlock Foreground="Gray"
+                           Text="{Binding BoardsListViewModel.BoardViewModel.CreateDate, Mode=OneWay}" />
             </StackPanel>
-           
-            <TextBlock Grid.Row="1" TextWrapping="Wrap" FontSize="18" 
-                       Text="{Binding BoardsListViewModel.BoardViewModel.Title}"/>
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding BoardsListViewModel.BoardViewModel.Description}" 
-                           TextWrapping="Wrap"  Margin="0 0 10 0" Foreground="Gray"/>
+
+            <TextBlock Grid.Row="1"
+                       TextWrapping="Wrap"
+                       FontSize="18"
+                       Text="{Binding BoardsListViewModel.BoardViewModel.Title}" 
+                       Foreground="white"/>
+            <ScrollViewer Grid.Row="2"
+                          VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding BoardsListViewModel.BoardViewModel.Description}"
+                           TextWrapping="Wrap"
+                           Margin="0 0 10 0"
+                           Foreground="Gray" />
             </ScrollViewer>
         </Grid>
     </Border>
