@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -8,8 +9,8 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class MainWindowViewModel : BaseViewModel
 	{
-		private object _selectedListViewModel;
-		public object SelectedListViewModel
+		private IPageNavigatorViewModel _selectedListViewModel;
+		public IPageNavigatorViewModel SelectedListViewModel
 		{
 			get { return _selectedListViewModel; }
 			set
@@ -38,8 +39,6 @@ namespace Hackernews.WPF.ViewModels
 		public ICommand SelectBoardsCommand { get; }
 		public ICommand SelectArticlesCommand { get; }
 		public ICommand SelectCommentsCommand { get; }
-
-
 
 		public BoardsListViewModel BoardsListViewModel { get; }
 		public ArticleListViewModel ArticleListViewModel { get; }
@@ -77,7 +76,6 @@ namespace Hackernews.WPF.ViewModels
 			SelectArticlesCommand = new AsyncDelegateCommand(SelectArticlesAsync);
 			SelectCommentsCommand = new AsyncDelegateCommand(SelectCommentsAsync);
 		}
-
 
 		public async Task SelectUsersAsync()
 		{

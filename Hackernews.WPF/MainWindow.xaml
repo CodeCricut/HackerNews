@@ -10,8 +10,8 @@
         xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         Title="MainWindow"
-        Height="450"
-        Width="800"
+        Height="600"
+        Width="1000"
         Name="MainWindowView"
         AllowsTransparency="True"
         Background="Transparent"
@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
 
             <!--Drag bar-->
@@ -97,67 +97,71 @@
             </StackPanel>
 
             <!--Main Panel-->
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="3*" />
-                </Grid.ColumnDefinitions>
-
-                <!--List views-->
-                <ContentControl 
-                    Grid.RowSpan="2"
-                    Content="{Binding SelectedListViewModel}" />
-
-                <!--Details views-->
-                <ContentControl Grid.Column="1"
-                                Content="{Binding SelectedDetailsViewModel}" />
-
-                <!--Pagination-->
-                <Grid Grid.Row="2"
-                      Grid.ColumnSpan="2">
+            <Border Padding="10 0"
+                    Grid.Row="1"
+                    Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
-                    <Button Style="{DynamicResource PaginationButtonStyle}"
-                            Command="{Binding ArticleListViewModel.PrevPageCommand}"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Padding="10"
-                            HorizontalAlignment="Right"
-                            Foreground="White">Previous Page</Button>
 
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding ArticleListViewModel.ArticlePageVM.CurrentPageNumber}"
-                                   Foreground="White" />
+                    <!--List views-->
+                    <ContentControl Grid.RowSpan="3"
+                                    Margin="0 0 10 0"
+                                    Content="{Binding SelectedListViewModel}" />
 
-                        <TextBlock Text="/"
-                                   Foreground="White" />
-                        <TextBlock Text="{Binding ArticleListViewModel.ArticlePageVM.TotalPages}"
-                                   Foreground="White" />
+                    <!--Details views-->
+                    <ContentControl Grid.Column="1"
+                                    Content="{Binding SelectedDetailsViewModel}" />
 
-                    </StackPanel>
+                    <!--Pagination-->
+                    <Grid Grid.Row="2"
+                          Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Style="{DynamicResource PaginationButtonStyle}"
+                                Command="{Binding SelectedListViewModel.PrevPageCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="10"
+                                HorizontalAlignment="Right"
+                                Foreground="White">Previous Page</Button>
 
-                    <Button Grid.Column="2"
-                            HorizontalAlignment="Left"
-                            Style="{DynamicResource PaginationButtonStyle}"
-                            Command="{Binding ArticleListViewModel.NextPageCommand}"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            VerticalAlignment="Center"
-                            Padding="10"
-                            Foreground="White">Next Page</Button>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding SelectedListViewModel.CurrentPage}"
+                                       Foreground="White" />
+
+                            <TextBlock Text="/"
+                                       Foreground="White" />
+                            <TextBlock Text="{Binding SelectedListViewModel.TotalPages}"
+                                       Foreground="White" />
+
+                        </StackPanel>
+
+                        <Button Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource PaginationButtonStyle}"
+                                Command="{Binding SelectedListViewModel.NextPageCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                VerticalAlignment="Center"
+                                Padding="10"
+                                Foreground="White">Next Page</Button>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Border>
+            
         </Grid>
     </Border>
 </Window>
