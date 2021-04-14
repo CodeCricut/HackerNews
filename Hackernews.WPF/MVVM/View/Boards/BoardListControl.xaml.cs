@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Hackernews.WPF.Controls
 {
@@ -21,5 +22,6 @@ namespace Hackernews.WPF.Controls
 
 			rootElement.DataContext = this;
 		}
+
 	}
 }

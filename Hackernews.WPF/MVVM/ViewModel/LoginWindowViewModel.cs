@@ -53,7 +53,7 @@ namespace Hackernews.WPF.ViewModels
 			_mainWindow = mainWindow;
 		}
 
-		private async Task LoginAsync()
+		private async Task LoginAsync(object parameter = null)
 		{
 			// lol wut is security?
 			string password = new System.Net.NetworkCredential(string.Empty, _password).Password;
@@ -65,6 +65,6 @@ namespace Hackernews.WPF.ViewModels
 			_thisWindow.Close();
 		}
 
-		public bool CanLogin() => !(string.IsNullOrEmpty(Username) || Password?.Length <= 0);
+		public bool CanLogin(object parameter = null) => !(string.IsNullOrEmpty(Username) || Password?.Length <= 0);
 	}
 }

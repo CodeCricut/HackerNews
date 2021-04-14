@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Hackernews.WPF.MVVM.View.NavigationControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hackernews.WPF.MVVM.View"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <Grid Name="rootElement"
+          d:DataContext="{d:DesignInstance local:NavigationControl}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Button Style="{DynamicResource PaginationButtonStyle}"
+                Command="{Binding PrevPageCommand}"
+                CommandParameter="{Binding PrevPageCommandParameter}"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="10"
+                HorizontalAlignment="Right"
+                Foreground="White">Previous Page</Button>
+
+        <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="{Binding CurrentPageNumber}"
+                       Foreground="White" />
+
+            <TextBlock Text="/"
+                       Foreground="White" />
+            <TextBlock Text="{Binding TotalPageCount}"
+                       Foreground="White" />
+
+        </StackPanel>
+
+        <Button Grid.Column="2"
+                HorizontalAlignment="Left"
+                Style="{DynamicResource PaginationButtonStyle}"
+                Command="{Binding NextPageCommand}"
+                CommandParameter="{Binding NextPageCommandParameter}"
+                Background="Transparent"
+                BorderThickness="0"
+                VerticalAlignment="Center"
+                Padding="10"
+                Foreground="White">Next Page</Button>
+    </Grid>
+</UserControl>

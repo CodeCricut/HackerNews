@@ -46,8 +46,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			BoardPageVM = new PaginatedListViewModel<GetBoardModel>();
 
 			LoadCommand = createLoadCommand(this);
-			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, () => BoardPageVM.HasNextPage);
-			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, () => BoardPageVM.HasPrevPage);
+			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => BoardPageVM.HasNextPage);
+			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, _ => BoardPageVM.HasPrevPage);
 
 			BoardPageVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaisePageChanged());
 		}
@@ -58,17 +58,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			RaisePropertyChanged(nameof(TotalPages));
 		}
 
-		private async Task NextPageAsync()
+		private async Task NextPageAsync(object parameter = null)
 		{
 			PagingParams = BoardPageVM.NextPagingParams;
-			await Task.Factory.StartNew(() => LoadCommand.TryExecute());
-
+			await Task.Factory.StartNew(() => LoadCommand.TryExecute(parameter));
 		}
 
-		private async Task PrevPageAsync()
+		private async Task PrevPageAsync(object parameter = null)
 		{
 			PagingParams = BoardPageVM.PrevPagingParams;
-			await Task.Factory.StartNew(() => LoadCommand.TryExecute());
+			await Task.Factory.StartNew(() => LoadCommand.TryExecute(parameter));
 		}
 	}
 }

@@ -82,7 +82,9 @@ namespace Hackernews.WPF.ViewModels
 		}
 
 		public IEnumerable<int> ArticleIds { get => User?.ArticleIds; }
+		public IEnumerable<int> SavedArticleIds { get => User?.SavedArticles; }
 		public IEnumerable<int> CommentIds { get => User?.CommentIds; }
+		public IEnumerable<int> SavedCommentIds { get => User?.SavedComments; }
 		public IEnumerable<int> BoardModeratingIds { get => User?.BoardsModerating; }
 		public IEnumerable<int> BoardSubcribedIds { get => User?.BoardsSubscribed; }
 		#endregion
@@ -164,7 +166,7 @@ namespace Hackernews.WPF.ViewModels
 		//}
 
 
-		private async Task TryLoadPrivateUserAsync()
+		private async Task TryLoadPrivateUserAsync(object parameter = null)
 		{
 			User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");
 		    await LoadOwnedViewModelsAsync();

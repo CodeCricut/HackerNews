@@ -122,7 +122,7 @@ namespace Hackernews.WPF.ViewModels
 			PrivateUserViewModel.TryLoadUserCommand.Execute(null);
 		}
 
-		public async Task SelectUsersAsync()
+		public async Task SelectUsersAsync(object parameter = null)
 		{
 			SelectedListViewModel = UserListViewModel;
 			SelectedDetailsViewModel = PublicUserViewModel;
@@ -130,7 +130,7 @@ namespace Hackernews.WPF.ViewModels
 			await Task.Factory.StartNew(() => UserListViewModel.LoadCommand.TryExecute());
 		}
 
-		public async Task SelectBoardsAsync()
+		public async Task SelectBoardsAsync(object parameter = null)
 		{
 			SelectedListViewModel = BoardsListViewModel;
 			SelectedDetailsViewModel = BoardViewModel;
@@ -138,7 +138,7 @@ namespace Hackernews.WPF.ViewModels
 			await Task.Factory.StartNew(() => BoardsListViewModel.LoadCommand.TryExecute());
 		}
 
-		public async Task SelectArticlesAsync()
+		public async Task SelectArticlesAsync(object parameter = null)
 		{
 			SelectedListViewModel = ArticleListViewModel;
 			SelectedDetailsViewModel = ArticleViewModel;
@@ -146,7 +146,7 @@ namespace Hackernews.WPF.ViewModels
 			await Task.Factory.StartNew(() => ArticleListViewModel.LoadCommand.TryExecute());
 		}
 
-		public async Task SelectCommentsAsync()
+		public async Task SelectCommentsAsync(object parameter = null)
 		{
 			SelectedListViewModel = CommentListViewModel;
 			SelectedDetailsViewModel = CommentViewModel;

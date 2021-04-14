@@ -9,6 +9,8 @@
         xmlns:controls="clr-namespace:Hackernews.WPF.Controls"
         xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
         xmlns:viewmodel="clr-namespace:Hackernews.WPF.MVVM.ViewModel"
+        xmlns:helpers="clr-namespace:Hackernews.WPF.Helpers"
+        xmlns:view="clr-namespace:Hackernews.WPF.MVVM.View"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         Title="MainWindow"
         Height="600"
@@ -23,6 +25,14 @@
                 <ResourceDictionary Source="Theme/MainWindowDataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="boolToVis" />
+
+            <Style TargetType="{x:Type ScrollViewer}">
+                <Style.Setters>
+                    <Setter Property="helpers:ScrollViewerCorrector.FixScrolling"
+                            Value="True" />
+                </Style.Setters>
+            </Style>
+            
         </ResourceDictionary>
     </Window.Resources>
 
@@ -136,7 +146,15 @@
                                     Content="{Binding SelectedDetailsViewModel}" />
 
                     <!--Pagination-->
-                    <Grid Grid.Row="2"
+                    <view:NavigationControl Grid.Row="2"
+                                            Grid.Column="1"
+                                            Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}"
+                                            PrevPageCommand="{Binding SelectedListViewModel.PrevPageCommand}"
+                                            CurrentPageNumber="{Binding SelectedListViewModel.CurrentPage}"
+                                            TotalPageCount="{Binding SelectedListViewModel.TotalPages}"
+                                            NextPageCommand="{Binding SelectedListViewModel.NextPageCommand}" />
+
+                    <!--<Grid Grid.Row="2"
                           Grid.Column="1"
                           Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}">
                         <Grid.ColumnDefinitions>
@@ -174,7 +192,7 @@
                                 VerticalAlignment="Center"
                                 Padding="10"
                                 Foreground="White">Next Page</Button>
-                    </Grid>
+                    </Grid>-->
                 </Grid>
             </Border>
             

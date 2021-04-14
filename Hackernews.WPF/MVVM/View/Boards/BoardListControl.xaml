@@ -13,10 +13,12 @@
         <ListView Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"
                   DisplayMemberPath="Title"
                   ItemsSource="{Binding BoardsListViewModel.Boards, Mode=OneWay}"
                   SelectedItem="{Binding BoardsListViewModel.BoardViewModel.Board, Mode=TwoWay}" 
-                  Foreground="White"/>
+                  Foreground="White"
+                  />
     </Border>
 </UserControl>

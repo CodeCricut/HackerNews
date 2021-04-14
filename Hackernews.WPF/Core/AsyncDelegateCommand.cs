@@ -6,10 +6,10 @@ namespace Hackernews.WPF.Helpers
 {
 	public class AsyncDelegateCommand : ICommand
 	{
-		private readonly Func<Task> _execute;
-		private readonly Func<bool> _canExecute;
+		private readonly Func<object, Task> _execute;
+		private readonly Func<object, bool> _canExecute;
 
-		public AsyncDelegateCommand(Func<Task> execute, Func<bool> canExecute = null)
+		public AsyncDelegateCommand(Func<object, Task> execute, Func<object, bool> canExecute = null)
 		{
 			_execute = execute;
 			_canExecute = canExecute;
@@ -22,14 +22,14 @@ namespace Hackernews.WPF.Helpers
 			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 		}
 
-		public bool CanExecute(object parameter)
+		public bool CanExecute(object parameter = null)
 		{
-			return _canExecute == null ? true : _canExecute();
+			return _canExecute == null ? true : _canExecute(parameter);
 		}
 
-		public async void Execute(object parameter)
+		public async void Execute(object parameter = null)
 		{
-			await _execute?.Invoke();
+			await _execute?.Invoke(parameter);
 		}
 	}
 }
