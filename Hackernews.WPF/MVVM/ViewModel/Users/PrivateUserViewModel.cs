@@ -1,7 +1,9 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
+using Hackernews.WPF.MVVM.ViewModel.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -87,6 +89,12 @@ namespace Hackernews.WPF.ViewModels
 		public BoardsListViewModel BoardsModeratingListViewModel { get; private set; }
 		public BoardsListViewModel BoardsSubscribedListViewModel { get; private set; }
 
+		public ArticleListViewModel ArticlesWrittenListViewModel { get; private set; }
+		public ArticleListViewModel ArticlesSavedListViewModel { get; private set; }
+
+		public CommentListViewModel CommentsWrittenListViewModel { get; private set; }
+		public CommentListViewModel CommentsSavedListViewModel { get; private set; }
+
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
 		public PrivateUserViewModel(IApiClient apiClient)
@@ -95,6 +103,10 @@ namespace Hackernews.WPF.ViewModels
 
 			SetupBoardsModeratingListVM();
 			SetupBoardsSubscribedListVM();
+			SetupArticlesWrittenListVM();
+			SetupArticlesSavedListVM();
+			SetupCommentsWrittenListVM();
+			SetupCommentsSavedListVM();
 
 			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUserAsync);
 		}
@@ -113,6 +125,34 @@ namespace Hackernews.WPF.ViewModels
 			BoardsSubscribedListViewModel.LoadCommand = loadSubscribignBoardsCommand;
 		}
 
+		private void SetupArticlesWrittenListVM()
+		{
+			ArticlesWrittenListViewModel = new ArticleListViewModel(_apiClient, this);
+			var loadWrittenArticlesCOmmand = new LoadArticlesByIdsCommand(ArticlesWrittenListViewModel, _apiClient, this);
+			ArticlesWrittenListViewModel.LoadCommand = loadWrittenArticlesCOmmand;
+		}
+
+		private void SetupArticlesSavedListVM()
+		{
+			ArticlesSavedListViewModel = new ArticleListViewModel(_apiClient, this);
+			var loadSavedArticlesCommand = new LoadArticlesByIdsCommand(ArticlesSavedListViewModel, _apiClient, this);
+			ArticlesSavedListViewModel.LoadCommand = loadSavedArticlesCommand;
+		}
+
+		private void SetupCommentsWrittenListVM()
+		{
+			CommentsWrittenListViewModel = new CommentListViewModel(_apiClient);
+			var loadWrittenCommentsCommand = new LoadCommentsByIdsCommand(CommentsWrittenListViewModel, _apiClient);
+			CommentsWrittenListViewModel.LoadCommand = loadWrittenCommentsCommand;
+		}
+
+		private void SetupCommentsSavedListVM()
+		{
+			CommentsSavedListViewModel = new CommentListViewModel(_apiClient);
+			var loadSavedCommentsCommand = new LoadCommentsByIdsCommand(CommentsSavedListViewModel, _apiClient);
+			CommentsSavedListViewModel.LoadCommand = loadSavedCommentsCommand;
+		}
+
 
 		private async Task TryLoadPrivateUserAsync()
 		{
@@ -121,6 +161,12 @@ namespace Hackernews.WPF.ViewModels
 			{
 				BoardsModeratingListViewModel.LoadCommand.TryExecute(User.BoardsModerating);
 				BoardsSubscribedListViewModel.LoadCommand.TryExecute(User.BoardsSubscribed);
+
+				ArticlesWrittenListViewModel.LoadCommand.TryExecute(User.ArticleIds);
+				ArticlesSavedListViewModel.LoadCommand.TryExecute(User.SavedArticles);
+
+				CommentsWrittenListViewModel.LoadCommand.TryExecute(User.CommentIds);
+				CommentsSavedListViewModel.LoadCommand.TryExecute(User.SavedComments);
 			});
 		}
 	}

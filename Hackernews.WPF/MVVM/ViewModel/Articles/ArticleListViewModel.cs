@@ -37,7 +37,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public PaginatedListViewModel<GetArticleModel> ArticlePageVM { get; }
 
-		public BaseCommand LoadCommand { get; }
+		public BaseCommand LoadCommand { get; set; }
 		public AsyncDelegateCommand PrevPageCommand { get; }
 		public AsyncDelegateCommand NextPageCommand { get; }
 

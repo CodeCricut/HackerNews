@@ -2,10 +2,53 @@
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
+using System.Collections.Generic;
 
 namespace Hackernews.WPF.Core.Commands
 {
-	public class LoadArticlesCommand : BaseCommand
+	public abstract class BaseLoadArticlesCommand : BaseCommand
+	{
+	}
+
+	public class LoadArticlesByIdsCommand : BaseLoadArticlesCommand
+	{
+		private readonly ArticleListViewModel _viewModel;
+		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _privateUserViewModel;
+
+		public LoadArticlesByIdsCommand(ArticleListViewModel viewModel, IApiClient apiClient, PrivateUserViewModel privateUserViewModel)
+		{
+			_viewModel = viewModel;
+			_apiClient = apiClient;
+			_privateUserViewModel = privateUserViewModel;
+		}
+
+		public override async void Execute(object parameter)
+		{
+			List<int> ids = (List<int>)parameter;
+			await App.Current.Dispatcher.Invoke(async () =>
+			{
+
+				_viewModel.Articles.Clear();
+
+				_viewModel.ArticlePageVM.Page = await _apiClient.GetAsync<GetArticleModel>(ids, _viewModel.PagingParams, "articles");
+
+				foreach (var article in _viewModel.ArticlePageVM.Items)
+				{
+				 	var vm = new ArticleViewModel(_privateUserViewModel)
+					{
+						Article = article
+					};
+					_viewModel.Articles.Add(vm);
+				}
+
+				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
+				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
+			});
+		}
+	}
+
+	public class LoadArticlesCommand : BaseLoadArticlesCommand
 	{
 		private readonly IApiClient _apiClient;
 		private readonly PrivateUserViewModel _userVM;

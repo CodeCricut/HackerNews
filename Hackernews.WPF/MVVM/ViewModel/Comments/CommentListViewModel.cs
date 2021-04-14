@@ -23,7 +23,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public PaginatedListViewModel<GetCommentModel> CommentPageVM { get; set; }
 
 
-		public LoadCommentsCommand LoadCommand { get; }
+		public BaseLoadCommentsCommand LoadCommand { get; set; }
 		public AsyncDelegateCommand NextPageCommand { get; }
 		public AsyncDelegateCommand PrevPageCommand { get; }
 

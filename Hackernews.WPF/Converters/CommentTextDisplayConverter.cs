@@ -15,7 +15,8 @@ namespace Hackernews.WPF.Converters
 
 				return s.Substring(0, endIndex) + "...";
 			}
-			throw new ArgumentException($"'value' must be of type string.");
+			return "";
+			//throw new ArgumentException($"'value' must be of type string.");
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
