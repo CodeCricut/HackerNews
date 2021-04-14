@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Core;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.Model;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
@@ -6,6 +7,7 @@ using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -22,7 +24,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public PaginatedListViewModel<GetBoardModel> BoardPageVM { get; set; }
 
-		public BaseLoadBoardsCommand LoadCommand { get; set; }
+		public BaseCommand LoadCommand { get; set; }
 		public AsyncDelegateCommand NextPageCommand { get; }
 		public AsyncDelegateCommand PrevPageCommand { get; }
 
@@ -35,11 +37,15 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			get => BoardPageVM.TotalPages;
 		}
 
-		public BoardsListViewModel(IApiClient apiClient)
+		public BoardsListViewModel(IApiClient apiClient) : this(apiClient, thisVM => new LoadBoardsCommand(thisVM, apiClient))
+		{
+		}
+
+		public BoardsListViewModel(IApiClient apiClient,  CreateBaseCommand<BoardsListViewModel> createLoadCommand) 
 		{
 			BoardPageVM = new PaginatedListViewModel<GetBoardModel>();
 
-			LoadCommand = new LoadBoardsCommand(this, apiClient);
+			LoadCommand = createLoadCommand(this);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, () => BoardPageVM.HasNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, () => BoardPageVM.HasPrevPage);
 

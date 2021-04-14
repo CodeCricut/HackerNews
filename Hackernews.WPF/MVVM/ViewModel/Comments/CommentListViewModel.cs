@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Core;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.Model;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
@@ -23,7 +24,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public PaginatedListViewModel<GetCommentModel> CommentPageVM { get; set; }
 
 
-		public BaseLoadCommentsCommand LoadCommand { get; set; }
+		public BaseCommand LoadCommand { get; set; }
 		public AsyncDelegateCommand NextPageCommand { get; }
 		public AsyncDelegateCommand PrevPageCommand { get; }
 
@@ -36,11 +37,11 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			get => CommentPageVM.TotalPages;
 		}
 
-		public CommentListViewModel(IApiClient apiClient)
+		public CommentListViewModel(CreateBaseCommand<CommentListViewModel> createLoadCommand)
 		{
 			CommentPageVM = new PaginatedListViewModel<GetCommentModel>();
 
-			LoadCommand = new LoadCommentsCommand(this, apiClient);
+			LoadCommand = createLoadCommand(this);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, () => CommentPageVM.HasNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, () => CommentPageVM.HasPrevPage);
 

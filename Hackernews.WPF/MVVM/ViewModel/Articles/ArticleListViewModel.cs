@@ -50,11 +50,11 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			get => ArticlePageVM.TotalPages;
 		}
 
-		public ArticleListViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
+		public ArticleListViewModel(CreateBaseCommand<ArticleListViewModel> createLoadCommand)
 		{
 			ArticlePageVM = new PaginatedListViewModel<GetArticleModel>();
 
-			LoadCommand = new LoadArticlesCommand(this, apiClient, userVM);
+			LoadCommand = createLoadCommand(this);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, () => ArticlePageVM.HasNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, () => ArticlePageVM.HasPrevPage);
 

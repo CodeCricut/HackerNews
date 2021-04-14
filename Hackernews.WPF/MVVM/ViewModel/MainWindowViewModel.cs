@@ -1,6 +1,8 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using System;
 using System.Threading.Tasks;
@@ -79,8 +81,8 @@ namespace Hackernews.WPF.ViewModels
 
 			UserListViewModel = new UserListViewModel(apiClient);
 			BoardsListViewModel = new BoardsListViewModel(apiClient);
-			ArticleListViewModel = new ArticleListViewModel(apiClient, userVM);
-			CommentListViewModel = new CommentListViewModel(apiClient);
+			ArticleListViewModel = new ArticleListViewModel(vm => new LoadArticlesCommand(vm, apiClient, userVM));
+			CommentListViewModel = new CommentListViewModel(vm => new LoadCommentsCommand(vm, apiClient));
 
 			HomeViewModel = new HomeViewModel();
 			ProfileViewModel = new ProfileViewModel(PrivateUserViewModel);
