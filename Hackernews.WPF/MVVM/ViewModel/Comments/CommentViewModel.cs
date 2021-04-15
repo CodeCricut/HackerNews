@@ -6,7 +6,14 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class CommentViewModel : BaseViewModel
 	{
-		public bool IsCommentSelected { get => Comment != null; }
+		private bool _isSelected;
+
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			set { _isSelected = value; RaisePropertyChanged(); }
+		}
+
 
 		private GetCommentModel _comment;
 		public GetCommentModel Comment

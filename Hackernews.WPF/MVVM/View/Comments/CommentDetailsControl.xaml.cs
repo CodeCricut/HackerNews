@@ -9,14 +9,14 @@ namespace Hackernews.WPF.Controls
 	/// </summary>
 	public partial class CommentDetailsControl : UserControl
 	{
-		public CommentListViewModel CommentListViewModel
+		public CommentViewModel CommentViewModel
 		{
-			get { return (CommentListViewModel)GetValue(CommentListViewModelProperty); }
-			set { SetValue(CommentListViewModelProperty, value); }
+			get { return (CommentViewModel)GetValue(CommentViewModelProperty); }
+			set { SetValue(CommentViewModelProperty, value); }
 		}
 
-		public static readonly DependencyProperty CommentListViewModelProperty =
-			DependencyProperty.Register("CommentListViewModel", typeof(CommentListViewModel), typeof(CommentDetailsControl), new PropertyMetadata(default(CommentListViewModel)));
+		public static readonly DependencyProperty CommentViewModelProperty =
+			DependencyProperty.Register("CommentViewModel", typeof(CommentViewModel), typeof(CommentDetailsControl), new PropertyMetadata(default(CommentViewModel)));
 
 		public CommentDetailsControl()
 		{

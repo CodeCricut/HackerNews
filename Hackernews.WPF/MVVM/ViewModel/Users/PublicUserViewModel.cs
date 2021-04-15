@@ -6,7 +6,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class PublicUserViewModel : BaseViewModel
 	{
-		public bool IsUserSelected { get => User != null; }
+		private bool _isSelected;
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			set { _isSelected = value; RaisePropertyChanged(); }
+		}
 
 		private GetPublicUserModel _user;
 		public GetPublicUserModel User

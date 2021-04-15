@@ -17,8 +17,8 @@
             BorderThickness="0"
             CornerRadius="5"
             Padding="10 20"
-            Background="{StaticResource cardBackground}"
-            Visibility="{Binding CommentListViewModel.CommentViewModel.IsCommentSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
+            Background="{DynamicResource cardBackground}"
+            Visibility="{Binding CommentViewModel.IsSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -29,14 +29,14 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Posted at "
                            Foreground="{DynamicResource skinFontSecondaryBrush}" />
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.PostDate}"
+                <TextBlock Text="{Binding CommentViewModel.PostDate}"
                            Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </StackPanel>
             <!--Karma column-->
 
             <StackPanel  Grid.Row="1"
                          Orientation="Horizontal">
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Karma}"
+                <TextBlock Text="{Binding CommentViewModel.Karma}"
                            Foreground="{DynamicResource skinFontSecondaryBrush}" />
                 <TextBlock Text=" Points"
                            Foreground="{DynamicResource skinFontSecondaryBrush}" />
@@ -47,7 +47,7 @@
 
             <ScrollViewer Grid.Row="2"
                           VerticalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Text}"
+                <TextBlock Text="{Binding CommentViewModel.Text}"
                            TextWrapping="Wrap"
                            FontSize="16"
                            Margin="0 10 0 0" />

@@ -9,14 +9,15 @@ namespace Hackernews.WPF.Controls
 	/// </summary>
 	public partial class UserDetailControl : UserControl
 	{
-		public UserListViewModel UserListViewModel
+		public PublicUserViewModel UserViewModel
 		{
-			get { return (UserListViewModel)GetValue(UserListViewModelProperty); }
-			set { SetValue(UserListViewModelProperty, value); }
+			get { return (PublicUserViewModel)GetValue(UserViewModelProperty); }
+			set { SetValue(UserViewModelProperty, value); }
 		}
 
-		public static readonly DependencyProperty UserListViewModelProperty =
-			DependencyProperty.Register("UserListViewModel", typeof(UserListViewModel), typeof(UserDetailControl), new PropertyMetadata(default(UserListViewModel)));
+		public static readonly DependencyProperty UserViewModelProperty =
+			DependencyProperty.Register("UserViewModel", typeof(PublicUserViewModel), typeof(UserDetailControl), new PropertyMetadata(default(PublicUserViewModel)));
+
 
 		public UserDetailControl()
 		{

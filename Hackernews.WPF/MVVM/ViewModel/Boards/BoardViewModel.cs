@@ -6,7 +6,13 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class BoardViewModel : BaseViewModel
 	{
-		public bool IsBoardSelected { get => Board != null; }
+		private bool _isSelected;
+
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			set { _isSelected = value; RaisePropertyChanged(); }
+		}
 
 		private GetBoardModel _board;
 		public GetBoardModel Board

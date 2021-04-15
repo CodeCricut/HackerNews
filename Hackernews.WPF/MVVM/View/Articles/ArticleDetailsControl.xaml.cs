@@ -20,17 +20,6 @@ namespace Hackernews.WPF.Controls
 		public static readonly DependencyProperty ArticleViewModelProperty =
 			DependencyProperty.Register("ArticleViewModel", typeof(ArticleViewModel), typeof(ArticleDetailsControl), new PropertyMetadata(default(ArticleViewModel)));
 
-
-
-		//public ArticleListViewModel ArticleListViewModel
-		//{
-		//	get { return (ArticleListViewModel)GetValue(ArticleListViewModelProperty); }
-		//	set { SetValue(ArticleListViewModelProperty, value); }
-		//}
-
-		//public static readonly DependencyProperty ArticleListViewModelProperty =
-		//	DependencyProperty.Register(nameof(ArticleListViewModel), typeof(ArticleListViewModel), typeof(ArticleDetailsControl), new PropertyMetadata(default(ArticleListViewModel)));
-
 		public ArticleDetailsControl()
 		{
 			InitializeComponent();

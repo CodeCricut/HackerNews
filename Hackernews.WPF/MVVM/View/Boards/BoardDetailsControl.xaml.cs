@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,16 +10,14 @@ namespace Hackernews.WPF.Controls
 	/// </summary>
 	public partial class BoardDetailsControl : UserControl
 	{
-		public BoardsListViewModel BoardsListViewModel
+		public BoardViewModel BoardViewModel
 		{
-			get { return (BoardsListViewModel)GetValue(BoardsListViewModelProperty); }
-			set { SetValue(BoardsListViewModelProperty, value); }
+			get { return (BoardViewModel)GetValue(BoardViewModelProperty); }
+			set { SetValue(BoardViewModelProperty, value); }
 		}
 
-		// Using a DependencyProperty as the backing store for BoardsListViewModel.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty BoardsListViewModelProperty =
-			DependencyProperty.Register("BoardsListViewModel", typeof(BoardsListViewModel), typeof(BoardDetailsControl), new PropertyMetadata(default(BoardsListViewModel)));
-
+		public static readonly DependencyProperty BoardViewModelProperty =
+			DependencyProperty.Register("BoardViewModel", typeof(BoardViewModel), typeof(BoardDetailsControl), new PropertyMetadata(default(BoardViewModel)));
 
 		public BoardDetailsControl()
 		{
