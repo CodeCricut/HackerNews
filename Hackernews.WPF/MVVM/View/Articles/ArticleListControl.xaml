@@ -15,13 +15,21 @@
             Style="{DynamicResource listViewBorderStyle}">
         
         <!--Article List-->
+        <!--SelectedItem="{Binding ArticleListViewModel.SelectedArticle, Mode=TwoWay}"-->
+        <!--ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"-->
         <ListView Foreground="{DynamicResource skinFontBrush}"
                    Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsSource="{Binding ArticleListViewModel.Articles, Mode=OneWay}"
-                  SelectedItem="{Binding ArticleListViewModel.ArticleViewModel, Mode=TwoWay}"
-                  ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}">
+                  ItemsSource="{Binding ArticleListViewModel.Articles, Mode=OneWay}">
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource EntityListViewItemContainerStyle}" TargetType="{x:Type ListViewItem}">
+                    <Setter Property="IsSelected"
+                            Value="{Binding IsSelected}" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            
+            
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
                     <StackPanel Orientation="Horizontal" >

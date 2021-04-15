@@ -22,6 +22,15 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
+		private bool _isSelected;
+
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			set { _isSelected = value; RaisePropertyChanged(); }
+		}
+
+
 
 		public ArticleViewModel(PrivateUserViewModel privateUser)
 		{

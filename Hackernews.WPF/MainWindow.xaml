@@ -140,7 +140,8 @@
 
                     <!--Details views-->
                     <ContentControl Grid.Column="1"
-                                    Content="{Binding SelectedDetailsViewModel}" />
+                                    Content="{Binding SelectedDetailsViewModel}" 
+                                    Height="480"/>
 
                     <!--Pagination-->
                     <view:NavigationControl Grid.Row="2"

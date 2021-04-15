@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:Hackernews.WPF.Controls"
              mc:Ignorable="d"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:articles="clr-namespace:Hackernews.WPF.MVVM.View.Articles"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <UserControl.Resources>
@@ -135,10 +136,15 @@
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
                                                          ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel, Mode=OneWay}" />
-                            <controls:ArticleDetailsControl Margin="5 10 0 0"
+                            <articles:MultiArticleDetailsControl Margin="5 10 0 0"
+                                                                 Grid.Row="1"
+                                                                 Grid.Column="1"
+                                                                 ArticleViewModels="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.Articles, Mode=OneWay}" />
+
+                            <!--<controls:ArticleDetailsControl Margin="5 10 0 0"
                                                             Grid.Row="1"
                                                             Grid.Column="1"
-                                                            ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel, Mode=OneWay}" />
+                                                            ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel, Mode=OneWay}" />-->
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
@@ -171,10 +177,16 @@
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
                                                          ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel, Mode=OneWay}" />
-                            <controls:ArticleDetailsControl Margin="5 10 0 0"
+
+                            <articles:MultiArticleDetailsControl  Grid.Row="1"
+                                                                  Grid.Column="1"
+                                                                  Margin="5 10 0 0"
+                                                                  ArticleViewModels="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.Articles, Mode=OneWay}" />
+
+                            <!--<controls:ArticleDetailsControl Margin="5 10 0 0"
                                                             Grid.Row="1"
                                                             Grid.Column="1"
-                                                            ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel, Mode=OneWay}" />
+                                                            ArticleViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel., Mode=OneWay}" />-->
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"

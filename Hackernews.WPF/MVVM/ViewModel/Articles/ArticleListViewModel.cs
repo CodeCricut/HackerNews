@@ -5,6 +5,7 @@ using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -15,21 +16,36 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	{
 		public PagingParams PagingParams = new PagingParams();
 
-		private ArticleViewModel _articleViewModel;
-		public ArticleViewModel ArticleViewModel
-		{
-			get => _articleViewModel;
-			set
-			{
-				if (_articleViewModel != value)
-				{
-					_articleViewModel = value;
-					RaisePropertyChanged("");
-				}
-			}
-		}
+		//private List<ArticleViewModel> _selectedArticleVMs;
 
-		public bool IsArticleSelected { get => ArticleViewModel != null; }
+		//public List<ArticleViewModel> SelectedArticleVMs
+		//{
+		//	get => _selectedArticleVMs; 
+		//	set {
+		//		if (_selectedArticleVMs != value)
+		//		{
+		//			_selectedArticleVMs = value;
+		//			RaisePropertyChanged("");
+		//		}
+		//	}
+		//}
+
+
+		//private ArticleViewModel _articleViewModel;
+		//public ArticleViewModel ArticleViewModel
+		//{
+		//	get => _articleViewModel;
+		//	set
+		//	{
+		//		if (_articleViewModel != value)
+		//		{
+		//			_articleViewModel = value;
+		//			RaisePropertyChanged("");
+		//		}
+		//	}
+		//}
+
+		//public bool IsArticleSelected { get => SelectedArticleVMs != null && SelectedArticleVMs.Count > 0; }
 
 		public ObservableCollection<ArticleViewModel> Articles { get; private set; } = new ObservableCollection<ArticleViewModel>();
 

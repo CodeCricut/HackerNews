@@ -4,7 +4,7 @@
                     xmlns:viewmodel="clr-namespace:Hackernews.WPF.MVVM.ViewModel"
                     xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
                     xmlns:view="clr-namespace:Hackernews.WPF.MVVM.View"
-                    >
+                    xmlns:articles="clr-namespace:Hackernews.WPF.MVVM.View.Articles">
     <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
         <view:HomeControl />
     </DataTemplate>
@@ -33,8 +33,9 @@
                 UserListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.UserListViewModel}"/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
-        <controls:ArticleDetailsControl 
-                ArticleListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticleListViewModel}"/>
+        <articles:MultiArticleDetailsControl ArticleViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticleListViewModel.Articles}" />
+        <!--<controls:ArticleDetailsControl 
+                ArticleListViewModel="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticleListViewModel}"/>-->
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:CommentViewModel}">
         <controls:CommentDetailsControl 
