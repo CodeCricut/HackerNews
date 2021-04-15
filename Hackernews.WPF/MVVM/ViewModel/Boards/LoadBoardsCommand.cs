@@ -1,6 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
-using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using System.Collections.Generic;
 

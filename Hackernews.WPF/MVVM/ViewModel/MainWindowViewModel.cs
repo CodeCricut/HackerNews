@@ -16,8 +16,8 @@ namespace Hackernews.WPF.ViewModels
 		private object _selectedFullscreenViewModel;
 		public object SelectedFullscreenViewModel
 		{
-			get => _selectedFullscreenViewModel; 
-			set 
+			get => _selectedFullscreenViewModel;
+			set
 			{
 				_selectedFullscreenViewModel = value;
 				RaisePropertyChanged();
@@ -64,7 +64,7 @@ namespace Hackernews.WPF.ViewModels
 		public CommentListViewModel CommentListViewModel { get; }
 		public UserListViewModel UserListViewModel { get; }
 
-		public HomeViewModel HomeViewModel { get;  }
+		public HomeViewModel HomeViewModel { get; }
 		public ProfileViewModel ProfileViewModel { get; }
 
 		public BoardViewModel BoardViewModel { get; }

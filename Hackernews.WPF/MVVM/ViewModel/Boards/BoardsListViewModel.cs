@@ -7,7 +7,6 @@ using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -41,7 +40,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 		}
 
-		public BoardsListViewModel(IApiClient apiClient,  CreateBaseCommand<BoardsListViewModel> createLoadCommand) 
+		public BoardsListViewModel(IApiClient apiClient, CreateBaseCommand<BoardsListViewModel> createLoadCommand)
 		{
 			BoardPageVM = new PaginatedListViewModel<GetBoardModel>();
 

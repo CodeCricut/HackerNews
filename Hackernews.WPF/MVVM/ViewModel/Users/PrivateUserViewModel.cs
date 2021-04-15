@@ -169,7 +169,7 @@ namespace Hackernews.WPF.ViewModels
 		private async Task TryLoadPrivateUserAsync(object parameter = null)
 		{
 			User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");
-		    await LoadOwnedViewModelsAsync();
+			await LoadOwnedViewModelsAsync();
 		}
 
 		private async Task LoadOwnedViewModelsAsync()

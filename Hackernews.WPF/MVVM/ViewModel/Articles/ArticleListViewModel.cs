@@ -1,6 +1,4 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
-using Hackernews.WPF.Core.Commands;
+﻿using Hackernews.WPF.Core;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.Model;
 using Hackernews.WPF.MVVM.ViewModel.Common;

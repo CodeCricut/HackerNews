@@ -42,12 +42,12 @@ namespace Hackernews.WPF.ApiClients
 
 			string idQuery = "";
 
-			for(int i = 0; i < ids.Count; i++)
+			for (int i = 0; i < ids.Count; i++)
 			{
 				//if (i == 0)
 				//	idQuery += $"id={ids[i]}";
 				//else
-					idQuery += $"&id={ids[i]}";
+				idQuery += $"&id={ids[i]}";
 			}
 
 			string url = $"{endpoint}/range?PageNumber={pagingParams.PageNumber}&PageSize={pagingParams.PageSize}{idQuery}";

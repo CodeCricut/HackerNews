@@ -35,7 +35,7 @@ namespace Hackernews.WPF.Core.Commands
 
 				foreach (var article in _viewModel.ArticlePageVM.Items)
 				{
-				 	var vm = new ArticleViewModel(_privateUserViewModel)
+					var vm = new ArticleViewModel(_privateUserViewModel)
 					{
 						Article = article
 					};
