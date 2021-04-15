@@ -10,8 +10,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <helpers:SkinResourceDictionary LightSource="Theme/LightTheme.xaml"
                                                 DarkSource="Theme/DarkTheme.xaml" />
-                
+
                 <ResourceDictionary Source="Theme/TextBlockStyle.xaml" />
+                <ResourceDictionary Source="Theme/CheckBoxStyle.xaml" />
 
                 <ResourceDictionary Source="Theme/NavigationButtonStyle.xaml" />
                 <ResourceDictionary Source="Theme/MenuButtonTheme.xaml" />

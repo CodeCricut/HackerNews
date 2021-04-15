@@ -11,6 +11,9 @@
     <DataTemplate DataType="{x:Type viewmodel:ProfileViewModel}">
         <view:ProfileControl ProfileViewModel="{Binding}" />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodel:SettingsViewModel}">
+        <view:SettingsControl SettingsViewModel="{Binding}" />
+    </DataTemplate>
 
     <DataTemplate DataType="{x:Type viewmodel:UserListViewModel}">
         <controls:UserListControl UserListViewModel="{Binding}"/>

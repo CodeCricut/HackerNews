@@ -1,5 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
+using System;
 using System.Windows;
 
 namespace Hackernews.WPF

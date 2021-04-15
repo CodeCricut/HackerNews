@@ -10,7 +10,7 @@
                      Color="{StaticResource skinBackground}" />
 
 
-    <Color x:Key="skinBackgroundDark">#d1d1d1</Color>
+    <Color x:Key="skinBackgroundDark">#dbdbdb</Color>
     <SolidColorBrush x:Key="skinBackgroundDarkBrush"
                      Color="{StaticResource skinBackgroundDark}" />
     
@@ -26,8 +26,9 @@
     <LinearGradientBrush x:Key="cardBackground"
                          StartPoint="0,0"
                          EndPoint="1, 2">
+        <!--#d1d1d1-->
         <GradientStop Color="#d1d1d1" />
-        <GradientStop Color="#c2c2c2"
+        <GradientStop Color="#c9c9c9"
                       Offset="1" />
     </LinearGradientBrush>
 </ResourceDictionary>

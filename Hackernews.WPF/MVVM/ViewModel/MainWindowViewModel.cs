@@ -51,8 +51,11 @@ namespace Hackernews.WPF.ViewModels
 
 		public ICommand CloseCommand { get; }
 
+		// TODO: consolidate into one command with a command parameter
 		public ICommand SelectHomeCommand { get; }
 		public ICommand SelectProfileCommand { get; }
+		public ICommand SelectSettingsCommand { get; }
+
 
 		public AsyncDelegateCommand SelectUsersCommand { get; }
 		public ICommand SelectBoardsCommand { get; }
@@ -66,6 +69,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public HomeViewModel HomeViewModel { get; }
 		public ProfileViewModel ProfileViewModel { get; }
+		public SettingsViewModel SettingsViewModel { get; }
 
 		public BoardViewModel BoardViewModel { get; }
 		public ArticleViewModel ArticleViewModel { get; }
@@ -86,6 +90,7 @@ namespace Hackernews.WPF.ViewModels
 
 			HomeViewModel = new HomeViewModel();
 			ProfileViewModel = new ProfileViewModel(PrivateUserViewModel);
+			SettingsViewModel = new SettingsViewModel();
 
 			PublicUserViewModel = new PublicUserViewModel();
 			BoardViewModel = new BoardViewModel();
@@ -95,10 +100,11 @@ namespace Hackernews.WPF.ViewModels
 			//NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticleListViewModel, CommentListViewModel);
 
 
-			CloseCommand = new DelegateCommand(() => CloseAction?.Invoke());
+			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectProfileCommand = new DelegateCommand(SelectProfile);
+			SelectSettingsCommand = new DelegateCommand(SelectSettings);
 
 			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);
 			SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
@@ -106,20 +112,27 @@ namespace Hackernews.WPF.ViewModels
 			SelectCommentsCommand = new AsyncDelegateCommand(SelectCommentsAsync);
 		}
 
-		public void SelectHome()
+		public void SelectHome(object parameter = null)
 		{
 			SelectedListViewModel = null;
 			SelectedDetailsViewModel = null;
 			SelectedFullscreenViewModel = HomeViewModel;
 		}
 
-		public void SelectProfile()
+		public void SelectProfile(object parameter = null)
 		{
 			SelectedListViewModel = null;
 			SelectedDetailsViewModel = null;
 			SelectedFullscreenViewModel = ProfileViewModel;
 
 			PrivateUserViewModel.TryLoadUserCommand.Execute(null);
+		}
+
+		public void SelectSettings(object parameter = null)
+		{
+			SelectedListViewModel = null;
+			SelectedDetailsViewModel = null;
+			SelectedFullscreenViewModel = SettingsViewModel;
 		}
 
 		public async Task SelectUsersAsync(object parameter = null)

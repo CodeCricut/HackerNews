@@ -3,7 +3,7 @@
     <Style TargetType="{x:Type Border}"
            x:Key="separatorStyle">
         <Setter Property="Background"
-                Value="{StaticResource skinBackgroundLightBrush}" />
+                Value="{DynamicResource skinBackgroundLightBrush}" />
         <Setter Property="CornerRadius"
                 Value="0 2 2 0" />
         <Setter Property="Padding"

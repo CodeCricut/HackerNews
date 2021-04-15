@@ -52,16 +52,14 @@
                        Text="{Binding ArticleListViewModel.ArticleViewModel.Title}"
                        TextWrapping="Wrap"
                        FontSize="16"
-                       Margin="0 10 0 5"
-                       Foreground="White" />
+                       Margin="0 10 0 5"/>
 
             <ScrollViewer Grid.Row="3"
                           VerticalScrollBarVisibility="Auto">
                 <TextBlock 
                            Text="{Binding ArticleListViewModel.ArticleViewModel.Text}"
                            TextWrapping="Wrap"
-                           Margin="0 0 10 0"
-                           Foreground="White" />
+                           Margin="0 0 10 0"/>
             </ScrollViewer>
         </Grid>
     </Border>

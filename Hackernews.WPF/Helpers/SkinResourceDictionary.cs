@@ -29,7 +29,7 @@ namespace Hackernews.WPF.Helpers
 		}
 
 
-		private void UpdateSource()
+		public void UpdateSource()
 		{
 			var val = App.Skin == Skin.Light ? LightSource : DarkSource;
 			if (val != null && base.Source != val)

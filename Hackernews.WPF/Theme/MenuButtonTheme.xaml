@@ -45,7 +45,7 @@
             <Trigger Property="IsChecked"
                      Value="True">
                 <Setter Property="Background"
-                        Value="{StaticResource skinBackgroundDarkBrush}" />
+                        Value="{DynamicResource skinBackgroundDarkBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>

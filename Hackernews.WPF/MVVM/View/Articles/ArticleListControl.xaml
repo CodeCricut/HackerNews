@@ -12,7 +12,7 @@
              d:Background="White"
              Background="Transparent">
     <Border x:Name="rootElement"
-            Style="{StaticResource listViewBorderStyle}">
+            Style="{DynamicResource listViewBorderStyle}">
         
         <!--Article List-->
         <ListView Foreground="{DynamicResource skinFontBrush}"
