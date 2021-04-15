@@ -16,37 +16,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	{
 		public PagingParams PagingParams = new PagingParams();
 
-		//private List<ArticleViewModel> _selectedArticleVMs;
-
-		//public List<ArticleViewModel> SelectedArticleVMs
-		//{
-		//	get => _selectedArticleVMs; 
-		//	set {
-		//		if (_selectedArticleVMs != value)
-		//		{
-		//			_selectedArticleVMs = value;
-		//			RaisePropertyChanged("");
-		//		}
-		//	}
-		//}
-
-
-		//private ArticleViewModel _articleViewModel;
-		//public ArticleViewModel ArticleViewModel
-		//{
-		//	get => _articleViewModel;
-		//	set
-		//	{
-		//		if (_articleViewModel != value)
-		//		{
-		//			_articleViewModel = value;
-		//			RaisePropertyChanged("");
-		//		}
-		//	}
-		//}
-
-		//public bool IsArticleSelected { get => SelectedArticleVMs != null && SelectedArticleVMs.Count > 0; }
-
 		public ObservableCollection<ArticleViewModel> Articles { get; private set; } = new ObservableCollection<ArticleViewModel>();
 
 		public PaginatedListViewModel<GetArticleModel> ArticlePageVM { get; }

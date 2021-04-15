@@ -17,12 +17,13 @@
     <Border x:Name="rootElement"
             Style="{StaticResource listViewBorderStyle}">
 
+        <!--SelectedItem="{Binding CommentListViewModel.CommentViewModel.Comment, Mode=TwoWay}"-->
+
         <ListView Background="Transparent"
                   Foreground="{DynamicResource skinFontBrush}"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ItemsSource="{Binding CommentListViewModel.Comments, Mode=OneWay}"
-                  SelectedItem="{Binding CommentListViewModel.CommentViewModel.Comment, Mode=TwoWay}"
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"
             >
            <ListView.ItemTemplate>

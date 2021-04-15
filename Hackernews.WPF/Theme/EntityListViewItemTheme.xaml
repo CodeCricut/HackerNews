@@ -14,6 +14,11 @@
                      Color="Transparent" />
 
     <Style x:Key="EntityListViewItemContainerStyle" TargetType="{x:Type ListViewItem}">
+        
+        <!--TODO: this is probably so obsfusiocatedadfdaf that it borders ununderstandable-->
+        <Setter Property="IsSelected"
+                Value="{Binding IsSelected}" />
+
         <Setter Property="SnapsToDevicePixels"
                 Value="True" />
         <Setter Property="Padding"

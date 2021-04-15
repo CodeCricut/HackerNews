@@ -17,7 +17,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public CommentViewModel CommentViewModel { get; } = new CommentViewModel();
 
-		public ObservableCollection<GetCommentModel> Comments { get; private set; } = new ObservableCollection<GetCommentModel>();
+		public ObservableCollection<CommentViewModel> Comments { get; private set; } = new ObservableCollection<CommentViewModel>();
 
 		public PaginatedListViewModel<GetCommentModel> CommentPageVM { get; set; }
 

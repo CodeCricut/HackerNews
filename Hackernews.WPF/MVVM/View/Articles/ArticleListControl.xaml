@@ -21,15 +21,8 @@
                    Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsSource="{Binding ArticleListViewModel.Articles, Mode=OneWay}">
-            <ListView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource EntityListViewItemContainerStyle}" TargetType="{x:Type ListViewItem}">
-                    <Setter Property="IsSelected"
-                            Value="{Binding IsSelected}" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            
-            
+                  ItemsSource="{Binding ArticleListViewModel.Articles, Mode=OneWay}"
+                  ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
                     <StackPanel Orientation="Horizontal" >

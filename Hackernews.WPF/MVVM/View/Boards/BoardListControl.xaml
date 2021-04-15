@@ -8,8 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border x:Name="rootElement"
-            Style="{StaticResource listViewBorderStyle}">
+            Style="{DynamicResource listViewBorderStyle}">
 
+        <!--SelectedItem="{Binding BoardsListViewModel.BoardViewModel.Board, Mode=TwoWay}"-->
         <ListView Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -17,7 +18,6 @@
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"
                   DisplayMemberPath="Title"
                   ItemsSource="{Binding BoardsListViewModel.Boards, Mode=OneWay}"
-                  SelectedItem="{Binding BoardsListViewModel.BoardViewModel.Board, Mode=TwoWay}"
                   Foreground="{DynamicResource skinFontBrush}"
                   />
     </Border>

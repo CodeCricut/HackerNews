@@ -9,6 +9,8 @@
              mc:Ignorable="d"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:articles="clr-namespace:Hackernews.WPF.MVVM.View.Articles"
+             xmlns:boards="clr-namespace:Hackernews.WPF.MVVM.View.Boards"
+             xmlns:comments="clr-namespace:Hackernews.WPF.MVVM.View.Comments"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <UserControl.Resources>
@@ -64,10 +66,15 @@
                                                        Grid.Row="1"
                                                        Margin="0 10 5 0"
                                                        BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel}" />
-                            <controls:BoardDetailsControl Margin="5 10 0 0"
+
+                            <boards:MultiBoardDetailsControl BoardViewModels="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel.Boards}"
+                                                             Margin="5 10 0 0"
+                                                             Grid.Row="1"
+                                                             Grid.Column="1" />
+                            <!--<controls:BoardDetailsControl Margin="5 10 0 0"
                                                           Grid.Row="1"
                                                           Grid.Column="1"
-                                                          BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel}" />
+                                                          BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel}" />-->
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
@@ -100,10 +107,11 @@
                                                        Grid.Row="1"
                                                        Margin="0 10 5 0"
                                                        BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel}" />
-                            <controls:BoardDetailsControl Margin="5 10 0 0"
+                            
+                            <boards:MultiBoardDetailsControl Margin="5 10 0 0"
                                                           Grid.Row="1"
                                                           Grid.Column="1"
-                                                          BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel}" />
+                                                          BoardViewModels="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel.Boards}" />
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
@@ -140,11 +148,6 @@
                                                                  Grid.Row="1"
                                                                  Grid.Column="1"
                                                                  ArticleViewModels="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.Articles, Mode=OneWay}" />
-
-                            <!--<controls:ArticleDetailsControl Margin="5 10 0 0"
-                                                            Grid.Row="1"
-                                                            Grid.Column="1"
-                                                            ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel, Mode=OneWay}" />-->
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
@@ -183,11 +186,6 @@
                                                                   Margin="5 10 0 0"
                                                                   ArticleViewModels="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.Articles, Mode=OneWay}" />
 
-                            <!--<controls:ArticleDetailsControl Margin="5 10 0 0"
-                                                            Grid.Row="1"
-                                                            Grid.Column="1"
-                                                            ArticleViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel., Mode=OneWay}" />-->
-
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
@@ -219,10 +217,12 @@
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
                                                          CommentListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel, Mode=OneWay}" />
-                            <controls:CommentDetailsControl Margin="5 10 0 0"
+                            
+                            <comments:MultiCommentDetailsControl Margin="5 10 0 0"
                                                             Grid.Row="1"
                                                             Grid.Column="1"
-                                                            CommentListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel, Mode=OneWay}" />
+                                                            CommentViewModels="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel.Comments, Mode=OneWay}" />
+                            
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
@@ -251,14 +251,16 @@
                             <TextBlock Text="Saved Comments"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
+                            
                             <controls:CommentListControl Grid.RowSpan="3"
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
                                                          CommentListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel, Mode=OneWay}" />
-                            <controls:CommentDetailsControl Margin="5 10 0 0"
+                            
+                            <comments:MultiCommentDetailsControl  Margin="5 10 0 0"
                                                             Grid.Row="1"
                                                             Grid.Column="1"
-                                                            CommentListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel, Mode=OneWay}" />
+                                                            CommentViewModels="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel.Comments, Mode=OneWay}" />
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"

@@ -27,7 +27,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		public string UserName
+		public string Username
 		{
 			get => User?.Username ?? "";
 			set

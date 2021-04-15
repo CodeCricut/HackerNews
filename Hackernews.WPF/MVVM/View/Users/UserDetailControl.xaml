@@ -43,7 +43,7 @@
             </StackPanel>
 
             <TextBlock Grid.Row="2"
-                       Text="{Binding UserViewModel.UserName}"
+                       Text="{Binding UserViewModel.Username}"
                        TextWrapping="Wrap"
                        FontSize="16"
                        Margin="0 0 10 0"

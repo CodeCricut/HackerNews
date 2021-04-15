@@ -17,7 +17,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public PublicUserViewModel UserViewModel { get; } = new PublicUserViewModel();
 
-		public ObservableCollection<GetPublicUserModel> Users { get; private set; } = new ObservableCollection<GetPublicUserModel>();
+		public ObservableCollection<PublicUserViewModel> Users { get; private set; } = new ObservableCollection<PublicUserViewModel>();
 
 		public PaginatedListViewModel<GetPublicUserModel> UserPageVM { get; set; } = new PaginatedListViewModel<GetPublicUserModel>();
 

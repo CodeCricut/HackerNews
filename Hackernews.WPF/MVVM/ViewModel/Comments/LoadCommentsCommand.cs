@@ -33,7 +33,11 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 
 				foreach (var comment in _viewModel.CommentPageVM.Items)
 				{
-					_viewModel.Comments.Add(comment);
+					var vm = new CommentViewModel()
+					{
+						Comment = comment
+					};
+					_viewModel.Comments.Add(vm);
 				}
 
 				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
@@ -63,9 +67,13 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 
 				_viewModel.CommentPageVM.Page = await _apiClient.GetPageAsync<GetCommentModel>(_viewModel.PagingParams, "comments");
 
-				foreach (var board in _viewModel.CommentPageVM.Items)
+				foreach (var comment in _viewModel.CommentPageVM.Items)
 				{
-					_viewModel.Comments.Add(board);
+					var vm = new CommentViewModel()
+					{
+						Comment = comment
+					};
+					_viewModel.Comments.Add(vm);
 				}
 
 				_viewModel.NextPageCommand.RaiseCanExecuteChanged();

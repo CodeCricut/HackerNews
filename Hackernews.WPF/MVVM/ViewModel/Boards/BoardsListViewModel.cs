@@ -19,7 +19,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public BoardViewModel BoardViewModel { get; } = new BoardViewModel();
 
-		public ObservableCollection<GetBoardModel> Boards { get; private set; } = new ObservableCollection<GetBoardModel>();
+		public ObservableCollection<BoardViewModel> Boards { get; private set; } = new ObservableCollection<BoardViewModel>();
 
 		public PaginatedListViewModel<GetBoardModel> BoardPageVM { get; set; }
 

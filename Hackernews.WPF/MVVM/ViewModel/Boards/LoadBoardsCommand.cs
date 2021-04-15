@@ -33,7 +33,12 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
-					_viewModel.Boards.Add(board);
+					var vm = new BoardViewModel()
+					{
+						Board = board
+					};
+
+					_viewModel.Boards.Add(vm);
 				}
 
 				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
@@ -65,7 +70,12 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
-					_viewModel.Boards.Add(board);
+					var vm = new BoardViewModel()
+					{
+						Board = board
+					};
+
+					_viewModel.Boards.Add(vm);
 				}
 
 				_viewModel.NextPageCommand.RaiseCanExecuteChanged();

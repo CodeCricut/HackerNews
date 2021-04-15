@@ -15,13 +15,13 @@
     <SolidColorBrush x:Key="GlyphBrush"
                      Color="#444" />
     <SolidColorBrush x:Key="NormalBrush"
-                     Color="{StaticResource skinBackgroundLight}" />
+                     Color="{DynamicResource skinBackgroundLight}" />
     <SolidColorBrush x:Key="NormalBorderBrush"
-                     Color="{StaticResource skinBackgroundLight}" />
+                     Color="{DynamicResource skinBackgroundLight}" />
     <SolidColorBrush x:Key="HorizontalNormalBrush"
-                     Color="{StaticResource skinBackgroundLight}" />
+                     Color="{DynamicResource skinBackgroundLight}" />
     <SolidColorBrush x:Key="HorizontalNormalBorderBrush"
-                     Color="{StaticResource skinBackgroundLight}" />
+                     Color="{DynamicResource skinBackgroundLight}" />
 
     <LinearGradientBrush x:Key="ListBoxBackgroundBrush"
                          StartPoint="0,0"

@@ -23,9 +23,14 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 				_viewModel.UserPageVM.Page = await _apiClient.GetPageAsync<GetPublicUserModel>(_viewModel.PagingParams, "users");
 
-				foreach (var board in _viewModel.UserPageVM.Items)
+				foreach (var user in _viewModel.UserPageVM.Items)
 				{
-					_viewModel.Users.Add(board);
+
+					var vm = new PublicUserViewModel()
+					{
+						User = user
+					}; 
+					_viewModel.Users.Add(vm);
 				}
 
 				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
