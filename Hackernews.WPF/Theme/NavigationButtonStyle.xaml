@@ -7,7 +7,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HoverBackground" Value="Transparent"/>
             <Setter Property="HoverFontSize" Value="22"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource skinFontBrush}"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
         </Style.Setters>

@@ -45,7 +45,7 @@
             <Trigger Property="IsChecked"
                      Value="True">
                 <Setter Property="Background"
-                        Value="#22202f" />
+                        Value="{StaticResource skinBackgroundDarkBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
