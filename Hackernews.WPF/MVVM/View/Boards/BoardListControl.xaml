@@ -17,8 +17,8 @@
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"
                   DisplayMemberPath="Title"
                   ItemsSource="{Binding BoardsListViewModel.Boards, Mode=OneWay}"
-                  SelectedItem="{Binding BoardsListViewModel.BoardViewModel.Board, Mode=TwoWay}" 
-                  Foreground="White"
+                  SelectedItem="{Binding BoardsListViewModel.BoardViewModel.Board, Mode=TwoWay}"
+                  Foreground="{DynamicResource skinFontBrush}"
                   />
     </Border>
 </UserControl>

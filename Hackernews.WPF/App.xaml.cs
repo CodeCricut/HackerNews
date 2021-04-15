@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.Configuration;
+using Hackernews.WPF.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +15,8 @@ namespace Hackernews.WPF
 	{
 		private readonly ServiceProvider _serviceProvider;
 		private readonly IConfigurationRoot _configuration;
+
+		public static Skin Skin { get; set; } = Skin.Light;
 
 		public App()
 		{

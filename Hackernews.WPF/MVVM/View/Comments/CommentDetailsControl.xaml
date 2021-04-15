@@ -28,18 +28,18 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Posted at "
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
                 <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.PostDate}"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </StackPanel>
             <!--Karma column-->
 
             <StackPanel  Grid.Row="1"
                          Orientation="Horizontal">
                 <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Karma}"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
                 <TextBlock Text=" Points"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </StackPanel>
 
 
@@ -50,8 +50,7 @@
                 <TextBlock Text="{Binding CommentListViewModel.CommentViewModel.Text}"
                            TextWrapping="Wrap"
                            FontSize="16"
-                           Margin="0 10 0 0" 
-                           Foreground="White"/>
+                           Margin="0 10 0 0" />
             </ScrollViewer>
         </Grid>
     </Border>

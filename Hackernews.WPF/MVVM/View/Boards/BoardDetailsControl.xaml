@@ -27,23 +27,22 @@
 
             <StackPanel Grid.Row="0"
                         Orientation="Horizontal">
-                <TextBlock Foreground="Gray"
+                <TextBlock Foreground="{DynamicResource skinFontSecondaryBrush}"
                            Text="Created at " />
-                <TextBlock Foreground="Gray"
+                <TextBlock Foreground="{DynamicResource skinFontSecondaryBrush}"
                            Text="{Binding BoardsListViewModel.BoardViewModel.CreateDate, Mode=OneWay}" />
             </StackPanel>
 
             <TextBlock Grid.Row="1"
                        TextWrapping="Wrap"
                        FontSize="18"
-                       Text="{Binding BoardsListViewModel.BoardViewModel.Title}" 
-                       Foreground="white"/>
+                       Text="{Binding BoardsListViewModel.BoardViewModel.Title}" />
             <ScrollViewer Grid.Row="2"
                           VerticalScrollBarVisibility="Auto">
                 <TextBlock Text="{Binding BoardsListViewModel.BoardViewModel.Description}"
                            TextWrapping="Wrap"
                            Margin="0 0 10 0"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </ScrollViewer>
         </Grid>
     </Border>

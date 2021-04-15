@@ -20,20 +20,16 @@
                 Background="Transparent"
                 BorderThickness="0"
                 Padding="10"
-                HorizontalAlignment="Right"
-                Foreground="White">Previous Page</Button>
+                HorizontalAlignment="Right">Previous Page</Button>
 
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-            <TextBlock Text="{Binding CurrentPageNumber}"
-                       Foreground="White" />
+            <TextBlock Text="{Binding CurrentPageNumber}"/>
 
-            <TextBlock Text="/"
-                       Foreground="White" />
-            <TextBlock Text="{Binding TotalPageCount}"
-                       Foreground="White" />
+            <TextBlock Text="/"/>
+            <TextBlock Text="{Binding TotalPageCount}" />
 
         </StackPanel>
 
@@ -45,7 +41,6 @@
                 Background="Transparent"
                 BorderThickness="0"
                 VerticalAlignment="Center"
-                Padding="10"
-                Foreground="White">Next Page</Button>
+                Padding="10">Next Page</Button>
     </Grid>
 </UserControl>

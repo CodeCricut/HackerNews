@@ -36,7 +36,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Background="#272537"
+    <Border Background="{DynamicResource skinBackgroundBrush}"
             CornerRadius="20">
         <Grid>
             <Grid.RowDefinitions>
@@ -64,11 +64,10 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left">
                 <TextBlock FontSize="22"
-                           Foreground="White"
                            FontWeight="Bold">
                     Hacker News
                 </TextBlock>
-                <TextBlock Foreground="White">
+                <TextBlock >
                     Administrative Panel V1
                 </TextBlock>
             </StackPanel>
@@ -80,7 +79,6 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Margin="20"
-                    Foreground="White"
                     FontSize="20"
                     Style="{StaticResource ExitButton}" />
 
@@ -91,8 +89,6 @@
                            BasedOn="{StaticResource MenuButtonTheme}">
                         <Setter Property="FontSize"
                                 Value="14" />
-                        <Setter Property="Foreground"
-                                Value="White" />
                         <Setter Property="Height"
                                 Value="50" />
                     </Style>
@@ -153,46 +149,6 @@
                                             CurrentPageNumber="{Binding SelectedListViewModel.CurrentPage}"
                                             TotalPageCount="{Binding SelectedListViewModel.TotalPages}"
                                             NextPageCommand="{Binding SelectedListViewModel.NextPageCommand}" />
-
-                    <!--<Grid Grid.Row="2"
-                          Grid.Column="1"
-                          Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Button Style="{DynamicResource PaginationButtonStyle}"
-                                Command="{Binding SelectedListViewModel.PrevPageCommand}"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Padding="10"
-                                HorizontalAlignment="Right"
-                                Foreground="White">Previous Page</Button>
-
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding SelectedListViewModel.CurrentPage}"
-                                       Foreground="White" />
-
-                            <TextBlock Text="/"
-                                       Foreground="White" />
-                            <TextBlock Text="{Binding SelectedListViewModel.TotalPages}"
-                                       Foreground="White" />
-
-                        </StackPanel>
-
-                        <Button Grid.Column="2"
-                                HorizontalAlignment="Left"
-                                Style="{DynamicResource PaginationButtonStyle}"
-                                Command="{Binding SelectedListViewModel.NextPageCommand}"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                VerticalAlignment="Center"
-                                Padding="10"
-                                Foreground="White">Next Page</Button>
-                    </Grid>-->
                 </Grid>
             </Border>
             

@@ -9,7 +9,7 @@
     <Border Padding="10"
             Margin="0 0 0 10"
             CornerRadius="0 10 10 0"
-            Background="{StaticResource cardBackground}">
+            Background="{DynamicResource  cardBackground}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -17,24 +17,19 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock FontSize="22"
-                           Foreground="White"
                            Text="Hacker News" />
                 <TextBlock FontSize="12"
-                           Foreground="White"
                            Text="Control Panel V1"
                            Margin="0 0 0 10" />
 
                 <TextBlock FontSize="16"
-                           Foreground="White"
                            Text="About" />
                 <TextBlock FontSize="12"
-                           Foreground="White"
                            TextWrapping="Wrap">
             Hacker News is home to communities dedicated to every topic imaginable. Create a board for your favorite subject, or share articles and comments with a community of your choice.
                 </TextBlock>
 
                 <TextBlock FontSize="12"
-                           Foreground="White"
                            Margin="0 5">
             Visit HackerNews.com to get started, or take a look around this desktop application.
                 </TextBlock>
@@ -42,7 +37,7 @@
 
             <TextBlock Grid.Row="1"
                        FontSize="8"
-                       Foreground="Gray"
+                       Foreground="{DynamicResource skinFontSecondaryBrush}"
                        Text="HackerNews - All rights reserved 2020" />
         </Grid>
     </Border>

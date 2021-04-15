@@ -17,7 +17,6 @@
             d:DataContext="{d:DesignInstance view:ProfileControl}">
         <StackPanel Orientation="Vertical">
             <TextBlock Text="Profile"
-                       Foreground="White"
                        FontSize="22"
                        Margin="0 0 0 20" />
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
@@ -58,7 +57,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Boards You Moderate"
-                                       Foreground="White"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
                             <controls:BoardListControl Grid.RowSpan="3"
@@ -95,7 +93,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Boards You Subscribe To"
-                                       Foreground="White"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
                             <controls:BoardListControl Grid.RowSpan="3"
@@ -132,7 +129,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Written Articles"
-                                       Foreground="White"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
                             <controls:ArticleListControl Grid.RowSpan="3"
@@ -169,7 +165,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Saved Articles"
-                                       Foreground="White"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
                             <controls:ArticleListControl Grid.RowSpan="3"
@@ -206,7 +201,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Written Comments"
-                                       Foreground="White"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
                             <controls:CommentListControl Grid.RowSpan="3"
@@ -243,7 +237,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Saved Comments"
-                                       Foreground="White"
                                        FontSize="14"
                                        Margin="0 29 0 0" />
                             <controls:CommentListControl Grid.RowSpan="3"

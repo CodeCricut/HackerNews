@@ -23,25 +23,24 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Joined "
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
                 <TextBlock Text="{Binding PrivateUserViewModel.JoinDate}"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1">
                 <TextBlock Text="{Binding PrivateUserViewModel.Karma}"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
                 <TextBlock Text=" Points"
-                           Foreground="Gray" />
+                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </StackPanel>
 
             <TextBlock Grid.Row="2"
                        Text="{Binding PrivateUserViewModel.UserName}"
                        TextWrapping="Wrap"
                        FontSize="16"
-                       Margin="0 0 10 0"
-                       Foreground="White" />
+                       Margin="0 0 10 0"/>
         </Grid>
     </Border>
 </UserControl>

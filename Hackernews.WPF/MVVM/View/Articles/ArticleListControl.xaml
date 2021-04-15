@@ -15,7 +15,7 @@
             Style="{StaticResource listViewBorderStyle}">
         
         <!--Article List-->
-        <ListView 
+        <ListView Foreground="{DynamicResource skinFontBrush}"
                    Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -25,11 +25,11 @@
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Title}" Foreground="White"/>
+                        <TextBlock Text="{Binding Title}" />
                         <TextBlock Text=" (user owned)"
                                    Visibility="{Binding UserCreatedArticle, 
                                             Converter={StaticResource boolToVis}}"
-                                   Foreground="Gray" />
+                                   Foreground="{DynamicResource skinFontSecondaryBrush}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

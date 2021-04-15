@@ -18,7 +18,7 @@
                      Color="{StaticResource skinFontColor}" />
 
     <!--Color="#FF838383"-->
-    <Color x:Key="skinFontColorSecondary">#CECECE</Color>
+    <Color x:Key="skinFontColorSecondary">Gray</Color>
     <SolidColorBrush x:Key="skinFontSecondaryBrush"
                      Color="{StaticResource skinFontColorSecondary}" />
 

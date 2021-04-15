@@ -22,4 +22,10 @@
     <Folder Include="MVVM\Model\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Theme\LightTheme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="skinBackgroundLight">#F5F5F5</Color>
+    <SolidColorBrush x:Key="skinBackgroundLightBrush"
+                     Color="{StaticResource skinBackgroundLight}" />
+
+    <!--d9d5d0-->
+    <Color x:Key="skinBackground">#ECECEC</Color>
+    <SolidColorBrush x:Key="skinBackgroundBrush"
+                     Color="{StaticResource skinBackground}" />
+
+
+    <Color x:Key="skinBackgroundDark">#d1d1d1</Color>
+    <SolidColorBrush x:Key="skinBackgroundDarkBrush"
+                     Color="{StaticResource skinBackgroundDark}" />
+    
+    <Color x:Key="skinFontColor">Black</Color>
+    <SolidColorBrush x:Key="skinFontBrush"
+                     Color="{StaticResource skinFontColor}" />
+
+    <!--Color="#FF838383"-->
+    <Color x:Key="skinFontColorSecondary">Gray</Color>
+    <SolidColorBrush x:Key="skinFontSecondaryBrush"
+                     Color="{StaticResource skinFontColorSecondary}" />
+
+    <LinearGradientBrush x:Key="cardBackground"
+                         StartPoint="0,0"
+                         EndPoint="1, 2">
+        <GradientStop Color="#d1d1d1" />
+        <GradientStop Color="#c2c2c2"
+                      Offset="1" />
+    </LinearGradientBrush>
+</ResourceDictionary>

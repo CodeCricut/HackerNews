@@ -18,7 +18,7 @@
             Style="{StaticResource listViewBorderStyle}">
 
         <ListView Background="Transparent"
-                  Foreground="White"
+                  Foreground="{DynamicResource skinFontBrush}"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ItemsSource="{Binding CommentListViewModel.Comments, Mode=OneWay}"
