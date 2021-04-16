@@ -15,23 +15,23 @@
         </Setter>
     </Style>
     <SolidColorBrush x:Key="Button.Static.Background"
-                     Color="Transparent" />
+                     Color="{DynamicResource skinBackgroundDark}" />
     <SolidColorBrush x:Key="Button.Static.Border"
-                     Color="Transparent" />
+                     Color="{DynamicResource skinBackgroundDark}" />
     <SolidColorBrush x:Key="Button.MouseOver.Background"
                      Color="{DynamicResource skinBackgroundDark}" />
     <SolidColorBrush x:Key="Button.MouseOver.Border"
-                     Color="Transparent" />
+                     Color="{DynamicResource skinBackgroundLight}" />
     <SolidColorBrush x:Key="Button.Pressed.Background"
                      Color="{DynamicResource skinBackgroundDark}" />
     <SolidColorBrush x:Key="Button.Pressed.Border"
                      Color="Transparent" />
     <SolidColorBrush x:Key="Button.Disabled.Background"
-                     Color="{DynamicResource skinBackgroundDark}" />
+                     Color="Transparent" />
     <SolidColorBrush x:Key="Button.Disabled.Border"
                      Color="Transparent" />
     <SolidColorBrush x:Key="Button.Disabled.Foreground"
-                     Color="#FF838383" />
+                     Color="{DynamicResource skinFontColorSecondary}" />
     <Style x:Key="PaginationButtonStyle"
            TargetType="{x:Type Button}">
         <Setter Property="Padding"

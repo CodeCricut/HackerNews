@@ -18,7 +18,7 @@
                           BorderThickness="1">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:BoardViewModel}">
-                        <controls:BoardDetailsControl BoardViewModel="{Binding }"  Margin="0 0 0 5" />
+                        <controls:BoardDetailsControl BoardViewModel="{Binding }" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

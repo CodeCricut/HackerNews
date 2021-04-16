@@ -17,6 +17,11 @@ namespace Hackernews.WPF
 			InitializeComponent();
 
 			ViewModel = new LoginWindowViewModel(signInManager, thisWindow: this, mainWindow);
+			ViewModel.CloseAction = () => {
+				this.Close();
+				Application.Current.Shutdown();
+			};
+
 			rootElement.DataContext = ViewModel;
 		}
 
@@ -24,6 +29,14 @@ namespace Hackernews.WPF
 		{
 			if (ViewModel != null)
 				ViewModel.Password = ((PasswordBox)sender).SecurePassword;
+		}
+
+		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+			{
+				this.DragMove();
+			}
 		}
 	}
 }

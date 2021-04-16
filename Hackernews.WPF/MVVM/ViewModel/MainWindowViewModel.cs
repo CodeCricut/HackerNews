@@ -47,9 +47,12 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
-		public Action CloseAction { get; set; }
-
+		public Action? CloseAction { get; set; }
 		public ICommand CloseCommand { get; }
+
+		public Action? LogoutAction { get; set; }
+		public ICommand LogoutCommand { get; }
+
 
 		// TODO: consolidate into one command with a command parameter
 		public ICommand SelectHomeCommand { get; }
@@ -81,6 +84,9 @@ namespace Hackernews.WPF.ViewModels
 
 		public MainWindowViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
 		{
+			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
+			LogoutCommand = new DelegateCommand(_ => LogoutAction?.Invoke());
+
 			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
 
 			UserListViewModel = new UserListViewModel(apiClient);
@@ -89,7 +95,10 @@ namespace Hackernews.WPF.ViewModels
 			CommentListViewModel = new CommentListViewModel(vm => new LoadCommentsCommand(vm, apiClient));
 
 			HomeViewModel = new HomeViewModel();
-			ProfileViewModel = new ProfileViewModel(PrivateUserViewModel);
+			ProfileViewModel = new ProfileViewModel(PrivateUserViewModel)
+			{
+				LogoutAction = () => this.LogoutAction?.Invoke()
+			};
 			SettingsViewModel = new SettingsViewModel();
 
 			PublicUserViewModel = new PublicUserViewModel();
@@ -98,9 +107,6 @@ namespace Hackernews.WPF.ViewModels
 			CommentViewModel = new CommentViewModel();
 
 			//NavigationViewModel = new NavigationViewModel(UserListViewModel, BoardsListViewModel, ArticleListViewModel, CommentListViewModel);
-
-
-			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectProfileCommand = new DelegateCommand(SelectProfile);

@@ -16,7 +16,7 @@ namespace Hackernews.WPF
 		private readonly ServiceProvider _serviceProvider;
 		private readonly IConfigurationRoot _configuration;
 
-		public static Skin Skin { get; set; } = Skin.Light;
+		public static Skin Skin { get; set; } = Skin.Dark;
 
 		public void ChangeSkin(Skin skin)
 		{

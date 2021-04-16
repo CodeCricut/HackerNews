@@ -17,6 +17,7 @@
             BorderThickness="0"
             CornerRadius="5"
             Padding="10 20"
+            Margin="0 0 0 5"
             Background="{DynamicResource cardBackground}"
             Visibility="{Binding CommentViewModel.IsSelected,  Converter={StaticResource boolToVis}, Mode=OneWay}">
         <Grid>

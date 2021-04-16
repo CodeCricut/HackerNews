@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using System;
 using System.Windows;
@@ -13,12 +14,25 @@ namespace Hackernews.WPF
 	{
 		public MainWindowViewModel MainWindowVM { get; }
 
-		public MainWindow(IApiClient apiClient, PrivateUserViewModel userVm)
+		public MainWindow(IApiClient apiClient, PrivateUserViewModel userVm, ISignInManager signInManager)
 		{
 			InitializeComponent();
 
 			MainWindowVM = new MainWindowViewModel(apiClient, userVm);
-			MainWindowVM.CloseAction = () => this.Close();
+			MainWindowVM.CloseAction = () => {
+				this.Close();
+				Application.Current.Shutdown();
+			};
+			MainWindowVM.LogoutAction = async () =>
+			{
+				await signInManager.SignOutAsync();
+
+				var newMainWindow = new MainWindow(apiClient, userVm, signInManager);
+				LoginWindow loginWindow = new LoginWindow(signInManager, newMainWindow);
+
+				loginWindow.Show();
+				this.Close();
+			};
 
 			DataContext = MainWindowVM;
 

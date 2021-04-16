@@ -24,14 +24,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme/MainWindowDataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="boolToVis" />
-
-            <Style TargetType="{x:Type ScrollViewer}">
-                <Style.Setters>
-                    <Setter Property="helpers:ScrollViewerCorrector.FixScrolling"
-                            Value="True" />
-                </Style.Setters>
-            </Style>
             
         </ResourceDictionary>
     </Window.Resources>
@@ -146,6 +138,7 @@
                     <!--Pagination-->
                     <view:NavigationControl Grid.Row="2"
                                             Grid.Column="1"
+                                            Margin="0 0 0 10"
                                             Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}"
                                             PrevPageCommand="{Binding SelectedListViewModel.PrevPageCommand}"
                                             CurrentPageNumber="{Binding SelectedListViewModel.CurrentPage}"

@@ -18,7 +18,7 @@
                           BorderThickness="1">
                 <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewmodels:PublicUserViewModel}">
-                            <controls:UserDetailControl UserViewModel="{Binding }" Margin="0 0 0 5" />
+                            <controls:UserDetailControl UserViewModel="{Binding }" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -23,7 +23,15 @@
                 <ResourceDictionary Source="Theme/NavigationSeparatorStyle.xaml" />
                 <ResourceDictionary Source="Theme/ScrollBarStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="boolToVis"/>
+            <BooleanToVisibilityConverter x:Key="boolToVis" />
+
+            <Style TargetType="{x:Type ScrollViewer}">
+                <Style.Setters>
+                    <Setter Property="helpers:ScrollViewerCorrector.FixScrolling"
+                            Value="True" />
+                </Style.Setters>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

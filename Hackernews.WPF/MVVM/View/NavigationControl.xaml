@@ -17,8 +17,7 @@
         <Button Style="{DynamicResource PaginationButtonStyle}"
                 Command="{Binding PrevPageCommand}"
                 CommandParameter="{Binding PrevPageCommandParameter}"
-                Background="Transparent"
-                BorderThickness="0"
+                BorderThickness="1"
                 Padding="10"
                 HorizontalAlignment="Right">Previous Page</Button>
 
@@ -38,8 +37,7 @@
                 Style="{DynamicResource PaginationButtonStyle}"
                 Command="{Binding NextPageCommand}"
                 CommandParameter="{Binding NextPageCommandParameter}"
-                Background="Transparent"
-                BorderThickness="0"
+                BorderThickness="1"
                 VerticalAlignment="Center"
                 Padding="10">Next Page</Button>
     </Grid>

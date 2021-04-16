@@ -8,7 +8,8 @@ namespace Hackernews.WPF.Services
 {
 	public interface ISignInManager
 	{
-		public Task SignInAsync(LoginModel loginModel);
+		Task SignInAsync(LoginModel loginModel);
+		Task SignOutAsync();
 	}
 
 	public class WpfSignInManager : ISignInManager
@@ -27,6 +28,14 @@ namespace Hackernews.WPF.Services
 			var jwt = await _apiClient.PostAsync<LoginModel, Jwt>(loginModel, "account/login");
 			_apiClient.SetAuthorizationHeader(new AuthenticationHeaderValue("Bearer", jwt.Token));
 			//_jwtPrincipal.SetJwt(jwt);
+		}
+
+		public async Task SignOutAsync()
+		{
+			await Task.Factory.StartNew(() =>
+			{
+				_apiClient.SetAuthorizationHeader(new AuthenticationHeaderValue("Bearer", string.Empty));
+			});
 		}
 	}
 }
