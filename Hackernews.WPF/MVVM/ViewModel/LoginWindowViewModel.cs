@@ -99,7 +99,7 @@ namespace Hackernews.WPF.ViewModels
 			catch (System.Exception e)
 			{
 				Username = "";
-				Password = new SecureString();
+				Password.Clear();
 
 				InvalidCreds = true;
 			}

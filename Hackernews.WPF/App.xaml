@@ -12,6 +12,8 @@
                                                 DarkSource="Theme/DarkTheme.xaml" />
 
                 <ResourceDictionary Source="Theme/TextBlockStyle.xaml" />
+                <ResourceDictionary Source="Theme/TextBoxStyle.xaml" />
+                <ResourceDictionary Source="Theme/PasswordBoxStyle.xaml" />
                 <ResourceDictionary Source="Theme/CheckBoxStyle.xaml" />
 
                 <ResourceDictionary Source="Theme/NavigationButtonStyle.xaml" />

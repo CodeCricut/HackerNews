@@ -34,22 +34,18 @@
             </Grid.ColumnDefinitions>
 
             <!--Header-->
-            <Grid Background="{DynamicResource skinBackgroundDarkBrush}"
-                  Grid.ColumnSpan="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TextBlock FontSize="30"
-                           FontWeight="Bold"
-                           Padding="10 10 0 0">Hacker News</TextBlock>
-                <TextBlock Grid.Row="1"
-                           Margin="10 0 10 10">Administrative Panel V1</TextBlock>
-            </Grid>
+                <Grid Background="{DynamicResource skinBackgroundDarkBrush}"
+                      Grid.ColumnSpan="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="30"
+                               Margin="20 20 0 0"
+                               FontWeight="Bold">Hacker News</TextBlock>
+                    <TextBlock Grid.Row="1" Margin="20 0 0 10">Administrative Panel V1</TextBlock>
+                </Grid>
+            
             
             <!--Drag bar-->
             <Rectangle x:Name="dragPanel"
