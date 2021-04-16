@@ -33,10 +33,13 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
-					var vm = new BoardViewModel()
+					var vm = new BoardViewModel(_apiClient)
 					{
 						Board = board
 					};
+
+					// TODO: idk if this is where it should be done, at the very least run asynchronously
+					vm.LoadBoardCommand.Execute();
 
 					_viewModel.Boards.Add(vm);
 				}
@@ -70,10 +73,13 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
-					var vm = new BoardViewModel()
+					var vm = new BoardViewModel(_apiClient)
 					{
 						Board = board
 					};
+
+					// TODO: idk if this is where it should be done, at the very least run asynchronously
+					vm.LoadBoardCommand.Execute();
 
 					_viewModel.Boards.Add(vm);
 				}

@@ -123,49 +123,6 @@ namespace Hackernews.WPF.ViewModels
 			CommentsSavedListViewModel = new CommentListViewModel(createLoadCommentsByIdCommand);
 		}
 
-		//private void SetupBoardsModeratingListVM()
-		//{
-		//	BoardsModeratingListViewModel = new BoardsListViewModel(_apiClient);
-		//	var loadModeratingBoardsCommand = new LoadBoardsByIdsCommand(BoardsModeratingListViewModel, _apiClient);
-		//	BoardsModeratingListViewModel.LoadCommand = loadModeratingBoardsCommand;
-		//}
-
-		//private void SetupBoardsSubscribedListVM()
-		//{
-		//	BoardsSubscribedListViewModel = new BoardsListViewModel(_apiClient);
-		//	var loadSubscribignBoardsCommand = new LoadBoardsByIdsCommand(BoardsSubscribedListViewModel, _apiClient);
-		//	BoardsSubscribedListViewModel.LoadCommand = loadSubscribignBoardsCommand;
-		//}
-
-		//private void SetupArticlesWrittenListVM()
-		//{
-		//	ArticlesWrittenListViewModel = new ArticleListViewModel(_apiClient, this);
-		//	var loadWrittenArticlesCOmmand = new LoadArticlesByIdsCommand(ArticlesWrittenListViewModel, _apiClient, this);
-		//	ArticlesWrittenListViewModel.LoadCommand = loadWrittenArticlesCOmmand;
-		//}
-
-		//private void SetupArticlesSavedListVM()
-		//{
-		//	ArticlesSavedListViewModel = new ArticleListViewModel(_apiClient, this);
-		//	var loadSavedArticlesCommand = new LoadArticlesByIdsCommand(ArticlesSavedListViewModel, _apiClient, this);
-		//	ArticlesSavedListViewModel.LoadCommand = loadSavedArticlesCommand;
-		//}
-
-		//private void SetupCommentsWrittenListVM()
-		//{
-		//	CommentsWrittenListViewModel = new CommentListViewModel(_apiClient);
-		//	var loadWrittenCommentsCommand = new LoadCommentsByIdsCommand(CommentsWrittenListViewModel, _apiClient);
-		//	CommentsWrittenListViewModel.LoadCommand = loadWrittenCommentsCommand;
-		//}
-
-		//private void SetupCommentsSavedListVM()
-		//{
-		//	CommentsSavedListViewModel = new CommentListViewModel(_apiClient);
-		//	var loadSavedCommentsCommand = new LoadCommentsByIdsCommand(CommentsSavedListViewModel, _apiClient);
-		//	CommentsSavedListViewModel.LoadCommand = loadSavedCommentsCommand;
-		//}
-
-
 		private async Task TryLoadPrivateUserAsync(object parameter = null)
 		{
 			User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");

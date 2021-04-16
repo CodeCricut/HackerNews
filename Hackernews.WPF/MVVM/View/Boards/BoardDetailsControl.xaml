@@ -26,8 +26,14 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
             <StackPanel Grid.Row="0"
-                        Orientation="Horizontal">
+                        Orientation="Horizontal"
+                        Grid.ColumnSpan="2">
                 <TextBlock Foreground="{DynamicResource skinFontSecondaryBrush}"
                            Text="Created at " />
                 <TextBlock Foreground="{DynamicResource skinFontSecondaryBrush}"
@@ -45,6 +51,11 @@
                            Margin="0 0 10 0"
                            Foreground="{DynamicResource skinFontSecondaryBrush}" />
             </ScrollViewer>
+
+            <Image Source="{Binding BoardViewModel.BoardImage}"
+                   Visibility="{Binding BoardViewModel.HasImage,Converter={StaticResource boolToVis}}"
+                   Grid.Column="1"
+                   Grid.Row="2" />
         </Grid>
     </Border>
 </UserControl>

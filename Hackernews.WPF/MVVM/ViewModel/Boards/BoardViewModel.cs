@@ -1,6 +1,11 @@
-﻿using Hackernews.WPF.ViewModels;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Images;
 using System;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
@@ -15,6 +20,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 
 		private GetBoardModel _board;
+		private readonly IApiClient _apiClient;
+
 		public GetBoardModel Board
 		{
 			get => _board;
@@ -24,6 +31,45 @@ namespace Hackernews.WPF.MVVM.ViewModel
 				{
 					_board = value;
 					RaisePropertyChanged("");
+				}
+			}
+		}
+
+		public AsyncDelegateCommand LoadBoardCommand { get; }
+
+
+		public BoardViewModel(IApiClient apiClient)
+		{
+			LoadBoardCommand = new AsyncDelegateCommand(LoadBoardAsync);
+			_apiClient = apiClient;
+		}
+
+
+		private BitmapImage _boardImage;
+
+		public BitmapImage BoardImage
+		{
+			get { return _boardImage; }
+			set { _boardImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); }
+		}
+
+		public bool HasImage { get => BoardImage != null; }
+
+
+		private async Task LoadBoardAsync(object parameter = null)
+		{
+			if (Board?.BoardImageId > 0)
+			{
+				try
+				{
+					GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(Board.BoardImageId, "images");
+					BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
+					BoardImage = bitmapImg;
+				}
+				catch (Exception e)
+				{
+
+					throw;
 				}
 			}
 		}

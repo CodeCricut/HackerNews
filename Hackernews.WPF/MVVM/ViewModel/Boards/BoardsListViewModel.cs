@@ -17,7 +17,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	{
 		public PagingParams PagingParams = new PagingParams();
 
-		public BoardViewModel BoardViewModel { get; } = new BoardViewModel();
+		public BoardViewModel BoardViewModel { get; } 
 
 		public ObservableCollection<BoardViewModel> Boards { get; private set; } = new ObservableCollection<BoardViewModel>();
 
@@ -43,6 +43,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public BoardsListViewModel(IApiClient apiClient, CreateBaseCommand<BoardsListViewModel> createLoadCommand)
 		{
 			BoardPageVM = new PaginatedListViewModel<GetBoardModel>();
+
+			// TODO: check to see if this property is needed still.
+			BoardViewModel = new BoardViewModel(apiClient);
 
 			LoadCommand = createLoadCommand(this);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => BoardPageVM.HasNextPage);
