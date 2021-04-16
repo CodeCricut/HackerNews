@@ -106,7 +106,7 @@ namespace Hackernews.WPF.ViewModels
 			};
 			SettingsViewModel = new SettingsViewModel();
 
-			PublicUserViewModel = new PublicUserViewModel();
+			PublicUserViewModel = new PublicUserViewModel(apiClient);
 			BoardViewModel = new BoardViewModel(apiClient);
 			ArticleViewModel = new ArticleViewModel(userVM, apiClient);
 			CommentViewModel = new CommentViewModel();

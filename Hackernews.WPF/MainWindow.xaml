@@ -127,7 +127,7 @@
                     
                     <!--List views-->
                     <ContentControl Grid.RowSpan="3"
-                                    Margin="0 0 10 0"
+                                    Margin="0 0 10 -10"
                                     Content="{Binding SelectedListViewModel}" />
 
                     <!--Details views-->

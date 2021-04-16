@@ -26,10 +26,11 @@ namespace Hackernews.WPF.MVVM.ViewModel
 				foreach (var user in _viewModel.UserPageVM.Items)
 				{
 
-					var vm = new PublicUserViewModel()
+					var vm = new PublicUserViewModel(_apiClient)
 					{
 						User = user
-					}; 
+					};
+					vm.LoadUserCommand.Execute();
 					_viewModel.Users.Add(vm);
 				}
 

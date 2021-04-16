@@ -15,7 +15,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	{
 		public PagingParams PagingParams = new PagingParams();
 
-		public PublicUserViewModel UserViewModel { get; } = new PublicUserViewModel();
+		// TODO: check if this is still needed
+		public PublicUserViewModel UserViewModel { get; } 
 
 		public ObservableCollection<PublicUserViewModel> Users { get; private set; } = new ObservableCollection<PublicUserViewModel>();
 
@@ -36,6 +37,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public UserListViewModel(IApiClient apiClient)
 		{
+			UserViewModel = new PublicUserViewModel(apiClient);
+
 			LoadCommand = new LoadUsersCommand(this, apiClient);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => UserPageVM.HasNextPage);
 			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, _ => UserPageVM.HasPrevPage);

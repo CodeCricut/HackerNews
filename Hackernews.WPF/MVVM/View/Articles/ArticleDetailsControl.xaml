@@ -13,66 +13,59 @@
             d:DataContext="{d:DesignInstance local:ArticleDetailsControl}"
             BorderThickness="0"
             CornerRadius="5"
-            Padding="10 20"
+            Padding="10"
             Margin="0 0 0 5"
             Background="{DynamicResource cardBackground}"
             Visibility="{Binding ArticleViewModel.IsSelected,  
                         Converter={StaticResource boolToVis}, Mode=OneWay}">
 
         <!--Main Column-->
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
+        <Grid Height="100">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-
-            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-                <TextBlock Text="Posted at "
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-                <TextBlock Text="{Binding ArticleViewModel.PostDate}"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-                <TextBlock Text=" (user owned)"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}"
-                           Visibility="{Binding ArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}" />
-            </StackPanel>
-
-            <!--Karma column-->
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1">
-                <TextBlock Text="{Binding ArticleViewModel.Karma}"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-                <TextBlock Text=" points"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-            </StackPanel>
-
-
-
-            <TextBlock Grid.Row="2"
-                       Text="{Binding ArticleViewModel.Title}"
-                       TextWrapping="Wrap"
-                       FontSize="16"
-                       Margin="0 10 0 5"/>
-
-            <ScrollViewer Grid.Row="3"
-                          VerticalScrollBarVisibility="Auto">
-                <TextBlock 
-                           Text="{Binding ArticleViewModel.Text}"
-                           TextWrapping="Wrap"
-                           Margin="0 0 10 0"/>
-            </ScrollViewer>
-
-            <Image Grid.Column="1"
-                   Grid.Row="2"
+            <Image Width="100"
                    Source="{Binding ArticleViewModel.ArticleImage}"
                    Visibility="{Binding ArticleViewModel.HasImage, Converter={StaticResource boolToVis}}" />
+
+            <StackPanel Orientation="Vertical"
+                        Grid.Column="1"
+                        Margin="10 0 0 0">
+                <StackPanel Orientation="Horizontal"
+                            Grid.ColumnSpan="2">
+                    <TextBlock Text="Posted at "
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                    <TextBlock Text="{Binding ArticleViewModel.PostDate}"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                    <TextBlock Text=" (user owned)"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}"
+                               Visibility="{Binding ArticleViewModel.UserCreatedArticle, Converter={StaticResource boolToVis}}" />
+                </StackPanel>
+
+                <!--Karma column-->
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="1">
+                    <TextBlock Text="{Binding ArticleViewModel.Karma}"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                    <TextBlock Text=" points"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="2"
+                           Text="{Binding ArticleViewModel.Title}"
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           Margin="0 10 0 5" />
+
+                <ScrollViewer Grid.Row="3"
+                              VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="{Binding ArticleViewModel.Text}"
+                               TextWrapping="Wrap"
+                               Margin="0 0 10 0" />
+                </ScrollViewer>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>
