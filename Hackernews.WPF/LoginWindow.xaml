@@ -92,7 +92,7 @@
 
                 <TextBlock Text="Username"
                            Margin="0 20 0 5" />
-                <TextBox Text="{Binding Username}" />
+                <TextBox Text="{Binding LoginViewModel.Username}" />
 
                 <TextBlock Text="Password"
                            Margin="0 20 0 5" />
@@ -101,7 +101,7 @@
 
                 <Button Margin="0 20"
                         Style="{StaticResource PaginationButtonStyle}"
-                        Command="{Binding LoginCommand}">Login</Button>
+                        Command="{Binding LoginViewModel.LoginCommand}">Login</Button>
             </StackPanel>
         </Grid>
     </Grid>

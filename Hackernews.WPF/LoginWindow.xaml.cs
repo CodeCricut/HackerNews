@@ -28,7 +28,7 @@ namespace Hackernews.WPF
 		private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
 		{
 			if (ViewModel != null)
-				ViewModel.Password = ((PasswordBox)sender).SecurePassword;
+				ViewModel.LoginViewModel.Password = ((PasswordBox)sender).SecurePassword;
 		}
 
 		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
