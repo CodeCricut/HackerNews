@@ -31,8 +31,6 @@ namespace Hackernews.WPF.ViewModels
 		}
 		public bool ValidCreds { get => !InvalidCreds; }
 
-
-
 		private string _username;
 		public string Username
 		{

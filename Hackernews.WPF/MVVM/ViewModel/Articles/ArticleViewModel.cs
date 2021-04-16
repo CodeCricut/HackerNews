@@ -1,16 +1,21 @@
-﻿using Hackernews.WPF.ViewModels;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Entities;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class ArticleViewModel : BaseViewModel
 	{
 		private readonly PrivateUserViewModel _privateUserVM;
-
+		private readonly IApiClient _apiClient;
 		private GetArticleModel _article;
 		public GetArticleModel Article
 		{
@@ -29,13 +34,38 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			set { _isSelected = value; RaisePropertyChanged(); }
 		}
 
+		public AsyncDelegateCommand LoadArticleCommand { get; }
 
 
-		public ArticleViewModel(PrivateUserViewModel privateUser)
+		public ArticleViewModel(PrivateUserViewModel privateUser, IApiClient apiClient)
 		{
 			_privateUserVM = privateUser;
+			_apiClient = apiClient;
 			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
+
+			LoadArticleCommand = new AsyncDelegateCommand(LoadArticleAsync);
 		}
+
+		private BitmapImage _articleImage;
+
+		public BitmapImage ArticleImage
+		{
+			get { return _articleImage; }
+			set { _articleImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); }
+		}
+
+		public bool HasImage { get => ArticleImage != null; }
+
+		private async Task LoadArticleAsync(object parameter = null)
+		{
+			if (Article?.AssociatedImageId > 0)
+			{
+				GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(Article.AssociatedImageId, "images");
+				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
+				ArticleImage = bitmapImg;
+			}
+		}
+
 
 		public void RaiseUserCreatedArticleChanged() => RaisePropertyChanged(nameof(UserCreatedArticle));
 

@@ -37,7 +37,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public AsyncDelegateCommand LoadBoardCommand { get; }
 
-
 		public BoardViewModel(IApiClient apiClient)
 		{
 			LoadBoardCommand = new AsyncDelegateCommand(LoadBoardAsync);
@@ -60,17 +59,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			if (Board?.BoardImageId > 0)
 			{
-				try
-				{
-					GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(Board.BoardImageId, "images");
-					BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
-					BoardImage = bitmapImg;
-				}
-				catch (Exception e)
-				{
-
-					throw;
-				}
+				GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(Board.BoardImageId, "images");
+				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
+				BoardImage = bitmapImg;
 			}
 		}
 

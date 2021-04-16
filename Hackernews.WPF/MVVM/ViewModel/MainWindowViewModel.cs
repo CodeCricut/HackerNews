@@ -40,8 +40,6 @@ namespace Hackernews.WPF.ViewModels
 			get => _selectedFullscreenViewModel;
 			set
 			{
-				SelectedListViewModel = null;
-				SelectedDetailsViewModel = null;
 				_selectedFullscreenViewModel = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(nameof(NotInFullscreenMode));
@@ -110,7 +108,7 @@ namespace Hackernews.WPF.ViewModels
 
 			PublicUserViewModel = new PublicUserViewModel();
 			BoardViewModel = new BoardViewModel(apiClient);
-			ArticleViewModel = new ArticleViewModel(userVM);
+			ArticleViewModel = new ArticleViewModel(userVM, apiClient);
 			CommentViewModel = new CommentViewModel();
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
@@ -125,14 +123,16 @@ namespace Hackernews.WPF.ViewModels
 
 		public void SelectHome(object parameter = null)
 		{
-			
+			SelectedDetailsViewModel = null;
+			SelectedListViewModel = null;
 			SelectedFullscreenViewModel = HomeViewModel;
 		}
 
 		public void SelectProfile(object parameter = null)
 		{
-			SelectedListViewModel = null;
+
 			SelectedDetailsViewModel = null;
+			SelectedListViewModel = null;
 			SelectedFullscreenViewModel = ProfileViewModel;
 
 			PrivateUserViewModel.TryLoadUserCommand.Execute(null);
@@ -140,8 +140,9 @@ namespace Hackernews.WPF.ViewModels
 
 		public void SelectSettings(object parameter = null)
 		{
-			SelectedListViewModel = null;
+
 			SelectedDetailsViewModel = null;
+			SelectedListViewModel = null;
 			SelectedFullscreenViewModel = SettingsViewModel;
 		}
 

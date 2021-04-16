@@ -28,7 +28,13 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                 <TextBlock Text="Posted at "
                            Foreground="{DynamicResource skinFontSecondaryBrush}" />
                 <TextBlock Text="{Binding ArticleViewModel.PostDate}"
@@ -62,6 +68,11 @@
                            TextWrapping="Wrap"
                            Margin="0 0 10 0"/>
             </ScrollViewer>
+
+            <Image Grid.Column="1"
+                   Grid.Row="2"
+                   Source="{Binding ArticleViewModel.ArticleImage}"
+                   Visibility="{Binding ArticleViewModel.HasImage, Converter={StaticResource boolToVis}}" />
         </Grid>
     </Border>
 </UserControl>

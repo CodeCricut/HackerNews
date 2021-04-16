@@ -35,10 +35,11 @@ namespace Hackernews.WPF.Core.Commands
 
 				foreach (var article in _viewModel.ArticlePageVM.Items)
 				{
-					var vm = new ArticleViewModel(_privateUserViewModel)
+					var vm = new ArticleViewModel(_privateUserViewModel, _apiClient)
 					{
 						Article = article
 					};
+					vm.LoadArticleCommand.Execute();
 					_viewModel.Articles.Add(vm);
 				}
 
@@ -75,10 +76,11 @@ namespace Hackernews.WPF.Core.Commands
 
 				foreach (var article in _viewModel.ArticlePageVM.Items)
 				{
-					var articleVM = new ArticleViewModel(_userVM)
+					var articleVM = new ArticleViewModel(_userVM, _apiClient)
 					{
 						Article = article
 					};
+					articleVM.LoadArticleCommand.Execute();
 
 					_viewModel.Articles.Add(articleVM);
 				}
