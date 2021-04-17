@@ -90,6 +90,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		private async Task RegisterAsync(object parameter = null)
 		{
 			_loginWindowVM.Loading = true;
+			_loginWindowVM.InvalidUserInput = false;
 
 			try
 			{

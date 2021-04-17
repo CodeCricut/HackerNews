@@ -49,6 +49,8 @@ namespace Hackernews.WPF.ViewModels
 		public HomeViewModel HomeViewModel { get; }
 		public ProfileViewModel ProfileViewModel { get; }
 		public SettingsViewModel SettingsViewModel { get; }
+
+		public EntityCreationViewModel EntityCreationViewModel { get; set; }
 		#endregion
 
 		#region List VMs
@@ -105,6 +107,7 @@ namespace Hackernews.WPF.ViewModels
 				LogoutAction = () => this.LogoutAction?.Invoke()
 			};
 			SettingsViewModel = new SettingsViewModel();
+			EntityCreationViewModel = new EntityCreationViewModel(apiClient);
 
 			PublicUserViewModel = new PublicUserViewModel(apiClient);
 			BoardViewModel = new BoardViewModel(apiClient);

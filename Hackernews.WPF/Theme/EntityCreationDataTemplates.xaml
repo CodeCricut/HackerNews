@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:boardVM="clr-namespace:Hackernews.WPF.MVVM.ViewModel.Boards"
+                    xmlns:boardView="clr-namespace:Hackernews.WPF.MVVM.View.Boards"
+                    >
+    <DataTemplate DataType="{x:Type boardVM:BoardCreationViewModel}">
+        <boardView:BoardCreationControl BoardCreationViewModel="{Binding }" />
+    </DataTemplate>
+</ResourceDictionary>

@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="Theme/ListViewBorderTheme.xaml" />
                 <ResourceDictionary Source="Theme/NavigationSeparatorStyle.xaml" />
                 <ResourceDictionary Source="Theme/ScrollBarStyle.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="boolToVis" />
 
