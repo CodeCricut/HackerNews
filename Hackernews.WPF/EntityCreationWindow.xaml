@@ -57,7 +57,8 @@
                     VerticalAlignment="Top"
                     Margin="0 20 20 0"
                     FontSize="20"
-                    Style="{StaticResource ExitButton}" />
+                    Style="{StaticResource ExitButton}" 
+                    IsTabStop="False"/>
 
             <view:EntityCreationControl EntityCreationViewModel="{Binding EntityCreationViewModel}"
                                         Grid.Column="1" Grid.Row="1"/>

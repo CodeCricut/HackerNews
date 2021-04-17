@@ -77,7 +77,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			});
 		}
 
-		// TODO: For some reason, the BoardViewModel.CreateBoardCommand.Invoke calls this without regard to what it is supposed to do...
+		// TODO: For some reason, the BoardCreationViewModel.CreateBoardCommand.Invoke calls this without regard to what it is supposed to do...
 		private void CloseWindow(object parameter = null)
 		{
 			App.Current.Dispatcher.Invoke(() =>
