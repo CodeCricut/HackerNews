@@ -7,11 +7,18 @@
         xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
         mc:Ignorable="d"
         Title="LoginWindow"
-        Height="400"
+        Height="500"
         Width="400"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/LoginWindowDataTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid x:Name="rootElement"
             d:DataContext="{d:DesignInstance Type=viewmodels:LoginWindowViewModel}"
            >
@@ -82,26 +89,32 @@
                         >
                 <TextBlock FontSize="12"
                            Foreground="Red"
-                           Visibility="{Binding InvalidCreds, Converter={StaticResource boolToVis}}"
+                           Visibility="{Binding InvalidUserInput, Converter={StaticResource boolToVis}}"
                            >
-                    Invalid login credentials.
+                    Invalid user information.
                 </TextBlock>
-                
-                <TextBlock Text="Login"
-                           FontSize="24" />
 
-                <TextBlock Text="Username"
-                           Margin="0 20 0 5" />
-                <TextBox Text="{Binding LoginViewModel.Username}" />
-
-                <TextBlock Text="Password"
-                           Margin="0 20 0 5" />
-                <PasswordBox PasswordChar="*"
-                             PasswordChanged="PasswordBox_PasswordChanged" />
+                <ContentControl Content="{Binding SelectedViewModel}" />
 
                 <Button Margin="0 20"
                         Style="{StaticResource PaginationButtonStyle}"
-                        Command="{Binding LoginViewModel.LoginCommand}">Login</Button>
+                        Command="{Binding SelectRegisterModelCommand}" 
+                        Visibility="{Binding LoginModelSelected, Converter={StaticResource boolToVis}}"
+                        Height="20"
+                        Width="50"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        >Register</Button>
+
+                <Button Margin="0 20"
+                        Style="{StaticResource PaginationButtonStyle}"
+                        Command="{Binding SelectLoginModelCommand}"
+                        Visibility="{Binding RegisterModelSelected, Converter={StaticResource boolToVis}}"
+                        Height="20"
+                        Width="50"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        >Login</Button>
             </StackPanel>
         </Grid>
     </Grid>

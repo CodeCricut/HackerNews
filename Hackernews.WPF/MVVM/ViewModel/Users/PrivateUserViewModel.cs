@@ -5,10 +5,12 @@ using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
+using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.ViewModels
 {
@@ -81,6 +83,17 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
+		private BitmapImage _userImage;
+
+		public BitmapImage UserImage
+		{
+			get { return _userImage; }
+			set { _userImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); }
+		}
+
+		public bool HasImage { get => UserImage != null; }
+
+
 		public IEnumerable<int> ArticleIds { get => User?.ArticleIds; }
 		public IEnumerable<int> SavedArticleIds { get => User?.SavedArticles; }
 		public IEnumerable<int> CommentIds { get => User?.CommentIds; }
@@ -126,6 +139,13 @@ namespace Hackernews.WPF.ViewModels
 		private async Task TryLoadPrivateUserAsync(object parameter = null)
 		{
 			User = await _apiClient.GetAsync<GetPrivateUserModel>("users/me");
+			if (User?.ProfileImageId > 0)
+			{
+				GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(User.ProfileImageId, "images");
+				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
+				UserImage = bitmapImg;
+			}
+
 			await LoadOwnedViewModelsAsync();
 		}
 

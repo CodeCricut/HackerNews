@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
 using HackerNews.Domain.Common.Models.Users;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
 {
-	class LoginWindowViewModel : BaseViewModel
+	public class LoginWindowViewModel : BaseViewModel
 	{
 		private readonly Window _thisWindow;
 		private readonly Window _mainWindow;
@@ -24,34 +25,63 @@ namespace Hackernews.WPF.ViewModels
 		public bool NotLoading { get => !Loading; }
 
 		private bool _invalidCreds;
-		public bool InvalidCreds
+		public bool InvalidUserInput
 		{
 			get { return _invalidCreds; }
 			set { _invalidCreds = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(ValidCreds)); }
 		}
-		public bool ValidCreds { get => !InvalidCreds; }
+		public bool ValidCreds { get => !InvalidUserInput; }
 
 		public Action CloseAction { get; set; }
 		public ICommand CloseCommand { get; }
 
-		public Action SwitchToMainWindowAction { get; }
+		#region View switcher
+		private object _selectedViewModel;
+		public object SelectedViewModel
+		{
+			get => _selectedViewModel; set
+			{
+				_selectedViewModel = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(nameof(LoginModelSelected));
+				RaisePropertyChanged(nameof(RegisterModelSelected));
+			}
+		}
+
+		public bool LoginModelSelected => SelectedViewModel == LoginViewModel;
+		public bool RegisterModelSelected => SelectedViewModel == RegisterViewModel;
+
+		public ICommand SelectLoginModelCommand { get; }
+		public ICommand SelectRegisterModelCommand { get; }
+
+		private void SelectLoginModel(object parameter = null) => SelectedViewModel = LoginViewModel;
+		private void SelectRegisterModel(object parameter = null) => SelectedViewModel = RegisterViewModel;
+		#endregion
 
 		public LoginViewModel LoginViewModel { get; }
 
-		public LoginWindowViewModel(ISignInManager signInManager, Window thisWindow, Window mainWindow)
+		public RegisterViewModel RegisterViewModel { get; }
+
+		public LoginWindowViewModel(ISignInManager signInManager, IApiClient apiClient, Window thisWindow, Window mainWindow)
 		{
 			_thisWindow = thisWindow;
 			_mainWindow = mainWindow;
 
 			LoginViewModel = new LoginViewModel(this, signInManager);
+			RegisterViewModel = new RegisterViewModel(this, signInManager, apiClient);
 
-			SwitchToMainWindowAction = () =>
-			{
-				_mainWindow.Show();
-				_thisWindow.Close();
-			};
+			SelectLoginModelCommand = new DelegateCommand(SelectLoginModel);
+			SelectRegisterModelCommand = new DelegateCommand(SelectRegisterModel);
+
+			SelectedViewModel = LoginViewModel;
 
 			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
+		}
+
+		public void SwitchToMainWindow()
+		{
+			_mainWindow.Show();
+			_thisWindow.Close();
 		}
 	}
 }

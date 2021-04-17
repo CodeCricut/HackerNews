@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.Services;
+﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,23 +13,17 @@ namespace Hackernews.WPF
 	{
 		private LoginWindowViewModel ViewModel { get; }
 
-		public LoginWindow(ISignInManager signInManager, MainWindow mainWindow)
+		public LoginWindow(ISignInManager signInManager, IApiClient apiClient, MainWindow mainWindow)
 		{
 			InitializeComponent();
 
-			ViewModel = new LoginWindowViewModel(signInManager, thisWindow: this, mainWindow);
+			ViewModel = new LoginWindowViewModel(signInManager, apiClient, thisWindow: this, mainWindow);
 			ViewModel.CloseAction = () => {
 				this.Close();
 				Application.Current.Shutdown();
 			};
 
 			rootElement.DataContext = ViewModel;
-		}
-
-		private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-		{
-			if (ViewModel != null)
-				ViewModel.LoginViewModel.Password = ((PasswordBox)sender).SecurePassword;
 		}
 
 		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

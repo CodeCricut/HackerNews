@@ -28,7 +28,7 @@ namespace Hackernews.WPF
 				await signInManager.SignOutAsync();
 
 				var newMainWindow = new MainWindow(apiClient, userVm, signInManager);
-				LoginWindow loginWindow = new LoginWindow(signInManager, newMainWindow);
+				LoginWindow loginWindow = new LoginWindow(signInManager, apiClient, newMainWindow);
 
 				loginWindow.Show();
 				this.Close();

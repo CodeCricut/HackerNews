@@ -14,34 +14,40 @@
             Margin="0 0 0 5"
             Background="{DynamicResource cardBackground}"
             >
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <Grid Height="75">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
+            <Image Source="{Binding PrivateUserViewModel.UserImage}"
+                   Visibility="{Binding PrivateUserViewModel.HasImage, Converter={StaticResource boolToVis}}"
+                   Stretch="UniformToFill"
+                   Margin="0 0 10 0"
+                   Width="75" />
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Joined "
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-                <TextBlock Text="{Binding PrivateUserViewModel.JoinDate}"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
+            <StackPanel Orientation="Vertical"
+                        Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Joined "
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                    <TextBlock Text="{Binding PrivateUserViewModel.JoinDate}"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding PrivateUserViewModel.Karma}"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                    <TextBlock Text=" Points"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" />
+                </StackPanel>
+
+                <TextBlock
+                           Text="{Binding PrivateUserViewModel.UserName}"
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           Margin="0 0 10 0" />
             </StackPanel>
-
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1">
-                <TextBlock Text="{Binding PrivateUserViewModel.Karma}"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-                <TextBlock Text=" Points"
-                           Foreground="{DynamicResource skinFontSecondaryBrush}" />
-            </StackPanel>
-
-            <TextBlock Grid.Row="2"
-                       Text="{Binding PrivateUserViewModel.UserName}"
-                       TextWrapping="Wrap"
-                       FontSize="16"
-                       Margin="0 0 10 0"/>
         </Grid>
     </Border>
 </UserControl>

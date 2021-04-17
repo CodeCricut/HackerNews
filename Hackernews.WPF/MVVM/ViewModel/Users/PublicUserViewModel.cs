@@ -34,9 +34,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public AsyncDelegateCommand LoadUserCommand { get; }
 
-		private BitmapImage _userImage;
 		private readonly IApiClient _apiClient;
 
+		private BitmapImage _userImage;
 		public BitmapImage UserImage
 		{
 			get { return _userImage; }

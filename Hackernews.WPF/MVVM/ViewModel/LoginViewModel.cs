@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	class LoginViewModel : BaseViewModel
+	public class LoginViewModel : BaseViewModel
 	{
 		private string _username;
 		public string Username
@@ -28,9 +28,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 
 		private SecureString _password;
-		private readonly LoginWindowViewModel _loginWindowVM;
-		private readonly ISignInManager _signInManager;
-
 		public SecureString Password
 		{
 			private get => _password;
@@ -44,6 +41,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 				}
 			}
 		}
+
+		private readonly LoginWindowViewModel _loginWindowVM;
+		private readonly ISignInManager _signInManager;
 
 		public LoginViewModel(LoginWindowViewModel loginWindowVM, ISignInManager signInManager)
 		{
@@ -60,7 +60,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		private async Task LoginAsync(object parameter = null)
 		{
 			_loginWindowVM.Loading = true;
-			_loginWindowVM.InvalidCreds = false;
+			_loginWindowVM.InvalidUserInput = false;
 
 			// lol wut is security?
 			string password = new System.Net.NetworkCredential(string.Empty, _password).Password;
@@ -70,14 +70,14 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			{
 				await _signInManager.SignInAsync(loginModel);
 
-				_loginWindowVM.SwitchToMainWindowAction();
+				_loginWindowVM.SwitchToMainWindow();
 			}
 			catch (System.Exception e)
 			{
 				Username = "";
 				Password.Clear();
 
-				_loginWindowVM.InvalidCreds = true;
+				_loginWindowVM.InvalidUserInput = true;
 			}
 			finally
 			{
