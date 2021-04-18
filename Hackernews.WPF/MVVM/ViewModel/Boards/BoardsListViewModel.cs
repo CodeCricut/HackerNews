@@ -36,16 +36,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			get => BoardPageVM.TotalPages;
 		}
 
-		public BoardsListViewModel(IApiClient apiClient) : this(apiClient, thisVM => new LoadBoardsCommand(thisVM, apiClient))
+		public BoardsListViewModel(IApiClient apiClient, PrivateUserViewModel userVM) : this(apiClient, thisVM => new LoadBoardsCommand(thisVM, apiClient, userVM), userVM)
 		{
 		}
 
-		public BoardsListViewModel(IApiClient apiClient, CreateBaseCommand<BoardsListViewModel> createLoadCommand)
+		public BoardsListViewModel(IApiClient apiClient, CreateBaseCommand<BoardsListViewModel> createLoadCommand, PrivateUserViewModel userVM)
 		{
 			BoardPageVM = new PaginatedListViewModel<GetBoardModel>();
 
 			// TODO: check to see if this property is needed still.
-			BoardViewModel = new BoardViewModel(apiClient);
+			BoardViewModel = new BoardViewModel(apiClient, userVM);
 
 			LoadCommand = createLoadCommand(this);
 			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => BoardPageVM.HasNextPage);

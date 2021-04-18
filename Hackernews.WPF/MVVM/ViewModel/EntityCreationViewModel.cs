@@ -40,11 +40,11 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			{
 				_selectedViewModel = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged(nameof(LoginModelSelected));
+				RaisePropertyChanged(nameof(CreationVMIsSelected));
 			}
 		}
 
-		public bool LoginModelSelected => SelectedViewModel == BoardCreationViewModel;
+		public bool CreationVMIsSelected => SelectedViewModel != null;
 
 		public ICommand ShowBoardCreationWindowCommand { get; }
 
@@ -57,8 +57,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		#endregion
 
 		public BoardCreationViewModel BoardCreationViewModel { get; set; }
-
-
+		
 		private EntityCreationWindow _entityCreationWindow;
 
 		//public ICommand OpenCommand { get; }
@@ -77,7 +76,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			});
 		}
 
-		// TODO: For some reason, the BoardCreationViewModel.CreateBoardCommand.Invoke calls this without regard to what it is supposed to do...
 		private void CloseWindow(object parameter = null)
 		{
 			App.Current.Dispatcher.Invoke(() =>
@@ -99,7 +97,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			//OpenCommand = new DelegateCommand(OpenWindow);
 			CloseCommand = new DelegateCommand(CloseWindow);
 
-			SelectedViewModel = BoardCreationViewModel;
+			//SelectedViewModel = BoardCreationViewModel;
 		}
 	}
 }

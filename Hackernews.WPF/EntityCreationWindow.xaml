@@ -23,7 +23,9 @@
           d:DataContext="{d:DesignInstance Type=local:EntityCreationWindow}">
         <Border x:Name="clipBorder"
                 CornerRadius="20"
-                Background="{DynamicResource skinBackgroundBrush}" />
+                Background="{DynamicResource skinBackgroundBrush}"
+                BorderBrush="{DynamicResource skinBackgroundLightBrush}"
+                BorderThickness="3" />
         <Grid>
             <Grid.OpacityMask>
                 <VisualBrush Visual="{Binding ElementName=clipBorder}" />

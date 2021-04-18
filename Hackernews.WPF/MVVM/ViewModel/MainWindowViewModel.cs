@@ -2,6 +2,7 @@
 using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using System;
@@ -50,7 +51,6 @@ namespace Hackernews.WPF.ViewModels
 		public ProfileViewModel ProfileViewModel { get; }
 		public SettingsViewModel SettingsViewModel { get; }
 
-		public EntityCreationViewModel EntityCreationViewModel { get; set; }
 		#endregion
 
 		#region List VMs
@@ -89,6 +89,11 @@ namespace Hackernews.WPF.ViewModels
 		public PublicUserViewModel PublicUserViewModel { get; }
 		#endregion
 
+		#region Windowed vms
+		public EntityCreationViewModel EntityCreationViewModel { get; }
+	//	public EntityHomeViewModel EntityHomeViewModel { get;}
+		#endregion
+
 		public MainWindowViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
 		{
 			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
@@ -97,7 +102,7 @@ namespace Hackernews.WPF.ViewModels
 			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
 
 			UserListViewModel = new UserListViewModel(apiClient);
-			BoardListViewModel = new BoardsListViewModel(apiClient);
+			BoardListViewModel = new BoardsListViewModel(apiClient, userVM);
 			ArticleListViewModel = new ArticleListViewModel(vm => new LoadArticlesCommand(vm, apiClient, userVM));
 			CommentListViewModel = new CommentListViewModel(vm => new LoadCommentsCommand(vm, apiClient));
 
@@ -107,12 +112,14 @@ namespace Hackernews.WPF.ViewModels
 				LogoutAction = () => this.LogoutAction?.Invoke()
 			};
 			SettingsViewModel = new SettingsViewModel();
-			EntityCreationViewModel = new EntityCreationViewModel(apiClient);
 
 			PublicUserViewModel = new PublicUserViewModel(apiClient);
-			BoardViewModel = new BoardViewModel(apiClient);
+			BoardViewModel = new BoardViewModel(apiClient, userVM);
 			ArticleViewModel = new ArticleViewModel(userVM, apiClient);
 			CommentViewModel = new CommentViewModel();
+
+			EntityCreationViewModel = new EntityCreationViewModel(apiClient);
+			// EntityHomeViewModel = new EntityHomeViewModel(BoardViewModel, apiClient, userVM);
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectProfileCommand = new DelegateCommand(SelectProfile);
@@ -162,6 +169,7 @@ namespace Hackernews.WPF.ViewModels
 			SelectedListViewModel = BoardListViewModel;
 			SelectedDetailsViewModel = BoardViewModel;
 			SelectedFullscreenViewModel = null;
+
 			await Task.Factory.StartNew(() => BoardListViewModel.LoadCommand.TryExecute());
 		}
 

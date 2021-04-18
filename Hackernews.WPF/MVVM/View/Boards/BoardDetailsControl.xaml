@@ -25,11 +25,31 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Image Source="{Binding BoardViewModel.BoardImage}"
-                   Stretch="UniformToFill"
-                   Width="100"
-                   Visibility="{Binding BoardViewModel.HasImage,Converter={StaticResource boolToVis}}"
-                   Grid.Column="0"/>
+            <StackPanel Orientation="Vertical"
+                        Width="100"
+                        MinHeight="50">
+                <Image Source="{Binding BoardViewModel.BoardImage}"
+                       Stretch="UniformToFill"
+                       Width="100"
+                       Margin="0 0 0 5"
+                       Visibility="{Binding BoardViewModel.HasImage,Converter={StaticResource boolToVis}}"
+                       Grid.Column="0" />
+                <Border Width="100"
+                        Height="100"
+                        CornerRadius="5"
+                        Margin="0 0 0 5"
+                        Visibility="{Binding BoardViewModel.HasNoImage, Converter={StaticResource boolToVis}}"
+                        Background="{DynamicResource skinBackgroundLightBrush}">
+                    <TextBlock Text="No image"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+                <Button Command="{Binding BoardViewModel.EntityHomeViewModel.ShowBoardHomeWindowCommand}"
+                        Style="{DynamicResource PaginationButtonStyle}"
+                        Content="View details"
+                        VerticalAlignment="Stretch"
+                        Visibility="{Binding EnableDetailsButton,Converter={StaticResource boolToVis}}" />
+            </StackPanel>
+           
 
             <StackPanel Grid.Column="1"
                         Margin="10 0 0 0">
@@ -45,6 +65,8 @@
                            TextWrapping="Wrap"
                            FontSize="18"
                            Text="{Binding BoardViewModel.Title}" />
+
+                
                 <ScrollViewer 
                               VerticalScrollBarVisibility="Auto">
                     <TextBlock Text="{Binding BoardViewModel.Description}"

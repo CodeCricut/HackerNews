@@ -19,6 +19,14 @@ namespace Hackernews.WPF.Controls
 		public static readonly DependencyProperty BoardViewModelProperty =
 			DependencyProperty.Register("BoardViewModel", typeof(BoardViewModel), typeof(BoardDetailsControl), new PropertyMetadata(default(BoardViewModel)));
 
+		public bool EnableDetailsButton
+		{
+			get { return (bool)GetValue(EnableDetailsButtonProperty); }
+			set { SetValue(EnableDetailsButtonProperty, value); }
+		}
+		public static readonly DependencyProperty EnableDetailsButtonProperty =
+			DependencyProperty.Register("EnableDetailsButton", typeof(bool), typeof(BoardDetailsControl), new PropertyMetadata(true));
+
 		public BoardDetailsControl()
 		{
 			InitializeComponent();

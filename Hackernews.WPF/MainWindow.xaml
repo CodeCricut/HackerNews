@@ -125,16 +125,7 @@
                                     Grid.ColumnSpan="2"
                                     Content="{Binding SelectedFullscreenViewModel}" />
                     
-                    <!--Temp creation view button-->
-                    <StackPanel Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}" >
-                        <TextBlock TextWrapping="Wrap" Margin="0 0 0 5">Don't see a board on your favorite subject? Create one!</TextBlock>
-                        <Button Command="{Binding EntityCreationViewModel.ShowBoardCreationWindowCommand}"
-                                Style="{DynamicResource PaginationButtonStyle}"
-                                HorizontalAlignment="Left"
-                                Content="Create board"
-                                Margin="0 0 0 10" />
-
-                    </StackPanel>
+                
 
                     <!--List views-->
                     <ContentControl Grid.RowSpan="3"

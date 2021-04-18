@@ -123,9 +123,9 @@ namespace Hackernews.WPF.ViewModels
 
 		private void InstantiateOwnedViewModels()
 		{
-			CreateBaseCommand<BoardsListViewModel> createLoadBoardsByIdCommand = vm => new LoadBoardsByIdsCommand(vm, _apiClient);
-			BoardsModeratingListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand);
-			BoardsSubscribedListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand);
+			CreateBaseCommand<BoardsListViewModel> createLoadBoardsByIdCommand = vm => new LoadBoardsByIdsCommand(vm, _apiClient, this);
+			BoardsModeratingListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand, this);
+			BoardsSubscribedListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand, this);
 
 			CreateBaseCommand<ArticleListViewModel> createLoadArticlesByIdCommand = vm => new LoadArticlesByIdsCommand(vm, _apiClient, this);
 			ArticlesWrittenListViewModel = new ArticleListViewModel(createLoadArticlesByIdCommand);

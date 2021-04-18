@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
 using System.Collections.Generic;
 
@@ -14,11 +15,13 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 	{
 		private readonly BoardsListViewModel _viewModel;
 		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _userVM;
 
-		public LoadBoardsByIdsCommand(BoardsListViewModel viewModel, IApiClient apiClient)
+		public LoadBoardsByIdsCommand(BoardsListViewModel viewModel, IApiClient apiClient, PrivateUserViewModel userVM)
 		{
 			_viewModel = viewModel;
 			_apiClient = apiClient;
+			_userVM = userVM;
 		}
 
 		public override async void Execute(object parameter)
@@ -33,7 +36,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
-					var vm = new BoardViewModel(_apiClient)
+					var vm = new BoardViewModel(_apiClient, _userVM)
 					{
 						Board = board
 					};
@@ -54,12 +57,14 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 	{
 		private readonly BoardsListViewModel _viewModel;
 		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _userVM;
 
 		public LoadBoardsCommand(BoardsListViewModel viewModel,
-			IApiClient apiClient)
+			IApiClient apiClient, PrivateUserViewModel userVM)
 		{
 			_viewModel = viewModel;
 			_apiClient = apiClient;
+			_userVM = userVM;
 		}
 
 		public override async void Execute(object parameter)
@@ -73,7 +78,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
-					var vm = new BoardViewModel(_apiClient)
+					var vm = new BoardViewModel(_apiClient, _userVM)
 					{
 						Board = board
 					};

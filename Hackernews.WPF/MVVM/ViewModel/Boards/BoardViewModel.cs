@@ -37,22 +37,26 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public AsyncDelegateCommand LoadBoardCommand { get; }
 
-		public BoardViewModel(IApiClient apiClient)
+		public BoardViewModel(IApiClient apiClient, PrivateUserViewModel userVm)
 		{
 			LoadBoardCommand = new AsyncDelegateCommand(LoadBoardAsync);
 			_apiClient = apiClient;
+
+			EntityHomeViewModel = new EntityHomeViewModel(this, apiClient, userVm);
 		}
 
+		public EntityHomeViewModel EntityHomeViewModel { get;  }
 
 		private BitmapImage _boardImage;
 
 		public BitmapImage BoardImage
 		{
 			get { return _boardImage; }
-			set { _boardImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); }
+			set { _boardImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); RaisePropertyChanged(nameof(HasNoImage)); }
 		}
 
 		public bool HasImage { get => BoardImage != null; }
+		public bool HasNoImage { get => BoardImage == null;  }
 
 
 		private async Task LoadBoardAsync(object parameter = null)
