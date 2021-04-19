@@ -17,20 +17,21 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <controls:ArticleListControl ArticleListViewModel="{Binding BoardHomeViewModel.BoardArticleListVM}"
+
+            <controls:ArticleListControl ArticleListViewModel="{Binding BoardHomeViewModel.BoardArticleListVM}"
                                              Margin="0 0 5 0"
                                              Grid.RowSpan="2" />
                 <articles:MultiArticleDetailsControl Grid.Column="1"
                                                      ArticleViewModels="{Binding BoardHomeViewModel.BoardArticleListVM.Articles}"
-                                                     VerticalAlignment="Top"
-                                                     Margin="5 0 0 10" MaxHeight="350"/>
+                                                 VerticalAlignment="Top"
+                                                 Margin="5 0 0 10" MaxHeight="350"/>
                 <view:NavigationControl Grid.Column="1"
                                         Grid.Row="1"
                                         PrevPageCommand="{Binding BoardHomeViewModel.BoardArticleListVM.PrevPageCommand}"

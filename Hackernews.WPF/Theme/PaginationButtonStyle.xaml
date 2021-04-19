@@ -29,7 +29,7 @@
     <SolidColorBrush x:Key="Button.Disabled.Background"
                      Color="Transparent" />
     <SolidColorBrush x:Key="Button.Disabled.Border"
-                     Color="Transparent" />
+                     Color="{DynamicResource skinBackgroundDark}" />
     <SolidColorBrush x:Key="Button.Disabled.Foreground"
                      Color="{DynamicResource skinFontColorSecondary}" />
     <Style x:Key="PaginationButtonStyle"

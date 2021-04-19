@@ -8,6 +8,6 @@
         <Setter Property="BorderThickness"
                 Value="0" />
         <Setter Property="Background"
-                Value="{StaticResource cardBackground}" />
+                Value="{DynamicResource cardBackground}" />
     </Style>
 </ResourceDictionary>
