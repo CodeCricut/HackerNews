@@ -81,7 +81,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = UserListViewModel;
 			SelectedDetailsViewModel = PublicUserViewModel;
-			_mainWindowVM.DeselectFullscreenVM();
+			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 			await Task.Factory.StartNew(() => UserListViewModel.LoadCommand.TryExecute());
 		}
 
@@ -89,7 +89,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = BoardListViewModel;
 			SelectedDetailsViewModel = BoardViewModel; 
-			_mainWindowVM.DeselectFullscreenVM();
+			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => BoardListViewModel.LoadCommand.TryExecute());
 		}
@@ -98,7 +98,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = ArticleListViewModel;
 			SelectedDetailsViewModel = ArticleViewModel;
-			_mainWindowVM.DeselectFullscreenVM();
+			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => ArticleListViewModel.LoadCommand.TryExecute());
 		}
@@ -107,7 +107,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = CommentListViewModel;
 			SelectedDetailsViewModel = CommentViewModel;
-			_mainWindowVM.DeselectFullscreenVM();
+			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => CommentListViewModel.LoadCommand.TryExecute());
 		}

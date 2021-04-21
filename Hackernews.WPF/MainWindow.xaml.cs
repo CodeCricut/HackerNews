@@ -41,7 +41,7 @@ namespace Hackernews.WPF
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			MainWindowVM.SelectHome();
+			MainWindowVM.FullscreenVM.SelectHome();
 			homeNavButton.IsChecked = true;
 		}
 
