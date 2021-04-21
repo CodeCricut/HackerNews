@@ -104,7 +104,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 				_loginWindowVM.SwitchToMainWindow();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				RegisterModel = new RegisterUserModel();
 

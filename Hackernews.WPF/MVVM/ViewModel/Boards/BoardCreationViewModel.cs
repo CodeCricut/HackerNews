@@ -45,7 +45,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				await Task.Factory.StartNew(() => _entityCreationViewModel.CloseCommand.Execute(parameter));
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				_entityCreationViewModel.InvalidUserInput = true;
 			}

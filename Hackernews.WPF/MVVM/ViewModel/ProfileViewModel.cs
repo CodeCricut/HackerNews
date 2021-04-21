@@ -7,7 +7,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class ProfileViewModel : BaseViewModel
 	{
-		public Action? LogoutAction { get; set; }
+		public Action LogoutAction { get; set; }
 		public ICommand LogoutCommand{ get;  }
 
 

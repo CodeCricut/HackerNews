@@ -32,15 +32,15 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type viewmodel:PublicUserViewModel}">
-        <users:MultiPublicUserDetailsControl UserViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.UserListViewModel.Users}" />
+        <users:MultiPublicUserDetailsControl UserViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.UserListViewModel.Users}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
-        <articles:MultiArticleDetailsControl ArticleViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.ArticleListViewModel.Articles}" />
+        <articles:MultiArticleDetailsControl ArticleViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.ArticleListViewModel.Articles}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:CommentViewModel}">
-        <comments:MultiCommentDetailsControl CommentViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.CommentListViewModel.Comments}" />
+        <comments:MultiCommentDetailsControl CommentViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.CommentListViewModel.Comments}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:BoardViewModel}">
-        <boards:MultiBoardDetailsControl BoardViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.BoardListViewModel.Boards}" />
+        <boards:MultiBoardDetailsControl BoardViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.BoardListViewModel.Boards}" />
     </DataTemplate>
 </ResourceDictionary>

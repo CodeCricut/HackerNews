@@ -23,10 +23,13 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 		// Load board/articles
 		public AsyncDelegateCommand LoadBoardCommand { get; }
 
-		private async Task LoadBoard(object _ = null)
+		private Task LoadBoard(object _ = null)
 		{
-			LoadBoardArticles();
-			BoardViewModel.LoadBoardCommand.Execute(_);
+			return Task.Factory.StartNew(() =>
+			{
+				LoadBoardArticles();
+				BoardViewModel.LoadBoardCommand.Execute(_);
+			});
 		}
 
 		private void LoadBoardArticles() => BoardArticleListVM.LoadCommand.Execute(BoardViewModel.Board.ArticleIds);

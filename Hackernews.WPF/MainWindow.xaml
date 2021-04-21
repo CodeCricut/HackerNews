@@ -96,13 +96,13 @@
                 <Border Style="{StaticResource separatorStyle}" />
                 
                 <RadioButton Content="Users"
-                             Command="{Binding SelectUsersCommand}" />
+                             Command="{Binding EntityVM.SelectUsersCommand}" />
                 <RadioButton Content="Boards"
-                             Command="{Binding SelectBoardsCommand}" />
+                             Command="{Binding EntityVM.SelectBoardsCommand}" />
                 <RadioButton Content="Articles"
-                             Command="{Binding SelectArticlesCommand}" />
+                             Command="{Binding EntityVM.SelectArticlesCommand}" />
                 <RadioButton Content="Comments"
-                             Command="{Binding SelectCommentsCommand}" />
+                             Command="{Binding EntityVM.SelectCommentsCommand}" />
             </StackPanel>
 
             <!--Main Panel-->
@@ -136,12 +136,12 @@
                     <ContentControl Grid.RowSpan="3"
                                     Grid.Row="1"
                                     Margin="0 0 10 -10"
-                                    Content="{Binding SelectedListViewModel}" />
+                                    Content="{Binding EntityVM.SelectedListViewModel}" />
 
                     <!--Details views-->
                     <ContentControl Grid.Column="1"
                                     Grid.Row="1"
-                                    Content="{Binding SelectedDetailsViewModel}" 
+                                    Content="{Binding EntityVM.SelectedDetailsViewModel}" 
                                     Height="480"/>
 
                     <!--Pagination-->
@@ -149,10 +149,10 @@
                                             Grid.Column="1"
                                             Margin="0 0 0 10"
                                             Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}"
-                                            PrevPageCommand="{Binding SelectedListViewModel.PrevPageCommand}"
-                                            CurrentPageNumber="{Binding SelectedListViewModel.CurrentPage}"
-                                            TotalPageCount="{Binding SelectedListViewModel.TotalPages}"
-                                            NextPageCommand="{Binding SelectedListViewModel.NextPageCommand}" />
+                                            PrevPageCommand="{Binding EntityVM.SelectedListViewModel.PrevPageCommand}"
+                                            CurrentPageNumber="{Binding EntityVM.SelectedListViewModel.CurrentPage}"
+                                            TotalPageCount="{Binding EntityVM.SelectedListViewModel.TotalPages}"
+                                            NextPageCommand="{Binding EntityVM.SelectedListViewModel.NextPageCommand}" />
                 </Grid>
             </Border>
             
