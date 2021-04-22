@@ -1,6 +1,9 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
 using System;
 using System.Windows.Input;
 
@@ -8,10 +11,10 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class MainWindowViewModel : BaseViewModel
 	{
-		public Action CloseAction { get; set; }
+		private readonly IEventAggregator _ea;
+
 		public ICommand CloseCommand { get; }
 
-		public Action LogoutAction { get; set; }
 		public ICommand LogoutCommand { get; }
 
 		public PrivateUserViewModel PrivateUserViewModel { get; }
@@ -20,16 +23,26 @@ namespace Hackernews.WPF.ViewModels
 		public MainWindowEntityViewModel EntityVM { get; }
 		public EntityCreationViewModel EntityCreationViewModel { get; }
 
-		public MainWindowViewModel(IApiClient apiClient, PrivateUserViewModel userVM)
+		public MainWindowViewModel(IEventAggregator ea,
+			PrivateUserViewModel userVM,
+			MainWindowEntityViewModel entityVm,
+			MainWindowFullscreenViewModel fullscreenVm,
+			EntityCreationViewModel entityCreationVm)
 		{
-			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
-			LogoutCommand = new DelegateCommand(_ => LogoutAction?.Invoke());
+			_ea = ea;
 
-			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
+			PrivateUserViewModel = userVM;
 
-			EntityVM = new MainWindowEntityViewModel(this, userVM, apiClient);
-			FullscreenVM = new MainWindowFullscreenViewModel(this);
-			EntityCreationViewModel = new EntityCreationViewModel(apiClient);
+			EntityVM = entityVm;
+			FullscreenVM = fullscreenVm;
+			EntityCreationViewModel = entityCreationVm;
+
+			LogoutCommand = new DelegateCommand(SendLogoutRequest);
+			CloseCommand = new DelegateCommand(SendCloseWindowRequest);
 		}
+
+		private void SendLogoutRequest(object parameter = null) => _ea.SendMessage(new LogoutRequestedMessage());
+
+		private void SendCloseWindowRequest(object _ = null) => _ea.SendMessage(new CloseMainWindowMessage());
 	}
 }

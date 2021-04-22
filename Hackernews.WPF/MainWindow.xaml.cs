@@ -1,6 +1,10 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hackernews.WPF
@@ -10,36 +14,33 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private readonly ISignInManager _signInManager;
+		private readonly LoginWindow _loginWindow;
+
 		public MainWindowViewModel MainWindowVM { get; }
 
-		public MainWindow(IApiClient apiClient, PrivateUserViewModel userVm, ISignInManager signInManager)
+		public MainWindow(IEventAggregator ea, 
+			MainWindowViewModel mainWindowVM, 
+			LoginWindow loginWindow,
+			ISignInManager signInManager)
 		{
 			InitializeComponent();
 
-			MainWindowVM = new MainWindowViewModel(apiClient, userVm);
-			MainWindowVM.CloseAction = () =>
-			{
-				this.Close();
-				Application.Current.Shutdown();
-			};
-			MainWindowVM.LogoutAction = async () =>
-			{
-				await signInManager.SignOutAsync();
+			_loginWindow = loginWindow;
+			_signInManager = signInManager;
 
-				var newMainWindow = new MainWindow(apiClient, userVm, signInManager);
-				LoginWindow loginWindow = new LoginWindow(signInManager, apiClient, newMainWindow);
-
-				loginWindow.Show();
-				this.Close();
-			};
-
+			MainWindowVM = mainWindowVM;
 			DataContext = MainWindowVM;
+
+			ea.RegisterHandler<CloseMainWindowMessage>(msg => CloseApp());
+			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await Logout());
 
 			this.Loaded += MainWindow_Loaded;
 		}
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
+			// TODO: make FullscreenVMSelectedMessage ???
 			MainWindowVM.FullscreenVM.SelectHome();
 			homeNavButton.IsChecked = true;
 		}
@@ -50,6 +51,20 @@ namespace Hackernews.WPF
 			{
 				this.DragMove();
 			}
+		}
+
+		private void CloseApp()
+		{
+			this.Close();
+			Application.Current.Shutdown();
+		}
+
+		private async Task Logout()
+		{
+			await _signInManager.SignOutAsync();
+
+			_loginWindow.Show();
+			this.Close();
 		}
 	}
 }

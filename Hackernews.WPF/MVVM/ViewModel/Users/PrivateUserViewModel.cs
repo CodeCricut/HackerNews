@@ -11,6 +11,8 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,6 +22,7 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class PrivateUserViewModel : BaseViewModel
 	{
+		private readonly IEventAggregator _ea;
 		private readonly IApiClient _apiClient;
 
 		#region User and User Props
@@ -117,12 +120,14 @@ namespace Hackernews.WPF.ViewModels
 
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
-		public PrivateUserViewModel(IApiClient apiClient)
+		public PrivateUserViewModel(IEventAggregator ea, IApiClient apiClient)
 		{
+			_ea = ea;
 			_apiClient = apiClient;
 			InstantiateOwnedViewModels();
 
 			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUserAsync);
+			_ea.RegisterHandler<LoadPrivateUserMessage>(async msg => await TryLoadPrivateUserAsync());
 		}
 
 		private void InstantiateOwnedViewModels()

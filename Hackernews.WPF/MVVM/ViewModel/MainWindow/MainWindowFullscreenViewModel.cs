@@ -1,5 +1,8 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
+using HackerNews.WPF.MessageBus.ViewModel.Users;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -10,7 +13,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public bool NotInFullscreenMode { get => SelectedFullscreenViewModel == null; }
 
 		private object _selectedFullscreenViewModel;
-		private readonly MainWindowViewModel _mainWindowVM;
+		private readonly IEventAggregator _ea;
 
 		public object SelectedFullscreenViewModel
 		{
@@ -32,48 +35,47 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand SelectProfileCommand { get; }
 		public ICommand SelectSettingsCommand { get; }
 
-		public MainWindowFullscreenViewModel(MainWindowViewModel mainWindowVM)
+		public MainWindowFullscreenViewModel(IEventAggregator ea, 
+			HomeViewModel homeVm,
+			ProfileViewModel profileVm,
+			SettingsViewModel settingsVm)
 		{
-			HomeViewModel = new HomeViewModel();
-			ProfileViewModel = new ProfileViewModel(mainWindowVM.PrivateUserViewModel)
-			{
-				LogoutAction = () => mainWindowVM.LogoutAction?.Invoke()
-			};
-			SettingsViewModel = new SettingsViewModel();
+			_ea = ea;
+
+			ea.RegisterHandler<FullscreenDeselectedMessage>(msg => DeselectFullscreenVM());
+
+			HomeViewModel = homeVm;
+			ProfileViewModel = profileVm;
+			SettingsViewModel = settingsVm;
 
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectProfileCommand = new DelegateCommand(SelectProfile);
 			SelectSettingsCommand = new DelegateCommand(SelectSettings);
-			_mainWindowVM = mainWindowVM;
 		}
 
 		public void SelectHome(object parameter = null)
 		{
-			_mainWindowVM.EntityVM.DeselectEntityVM();
+			_ea.SendMessage(new EntityDeselectedMessage());
 			SelectedFullscreenViewModel = HomeViewModel;
 		}
 
 		public void SelectProfile(object parameter = null)
 		{
-			_mainWindowVM.EntityVM.DeselectEntityVM();
+			_ea.SendMessage(new EntityDeselectedMessage());
 
 			SelectedFullscreenViewModel = ProfileViewModel;
 
-			// TODO; add load command to profile vm
-			_mainWindowVM.PrivateUserViewModel.TryLoadUserCommand.Execute(null);
+			_ea.SendMessage(new LoadPrivateUserMessage());
 		}
 
 		public void SelectSettings(object parameter = null)
 		{
-			_mainWindowVM.EntityVM.DeselectEntityVM();
+			_ea.SendMessage(new EntityDeselectedMessage());
 
 			SelectedFullscreenViewModel = SettingsViewModel;
 		}
 
-		public void DeselectFullscreenVM()
-		{
-			SelectedFullscreenViewModel = null;
-		}
+		public void DeselectFullscreenVM() => SelectedFullscreenViewModel = null;
 	}
 }

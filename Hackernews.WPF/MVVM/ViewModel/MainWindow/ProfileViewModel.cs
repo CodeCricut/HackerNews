@@ -1,5 +1,7 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
 using System;
 using System.Windows.Input;
 
@@ -7,16 +9,22 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class ProfileViewModel : BaseViewModel
 	{
-		public Action LogoutAction { get; set; }
+		private readonly IEventAggregator _ea;
+
 		public ICommand LogoutCommand { get; }
 
+		public PrivateUserViewModel PrivateUserViewModel { get; }
 
-		public ProfileViewModel(PrivateUserViewModel privateUserViewModel)
+
+		public ProfileViewModel(IEventAggregator ea, PrivateUserViewModel privateUserViewModel)
 		{
+			_ea = ea;
+
 			PrivateUserViewModel = privateUserViewModel;
-			LogoutCommand = new DelegateCommand(_ => LogoutAction?.Invoke());
+
+			LogoutCommand = new DelegateCommand(Logout);
 		}
 
-		public PrivateUserViewModel PrivateUserViewModel { get; }
+		private void Logout(object _ = null) => _ea.SendMessage(new LogoutRequestedMessage());
 	}
 }

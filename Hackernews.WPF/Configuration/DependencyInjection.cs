@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,8 @@ namespace Hackernews.WPF.Configuration
 			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
 			services.AddSingleton<ISignInManager, WpfSignInManager>();
 			services.AddSingleton<PrivateUserViewModel>();
+
+			services.AddSingleton<IEventAggregator, EventAggregator>();
 
 			return services;
 		}

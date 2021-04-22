@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.Web", "HackerNew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackernews.WPF", "Hackernews.WPF\Hackernews.WPF.csproj", "{2AD49B12-8463-4C21-963D-45C6D2800521}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.WPF.MessageBus", "HackerNews.WPF.MessageBus\HackerNews.WPF.MessageBus.csproj", "{4FAF0DD0-0F65-45F1-A01D-59E2F3F95FB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{2AD49B12-8463-4C21-963D-45C6D2800521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AD49B12-8463-4C21-963D-45C6D2800521}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AD49B12-8463-4C21-963D-45C6D2800521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FAF0DD0-0F65-45F1-A01D-59E2F3F95FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FAF0DD0-0F65-45F1-A01D-59E2F3F95FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FAF0DD0-0F65-45F1-A01D-59E2F3F95FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FAF0DD0-0F65-45F1-A01D-59E2F3F95FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,6 +18,7 @@
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
     <ProjectReference Include="..\HackerNews.Infrastructure\HackerNews.Infrastructure.csproj" />
     <ProjectReference Include="..\HackerNews.Web\HackerNews.Web.csproj" />
+    <ProjectReference Include="..\HackerNews.WPF.MessageBus\HackerNews.WPF.MessageBus.csproj" />
   </ItemGroup>
 
   <ItemGroup>
