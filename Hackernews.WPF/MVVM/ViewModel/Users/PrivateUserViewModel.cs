@@ -128,8 +128,9 @@ namespace Hackernews.WPF.ViewModels
 			BoardsSubscribedListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand, this);
 
 			CreateBaseCommand<ArticleListViewModel> createLoadArticlesByIdCommand = vm => new LoadArticlesByIdsCommand(vm, _apiClient, this);
+
 			ArticlesWrittenListViewModel = new ArticleListViewModel(createLoadArticlesByIdCommand);
-			ArticlesSavedListViewModel = new ArticleListViewModel(createLoadArticlesByIdCommand);
+			ArticlesSavedListViewModel = new ArticleListViewModel(createLoadArticlesByIdCommand  );
 
 			CreateBaseCommand<CommentListViewModel> createLoadCommentsByIdCommand = vm => new LoadCommentsByIdsCommand(vm, _apiClient);
 			CommentsWrittenListViewModel = new CommentListViewModel(createLoadCommentsByIdCommand);

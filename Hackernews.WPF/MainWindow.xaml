@@ -86,14 +86,12 @@
                     </Style>
                 </StackPanel.Resources>
                 <RadioButton Content="Home"
-                             Command="{Binding  FullscreenVM.SelectHomeCommand}"
+                             Command="{Binding SelectHomeCommand}"
                              x:Name="homeNavButton"
                              />
-                <RadioButton Content="Profile"
-                             Command="{Binding FullscreenVM.SelectProfileCommand}"/>
-
-                <RadioButton Content="Settings"
-                             Command="{Binding FullscreenVM.SelectSettingsCommand}"/>
+                <RadioButton Content="Profile" Command="{Binding SelectProfileCommand}"/>
+                
+                <RadioButton Content="Settings" Command="{Binding SelectSettingsCommand}"/>
 
                 <Border Style="{StaticResource separatorStyle}" />
                 
@@ -125,13 +123,13 @@
                     <!--Fullscreen views-->
                     <ContentControl Grid.RowSpan="4"
                                     Grid.ColumnSpan="2"
-                                    Content="{Binding FullscreenVM.SelectedFullscreenViewModel}" />
+                                    Content="{Binding SelectedFullscreenViewModel}" />
                     
                    <!--Temp button-->
                     <Button Command="{Binding EntityCreationViewModel.ShowBoardCreationWindowCommand}"
                             Content="Create board"
                             Style="{DynamicResource PaginationButtonStyle}"
-                            Visibility="{Binding FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
+                            Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}"
                             Margin="0 0 10 10"/>
 
                     <!--List views-->
@@ -150,7 +148,7 @@
                     <view:NavigationControl Grid.Row="2"
                                             Grid.Column="1"
                                             Margin="0 0 0 10"
-                                            Visibility="{Binding FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
+                                            Visibility="{Binding NotInFullscreenMode, Converter={StaticResource boolToVis}}"
                                             PrevPageCommand="{Binding EntityVM.SelectedListViewModel.PrevPageCommand}"
                                             CurrentPageNumber="{Binding EntityVM.SelectedListViewModel.CurrentPage}"
                                             TotalPageCount="{Binding EntityVM.SelectedListViewModel.TotalPages}"

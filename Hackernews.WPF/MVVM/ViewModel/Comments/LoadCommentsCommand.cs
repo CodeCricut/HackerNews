@@ -29,7 +29,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 
 				_viewModel.Comments.Clear();
 
-				_viewModel.CommentPageVM.Page = await _apiClient.GetAsync<GetCommentModel>(ids, _viewModel.PagingParams, "comments");
+				_viewModel.CommentPageVM.Page = await _apiClient.GetAsync<GetCommentModel>(ids, _viewModel.CommentPageVM.PagingParams, "comments");
 
 				foreach (var comment in _viewModel.CommentPageVM.Items)
 				{
@@ -39,9 +39,6 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 					};
 					_viewModel.Comments.Add(vm);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}
@@ -65,7 +62,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 			{
 				_viewModel.Comments.Clear();
 
-				_viewModel.CommentPageVM.Page = await _apiClient.GetPageAsync<GetCommentModel>(_viewModel.PagingParams, "comments");
+				_viewModel.CommentPageVM.Page = await _apiClient.GetPageAsync<GetCommentModel>(_viewModel.CommentPageVM.PagingParams, "comments");
 
 				foreach (var comment in _viewModel.CommentPageVM.Items)
 				{
@@ -75,9 +72,6 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 					};
 					_viewModel.Comments.Add(vm);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}

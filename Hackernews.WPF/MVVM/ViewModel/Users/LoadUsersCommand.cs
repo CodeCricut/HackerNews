@@ -21,7 +21,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			{
 				_viewModel.Users.Clear();
 
-				_viewModel.UserPageVM.Page = await _apiClient.GetPageAsync<GetPublicUserModel>(_viewModel.PagingParams, "users");
+				_viewModel.UserPageVM.Page = await _apiClient.GetPageAsync<GetPublicUserModel>(_viewModel.UserPageVM.PagingParams, "users");
 
 				foreach (var user in _viewModel.UserPageVM.Items)
 				{
@@ -30,12 +30,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 					{
 						User = user
 					};
-					vm.LoadUserCommand.Execute();
+					vm.LoadEntityCommand.Execute();
 					_viewModel.Users.Add(vm);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}

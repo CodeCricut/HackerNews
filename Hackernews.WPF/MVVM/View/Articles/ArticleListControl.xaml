@@ -15,8 +15,6 @@
             Style="{DynamicResource listViewBorderStyle}">
         
         <!--Article List-->
-        <!--SelectedItem="{Binding ArticleListViewModel.SelectedArticle, Mode=TwoWay}"-->
-        <!--ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"-->
         <ListView Foreground="{DynamicResource skinFontBrush}"
                    Background="Transparent"
                   BorderThickness="0"

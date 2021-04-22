@@ -35,6 +35,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			set { _isSelected = value; RaisePropertyChanged(); }
 		}
 
+<<<<<<< HEAD
+=======
+		public AsyncDelegateCommand LoadEntityCommand { get; }
+
+
+>>>>>>> summaries
 		public ArticleViewModel(PrivateUserViewModel privateUser, IApiClient apiClient)
 		{
 			_privateUserVM = privateUser;
