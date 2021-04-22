@@ -54,7 +54,7 @@ namespace Hackernews.WPF.MVVM.Model
 		{
 			if (!HasNextPage) return;
 
-			App.Current.Dispatcher.Invoke(() =>
+			await App.Current.Dispatcher.InvokeAsync(() =>
 			{
 				PagingParams = NextPagingParams;
 				LoadCommand.TryExecute(parameter);
@@ -71,7 +71,7 @@ namespace Hackernews.WPF.MVVM.Model
 		{
 			if (!HasPrevPage) return;
 
-			await App.Current.Dispatcher.Invoke(async () =>
+			await App.Current.Dispatcher.InvokeAsync(() =>
 			{
 				PagingParams = PrevPagingParams;
 				LoadCommand.TryExecute(parameter);
