@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
@@ -9,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class BoardViewModel : BaseViewModel
+	public class BoardViewModel : BaseEntityViewModel
 	{
 		private bool _isSelected;
 
@@ -35,11 +36,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		public AsyncDelegateCommand LoadBoardCommand { get; }
-
 		public BoardViewModel(IApiClient apiClient, PrivateUserViewModel userVm)
 		{
-			LoadBoardCommand = new AsyncDelegateCommand(LoadBoardAsync);
+			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
 			_apiClient = apiClient;
 
 			EntityHomeViewModel = new EntityHomeViewModel(this, apiClient, userVm);

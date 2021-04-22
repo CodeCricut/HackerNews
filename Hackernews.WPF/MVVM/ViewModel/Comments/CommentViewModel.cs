@@ -1,10 +1,11 @@
-﻿using Hackernews.WPF.ViewModels;
+﻿using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Comments;
 using System;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class CommentViewModel : BaseViewModel
+	public class CommentViewModel : BaseEntityViewModel
 	{
 		private bool _isSelected;
 

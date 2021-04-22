@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Images;
@@ -12,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class ArticleViewModel : BaseViewModel
+	public class ArticleViewModel : BaseEntityViewModel
 	{
 		private readonly PrivateUserViewModel _privateUserVM;
 		private readonly IApiClient _apiClient;
@@ -34,16 +35,13 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			set { _isSelected = value; RaisePropertyChanged(); }
 		}
 
-		public AsyncDelegateCommand LoadArticleCommand { get; }
-
-
 		public ArticleViewModel(PrivateUserViewModel privateUser, IApiClient apiClient)
 		{
 			_privateUserVM = privateUser;
 			_apiClient = apiClient;
 			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
 
-			LoadArticleCommand = new AsyncDelegateCommand(LoadArticleAsync);
+			LoadEntityCommand = new AsyncDelegateCommand(LoadArticleAsync);
 		}
 
 		private BitmapImage _articleImage;
