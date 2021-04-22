@@ -72,6 +72,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			_userVM = userVM;
 			_apiClient = apiClient;
 
+			ea.RegisterHandler<EntityDeselectedMessage>(msg => DeselectEntityVM());
+
 			// Hows that for a class signature + constructor?
 			UserListViewModel = new UserListViewModel(createLoadCommand: entityVM => new LoadUsersCommand(entityVM, apiClient));
 			BoardListViewModel = new BoardListViewModel(createLoadCommand: entityVM => new LoadBoardsCommand(entityVM, apiClient, userVM));

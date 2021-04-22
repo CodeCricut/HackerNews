@@ -4,6 +4,7 @@ using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Scrutor;
 
 namespace Hackernews.WPF.Configuration
 {
@@ -13,8 +14,19 @@ namespace Hackernews.WPF.Configuration
 		{
 			services.AddLogging();
 
-			services.AddSingleton<MainWindow>();
-			services.AddSingleton<LoginWindow>();
+			services.AddTransient<MainWindow>();
+			services.AddTransient<LoginWindow>();
+			services.AddTransient<EntityHomeWindow>();
+			services.AddTransient<EntityCreationWindow>();
+
+			// Register all vms
+			services.Scan(scan => 
+				scan.FromCallingAssembly()
+					.AddClasses(c => c.AssignableTo<BaseViewModel>()) // 1. Find the concrete vms
+					.UsingRegistrationStrategy(RegistrationStrategy.Skip) // 2. Define how to handle duplicates
+					  .AsSelf() // 2. Specify which services they are registered as
+					  .WithTransientLifetime());  // 3. Set the lifetime for the services
+
 
 			services.AddHttpClient();
 

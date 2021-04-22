@@ -14,22 +14,22 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private readonly IApiClient _apiClient;
 		private readonly ISignInManager _signInManager;
-		private readonly LoginWindow _loginWindow;
 
 		public MainWindowViewModel MainWindowVM { get; }
 
 		public MainWindow(IEventAggregator ea, 
 			MainWindowViewModel mainWindowVM, 
-			LoginWindow loginWindow,
+			IApiClient apiClient,
 			ISignInManager signInManager)
 		{
 			InitializeComponent();
 
-			_loginWindow = loginWindow;
 			_signInManager = signInManager;
 
 			MainWindowVM = mainWindowVM;
+			_apiClient = apiClient;
 			DataContext = MainWindowVM;
 
 			ea.RegisterHandler<CloseMainWindowMessage>(msg => CloseApp());
@@ -63,7 +63,9 @@ namespace Hackernews.WPF
 		{
 			await _signInManager.SignOutAsync();
 
-			_loginWindow.Show();
+			// Could use a factory instead to pass this as arg
+			LoginWindow loginWindow = new LoginWindow(_signInManager, _apiClient, this);
+			loginWindow.Show();
 			this.Close();
 		}
 	}
