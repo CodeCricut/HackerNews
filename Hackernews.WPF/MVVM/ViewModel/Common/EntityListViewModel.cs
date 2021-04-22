@@ -18,14 +18,6 @@ namespace Hackernews.WPF.MVVM.ViewModel.Common
 			LoadCommand = createLoadCommand(this);
 
 			EntityPageVM = new PaginatedListViewModel<TGetEntityModel>(LoadCommand);
-
-			EntityPageVM.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler((obj, target) => RaisePageChanged());
-		}
-
-		public void RaisePageChanged()
-		{
-			EntityPageVM.RaisePropertyChanged(nameof(EntityPageVM.CurrentPage));
-			EntityPageVM.RaisePropertyChanged(nameof(EntityPageVM.TotalPages));
 		}
 	}
 }

@@ -2,10 +2,7 @@
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Users;
-using System;
-using System.Collections.Generic;
 using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel

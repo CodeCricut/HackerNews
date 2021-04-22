@@ -1,5 +1,4 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 

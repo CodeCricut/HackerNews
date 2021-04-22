@@ -44,7 +44,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			EntityHomeViewModel = new EntityHomeViewModel(this, apiClient, userVm);
 		}
 
-		public EntityHomeViewModel EntityHomeViewModel { get;  }
+		public EntityHomeViewModel EntityHomeViewModel { get; }
 
 		private BitmapImage _boardImage;
 
@@ -55,7 +55,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 
 		public bool HasImage { get => BoardImage != null; }
-		public bool HasNoImage { get => BoardImage == null;  }
+		public bool HasNoImage { get => BoardImage == null; }
 
 
 		private async Task LoadBoardAsync(object parameter = null)

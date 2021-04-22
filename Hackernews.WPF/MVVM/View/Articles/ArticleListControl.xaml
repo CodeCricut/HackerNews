@@ -19,7 +19,7 @@
                    Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsSource="{Binding ArticleListViewModel.Articles, Mode=OneWay}"
+                  ItemsSource="{Binding ArticleListViewModel.Entities, Mode=OneWay}"
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">

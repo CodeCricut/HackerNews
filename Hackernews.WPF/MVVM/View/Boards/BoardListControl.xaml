@@ -10,14 +10,13 @@
     <Border x:Name="rootElement"
             Style="{DynamicResource listViewBorderStyle}">
 
-        <!--SelectedItem="{Binding BoardsListViewModel.BoardViewModel.Board, Mode=TwoWay}"-->
         <ListView Background="Transparent"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"
                   DisplayMemberPath="Title"
-                  ItemsSource="{Binding BoardsListViewModel.Boards, Mode=OneWay}"
+                  ItemsSource="{Binding BoardsListViewModel.Entities, Mode=OneWay}"
                   Foreground="{DynamicResource skinFontBrush}"
                   />
     </Border>

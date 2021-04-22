@@ -5,8 +5,6 @@ using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -98,7 +96,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 				var loginModel = new LoginModel
 				{
-					UserName = Username, Password = Password
+					UserName = Username,
+					Password = Password
 				};
 				await _signInManager.SignInAsync(loginModel);
 

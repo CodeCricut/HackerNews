@@ -1,78 +1,51 @@
 ﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
+using Hackernews.WPF.MVVM.ViewModel.Common;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Comments
 {
-	public abstract class BaseLoadCommentsCommand : BaseCommand
+	public class LoadCommentsByIdsCommand : LoadEntityListByIdsCommand<CommentViewModel, GetCommentModel>
 	{
-
-	}
-
-	public class LoadCommentsByIdsCommand : BaseLoadCommentsCommand
-	{
-		private readonly CommentListViewModel _viewModel;
 		private readonly IApiClient _apiClient;
 
-		public LoadCommentsByIdsCommand(CommentListViewModel viewModel, IApiClient apiClient)
+		public LoadCommentsByIdsCommand(EntityListViewModel<CommentViewModel, GetCommentModel> listVM,
+			IApiClient apiClient) : base(listVM)
 		{
-			_viewModel = viewModel;
 			_apiClient = apiClient;
 		}
 
-		public override async void Execute(object parameter)
+		public override Task<PaginatedList<GetCommentModel>> LoadEntityModelsAsync(List<int> ids, PagingParams pagingParams)
 		{
-			List<int> ids = (List<int>)parameter;
-			await App.Current.Dispatcher.Invoke(async () =>
-			{
+			return _apiClient.GetAsync<GetCommentModel>(ids, pagingParams, "comments");
+		}
 
-				_viewModel.Comments.Clear();
-
-				_viewModel.CommentPageVM.Page = await _apiClient.GetAsync<GetCommentModel>(ids, _viewModel.CommentPageVM.PagingParams, "comments");
-
-				foreach (var comment in _viewModel.CommentPageVM.Items)
-				{
-					var vm = new CommentViewModel()
-					{
-						Comment = comment
-					};
-					_viewModel.Comments.Add(vm);
-				}
-			});
+		public override CommentViewModel ConstructEntityViewModel(GetCommentModel getModel)
+		{
+			return new CommentViewModel() { Comment = getModel };
 		}
 	}
 
-
-	public class LoadCommentsCommand : BaseLoadCommentsCommand
+	public class LoadCommentsCommand : LoadEntityListCommand<CommentViewModel, GetCommentModel>
 	{
-		private readonly CommentListViewModel _viewModel;
 		private readonly IApiClient _apiClient;
 
-		public LoadCommentsCommand(CommentListViewModel viewModel,
-			IApiClient apiClient)
+		public LoadCommentsCommand(EntityListViewModel<CommentViewModel, GetCommentModel> listVM,
+			IApiClient apiClient) : base(listVM)
 		{
-			_viewModel = viewModel;
 			_apiClient = apiClient;
 		}
 
-		public override async void Execute(object parameter)
+		public override CommentViewModel ConstructEntityViewModel(GetCommentModel getModel)
 		{
-			await App.Current.Dispatcher.Invoke(async () =>
-			{
-				_viewModel.Comments.Clear();
+			return new CommentViewModel() { Comment = getModel };
+		}
 
-				_viewModel.CommentPageVM.Page = await _apiClient.GetPageAsync<GetCommentModel>(_viewModel.CommentPageVM.PagingParams, "comments");
-
-				foreach (var comment in _viewModel.CommentPageVM.Items)
-				{
-					var vm = new CommentViewModel()
-					{
-						Comment = comment
-					};
-					_viewModel.Comments.Add(vm);
-				}
-			});
+		public override Task<PaginatedList<GetCommentModel>> LoadEntityModelsAsync(PagingParams pagingParams)
+		{
+			return _apiClient.GetPageAsync<GetCommentModel>(pagingParams, "comments");
 		}
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
-using System;
 using System.Windows;
 
 namespace Hackernews.WPF
@@ -19,7 +17,8 @@ namespace Hackernews.WPF
 			InitializeComponent();
 
 			MainWindowVM = new MainWindowViewModel(apiClient, userVm);
-			MainWindowVM.CloseAction = () => {
+			MainWindowVM.CloseAction = () =>
+			{
 				this.Close();
 				Application.Current.Shutdown();
 			};

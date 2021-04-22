@@ -23,7 +23,7 @@
                   Foreground="{DynamicResource skinFontBrush}"
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsSource="{Binding CommentListViewModel.Comments, Mode=OneWay}"
+                  ItemsSource="{Binding CommentListViewModel.Entities, Mode=OneWay}"
                   ItemContainerStyle="{StaticResource EntityListViewItemContainerStyle}"
             >
            <ListView.ItemTemplate>

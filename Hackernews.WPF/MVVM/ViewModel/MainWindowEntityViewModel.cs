@@ -1,9 +1,14 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
+using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Users;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -23,15 +28,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		public BoardsListViewModel BoardListViewModel { get; }
-		public ArticleListViewModel ArticleListViewModel { get; }
-		public CommentListViewModel CommentListViewModel { get; }
-		public UserListViewModel UserListViewModel { get; }
+		public EntityListViewModel<BoardViewModel, GetBoardModel> BoardListViewModel { get; }
+		public EntityListViewModel<ArticleViewModel, GetArticleModel> ArticleListViewModel { get; }
+		public EntityListViewModel<CommentViewModel, GetCommentModel> CommentListViewModel { get; }
+		public EntityListViewModel<PublicUserViewModel, GetPublicUserModel> UserListViewModel { get; }
 		#endregion
 
 		#region Details VMs
 		private object _selectedDetailsViewModel;
 		private readonly MainWindowViewModel _mainWindowVM;
+		private readonly PrivateUserViewModel _userVM;
 		private readonly IApiClient _apiClient;
 
 		public object SelectedDetailsViewModel
@@ -56,15 +62,19 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand SelectArticlesCommand { get; }
 		public ICommand SelectCommentsCommand { get; }
 
-		public MainWindowEntityViewModel(MainWindowViewModel mainWindowVM, IApiClient apiClient)
+		public MainWindowEntityViewModel(MainWindowViewModel mainWindowVM,
+			PrivateUserViewModel userVM,
+			IApiClient apiClient)
 		{
 			_mainWindowVM = mainWindowVM;
+			_userVM = userVM;
 			_apiClient = apiClient;
 
-			UserListViewModel = new UserListViewModel(apiClient);
-			BoardListViewModel = new BoardsListViewModel(apiClient, mainWindowVM.PrivateUserViewModel);
-			ArticleListViewModel = new ArticleListViewModel(vm => new LoadArticlesCommand(vm, apiClient, mainWindowVM.PrivateUserViewModel));
-			CommentListViewModel = new CommentListViewModel(vm => new LoadCommentsCommand(vm, apiClient));
+			// Hows that for a class signature + constructor?
+			UserListViewModel = new UserListViewModel(createLoadCommand: entityVM => new LoadUsersCommand(entityVM, apiClient));
+			BoardListViewModel = new BoardListViewModel(createLoadCommand: entityVM => new LoadBoardsCommand(entityVM, apiClient, userVM));
+			ArticleListViewModel = new ArticleListViewModel(createLoadCommand: entityVM => new LoadArticlesCommand(entityVM, userVM, apiClient));
+			CommentListViewModel = new CommentListViewModel(createLoadCommand: entityVM => new LoadCommentsCommand(entityVM, apiClient));
 
 			PublicUserViewModel = new PublicUserViewModel(apiClient);
 			BoardViewModel = new BoardViewModel(apiClient, mainWindowVM.PrivateUserViewModel);
@@ -88,7 +98,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public async Task SelectBoardsAsync(object parameter = null)
 		{
 			SelectedListViewModel = BoardListViewModel;
-			SelectedDetailsViewModel = BoardViewModel; 
+			SelectedDetailsViewModel = BoardViewModel;
 			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => BoardListViewModel.LoadCommand.TryExecute());

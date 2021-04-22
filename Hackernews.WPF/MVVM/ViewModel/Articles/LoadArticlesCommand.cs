@@ -1,86 +1,59 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hackernews.WPF.Core.Commands
 {
-	public abstract class BaseLoadArticlesCommand : BaseCommand
-	{
-	}
-
-	public class LoadArticlesByIdsCommand : BaseLoadArticlesCommand
-	{
-		private readonly ArticleListViewModel _viewModel;
-		private readonly IApiClient _apiClient;
-		private readonly PrivateUserViewModel _privateUserViewModel;
-
-		public LoadArticlesByIdsCommand(ArticleListViewModel viewModel, IApiClient apiClient, PrivateUserViewModel privateUserViewModel)
-		{
-			_viewModel = viewModel;
-			_apiClient = apiClient;
-			_privateUserViewModel = privateUserViewModel;
-		}
-
-		public override async void Execute(object parameter)
-		{
-			List<int> ids = (List<int>)parameter;
-			await App.Current.Dispatcher.Invoke(async () =>
-			{
-
-				_viewModel.Articles.Clear();
-
-				_viewModel.ArticlePageVM.Page = await _apiClient.GetAsync<GetArticleModel>(ids, _viewModel.ArticlePageVM.PagingParams, "articles");
-
-				foreach (var article in _viewModel.ArticlePageVM.Items)
-				{
-					var vm = new ArticleViewModel(_privateUserViewModel, _apiClient)
-					{
-						Article = article
-					};
-					vm.LoadEntityCommand.Execute();
-					_viewModel.Articles.Add(vm);
-				}
-			});
-		}
-	}
-
-	public class LoadArticlesCommand : BaseLoadArticlesCommand
+	public class LoadArticlesByIdsCommand : LoadEntityListByIdsCommand<ArticleViewModel, GetArticleModel>
 	{
 		private readonly IApiClient _apiClient;
-		private readonly PrivateUserViewModel _userVM;
-		private readonly ArticleListViewModel _viewModel;
+		private readonly PrivateUserViewModel _userVm;
 
-		public LoadArticlesCommand(ArticleListViewModel viewModel,
+		public LoadArticlesByIdsCommand(EntityListViewModel<ArticleViewModel, GetArticleModel> listVM,
 			IApiClient apiClient,
-			PrivateUserViewModel userVM)
+			PrivateUserViewModel userVm) : base(listVM)
 		{
-			_viewModel = viewModel;
 			_apiClient = apiClient;
-			_userVM = userVM;
+			_userVm = userVm;
 		}
 
-		public override  async void Execute(object parameter)
+		public override ArticleViewModel ConstructEntityViewModel(GetArticleModel getModel)
 		{
-			await App.Current.Dispatcher.Invoke(async () =>
-			{
-				_viewModel.Articles.Clear();
-				_viewModel.ArticlePageVM.Page = await _apiClient.GetPageAsync<GetArticleModel>(_viewModel.ArticlePageVM.PagingParams, "articles");
+			return new ArticleViewModel(_userVm, _apiClient) { Article = getModel };
+		}
 
-				_userVM.TryLoadUserCommand.Execute(null);
+		public override Task<PaginatedList<GetArticleModel>> LoadEntityModelsAsync(List<int> ids, PagingParams pagingParams)
+		{
+			return _apiClient.GetAsync<GetArticleModel>(ids, pagingParams, "articles");
+		}
+	}
 
-				foreach (var article in _viewModel.ArticlePageVM.Items)
-				{
-					var articleVM = new ArticleViewModel(_userVM, _apiClient)
-					{
-						Article = article
-					};
-					articleVM.LoadEntityCommand.Execute();
+	public class LoadArticlesCommand : LoadEntityListCommand<ArticleViewModel, GetArticleModel>
+	{
+		private readonly PrivateUserViewModel _userVM;
+		private readonly IApiClient _apiClient;
 
-					_viewModel.Articles.Add(articleVM);
-				}
-			});
+		public LoadArticlesCommand(EntityListViewModel<ArticleViewModel, GetArticleModel> listVM,
+			PrivateUserViewModel userVM,
+			IApiClient apiClient) : base(listVM)
+		{
+			_userVM = userVM;
+			_apiClient = apiClient;
+		}
+
+		public override ArticleViewModel ConstructEntityViewModel(GetArticleModel getModel)
+		{
+			return new ArticleViewModel(_userVM, _apiClient) { Article = getModel };
+		}
+
+		public override Task<PaginatedList<GetArticleModel>> LoadEntityModelsAsync(PagingParams pagingParams)
+		{
+			return _apiClient.GetPageAsync<GetArticleModel>(pagingParams, "articles");
 		}
 	}
 }

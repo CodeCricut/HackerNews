@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HackerNews.Application.Images.Queries.GetImageById;
+﻿using HackerNews.Application.Images.Queries.GetImageById;
 using HackerNews.Domain.Common.Models.Images;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HackerNews.Api.Controllers
 {

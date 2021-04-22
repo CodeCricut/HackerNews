@@ -27,9 +27,9 @@ namespace Hackernews.WPF.ViewModels
 
 			PrivateUserViewModel = new PrivateUserViewModel(apiClient);
 
-			EntityVM = new MainWindowEntityViewModel(this, apiClient);
+			EntityVM = new MainWindowEntityViewModel(this, userVM, apiClient);
 			FullscreenVM = new MainWindowFullscreenViewModel(this);
 			EntityCreationViewModel = new EntityCreationViewModel(apiClient);
 		}
 	}
-	}
+}

@@ -27,20 +27,20 @@
     <DataTemplate DataType="{x:Type viewmodel:CommentListViewModel}">
         <controls:CommentListControl CommentListViewModel="{Binding}" />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewmodel:BoardsListViewModel}">
+    <DataTemplate DataType="{x:Type viewmodel:BoardListViewModel}">
         <controls:BoardListControl BoardsListViewModel="{Binding}" />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type viewmodel:PublicUserViewModel}">
-        <users:MultiPublicUserDetailsControl UserViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.UserListViewModel.Users}" />
+        <users:MultiPublicUserDetailsControl UserViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.UserListViewModel.Entities}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:ArticleViewModel}">
-        <articles:MultiArticleDetailsControl ArticleViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.ArticleListViewModel.Articles}" />
+        <articles:MultiArticleDetailsControl ArticleViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.ArticleListViewModel.Entities}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:CommentViewModel}">
-        <comments:MultiCommentDetailsControl CommentViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.CommentListViewModel.Comments}" />
+        <comments:MultiCommentDetailsControl CommentViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.CommentListViewModel.Entities}" />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewmodel:BoardViewModel}">
-        <boards:MultiBoardDetailsControl BoardViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.BoardListViewModel.Boards}" />
+        <boards:MultiBoardDetailsControl BoardViewModels="{Binding ElementName=MainWindowView, Path=MainWindowVM.EntityVM.BoardListViewModel.Entities}" />
     </DataTemplate>
 </ResourceDictionary>

@@ -1,4 +1,6 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Common;
+using HackerNews.Domain.Common.Models.Users;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,15 +11,14 @@ namespace Hackernews.WPF.Controls
 	/// </summary>
 	public partial class UserListControl : UserControl
 	{
-		public UserListViewModel UserListViewModel
+		public EntityListViewModel<PublicUserViewModel, GetPublicUserModel> UserListViewModel
 		{
-			get { return (UserListViewModel)GetValue(UserListViewModelProperty); }
+			get { return (EntityListViewModel<PublicUserViewModel, GetPublicUserModel>)GetValue(UserListViewModelProperty); }
 			set { SetValue(UserListViewModelProperty, value); }
 		}
 
-		// Using a DependencyProperty as the backing store for UserListViewModel.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty UserListViewModelProperty =
-			DependencyProperty.Register("UserListViewModel", typeof(UserListViewModel), typeof(UserListControl), new PropertyMetadata(default(UserListViewModel)));
+			DependencyProperty.Register("UserListViewModel", typeof(EntityListViewModel<PublicUserViewModel, GetPublicUserModel>), typeof(UserListControl));
 
 		public UserListControl()
 		{

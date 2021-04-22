@@ -1,70 +1,13 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Helpers;
-using Hackernews.WPF.MVVM.Model;
+﻿using Hackernews.WPF.Core;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.ViewModels;
-using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class UserListViewModel : BaseViewModel
+	public class UserListViewModel : EntityListViewModel<PublicUserViewModel, GetPublicUserModel>
 	{
-		//public PagingParams PagingParams = new PagingParams();
-
-		// TODO: check if this is still needed
-		public PublicUserViewModel UserViewModel { get; } 
-
-		public ObservableCollection<PublicUserViewModel> Users { get; private set; } = new ObservableCollection<PublicUserViewModel>();
-
-		public PaginatedListViewModel<GetPublicUserModel> UserPageVM { get; set; } 
-
-		public LoadUsersCommand LoadCommand { get; }
-		//public AsyncDelegateCommand NextPageCommand { get; }
-		//public AsyncDelegateCommand PrevPageCommand { get; }
-
-		//public int CurrentPage
-		//{
-		//	get => UserPageVM.CurrentPage;
-		//}
-		//public int TotalPages
-		//{
-		//	get => UserPageVM.TotalPages;
-		//}
-
-		public UserListViewModel(IApiClient apiClient)
+		public UserListViewModel(CreateBaseCommand<EntityListViewModel<PublicUserViewModel, GetPublicUserModel>> createLoadCommand) : base(createLoadCommand)
 		{
-			LoadCommand = new LoadUsersCommand(this, apiClient);
-
-			UserPageVM = new PaginatedListViewModel<GetPublicUserModel>(LoadCommand); 
-			UserViewModel = new PublicUserViewModel(apiClient);
-
-			//NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => UserPageVM.HasNextPage);
-			//PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, _ => UserPageVM.HasPrevPage);
-
-			UserPageVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaisePageChanged());
 		}
-
-		public void RaisePageChanged()
-		{
-			UserPageVM.RaisePropertyChanged(nameof(UserPageVM.CurrentPage));
-			UserPageVM.RaisePropertyChanged(nameof(UserPageVM.TotalPages));
-		}
-
-		//private async Task NextPageAsync(object parameter = null)
-		//{
-		//	PagingParams = UserPageVM.NextPagingParams;
-		//	await Task.Factory.StartNew(() => LoadCommand.TryExecute(parameter));
-
-		//}
-
-		//private async Task PrevPageAsync(object parameter = null)
-		//{
-		//	PagingParams = UserPageVM.PrevPagingParams;
-		//	await Task.Factory.StartNew(() => LoadCommand.TryExecute(parameter));
-		//}
 	}
 }

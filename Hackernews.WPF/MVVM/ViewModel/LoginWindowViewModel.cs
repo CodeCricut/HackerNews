@@ -2,10 +2,7 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
-using HackerNews.Domain.Common.Models.Users;
 using System;
-using System.Security;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 

@@ -3,8 +3,6 @@ using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Boards

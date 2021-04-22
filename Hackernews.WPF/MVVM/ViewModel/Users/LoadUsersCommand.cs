@@ -1,39 +1,29 @@
 ﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
+using Hackernews.WPF.MVVM.ViewModel.Common;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
+using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class LoadUsersCommand : BaseCommand
+	public class LoadUsersCommand : LoadEntityListCommand<PublicUserViewModel, GetPublicUserModel>
 	{
-		private readonly UserListViewModel _viewModel;
 		private readonly IApiClient _apiClient;
 
-		public LoadUsersCommand(UserListViewModel viewModel, IApiClient apiClient)
+		public LoadUsersCommand(EntityListViewModel<PublicUserViewModel, GetPublicUserModel> listVM,
+			IApiClient apiClient) : base(listVM)
 		{
-			_viewModel = viewModel;
 			_apiClient = apiClient;
 		}
 
-		public override async void Execute(object parameter)
+		public override PublicUserViewModel ConstructEntityViewModel(GetPublicUserModel getModel)
 		{
-			await System.Windows.Application.Current.Dispatcher.Invoke(async () =>
-			{
-				_viewModel.Users.Clear();
+			return new PublicUserViewModel(_apiClient) { User = getModel };
+		}
 
-				_viewModel.UserPageVM.Page = await _apiClient.GetPageAsync<GetPublicUserModel>(_viewModel.UserPageVM.PagingParams, "users");
-
-				foreach (var user in _viewModel.UserPageVM.Items)
-				{
-
-					var vm = new PublicUserViewModel(_apiClient)
-					{
-						User = user
-					};
-					vm.LoadEntityCommand.Execute();
-					_viewModel.Users.Add(vm);
-				}
-			});
+		public override Task<PaginatedList<GetPublicUserModel>> LoadEntityModelsAsync(PagingParams pagingParams)
+		{
+			return _apiClient.GetPageAsync<GetPublicUserModel>(pagingParams, "users");
 		}
 	}
 }

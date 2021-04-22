@@ -20,7 +20,7 @@ namespace Hackernews.WPF.MVVM.Model
 		public PaginatedList<T> Page
 		{
 			get => _page;
-			set => Set(ref _page, value, "");
+			set { Set(ref _page, value, ""); RaisePropertyChanged(""); }
 		}
 
 		public IEnumerable<T> Items { get => Page?.Items; }
@@ -54,7 +54,7 @@ namespace Hackernews.WPF.MVVM.Model
 		{
 			if (!HasNextPage) return;
 
-			await Task.Factory.StartNew(() =>
+			App.Current.Dispatcher.Invoke(() =>
 			{
 				PagingParams = NextPagingParams;
 				LoadCommand.TryExecute(parameter);
@@ -71,7 +71,7 @@ namespace Hackernews.WPF.MVVM.Model
 		{
 			if (!HasPrevPage) return;
 
-			await Task.Factory.StartNew(() =>
+			await App.Current.Dispatcher.Invoke(async () =>
 			{
 				PagingParams = PrevPagingParams;
 				LoadCommand.TryExecute(parameter);

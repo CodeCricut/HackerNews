@@ -1,6 +1,5 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
-using System;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel

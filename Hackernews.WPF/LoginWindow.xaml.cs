@@ -2,7 +2,6 @@
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Hackernews.WPF
 {
@@ -18,7 +17,8 @@ namespace Hackernews.WPF
 			InitializeComponent();
 
 			ViewModel = new LoginWindowViewModel(signInManager, apiClient, thisWindow: this, mainWindow);
-			ViewModel.CloseAction = () => {
+			ViewModel.CloseAction = () =>
+			{
 				this.Close();
 				Application.Current.Shutdown();
 			};

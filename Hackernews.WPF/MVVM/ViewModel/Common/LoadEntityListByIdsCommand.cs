@@ -5,22 +5,14 @@ using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Common
 {
-	public delegate Task<PaginatedList<TGetEntityModel>> LoadPaginatedListByIdsCallback<TGetEntityModel>(List<int> ids, PagingParams pagingParams);
-
-	public class LoadEntityListByIdsCommand<TEntityViewModel, TGetEntityModel> : BaseCommand
+	public abstract class LoadEntityListByIdsCommand<TEntityViewModel, TGetEntityModel> : BaseCommand
 		where TEntityViewModel : BaseEntityViewModel
 	{
 		private readonly EntityListViewModel<TEntityViewModel, TGetEntityModel> _listVM;
-		private readonly LoadPaginatedListByIdsCallback<TGetEntityModel> _getEntityPageCallback;
-		private readonly ConstructEntityVMCallback<TEntityViewModel, TGetEntityModel> _constructEntityVMCallback;
 
-		public LoadEntityListByIdsCommand(EntityListViewModel<TEntityViewModel, TGetEntityModel> listVM,
-			LoadPaginatedListByIdsCallback<TGetEntityModel> getEntityPageCallback,
-			ConstructEntityVMCallback<TEntityViewModel, TGetEntityModel> constructEntityVMCallback)
+		public LoadEntityListByIdsCommand(EntityListViewModel<TEntityViewModel, TGetEntityModel> listVM)
 		{
 			_listVM = listVM;
-			_getEntityPageCallback = getEntityPageCallback;
-			_constructEntityVMCallback = constructEntityVMCallback;
 		}
 
 		public override async void Execute(object parameter)
@@ -30,17 +22,24 @@ namespace Hackernews.WPF.MVVM.ViewModel.Common
 			{
 				_listVM.Entities.Clear();
 
-				_listVM.EntityPageVM.Page = await _getEntityPageCallback(ids, _listVM.EntityPageVM.PagingParams);
+				_listVM.EntityPageVM.Page = await LoadEntityModelsAsync(ids, _listVM.EntityPageVM.PagingParams);
 
 				foreach (var entity in _listVM.EntityPageVM.Items)
 				{
-					var entityVm = _constructEntityVMCallback(entity);
+					var entityVm = ConstructEntityViewModel(entity);
 
 					entityVm.LoadEntityCommand.Execute(parameter);
 
 					_listVM.Entities.Add(entityVm);
 				}
+
+				_listVM.EntityPageVM.PrevPageCommand.RaiseCanExecuteChanged();
+				_listVM.EntityPageVM.NextPageCommand.RaiseCanExecuteChanged();
 			});
 		}
+
+		public abstract Task<PaginatedList<TGetEntityModel>> LoadEntityModelsAsync(List<int> ids, PagingParams pagingParams);
+
+		public abstract TEntityViewModel ConstructEntityViewModel(TGetEntityModel getModel);
 	}
 }

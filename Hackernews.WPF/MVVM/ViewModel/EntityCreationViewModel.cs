@@ -2,9 +2,6 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -57,7 +54,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		#endregion
 
 		public BoardCreationViewModel BoardCreationViewModel { get; set; }
-		
+
 		private EntityCreationWindow _entityCreationWindow;
 
 		//public ICommand OpenCommand { get; }

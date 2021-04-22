@@ -5,6 +5,10 @@ using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
+using Hackernews.WPF.MVVM.ViewModel.Common;
+using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using System;
@@ -102,14 +106,14 @@ namespace Hackernews.WPF.ViewModels
 		public IEnumerable<int> BoardSubcribedIds { get => User?.BoardsSubscribed; }
 		#endregion
 
-		public BoardsListViewModel BoardsModeratingListViewModel { get; private set; }
-		public BoardsListViewModel BoardsSubscribedListViewModel { get; private set; }
+		public EntityListViewModel<BoardViewModel, GetBoardModel> BoardsModeratingListViewModel { get; private set; }
+		public EntityListViewModel<BoardViewModel, GetBoardModel> BoardsSubscribedListViewModel { get; private set; }
 
-		public ArticleListViewModel ArticlesWrittenListViewModel { get; private set; }
-		public ArticleListViewModel ArticlesSavedListViewModel { get; private set; }
+		public EntityListViewModel<ArticleViewModel, GetArticleModel> ArticlesWrittenListViewModel { get; private set; }
+		public EntityListViewModel<ArticleViewModel, GetArticleModel> ArticlesSavedListViewModel { get; private set; }
 
-		public CommentListViewModel CommentsWrittenListViewModel { get; private set; }
-		public CommentListViewModel CommentsSavedListViewModel { get; private set; }
+		public EntityListViewModel<CommentViewModel, GetCommentModel> CommentsWrittenListViewModel { get; private set; }
+		public EntityListViewModel<CommentViewModel, GetCommentModel> CommentsSavedListViewModel { get; private set; }
 
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
@@ -123,18 +127,18 @@ namespace Hackernews.WPF.ViewModels
 
 		private void InstantiateOwnedViewModels()
 		{
-			CreateBaseCommand<BoardsListViewModel> createLoadBoardsByIdCommand = vm => new LoadBoardsByIdsCommand(vm, _apiClient, this);
-			BoardsModeratingListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand, this);
-			BoardsSubscribedListViewModel = new BoardsListViewModel(_apiClient, createLoadBoardsByIdCommand, this);
 
-			CreateBaseCommand<ArticleListViewModel> createLoadArticlesByIdCommand = vm => new LoadArticlesByIdsCommand(vm, _apiClient, this);
+			CreateBaseCommand<EntityListViewModel<BoardViewModel, GetBoardModel>> createLoadBoardsByIdsCommand = entityListVM => new LoadBoardsByIdsCommand(entityListVM, _apiClient, this);
+			BoardsModeratingListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
+			BoardsSubscribedListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
 
-			ArticlesWrittenListViewModel = new ArticleListViewModel(createLoadArticlesByIdCommand);
-			ArticlesSavedListViewModel = new ArticleListViewModel(createLoadArticlesByIdCommand  );
+			CreateBaseCommand<EntityListViewModel<ArticleViewModel, GetArticleModel>> createLoadArticlesByIdsCommand = entityListVm => new LoadArticlesByIdsCommand(entityListVm, _apiClient, this);
+			ArticlesWrittenListViewModel = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadArticlesByIdsCommand);
+			ArticlesSavedListViewModel = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadArticlesByIdsCommand);
 
-			CreateBaseCommand<CommentListViewModel> createLoadCommentsByIdCommand = vm => new LoadCommentsByIdsCommand(vm, _apiClient);
-			CommentsWrittenListViewModel = new CommentListViewModel(createLoadCommentsByIdCommand);
-			CommentsSavedListViewModel = new CommentListViewModel(createLoadCommentsByIdCommand);
+			CreateBaseCommand<EntityListViewModel<CommentViewModel, GetCommentModel>> createLoadCommentsByIdsCommand = entityListVm => new LoadCommentsByIdsCommand(entityListVm, _apiClient);
+			CommentsWrittenListViewModel = new EntityListViewModel<CommentViewModel, GetCommentModel>(createLoadCommentsByIdsCommand);
+			CommentsSavedListViewModel = new EntityListViewModel<CommentViewModel, GetCommentModel>(createLoadCommentsByIdsCommand);
 		}
 
 		private async Task TryLoadPrivateUserAsync(object parameter = null)

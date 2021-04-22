@@ -1,91 +1,58 @@
 ﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Boards
 {
-	public abstract class BaseLoadBoardsCommand : BaseCommand
+	public class LoadBoardsByIdsCommand : LoadEntityListByIdsCommand<BoardViewModel, GetBoardModel>
 	{
+		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _userVm;
 
+		public LoadBoardsByIdsCommand(EntityListViewModel<BoardViewModel, GetBoardModel> listVM,
+			IApiClient apiClient,
+			PrivateUserViewModel userVm) : base(listVM)
+		{
+			_apiClient = apiClient;
+			_userVm = userVm;
+		}
+
+		public override Task<PaginatedList<GetBoardModel>> LoadEntityModelsAsync(List<int> ids, PagingParams pagingParams)
+		{
+			return _apiClient.GetAsync<GetBoardModel>(ids, pagingParams, "boards");
+		}
+
+		public override BoardViewModel ConstructEntityViewModel(GetBoardModel getModel)
+		{
+			return new BoardViewModel(_apiClient, _userVm) { Board = getModel };
+		}
 	}
 
-	public class LoadBoardsByIdsCommand : BaseLoadBoardsCommand
+	public class LoadBoardsCommand : LoadEntityListCommand<BoardViewModel, GetBoardModel>
 	{
-		private readonly BoardsListViewModel _viewModel;
 		private readonly IApiClient _apiClient;
 		private readonly PrivateUserViewModel _userVM;
 
-		public LoadBoardsByIdsCommand(BoardsListViewModel viewModel, IApiClient apiClient, PrivateUserViewModel userVM)
+		public LoadBoardsCommand(EntityListViewModel<BoardViewModel, GetBoardModel> listVM,
+			IApiClient apiClient,
+			PrivateUserViewModel userVM) : base(listVM)
 		{
-			_viewModel = viewModel;
 			_apiClient = apiClient;
 			_userVM = userVM;
 		}
 
-		public override async void Execute(object parameter)
+		public override BoardViewModel ConstructEntityViewModel(GetBoardModel getModel)
 		{
-			List<int> ids = (List<int>)parameter;
-			await App.Current.Dispatcher.Invoke(async () =>
-			{
-
-				_viewModel.Boards.Clear();
-
-				_viewModel.BoardPageVM.Page = await _apiClient.GetAsync<GetBoardModel>(ids, _viewModel.BoardPageVM.PagingParams, "boards");
-
-				foreach (var board in _viewModel.BoardPageVM.Items)
-				{
-					var vm = new BoardViewModel(_apiClient, _userVM)
-					{
-						Board = board
-					};
-
-					// TODO: idk if this is where it should be done, at the very least run asynchronously
-					vm.LoadEntityCommand.Execute();
-
-					_viewModel.Boards.Add(vm);
-				}
-			});
-		}
-	}
-
-	public class LoadBoardsCommand : BaseLoadBoardsCommand
-	{
-		private readonly BoardsListViewModel _viewModel;
-		private readonly IApiClient _apiClient;
-		private readonly PrivateUserViewModel _userVM;
-
-		public LoadBoardsCommand(BoardsListViewModel viewModel,
-			IApiClient apiClient, PrivateUserViewModel userVM)
-		{
-			_viewModel = viewModel;
-			_apiClient = apiClient;
-			_userVM = userVM;
+			return new BoardViewModel(_apiClient, _userVM) { Board = getModel };
 		}
 
-		public override async void Execute(object parameter)
+		public override Task<PaginatedList<GetBoardModel>> LoadEntityModelsAsync(PagingParams pagingParams)
 		{
-			await App.Current.Dispatcher.Invoke(async () =>
-			{
-
-				_viewModel.Boards.Clear();
-
-				_viewModel.BoardPageVM.Page = await _apiClient.GetPageAsync<GetBoardModel>(_viewModel.BoardPageVM.PagingParams, "boards");
-
-				foreach (var board in _viewModel.BoardPageVM.Items)
-				{
-					var vm = new BoardViewModel(_apiClient, _userVM)
-					{
-						Board = board
-					};
-
-					// TODO: idk if this is where it should be done, at the very least run asynchronously
-					vm.LoadEntityCommand.Execute();
-
-					_viewModel.Boards.Add(vm);
-				}
-			});
+			return _apiClient.GetPageAsync<GetBoardModel>(pagingParams, "boards");
 		}
 	}
 }
