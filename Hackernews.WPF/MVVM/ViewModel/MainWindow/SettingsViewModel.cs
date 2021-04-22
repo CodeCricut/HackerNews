@@ -1,11 +1,15 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.Core;
+using HackerNews.WPF.MessageBus.Application;
+using HackerNews.WPF.MessageBus.Core;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class SettingsViewModel : BaseViewModel
 	{
+		private readonly IEventAggregator _ea;
 
 		public bool IsDarkTheme
 		{
@@ -15,23 +19,18 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ToggleSkinCommand { get; }
 
-		public SettingsViewModel()
+		public SettingsViewModel(IEventAggregator ea)
 		{
 			ToggleSkinCommand = new DelegateCommand(ToggleSkin);
+			_ea = ea;
 		}
 
 		private void ToggleSkin(object darkToggled)
 		{
 			if ((bool)darkToggled)
-			{
-				// Dark theme toggled
-				(App.Current as App).ChangeSkin(Skin.Dark);
-			}
+				_ea.SendMessage(new ChangeSkinMessage(Skin.Dark));
 			else
-			{
-				// Light theme toggled
-				(App.Current as App).ChangeSkin(Skin.Light);
-			}
+				_ea.SendMessage(new ChangeSkinMessage(Skin.Light));
 
 			RaisePropertyChanged(nameof(IsDarkTheme));
 		}

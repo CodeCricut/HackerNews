@@ -19,8 +19,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	public class MainWindowEntityViewModel : BaseViewModel
 	{
 		private readonly IEventAggregator _ea;
-		private readonly PrivateUserViewModel _userVM;
-		private readonly IApiClient _apiClient;
 
 		#region List VMs
 		private object _selectedListViewModel;
@@ -69,8 +67,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			IApiClient apiClient)
 		{
 			_ea = ea;
-			_userVM = userVM;
-			_apiClient = apiClient;
 
 			ea.RegisterHandler<EntityDeselectedMessage>(msg => DeselectEntityVM());
 
@@ -97,9 +93,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			SelectedDetailsViewModel = PublicUserViewModel;
 
 			_ea.SendMessage(new FullscreenDeselectedMessage());
-			//
-			//_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
-			//
 			await Task.Factory.StartNew(() => UserListViewModel.LoadCommand.TryExecute());
 		}
 
@@ -110,8 +103,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 			_ea.SendMessage(new FullscreenDeselectedMessage());
 
-			//_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
-
 			await Task.Factory.StartNew(() => BoardListViewModel.LoadCommand.TryExecute());
 		}
 
@@ -121,7 +112,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			SelectedDetailsViewModel = ArticleViewModel;
 
 			_ea.SendMessage(new FullscreenDeselectedMessage());
-			//_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => ArticleListViewModel.LoadCommand.TryExecute());
 		}
@@ -132,7 +122,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			SelectedDetailsViewModel = CommentViewModel;
 
 			_ea.SendMessage(new FullscreenDeselectedMessage());
-			//_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => CommentListViewModel.LoadCommand.TryExecute());
 		}

@@ -1,5 +1,8 @@
 ﻿using Hackernews.WPF.Configuration;
 using Hackernews.WPF.Helpers;
+using HackerNews.WPF.Core;
+using HackerNews.WPF.MessageBus.Application;
+using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,7 +17,6 @@ namespace Hackernews.WPF
 	public partial class App : Application
 	{
 		private readonly ServiceProvider _serviceProvider;
-		private readonly IConfigurationRoot _configuration;
 
 		public static Skin Skin { get; set; } = Skin.Dark;
 
@@ -33,39 +35,34 @@ namespace Hackernews.WPF
 
 		public App()
 		{
-			_configuration = CreateConfiguration();
-
 			ServiceCollection services = new ServiceCollection();
 			ConfigureServices(services);
 			_serviceProvider = services.BuildServiceProvider();
 
-			Application.Current.Properties.Add("services", _serviceProvider);
+			RegisterChangeSkinHandler();
 		}
 
-		private static IConfigurationRoot CreateConfiguration()
+		private void RegisterChangeSkinHandler()
 		{
-			var configBuilder = new ConfigurationBuilder();
-			configBuilder.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json", optional: true, reloadOnChange: true)
-				.AddEnvironmentVariables();
-			return configBuilder.Build();
+			var ea = _serviceProvider.GetRequiredService<IEventAggregator>();
+			ea.RegisterHandler<ChangeSkinMessage>(msg => ChangeSkin(msg.NewSkin));
 		}
 
 		private void ConfigureServices(ServiceCollection services)
 		{
-			//services.AddDomain(_configuration);
-			//services.AddInfrastructure(_configuration);
-			//services.AddApplication();
-			services.AddWPF(_configuration);
+			var config = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+
+			services.AddWPF(config);
 		}
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
 			loginWindow.Show();
-
-			//var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-			//mainWindow.Show();
 		}
 	}
 }

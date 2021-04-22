@@ -1,10 +1,9 @@
-﻿using System;
+﻿using HackerNews.WPF.Core;
+using System;
 using System.Windows;
 
 namespace Hackernews.WPF.Helpers
 {
-	public enum Skin { Light, Dark }
-
 	/// <summary>
 	/// https://michaelscodingspot.com/wpf-complete-guide-themes-skins/
 	/// </summary>
