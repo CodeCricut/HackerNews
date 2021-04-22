@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
@@ -9,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class PublicUserViewModel : BaseViewModel
+	public class PublicUserViewModel : BaseEntityViewModel
 	{
 		private bool _isSelected;
 		public bool IsSelected
@@ -32,7 +33,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		public AsyncDelegateCommand LoadUserCommand { get; }
+		public AsyncDelegateCommand LoadEntityCommand { get; }
 
 		private readonly IApiClient _apiClient;
 
@@ -56,7 +57,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public PublicUserViewModel(IApiClient apiClient)
 		{
 			_apiClient = apiClient;
-			LoadUserCommand = new AsyncDelegateCommand(LoadUserAsync);
+			LoadEntityCommand = new AsyncDelegateCommand(LoadUserAsync);
 		}
 
 

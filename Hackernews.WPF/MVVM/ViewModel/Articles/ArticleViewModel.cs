@@ -34,7 +34,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			set { _isSelected = value; RaisePropertyChanged(); }
 		}
 
-		public AsyncDelegateCommand LoadArticleCommand { get; }
+		public AsyncDelegateCommand LoadEntityCommand { get; }
 
 
 		public ArticleViewModel(PrivateUserViewModel privateUser, IApiClient apiClient)
@@ -43,7 +43,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			_apiClient = apiClient;
 			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
 
-			LoadArticleCommand = new AsyncDelegateCommand(LoadArticleAsync);
+			LoadEntityCommand = new AsyncDelegateCommand(LoadArticleAsync);
 		}
 
 		private BitmapImage _articleImage;

@@ -12,8 +12,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	public class MainWindowEntityViewModel : BaseViewModel
 	{
 		#region List VMs
-		private IPageNavigatorViewModel _selectedListViewModel;
-		public IPageNavigatorViewModel SelectedListViewModel
+		private object _selectedListViewModel;
+		public object SelectedListViewModel
 		{
 			get { return _selectedListViewModel; }
 			set
@@ -81,7 +81,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = UserListViewModel;
 			SelectedDetailsViewModel = PublicUserViewModel;
-			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
+			_mainWindowVM.DeselectFullscreenVM();
 			await Task.Factory.StartNew(() => UserListViewModel.LoadCommand.TryExecute());
 		}
 
@@ -89,7 +89,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = BoardListViewModel;
 			SelectedDetailsViewModel = BoardViewModel; 
-			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
+			_mainWindowVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => BoardListViewModel.LoadCommand.TryExecute());
 		}
@@ -98,7 +98,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = ArticleListViewModel;
 			SelectedDetailsViewModel = ArticleViewModel;
-			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
+			_mainWindowVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => ArticleListViewModel.LoadCommand.TryExecute());
 		}
@@ -107,7 +107,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			SelectedListViewModel = CommentListViewModel;
 			SelectedDetailsViewModel = CommentViewModel;
-			_mainWindowVM.FullscreenVM.DeselectFullscreenVM();
+			_mainWindowVM.DeselectFullscreenVM();
 
 			await Task.Factory.StartNew(() => CommentListViewModel.LoadCommand.TryExecute());
 		}

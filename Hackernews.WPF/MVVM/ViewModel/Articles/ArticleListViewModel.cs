@@ -12,55 +12,65 @@ using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class ArticleListViewModel : BaseViewModel, IPageNavigatorViewModel
+	/// <summary>
+	/// The VM for ArticleListControl, including pagination.
+	/// </summary>
+	public class ArticleListViewModel : BaseViewModel
 	{
-		public PagingParams PagingParams = new PagingParams();
-
+		/// <summary>
+		/// The currently loaded <see cref="ArticleViewModel"/>s.
+		/// </summary>
 		public ObservableCollection<ArticleViewModel> Articles { get; private set; } = new ObservableCollection<ArticleViewModel>();
 
 		public PaginatedListViewModel<GetArticleModel> ArticlePageVM { get; }
 
 		public BaseCommand LoadCommand { get; set; }
-		public AsyncDelegateCommand PrevPageCommand { get; }
-		public AsyncDelegateCommand NextPageCommand { get; }
+		//public AsyncDelegateCommand PrevPageCommand { get; }
+		//public AsyncDelegateCommand NextPageCommand { get; }
 
-		public int CurrentPage
-		{
-			get => ArticlePageVM.CurrentPageNumber;
-		}
-		public int TotalPages
-		{
-			get => ArticlePageVM.TotalPages;
-		}
+		//public int CurrentPage
+		//{
+		//	get => ArticlePageVM.CurrentPage;
+		//}
+		//public int TotalPages
+		//{
+		//	get => ArticlePageVM.TotalPages;
+		//}
 
 		public ArticleListViewModel(CreateBaseCommand<ArticleListViewModel> createLoadCommand)
 		{
-			ArticlePageVM = new PaginatedListViewModel<GetArticleModel>();
-
 			LoadCommand = createLoadCommand(this);
-			NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => ArticlePageVM.HasNextPage);
-			PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, _ => ArticlePageVM.HasPrevPage);
+
+			ArticlePageVM = new PaginatedListViewModel<GetArticleModel>(LoadCommand);
+
+			//NextPageCommand = new AsyncDelegateCommand(NextPageAsync, _ => ArticlePageVM.HasNextPage);
+			//PrevPageCommand = new AsyncDelegateCommand(PrevPageAsync, _ => ArticlePageVM.HasPrevPage);
 
 			ArticlePageVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaisePageChanged());
 		}
 
 		public void RaisePageChanged()
 		{
-			RaisePropertyChanged(nameof(CurrentPage));
-			RaisePropertyChanged(nameof(TotalPages));
+			ArticlePageVM.RaisePropertyChanged(nameof(ArticlePageVM.CurrentPage));
+			ArticlePageVM.RaisePropertyChanged(nameof(ArticlePageVM.TotalPages));
 		}
 
-		private async Task NextPageAsync(object parameter = null)
-		{
-			PagingParams = ArticlePageVM.NextPagingParams;
+		//private async Task NextPageAsync(object parameter = null)
+		//{
+		//	await Task.Factory.StartNew(() =>
+		//	{
+		//		ArticlePageVM.TryLoadNextPage();
+		//		LoadCommand.TryExecute(parameter);
+		//	});
+		//}
 
-			await Task.Factory.StartNew(() => LoadCommand.TryExecute(parameter));
-		}
-
-		private async Task PrevPageAsync(object parameter = null)
-		{
-			PagingParams = ArticlePageVM.PrevPagingParams;
-			await Task.Factory.StartNew(() => LoadCommand.TryExecute(parameter));
-		}
+		//private async Task PrevPageAsync(object parameter = null)
+		//{
+		//	await Task.Factory.StartNew(() =>
+		//	{
+		//		ArticlePageVM.TryLoadPrevPage();
+		//		LoadCommand.TryExecute(parameter);
+		//	});
+		//}
 	}
 }

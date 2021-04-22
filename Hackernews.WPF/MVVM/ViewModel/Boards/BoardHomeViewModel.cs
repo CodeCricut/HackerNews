@@ -3,12 +3,7 @@ using Hackernews.WPF.Core;
 using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Boards
 {
@@ -28,7 +23,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 			return Task.Factory.StartNew(() =>
 			{
 				LoadBoardArticles();
-				BoardViewModel.LoadBoardCommand.Execute(_);
+				BoardViewModel.LoadEntityCommand.Execute(_);
 			});
 		}
 
@@ -39,6 +34,8 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 			BoardViewModel = boardVM;
 
 			CreateBaseCommand<ArticleListViewModel> createLoadArticlesCommand = articleListVm => new LoadArticlesByIdsCommand(articleListVm, apiClient, privateUserVM);
+
+			//CreateBaseCommand<PaginatedListViewModel<GetArticleModel>> createLoadArticlePageCommand = vm => new LoadArticlePageCommand(vm, apiClient);
 			BoardArticleListVM = new ArticleListViewModel(createLoadArticlesCommand);
 
 			LoadBoardCommand = new AsyncDelegateCommand(LoadBoard);

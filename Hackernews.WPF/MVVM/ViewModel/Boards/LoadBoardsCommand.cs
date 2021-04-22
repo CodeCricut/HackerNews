@@ -32,7 +32,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				_viewModel.Boards.Clear();
 
-				_viewModel.BoardPageVM.Page = await _apiClient.GetAsync<GetBoardModel>(ids, _viewModel.PagingParams, "boards");
+				_viewModel.BoardPageVM.Page = await _apiClient.GetAsync<GetBoardModel>(ids, _viewModel.BoardPageVM.PagingParams, "boards");
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
@@ -42,13 +42,10 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 					};
 
 					// TODO: idk if this is where it should be done, at the very least run asynchronously
-					vm.LoadBoardCommand.Execute();
+					vm.LoadEntityCommand.Execute();
 
 					_viewModel.Boards.Add(vm);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}
@@ -74,7 +71,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 				_viewModel.Boards.Clear();
 
-				_viewModel.BoardPageVM.Page = await _apiClient.GetPageAsync<GetBoardModel>(_viewModel.PagingParams, "boards");
+				_viewModel.BoardPageVM.Page = await _apiClient.GetPageAsync<GetBoardModel>(_viewModel.BoardPageVM.PagingParams, "boards");
 
 				foreach (var board in _viewModel.BoardPageVM.Items)
 				{
@@ -84,13 +81,10 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 					};
 
 					// TODO: idk if this is where it should be done, at the very least run asynchronously
-					vm.LoadBoardCommand.Execute();
+					vm.LoadEntityCommand.Execute();
 
 					_viewModel.Boards.Add(vm);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}

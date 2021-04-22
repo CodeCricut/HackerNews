@@ -31,7 +31,7 @@ namespace Hackernews.WPF.Core.Commands
 
 				_viewModel.Articles.Clear();
 
-				_viewModel.ArticlePageVM.Page = await _apiClient.GetAsync<GetArticleModel>(ids, _viewModel.PagingParams, "articles");
+				_viewModel.ArticlePageVM.Page = await _apiClient.GetAsync<GetArticleModel>(ids, _viewModel.ArticlePageVM.PagingParams, "articles");
 
 				foreach (var article in _viewModel.ArticlePageVM.Items)
 				{
@@ -39,12 +39,9 @@ namespace Hackernews.WPF.Core.Commands
 					{
 						Article = article
 					};
-					vm.LoadArticleCommand.Execute();
+					vm.LoadEntityCommand.Execute();
 					_viewModel.Articles.Add(vm);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}
@@ -64,13 +61,12 @@ namespace Hackernews.WPF.Core.Commands
 			_userVM = userVM;
 		}
 
-		public override async void Execute(object parameter)
+		public override  async void Execute(object parameter)
 		{
 			await App.Current.Dispatcher.Invoke(async () =>
 			{
 				_viewModel.Articles.Clear();
-
-				_viewModel.ArticlePageVM.Page = await _apiClient.GetPageAsync<GetArticleModel>(_viewModel.PagingParams, "articles");
+				_viewModel.ArticlePageVM.Page = await _apiClient.GetPageAsync<GetArticleModel>(_viewModel.ArticlePageVM.PagingParams, "articles");
 
 				_userVM.TryLoadUserCommand.Execute(null);
 
@@ -80,13 +76,10 @@ namespace Hackernews.WPF.Core.Commands
 					{
 						Article = article
 					};
-					articleVM.LoadArticleCommand.Execute();
+					articleVM.LoadEntityCommand.Execute();
 
 					_viewModel.Articles.Add(articleVM);
 				}
-
-				_viewModel.NextPageCommand.RaiseCanExecuteChanged();
-				_viewModel.PrevPageCommand.RaiseCanExecuteChanged();
 			});
 		}
 	}
