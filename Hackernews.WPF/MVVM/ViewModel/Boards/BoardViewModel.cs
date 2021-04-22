@@ -36,11 +36,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-<<<<<<< HEAD
-=======
-		public AsyncDelegateCommand LoadEntityCommand { get; }
-
->>>>>>> summaries
 		public BoardViewModel(IApiClient apiClient, PrivateUserViewModel userVm)
 		{
 			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
