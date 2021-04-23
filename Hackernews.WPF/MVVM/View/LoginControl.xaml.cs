@@ -9,13 +9,13 @@ namespace Hackernews.WPF.MVVM.View
 	/// </summary>
 	public partial class LoginControl : UserControl
 	{
-		public LoginViewModel LoginViewModel
+		public LoginModelViewModel LoginViewModel
 		{
-			get { return (LoginViewModel)GetValue(LoginViewModelProperty); }
+			get { return (LoginModelViewModel)GetValue(LoginViewModelProperty); }
 			set { SetValue(LoginViewModelProperty, value); }
 		}
 		public static readonly DependencyProperty LoginViewModelProperty =
-			DependencyProperty.Register("LoginViewModel", typeof(LoginViewModel), typeof(LoginControl), new PropertyMetadata(default(LoginViewModel)));
+			DependencyProperty.Register("LoginViewModel", typeof(LoginModelViewModel), typeof(LoginControl), new PropertyMetadata(default(LoginModelViewModel)));
 
 		public LoginControl()
 		{

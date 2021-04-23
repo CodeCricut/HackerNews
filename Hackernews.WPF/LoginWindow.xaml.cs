@@ -1,6 +1,8 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
 using System.Windows;
 
 namespace Hackernews.WPF
@@ -10,18 +12,17 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class LoginWindow : Window
 	{
+		private readonly IEventAggregator _ea;
+
 		private LoginWindowViewModel ViewModel { get; }
 
-		public LoginWindow(ISignInManager signInManager, IApiClient apiClient, MainWindow mainWindow)
+		public LoginWindow(IEventAggregator ea, LoginWindowViewModel loginWindowVM)
 		{
 			InitializeComponent();
+			_ea = ea;
+			ViewModel = loginWindowVM;
 
-			ViewModel = new LoginWindowViewModel(signInManager, apiClient, thisWindow: this, mainWindow);
-			ViewModel.CloseAction = () =>
-			{
-				this.Close();
-				Application.Current.Shutdown();
-			};
+			ea.RegisterHandler<CloseLoginWindowMessage>(CloseWindow);
 
 			rootElement.DataContext = ViewModel;
 		}
@@ -32,6 +33,13 @@ namespace Hackernews.WPF
 			{
 				this.DragMove();
 			}
+		}
+
+		private void CloseWindow(CloseLoginWindowMessage msg)
+		{
+			// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
+			_ea.UnregisterHandler<CloseLoginWindowMessage>(CloseWindow);
+			this.Close();
 		}
 	}
 }

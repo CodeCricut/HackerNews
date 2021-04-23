@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
@@ -14,26 +15,23 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private readonly IApiClient _apiClient;
-		private readonly ISignInManager _signInManager;
+		private readonly IEventAggregator _ea;
 
 		public MainWindowViewModel MainWindowVM { get; }
 
 		public MainWindow(IEventAggregator ea, 
 			MainWindowViewModel mainWindowVM, 
-			IApiClient apiClient,
 			ISignInManager signInManager)
 		{
 			InitializeComponent();
 
-			_signInManager = signInManager;
-
+			_ea = ea;
 			MainWindowVM = mainWindowVM;
-			_apiClient = apiClient;
+
 			DataContext = MainWindowVM;
 
-			ea.RegisterHandler<CloseMainWindowMessage>(msg => CloseApp());
-			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await Logout());
+			ea.RegisterHandler<CloseMainWindowMessage>(CloseApp);
+			ea.RegisterHandler<LogoutRequestedMessage>(CloseWindow);
 
 			this.Loaded += MainWindow_Loaded;
 		}
@@ -53,19 +51,17 @@ namespace Hackernews.WPF
 			}
 		}
 
-		private void CloseApp()
+		private void CloseApp(CloseMainWindowMessage msg)
 		{
-			this.Close();
-			Application.Current.Shutdown();
+			_ea.SendMessage(new CloseApplicationMessage());
 		}
 
-		private async Task Logout()
+		private void CloseWindow(LogoutRequestedMessage msg)
 		{
-			await _signInManager.SignOutAsync();
+			// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
+			_ea.UnregisterHandler<CloseMainWindowMessage>(CloseApp);
+			_ea.UnregisterHandler<LogoutRequestedMessage>(CloseWindow);
 
-			// Could use a factory instead to pass this as arg
-			LoginWindow loginWindow = new LoginWindow(_signInManager, _apiClient, this);
-			loginWindow.Show();
 			this.Close();
 		}
 	}

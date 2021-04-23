@@ -8,4 +8,8 @@
     <ProjectReference Include="..\HackerNews.WPF.Core\HackerNews.WPF.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModel\MainWindow\Profile\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Core;
@@ -27,7 +28,7 @@ namespace Hackernews.WPF.Configuration
 					  .AsSelf() // 2. Specify which services they are registered as
 					  .WithTransientLifetime());  // 3. Set the lifetime for the services
 
-
+			services.AddSingleton<LoginWindowViewModel>();
 			services.AddHttpClient();
 
 			services.AddHttpClient<IApiClient, ApiClient>(config =>

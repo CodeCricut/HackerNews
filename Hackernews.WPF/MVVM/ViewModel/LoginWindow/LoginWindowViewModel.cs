@@ -2,6 +2,9 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
+using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +15,7 @@ namespace Hackernews.WPF.ViewModels
 	{
 		private readonly Window _thisWindow;
 		private readonly Window _mainWindow;
-
+		private readonly IEventAggregator _ea;
 		private bool _loading;
 		public bool Loading
 		{
@@ -29,7 +32,6 @@ namespace Hackernews.WPF.ViewModels
 		}
 		public bool ValidCreds { get => !InvalidUserInput; }
 
-		public Action CloseAction { get; set; }
 		public ICommand CloseCommand { get; }
 
 		#region View switcher
@@ -45,40 +47,54 @@ namespace Hackernews.WPF.ViewModels
 			}
 		}
 
-		public bool LoginModelSelected => SelectedViewModel == LoginViewModel;
+		public bool LoginModelSelected => SelectedViewModel == LoginModelViewModel;
 		public bool RegisterModelSelected => SelectedViewModel == RegisterViewModel;
 
 		public ICommand SelectLoginModelCommand { get; }
 		public ICommand SelectRegisterModelCommand { get; }
 
-		private void SelectLoginModel(object parameter = null) => SelectedViewModel = LoginViewModel;
+		private void SelectLoginModel(object parameter = null) => SelectedViewModel = LoginModelViewModel;
 		private void SelectRegisterModel(object parameter = null) => SelectedViewModel = RegisterViewModel;
 		#endregion
 
-		public LoginViewModel LoginViewModel { get; }
+		public LoginModelViewModel LoginModelViewModel { get; }
 
 		public RegisterViewModel RegisterViewModel { get; }
 
-		public LoginWindowViewModel(ISignInManager signInManager, IApiClient apiClient, Window thisWindow, Window mainWindow)
+		public LoginWindowViewModel(IEventAggregator ea, ISignInManager signInManager, IApiClient apiClient, LoginModelViewModel loginModelVM, RegisterViewModel registerVM)
 		{
-			_thisWindow = thisWindow;
-			_mainWindow = mainWindow;
+			_ea = ea;
 
-			LoginViewModel = new LoginViewModel(this, signInManager);
-			RegisterViewModel = new RegisterViewModel(this, signInManager, apiClient);
+			LoginModelViewModel = loginModelVM;
+			RegisterViewModel = registerVM;
 
 			SelectLoginModelCommand = new DelegateCommand(SelectLoginModel);
 			SelectRegisterModelCommand = new DelegateCommand(SelectRegisterModel);
 
-			SelectedViewModel = LoginViewModel;
+			SelectedViewModel = LoginModelViewModel;
 
-			CloseCommand = new DelegateCommand(_ => CloseAction?.Invoke());
+			CloseCommand = new DelegateCommand(_ => ea.SendMessage(new CloseLoginWindowMessage()));
+
+			ea.RegisterHandler<LoginWindowLoadingChangedMessage>(LoadingChanged);
+			ea.RegisterHandler<LoginWindowInvalidUserInputChanged>(InvalidUserInputChanged);
+			ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
 		}
 
-		public void SwitchToMainWindow()
+		~LoginWindowViewModel()
 		{
-			_mainWindow.Show();
-			_thisWindow.Close();
+			_ea.UnregisterHandler<LoginWindowLoadingChangedMessage>(LoadingChanged);
+			_ea.UnregisterHandler<LoginWindowInvalidUserInputChanged>(InvalidUserInputChanged);
+			_ea.UnregisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
+		}
+
+		private void LoadingChanged(LoginWindowLoadingChangedMessage msg) => Loading = msg.IsLoading;
+
+		private void InvalidUserInputChanged(LoginWindowInvalidUserInputChanged msg) => InvalidUserInput = msg.InvalidUserInput;
+
+		private void SwitchToMainWindow(LoginWindowSwitchToMainWindowMessage msg)
+		{
+			_ea.SendMessage(new OpenMainWindowMessage());
+			_ea.SendMessage(new CloseLoginWindowMessage());
 		}
 	}
 }

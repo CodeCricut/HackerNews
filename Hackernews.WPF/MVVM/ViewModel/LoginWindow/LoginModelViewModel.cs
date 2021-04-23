@@ -2,12 +2,14 @@
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
 using System.Security;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class LoginViewModel : BaseViewModel
+	public class LoginModelViewModel : BaseViewModel
 	{
 		private string _username;
 		public string Username
@@ -39,12 +41,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		private readonly LoginWindowViewModel _loginWindowVM;
+		private readonly IEventAggregator _ea;
 		private readonly ISignInManager _signInManager;
 
-		public LoginViewModel(LoginWindowViewModel loginWindowVM, ISignInManager signInManager)
+		public LoginModelViewModel(IEventAggregator ea, ISignInManager signInManager)
 		{
-			_loginWindowVM = loginWindowVM;
+			_ea = ea;
 			_signInManager = signInManager;
 
 			LoginCommand = new AsyncDelegateCommand(LoginAsync, CanLogin);
@@ -56,8 +58,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private async Task LoginAsync(object parameter = null)
 		{
-			_loginWindowVM.Loading = true;
-			_loginWindowVM.InvalidUserInput = false;
+			_ea.SendMessage(new LoginWindowLoadingChangedMessage(isLoading: true));
+			_ea.SendMessage(new LoginWindowInvalidUserInputChanged(invalidUserInput: false));
 
 			// lol wut is security?
 			string password = new System.Net.NetworkCredential(string.Empty, _password).Password;
@@ -67,20 +69,19 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			{
 				await _signInManager.SignInAsync(loginModel);
 
-				_loginWindowVM.SwitchToMainWindow();
+				_ea.SendMessage(new LoginWindowSwitchToMainWindowMessage());
 			}
 			catch (System.Exception)
 			{
 				Username = "";
 				Password.Clear();
 
-				_loginWindowVM.InvalidUserInput = true;
+				_ea.SendMessage(new LoginWindowInvalidUserInputChanged(invalidUserInput: true));
 			}
 			finally
 			{
-				_loginWindowVM.Loading = false;
+				_ea.SendMessage(new LoginWindowLoadingChangedMessage(isLoading: false));
 			}
-
 		}
 	}
 }

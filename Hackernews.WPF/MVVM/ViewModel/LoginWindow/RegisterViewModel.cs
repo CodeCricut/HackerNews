@@ -4,6 +4,8 @@ using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
 using System;
 using System.Threading.Tasks;
 
@@ -63,15 +65,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 				RegisterCommand.RaiseCanExecuteChanged();
 			}
 		}
+
+		private readonly IEventAggregator _ea;
 		#endregion
 
-		private readonly LoginWindowViewModel _loginWindowVM;
 		private readonly ISignInManager _signInManager;
 		private readonly IApiClient _apiClient;
 
-		public RegisterViewModel(LoginWindowViewModel loginWindowVm, ISignInManager signInManager, IApiClient apiClient)
+		public RegisterViewModel(IEventAggregator ea, ISignInManager signInManager, IApiClient apiClient)
 		{
-			_loginWindowVM = loginWindowVm;
+			_ea = ea;
 			_signInManager = signInManager;
 			_apiClient = apiClient;
 
@@ -87,8 +90,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private async Task RegisterAsync(object parameter = null)
 		{
-			_loginWindowVM.Loading = true;
-			_loginWindowVM.InvalidUserInput = false;
+			_ea.SendMessage(new LoginWindowLoadingChangedMessage(isLoading: true));
+			_ea.SendMessage(new LoginWindowInvalidUserInputChanged(invalidUserInput: false));
 
 			try
 			{
@@ -101,17 +104,17 @@ namespace Hackernews.WPF.MVVM.ViewModel
 				};
 				await _signInManager.SignInAsync(loginModel);
 
-				_loginWindowVM.SwitchToMainWindow();
+				_ea.SendMessage(new LoginWindowSwitchToMainWindowMessage());
 			}
 			catch (Exception)
 			{
 				RegisterModel = new RegisterUserModel();
 
-				_loginWindowVM.InvalidUserInput = true;
+				_ea.SendMessage(new LoginWindowInvalidUserInputChanged(invalidUserInput: true));
 			}
 			finally
 			{
-				_loginWindowVM.Loading = false;
+				_ea.SendMessage(new LoginWindowLoadingChangedMessage(isLoading: false));
 			}
 		}
 	}

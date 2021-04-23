@@ -42,7 +42,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			_ea = ea;
 
-			ea.RegisterHandler<FullscreenDeselectedMessage>(msg => DeselectFullscreenVM());
 
 			HomeViewModel = homeVm;
 			ProfileViewModel = profileVm;
@@ -52,6 +51,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectProfileCommand = new DelegateCommand(SelectProfile);
 			SelectSettingsCommand = new DelegateCommand(SelectSettings);
+
+			ea.RegisterHandler<FullscreenDeselectedMessage>(msg => DeselectFullscreenVM());
 		}
 
 		public void SelectHome(object parameter = null)
