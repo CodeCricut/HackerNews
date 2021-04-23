@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.Configuration;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Services;
+using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.Core;
 using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
@@ -20,7 +21,7 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class App : Application
 	{
-		private readonly ServiceProvider _serviceProvider;
+		public ServiceProvider ServiceProvider { get; }
 		private readonly IEventAggregator _ea;
 		private readonly ISignInManager _signInManager;
 
@@ -43,10 +44,10 @@ namespace Hackernews.WPF
 		{
 			ServiceCollection services = new ServiceCollection();
 			ConfigureServices(services);
-			_serviceProvider = services.BuildServiceProvider();
+			ServiceProvider = services.BuildServiceProvider();
 
-			_ea = _serviceProvider.GetRequiredService<IEventAggregator>();
-			_signInManager = _serviceProvider.GetRequiredService<ISignInManager>();
+			_ea = ServiceProvider.GetRequiredService<IEventAggregator>();
+			_signInManager = ServiceProvider.GetRequiredService<ISignInManager>();
 
 			RegisterApplicationHandlers();
 		}
@@ -61,14 +62,18 @@ namespace Hackernews.WPF
 
 		private void OpenMainWindow()
 		{
-			var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-			mainWindow.Show();
+			var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
+			var mainVm = ServiceProvider.GetRequiredService<MainWindowViewModel>();
+
+			viewManager.Show(mainVm);
 		}
 
 		private void OpenLoginWindow()
 		{
-			var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
-			loginWindow.Show();
+			var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
+			var loginVm = ServiceProvider.GetRequiredService<LoginWindowViewModel>();
+
+			viewManager.Show(loginVm);
 		}
 
 		private async Task Logout()
@@ -89,8 +94,7 @@ namespace Hackernews.WPF
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
-			var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
-			loginWindow.Show();
+			OpenLoginWindow();
 		}
 	}
 }

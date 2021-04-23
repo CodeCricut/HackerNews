@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.MVVM.ViewModel;
+﻿using Hackernews.WPF.Core;
+using Hackernews.WPF.MVVM.ViewModel;
 using System;
 using System.Windows;
 
@@ -7,7 +8,7 @@ namespace Hackernews.WPF
 	/// <summary>
 	/// Interaction logic for EntityHomeWindow.xaml
 	/// </summary>
-	public partial class EntityHomeWindow : Window
+	public partial class EntityHomeWindow : Window, IHaveViewModel<EntityHomeViewModel>
 	{
 		public bool IsClosed { get; private set; }
 

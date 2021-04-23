@@ -44,6 +44,8 @@ namespace Hackernews.WPF.Configuration
 
 			services.AddSingleton<IEventAggregator, EventAggregator>();
 
+			services.AddSingleton<IViewManager, ViewManager>();
+
 			return services;
 		}
 	}

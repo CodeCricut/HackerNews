@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Core;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Application;
@@ -13,7 +14,7 @@ namespace Hackernews.WPF
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow : Window, IHaveViewModel<MainWindowViewModel>
 	{
 		private readonly IEventAggregator _ea;
 

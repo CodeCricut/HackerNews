@@ -1,4 +1,5 @@
-﻿using Hackernews.WPF.MVVM.ViewModel;
+﻿using Hackernews.WPF.Core;
+using Hackernews.WPF.MVVM.ViewModel;
 using System;
 using System.Windows;
 
@@ -7,7 +8,7 @@ namespace Hackernews.WPF
 	/// <summary>
 	/// Interaction logic for EntityCreationWindow.xaml
 	/// </summary>
-	public partial class EntityCreationWindow : Window
+	public partial class EntityCreationWindow : Window, IHaveViewModel<EntityCreationViewModel>
 	{
 		public EntityCreationViewModel EntityCreationViewModel { get; }
 
