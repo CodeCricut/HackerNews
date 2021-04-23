@@ -137,7 +137,7 @@ namespace Hackernews.WPF.ViewModels
 			BoardsModeratingListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
 			BoardsSubscribedListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
 
-			CreateBaseCommand<EntityListViewModel<ArticleViewModel, GetArticleModel>> createLoadArticlesByIdsCommand = entityListVm => new LoadArticlesByIdsCommand(entityListVm, _apiClient, this);
+			CreateBaseCommand<EntityListViewModel<ArticleViewModel, GetArticleModel>> createLoadArticlesByIdsCommand = entityListVm => new LoadArticlesByIdsCommand(entityListVm, _apiClient,_ea,  this);
 			ArticlesWrittenListViewModel = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadArticlesByIdsCommand);
 			ArticlesSavedListViewModel = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadArticlesByIdsCommand);
 

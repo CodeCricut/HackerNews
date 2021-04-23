@@ -73,12 +73,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			// Hows that for a class signature + constructor?
 			UserListViewModel = new UserListViewModel(createLoadCommand: entityVM => new LoadUsersCommand(entityVM, apiClient));
 			BoardListViewModel = new BoardListViewModel(createLoadCommand: entityVM => new LoadBoardsCommand(entityVM, apiClient, ea, userVM));
-			ArticleListViewModel = new ArticleListViewModel(createLoadCommand: entityVM => new LoadArticlesCommand(entityVM, userVM, apiClient));
+			ArticleListViewModel = new ArticleListViewModel(createLoadCommand: entityVM => new LoadArticlesCommand(entityVM, userVM, ea, apiClient));
 			CommentListViewModel = new CommentListViewModel(createLoadCommand: entityVM => new LoadCommentsCommand(entityVM, apiClient));
 
 			PublicUserViewModel = new PublicUserViewModel(apiClient);
 			BoardViewModel = new BoardViewModel(ea, apiClient);
-			ArticleViewModel = new ArticleViewModel(userVM, apiClient);
+			ArticleViewModel = new ArticleViewModel(ea, userVM, apiClient);
 			CommentViewModel = new CommentViewModel();
 
 			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);

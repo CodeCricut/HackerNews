@@ -42,7 +42,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowBoardHomeCommand { get; }
 
-
 		public BoardViewModel(IEventAggregator ea, IApiClient apiClient)
 		{
 			_ea = ea;

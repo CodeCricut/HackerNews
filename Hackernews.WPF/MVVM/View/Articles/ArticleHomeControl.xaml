@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Hackernews.WPF.MVVM.View.Articles.ArticleHomeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hackernews.WPF.MVVM.View.Articles"
+             xmlns:controls="clr-namespace:Hackernews.WPF.Controls"
+             xmlns:comments="clr-namespace:Hackernews.WPF.MVVM.View.Comments"
+             xmlns:view="clr-namespace:Hackernews.WPF.MVVM.View"
+             d:DataContext="{d:DesignInstance Type=local:ArticleHomeControl}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel x:Name="rootElement">
+        <controls:ArticleDetailsControl ArticleViewModel="{Binding ArticleHomeViewModel.ArticleViewModel}"
+                                      EnableDetailsButton="False"
+                                      Margin="0 0 0 10" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <controls:CommentListControl CommentListViewModel="{Binding ArticleHomeViewModel.ArticleCommentsListVM}"
+                                         Margin="0 0 5 0"
+                                         Grid.RowSpan="2" />
+            <comments:MultiCommentDetailsControl Grid.Column="1"
+                                                 CommentViewModels="{Binding ArticleHomeViewModel.ArticleCommentsListVM.Entities}"
+                                                 VerticalAlignment="Top"
+                                                 Margin="5 0 0 10"
+                                                 MaxHeight="350" />
+            <view:NavigationControl Grid.Column="1"
+                                    Grid.Row="1"
+                                    PrevPageCommand="{Binding ArticleHomeViewModel.ArticleCommentsListVM.EntityPageVM.PrevPageCommand}"
+                                    PrevPageCommandParameter="{Binding ArticleHomeViewModel.ArticleViewModel.Article.CommentIds}"
+                                    CurrentPageNumber="{Binding ArticleHomeViewModel.ArticleCommentsListVM.EntityPageVM.CurrentPage}"
+                                    TotalPageCount="{Binding ArticleHomeViewModel.ArticleCommentsListVM.EntityPageVM.TotalPages}"
+                                    NextPageCommand="{Binding ArticleHomeViewModel.ArticleCommentsListVM.EntityPageVM.NextPageCommand}"
+                                    NextPageCommandParameter="{Binding ArticleHomeViewModel.ArticleViewModel.Article.CommentIds}" />
+        </Grid>
+    </StackPanel>
+</UserControl>

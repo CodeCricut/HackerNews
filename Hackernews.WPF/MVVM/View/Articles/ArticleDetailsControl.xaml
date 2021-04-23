@@ -20,15 +20,40 @@
                         Converter={StaticResource boolToVis}, Mode=OneWay}">
 
         <!--Main Column-->
-        <Grid Height="100">
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Image Width="100"
-                   Source="{Binding ArticleViewModel.ArticleImage}"
-                   Visibility="{Binding ArticleViewModel.HasImage, Converter={StaticResource boolToVis}}" />
+            <StackPanel Orientation="Vertical"
+                        Width="100"
+                        MinHeight="50">
+                <Image Width="100"
+                       Source="{Binding ArticleViewModel.ArticleImage}"
+                       Visibility="{Binding ArticleViewModel.HasImage, Converter={StaticResource boolToVis}}" 
+                       Stretch="UniformToFill"
+                       Margin="0 0 0 5"
+                       Grid.Column="0" />
+                <Border Width="100"
+                        Height="100"
+                        CornerRadius="5"
+                        Margin="0 0 0 5"
+                        Visibility="{Binding ArticleViewModel.HasNoImage, Converter={StaticResource boolToVis}}"
+                        Background="{DynamicResource skinBackgroundLightBrush}">
+                    <TextBlock Text="No image"
+                               Foreground="{DynamicResource skinFontSecondaryBrush}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Border>
+                <Button Command="{Binding ArticleViewModel.ShowArticleHomeCommand}"
+                        Style="{DynamicResource PaginationButtonStyle}"
+                        Content="View details"
+                        VerticalAlignment="Stretch"
+                        Visibility="{Binding EnableDetailsButton,Converter={StaticResource boolToVis}}" />
+            </StackPanel>
+            
+            
 
             <StackPanel Orientation="Vertical"
                         Grid.Column="1"

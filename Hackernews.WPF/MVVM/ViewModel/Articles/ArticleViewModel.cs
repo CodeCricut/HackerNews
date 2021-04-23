@@ -1,20 +1,24 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Messages.ViewModel.EntityHomeWindow;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Entities;
+using HackerNews.WPF.MessageBus.Core;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class ArticleViewModel : BaseEntityViewModel
 	{
+		private readonly IEventAggregator _ea;
 		private readonly PrivateUserViewModel _privateUserVM;
 		private readonly IApiClient _apiClient;
 		private GetArticleModel _article;
@@ -35,24 +39,32 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			set { _isSelected = value; RaisePropertyChanged(); }
 		}
 
-		public ArticleViewModel(PrivateUserViewModel privateUser, IApiClient apiClient)
+		public ICommand ShowArticleHomeCommand { get; }
+
+		public ArticleViewModel(IEventAggregator ea, PrivateUserViewModel privateUser, IApiClient apiClient)
 		{
+			_ea = ea;
 			_privateUserVM = privateUser;
 			_apiClient = apiClient;
 			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
 
 			LoadEntityCommand = new AsyncDelegateCommand(LoadArticleAsync);
+
+			ShowArticleHomeCommand = new DelegateCommand(ShowArticleHome);
 		}
+
+		private void ShowArticleHome(object _ = null) => _ea.SendMessage(new ShowArticleHomeMessage(articleVm: this));
 
 		private BitmapImage _articleImage;
 
 		public BitmapImage ArticleImage
 		{
 			get { return _articleImage; }
-			set { _articleImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); }
+			set { _articleImage = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(HasImage)); RaisePropertyChanged(nameof(HasNoImage)); }
 		}
 
 		public bool HasImage { get => ArticleImage != null; }
+		public bool HasNoImage { get => ArticleImage == null; }
 
 		private async Task LoadArticleAsync(object parameter = null)
 		{
