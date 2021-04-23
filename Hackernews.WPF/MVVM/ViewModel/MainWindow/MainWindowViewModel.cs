@@ -22,12 +22,14 @@ namespace Hackernews.WPF.ViewModels
 		public MainWindowFullscreenViewModel FullscreenVM { get; }
 		public MainWindowEntityViewModel EntityVM { get; }
 		public EntityCreationViewModel EntityCreationViewModel { get; }
+		public EntityHomeViewModel EntityHomeViewModel { get; }
 
 		public MainWindowViewModel(IEventAggregator ea,
 			PrivateUserViewModel userVM,
 			MainWindowEntityViewModel entityVm,
 			MainWindowFullscreenViewModel fullscreenVm,
-			EntityCreationViewModel entityCreationVm)
+			EntityCreationViewModel entityCreationVm,
+			EntityHomeViewModel entityHomeVm)
 		{
 			_ea = ea;
 
@@ -36,6 +38,7 @@ namespace Hackernews.WPF.ViewModels
 			EntityVM = entityVm;
 			FullscreenVM = fullscreenVm;
 			EntityCreationViewModel = entityCreationVm;
+			EntityHomeViewModel = entityHomeVm;
 
 			LogoutCommand = new DelegateCommand(SendLogoutRequest);
 			CloseCommand = new DelegateCommand(SendCloseWindowRequest);

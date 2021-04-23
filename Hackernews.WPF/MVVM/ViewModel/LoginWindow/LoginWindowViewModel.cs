@@ -13,8 +13,6 @@ namespace Hackernews.WPF.ViewModels
 {
 	public class LoginWindowViewModel : BaseViewModel
 	{
-		private readonly Window _thisWindow;
-		private readonly Window _mainWindow;
 		private readonly IEventAggregator _ea;
 		private bool _loading;
 		public bool Loading

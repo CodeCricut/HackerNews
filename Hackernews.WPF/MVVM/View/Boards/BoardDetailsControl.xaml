@@ -43,7 +43,7 @@
                     <TextBlock Text="No image"
                                Foreground="{DynamicResource skinFontSecondaryBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <Button Command="{Binding BoardViewModel.EntityHomeViewModel.ShowBoardHomeWindowCommand}"
+                <Button Command="{Binding BoardViewModel.ShowBoardHomeCommand}"
                         Style="{DynamicResource PaginationButtonStyle}"
                         Content="View details"
                         VerticalAlignment="Stretch"

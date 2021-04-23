@@ -4,8 +4,11 @@ using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.EntityHomeWindow;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -21,6 +24,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 
 		private GetBoardModel _board;
+		private readonly IEventAggregator _ea;
 		private readonly IApiClient _apiClient;
 
 		public GetBoardModel Board
@@ -36,15 +40,20 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		public BoardViewModel(IApiClient apiClient, PrivateUserViewModel userVm)
+		public ICommand ShowBoardHomeCommand { get; }
+
+
+		public BoardViewModel(IEventAggregator ea, IApiClient apiClient)
 		{
-			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
+			_ea = ea;
 			_apiClient = apiClient;
 
-			EntityHomeViewModel = new EntityHomeViewModel(this, apiClient, userVm);
+			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
+
+			ShowBoardHomeCommand = new DelegateCommand(ShowBoardHome);
 		}
 
-		public EntityHomeViewModel EntityHomeViewModel { get; }
+		private void ShowBoardHome(object _ = null) => _ea.SendMessage(new ShowBoardHomeMessage(boardVM: this));
 
 		private BitmapImage _boardImage;
 

@@ -133,7 +133,7 @@ namespace Hackernews.WPF.ViewModels
 		private void InstantiateOwnedViewModels()
 		{
 
-			CreateBaseCommand<EntityListViewModel<BoardViewModel, GetBoardModel>> createLoadBoardsByIdsCommand = entityListVM => new LoadBoardsByIdsCommand(entityListVM, _apiClient, this);
+			CreateBaseCommand<EntityListViewModel<BoardViewModel, GetBoardModel>> createLoadBoardsByIdsCommand = entityListVM => new LoadBoardsByIdsCommand(entityListVM, _apiClient,_ea, this);
 			BoardsModeratingListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
 			BoardsSubscribedListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
 

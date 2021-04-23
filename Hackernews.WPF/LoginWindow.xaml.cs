@@ -38,7 +38,7 @@ namespace Hackernews.WPF
 		private void CloseWindow(CloseLoginWindowMessage msg)
 		{
 			// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
-			//_ea.UnregisterHandler<CloseLoginWindowMessage>(CloseWindow);
+			_ea.UnregisterHandler<CloseLoginWindowMessage>(CloseWindow);
 			this.Close();
 		}
 	}

@@ -2,6 +2,8 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.ViewModel.EntityHomeWindow;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -22,17 +24,13 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 		public bool HomeVMIsSelected => SelectedHomeViewModel != null;
 
-		public ICommand ShowBoardHomeWindowCommand { get; }
-
-		private void ShowBoardHomeWindow(object parameter = null)
-		{
-			SelectedHomeViewModel = BoardHomeViewModel;
-			OpenWindow(parameter);
-		}
 		#endregion
 
 		#region Home window
 		private EntityHomeWindow _entityHomeWindow;
+		private readonly IEventAggregator _ea;
+		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _userVM;
 
 		//public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
@@ -64,14 +62,24 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 		#endregion
 
-		public BoardHomeViewModel BoardHomeViewModel { get; }
+		//public BoardHomeViewModel BoardHomeViewModel { get; }
 
-		public EntityHomeViewModel(BoardViewModel boardVM, IApiClient apiClient, PrivateUserViewModel userVM)
+		public EntityHomeViewModel(IEventAggregator ea, IApiClient apiClient, PrivateUserViewModel userVM)
 		{
-			BoardHomeViewModel = new BoardHomeViewModel(boardVM, apiClient, userVM);
+			_apiClient = apiClient;
+			_userVM = userVM;
 
 			CloseCommand = new DelegateCommand(CloseWindow);
-			ShowBoardHomeWindowCommand = new DelegateCommand(ShowBoardHomeWindow);
+
+			ea.RegisterHandler<ShowBoardHomeMessage>(ShowBoardHome);
+		}
+
+		private void ShowBoardHome(ShowBoardHomeMessage msg)
+		{
+			BoardHomeViewModel boardHomeVM = new BoardHomeViewModel(msg.BoardVM, _apiClient, _userVM);
+			SelectedHomeViewModel = boardHomeVM;
+
+			OpenWindow();
 		}
 	}
 }
