@@ -50,16 +50,13 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			});
 		}
 
-		// TODO: For some reason, the BoardCreationViewModel.CreateBoardCommand.Invoke calls this without regard to what it is supposed to do...
 		private void CloseWindow(object parameter = null)
 		{
 			System.Windows.Application.Current.Dispatcher.Invoke(() =>
 			{
 				// Close if not disposed
 				if (_entityHomeWindow != null && !_entityHomeWindow.IsClosed)
-				{
 					_entityHomeWindow.Close();
-				}
 			});
 		}
 		#endregion
@@ -72,20 +69,20 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 			CloseCommand = new DelegateCommand(CloseWindow);
 
-			ea.RegisterHandler<ShowBoardHomeMessage>(ShowBoardHome);
-			ea.RegisterHandler<ShowArticleHomeMessage>(ShowArticleHome);
+			//ea.RegisterHandler<ShowBoardHomeMessage>(msg => ShowBoardHome(msg.BoardVM));
+			//ea.RegisterHandler<ShowArticleHomeMessage>(msg => ShowArticleHome(msg.ArticleVm));
 		}
 
-		private void ShowBoardHome(ShowBoardHomeMessage msg)
+		public void ShowBoardHome(BoardViewModel boardVm)
 		{
 			// Copy the board vm to keep it always selected
-			var boardVm = new BoardViewModel(_ea, _apiClient)
+			var newBoardVm = new BoardViewModel(_ea, _apiClient, _userVM)
 			{
-				Board = msg.BoardVM.Board,
+				Board = boardVm.Board,
 				IsSelected = true
 			};
 
-			BoardHomeViewModel boardHomeVM = new BoardHomeViewModel(_ea, msg.BoardVM, _apiClient, _userVM);
+			BoardHomeViewModel boardHomeVM = new BoardHomeViewModel(_ea, newBoardVm, _apiClient, _userVM);
 			boardHomeVM.LoadBoardCommand.Execute();
 
 			SelectedHomeViewModel = boardHomeVM;
@@ -93,17 +90,17 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			OpenWindow();
 		}
 
-		private void ShowArticleHome(ShowArticleHomeMessage msg)
+		public void ShowArticleHome(ArticleViewModel articleVm)
 		{
 			// Copy the article vm reference to keep it always selected.
-			var articleVm = new ArticleViewModel(_ea, _userVM, _apiClient)
+			var newArticleVm = new ArticleViewModel(_ea, _userVM, _apiClient)
 			{
-				Article = msg.ArticleVm.Article,
+				Article = articleVm.Article,
 				IsSelected = true
 			};
-			articleVm.LoadEntityCommand.Execute();
+			newArticleVm.LoadEntityCommand.Execute();
 
-			ArticleHomeViewModel articleHomeVm = new ArticleHomeViewModel(articleVm, _apiClient);
+			ArticleHomeViewModel articleHomeVm = new ArticleHomeViewModel(newArticleVm, _apiClient);
 			articleHomeVm.LoadArticleCommand.Execute();
 
 			SelectedHomeViewModel = articleHomeVm;

@@ -26,6 +26,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		private GetBoardModel _board;
 		private readonly IEventAggregator _ea;
 		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _userVm;
 
 		public GetBoardModel Board
 		{
@@ -42,17 +43,22 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowBoardHomeCommand { get; }
 
-		public BoardViewModel(IEventAggregator ea, IApiClient apiClient)
+		public BoardViewModel(IEventAggregator ea, IApiClient apiClient, PrivateUserViewModel userVm)
 		{
 			_ea = ea;
 			_apiClient = apiClient;
-
+			_userVm = userVm;
 			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
 
 			ShowBoardHomeCommand = new DelegateCommand(ShowBoardHome);
 		}
 
-		private void ShowBoardHome(object _ = null) => _ea.SendMessage(new ShowBoardHomeMessage(boardVM: this));
+		private void ShowBoardHome(object _ = null)
+		{
+			// _ea.SendMessage(new ShowBoardHomeMessage(boardVM: this));
+			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _apiClient, _userVm);
+			boardHomeVm.ShowBoardHome(this);
+		}
 
 		private BitmapImage _boardImage;
 

@@ -32,7 +32,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 		public override BoardViewModel ConstructEntityViewModel(GetBoardModel getModel)
 		{
-			return new BoardViewModel(_ea, _apiClient) { Board = getModel };
+			return new BoardViewModel(_ea, _apiClient, _userVm) { Board = getModel };
 		}
 	}
 
@@ -54,7 +54,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 		public override BoardViewModel ConstructEntityViewModel(GetBoardModel getModel)
 		{
-			return new BoardViewModel(_ea, _apiClient) { Board = getModel };
+			return new BoardViewModel(_ea, _apiClient, _userVM) { Board = getModel };
 		}
 
 		public override Task<PaginatedList<GetBoardModel>> LoadEntityModelsAsync(PagingParams pagingParams)

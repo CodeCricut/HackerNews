@@ -77,7 +77,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			CommentListViewModel = new CommentListViewModel(createLoadCommand: entityVM => new LoadCommentsCommand(entityVM, apiClient));
 
 			PublicUserViewModel = new PublicUserViewModel(apiClient);
-			BoardViewModel = new BoardViewModel(ea, apiClient);
+			BoardViewModel = new BoardViewModel(ea, apiClient, userVM);
 			ArticleViewModel = new ArticleViewModel(ea, userVM, apiClient);
 			CommentViewModel = new CommentViewModel();
 

@@ -53,7 +53,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			ShowArticleHomeCommand = new DelegateCommand(ShowArticleHome);
 		}
 
-		private void ShowArticleHome(object _ = null) => _ea.SendMessage(new ShowArticleHomeMessage(articleVm: this));
+		private void ShowArticleHome(object _ = null)
+		{
+			//_ea.SendMessage(new ShowArticleHomeMessage(articleVm: this));
+			EntityHomeViewModel articleHomeVm = new EntityHomeViewModel(_ea, _apiClient, _privateUserVM);
+			articleHomeVm.ShowArticleHome(this);
+		}
 
 		private BitmapImage _articleImage;
 
@@ -193,6 +198,5 @@ namespace Hackernews.WPF.MVVM.ViewModel
 				}
 			}
 		}
-
 	}
 }
