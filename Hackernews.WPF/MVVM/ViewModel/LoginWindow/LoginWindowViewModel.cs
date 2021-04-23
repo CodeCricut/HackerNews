@@ -80,13 +80,6 @@ namespace Hackernews.WPF.ViewModels
 			ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
 		}
 
-		~LoginWindowViewModel()
-		{
-			_ea.UnregisterHandler<LoginWindowLoadingChangedMessage>(LoadingChanged);
-			_ea.UnregisterHandler<LoginWindowInvalidUserInputChanged>(InvalidUserInputChanged);
-			_ea.UnregisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
-		}
-
 		private void LoadingChanged(LoginWindowLoadingChangedMessage msg) => Loading = msg.IsLoading;
 
 		private void InvalidUserInputChanged(LoginWindowInvalidUserInputChanged msg) => InvalidUserInput = msg.InvalidUserInput;

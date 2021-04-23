@@ -42,7 +42,7 @@ namespace Hackernews.WPF.Configuration
 			services.AddSingleton<ISignInManager, WpfSignInManager>();
 			services.AddSingleton<PrivateUserViewModel>();
 
-			services.AddSingleton<IEventAggregator, EventAggregator>();
+			services.AddSingleton<IEventAggregator, WeakEventAggregator>();
 
 			return services;
 		}

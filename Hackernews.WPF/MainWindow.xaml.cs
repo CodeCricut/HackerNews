@@ -20,8 +20,7 @@ namespace Hackernews.WPF
 		public MainWindowViewModel MainWindowVM { get; }
 
 		public MainWindow(IEventAggregator ea, 
-			MainWindowViewModel mainWindowVM, 
-			ISignInManager signInManager)
+			MainWindowViewModel mainWindowVM)
 		{
 			InitializeComponent();
 
@@ -59,8 +58,8 @@ namespace Hackernews.WPF
 		private void CloseWindow(LogoutRequestedMessage msg)
 		{
 			// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
-			_ea.UnregisterHandler<CloseMainWindowMessage>(CloseApp);
-			_ea.UnregisterHandler<LogoutRequestedMessage>(CloseWindow);
+			//_ea.UnregisterHandler<CloseMainWindowMessage>(CloseApp);
+			//_ea.UnregisterHandler<LogoutRequestedMessage>(CloseWindow);
 
 			this.Close();
 		}
