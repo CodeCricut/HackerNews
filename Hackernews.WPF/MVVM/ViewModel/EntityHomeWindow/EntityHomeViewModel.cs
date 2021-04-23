@@ -86,7 +86,17 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowArticleHome(ShowArticleHomeMessage msg)
 		{
-			ArticleHomeViewModel articleHomeVm = new ArticleHomeViewModel(msg.ArticleVm, _apiClient);
+			// Copy the article vm reference to keep it always selected.
+			var articleVm = new ArticleViewModel(_ea, _userVM, _apiClient)
+			{
+				Article = msg.ArticleVm.Article,
+				IsSelected = true
+			};
+			articleVm.LoadEntityCommand.Execute();
+
+			ArticleHomeViewModel articleHomeVm = new ArticleHomeViewModel(articleVm, _apiClient);
+			articleHomeVm.LoadArticleCommand.Execute();
+
 			SelectedHomeViewModel = articleHomeVm;
 
 			OpenWindow();
