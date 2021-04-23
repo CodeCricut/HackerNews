@@ -78,7 +78,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowBoardHome(ShowBoardHomeMessage msg)
 		{
+			// Copy the board vm to keep it always selected
+			var boardVm = new BoardViewModel(_ea, _apiClient)
+			{
+				Board = msg.BoardVM.Board,
+				IsSelected = true
+			};
+
 			BoardHomeViewModel boardHomeVM = new BoardHomeViewModel(_ea, msg.BoardVM, _apiClient, _userVM);
+			boardHomeVM.LoadBoardCommand.Execute();
+
 			SelectedHomeViewModel = boardHomeVM;
 
 			OpenWindow();

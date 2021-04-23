@@ -23,10 +23,5 @@ namespace Hackernews.WPF.MVVM.View.Boards
 
 			rootElement.DataContext = this;
 		}
-
-		private void UserControl_Loaded(object sender, RoutedEventArgs e)
-		{
-			BoardHomeViewModel.LoadBoardCommand.Execute();
-		}
 	}
 }
