@@ -60,35 +60,37 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		//public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
 
+
+		// TODO: use view manager
 		private void OpenWindow(object parameter = null)
 		{
-			App.Current.Dispatcher.Invoke(() =>
-			{
-				if (_entityCreationWindow == null || _entityCreationWindow.IsClosed)
-				{
-					// Create and show new window if already disposed
-					_entityCreationWindow = new EntityCreationWindow(this);
-				}
-				_entityCreationWindow.Show();
-			});
+			//App.Current.Dispatcher.Invoke(() =>
+			//{
+			//	if (_entityCreationWindow == null || _entityCreationWindow.IsClosed)
+			//	{
+			//		// Create and show new window if already disposed
+			//		_entityCreationWindow = new EntityCreationWindow(this);
+			//	}
+			//	_entityCreationWindow.Show();
+			//});
 		}
 
 		private void CloseWindow(object parameter = null)
 		{
-			App.Current.Dispatcher.Invoke(() =>
-			{
-				// Close if not disposed
-				if (_entityCreationWindow != null && !_entityCreationWindow.IsClosed)
-				{
-					_entityCreationWindow.Close();
-				}
-			});
+			//App.Current.Dispatcher.Invoke(() =>
+			//{
+			//	// Close if not disposed
+			//	if (_entityCreationWindow != null && !_entityCreationWindow.IsClosed)
+			//	{
+			//		_entityCreationWindow.Close();
+			//	}
+			//});
 		}
 
 		public EntityCreationViewModel(IApiClient apiClient)
 		{
 			BoardCreationViewModel = new BoardCreationViewModel(this, apiClient);
-			_entityCreationWindow = new EntityCreationWindow(this);
+			//_entityCreationWindow = new EntityCreationWindow(this);
 
 			ShowBoardCreationWindowCommand = new DelegateCommand(ShowBoardCreationWindow);
 			//OpenCommand = new DelegateCommand(OpenWindow);

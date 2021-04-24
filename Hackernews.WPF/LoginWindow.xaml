@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid x:Name="rootElement"
-            d:DataContext="{d:DesignInstance Type=viewmodels:LoginWindowViewModel}"
+            d:DataContext="{d:DesignInstance Type=local:LoginWindow}"
            >
         <Border x:Name="clipBorder"
                 CornerRadius="20"
@@ -64,7 +64,7 @@
                        Fill="Transparent" />
 
             <!--Exit button-->
-            <Button Command="{Binding CloseCommand}"
+            <Button Command="{Binding ViewModel.CloseCommand}"
                     Grid.Column="2"
                     Width="25"
                     Height="25"
@@ -79,27 +79,27 @@
                        Grid.Row="1" Grid.Column="1"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       Visibility="{Binding Loading, Converter={StaticResource boolToVis}}"
+                       Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}"
                        />
 
             <StackPanel Grid.Row="1"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Visibility="{Binding NotLoading, Converter={StaticResource boolToVis}}"
+                        Visibility="{Binding ViewModel.NotLoading, Converter={StaticResource boolToVis}}"
                         >
                 <TextBlock FontSize="12"
                            Foreground="Red"
-                           Visibility="{Binding InvalidUserInput, Converter={StaticResource boolToVis}}"
+                           Visibility="{Binding ViewModel.InvalidUserInput, Converter={StaticResource boolToVis}}"
                            >
                     Invalid user information.
                 </TextBlock>
 
-                <ContentControl Content="{Binding SelectedViewModel}" />
+                <ContentControl Content="{Binding ViewModel.SelectedViewModel}" />
 
                 <Button Margin="0 20"
                         Style="{StaticResource PaginationButtonStyle}"
-                        Command="{Binding SelectRegisterModelCommand}" 
-                        Visibility="{Binding LoginModelSelected, Converter={StaticResource boolToVis}}"
+                        Command="{Binding ViewModel.SelectRegisterModelCommand}"
+                        Visibility="{Binding ViewModel.LoginModelSelected, Converter={StaticResource boolToVis}}"
                         Height="20"
                         Width="50"
                         Padding="0"
@@ -108,8 +108,8 @@
 
                 <Button Margin="0 20"
                         Style="{StaticResource PaginationButtonStyle}"
-                        Command="{Binding SelectLoginModelCommand}"
-                        Visibility="{Binding RegisterModelSelected, Converter={StaticResource boolToVis}}"
+                        Command="{Binding ViewModel.SelectLoginModelCommand}"
+                        Visibility="{Binding ViewModel.RegisterModelSelected, Converter={StaticResource boolToVis}}"
                         Height="20"
                         Width="50"
                         Padding="0"

@@ -18,23 +18,25 @@ namespace Hackernews.WPF
 	{
 		private readonly IEventAggregator _ea;
 
-		public MainWindowViewModel MainWindowVM { get; }
+		public MainWindowViewModel MainWindowVM { get; private set; }
 
-		public MainWindow(IEventAggregator ea, 
-			MainWindowViewModel mainWindowVM, 
-			ISignInManager signInManager)
+		public MainWindow(IEventAggregator ea)
 		{
 			InitializeComponent();
 
 			_ea = ea;
-			MainWindowVM = mainWindowVM;
 
-			DataContext = MainWindowVM;
+			DataContext = this;
 
 			ea.RegisterHandler<CloseMainWindowMessage>(CloseApp);
 			ea.RegisterHandler<LogoutRequestedMessage>(CloseWindow);
 
 			this.Loaded += MainWindow_Loaded;
+		}
+
+		public void SetViewModel(MainWindowViewModel viewModel)
+		{
+			MainWindowVM = viewModel;
 		}
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)

@@ -8,7 +8,7 @@
         Title="EntityHomeWindow"
         Height="600"
         Width="800"
-        Name="MainWindowView"
+        x:Name="MainWindowView"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None">

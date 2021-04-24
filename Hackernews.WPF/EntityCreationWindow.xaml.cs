@@ -10,16 +10,18 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class EntityCreationWindow : Window, IHaveViewModel<EntityCreationViewModel>
 	{
-		public EntityCreationViewModel EntityCreationViewModel { get; }
+		public EntityCreationViewModel EntityCreationViewModel { get; private set; }
 
-		public bool IsClosed { get; private set; }
-
-		public EntityCreationWindow(EntityCreationViewModel entityCreationViewModel)
+		public EntityCreationWindow()
 		{
 			InitializeComponent();
-			EntityCreationViewModel = entityCreationViewModel;
 
 			DataContext = this;
+		}
+
+		public void SetViewModel(EntityCreationViewModel viewModel)
+		{
+			EntityCreationViewModel = viewModel;
 		}
 
 		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -28,13 +30,6 @@ namespace Hackernews.WPF
 			{
 				this.DragMove();
 			}
-		}
-
-		protected override void OnClosed(EventArgs e)
-		{
-			base.OnClosed(e);
-
-			IsClosed = true;
 		}
 	}
 }

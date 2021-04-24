@@ -15,17 +15,22 @@ namespace Hackernews.WPF
 	{
 		private readonly IEventAggregator _ea;
 
-		private LoginWindowViewModel ViewModel { get; }
+		public LoginWindowViewModel ViewModel { get; private set; }
 
-		public LoginWindow(IEventAggregator ea, LoginWindowViewModel loginWindowVM)
+		public LoginWindow(IEventAggregator ea)
 		{
 			InitializeComponent();
 			_ea = ea;
-			ViewModel = loginWindowVM;
 
 			ea.RegisterHandler<CloseLoginWindowMessage>(CloseWindow);
 
-			rootElement.DataContext = ViewModel;
+			rootElement.DataContext = this;
+		}
+
+
+		public void SetViewModel(LoginWindowViewModel viewModel)
+		{
+			ViewModel = viewModel;
 		}
 
 		private void dragPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -42,5 +47,6 @@ namespace Hackernews.WPF
 			_ea.UnregisterHandler<CloseLoginWindowMessage>(CloseWindow);
 			this.Close();
 		}
+
 	}
 }

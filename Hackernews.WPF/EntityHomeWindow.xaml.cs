@@ -10,14 +10,11 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class EntityHomeWindow : Window, IHaveViewModel<EntityHomeViewModel>
 	{
-		public bool IsClosed { get; private set; }
+		public EntityHomeViewModel EntityHomeViewModel { get; private set; }
 
-		public EntityHomeViewModel EntityHomeViewModel { get; }
-
-		public EntityHomeWindow(EntityHomeViewModel entityHomeViewModel)
+		public EntityHomeWindow()
 		{
 			InitializeComponent();
-			EntityHomeViewModel = entityHomeViewModel;
 
 			rootElement.DataContext = this;
 		}
@@ -30,11 +27,9 @@ namespace Hackernews.WPF
 			}
 		}
 
-		protected override void OnClosed(EventArgs e)
+		public void SetViewModel(EntityHomeViewModel viewModel)
 		{
-			base.OnClosed(e);
-
-			IsClosed = true;
+			EntityHomeViewModel = viewModel;
 		}
 	}
 }

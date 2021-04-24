@@ -16,7 +16,7 @@ namespace Hackernews.WPF.Services
 		/// </summary>
 		/// <param name="viewModel"></param>
 		/// <returns>Successful.</returns>
-		bool Show(BaseViewModel viewModel);
+		bool Show<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel;
 
 		/// <summary>
 		/// Close the view associated with <paramref name="viewModel"/>. <see cref="Show(BaseViewModel)"/> must have been previously
@@ -31,7 +31,8 @@ namespace Hackernews.WPF.Services
 	{
 		private readonly Dictionary<BaseViewModel, Window> _activeViews = new Dictionary<BaseViewModel, Window>();
 
-		public bool Show(BaseViewModel viewModel)
+		public bool Show<TViewModel>(TViewModel viewModel)
+			where TViewModel : BaseViewModel
 		{
 			Type viewType = GetViewForViewModel(viewModel.GetType());
 
@@ -40,6 +41,7 @@ namespace Hackernews.WPF.Services
 				var view = (Window)(App.Current as App).ServiceProvider.GetService(viewType);
 				if (view == null) return false;
 
+				((IHaveViewModel<TViewModel>)view).SetViewModel(viewModel);
 				view.Show();
 
 				_activeViews.Add(viewModel, view);
@@ -74,7 +76,7 @@ namespace Hackernews.WPF.Services
 							i.IsGenericType &&
 							i.GetGenericTypeDefinition() == typeof(IHaveViewModel<>) &&
 							i.GenericTypeArguments.Contains(viewModelType)));
-					
+
 			return viewForVM;
 		}
 	}

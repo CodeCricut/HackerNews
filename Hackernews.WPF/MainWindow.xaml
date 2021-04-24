@@ -11,7 +11,7 @@
         xmlns:viewmodel="clr-namespace:Hackernews.WPF.MVVM.ViewModel"
         xmlns:helpers="clr-namespace:Hackernews.WPF.Helpers"
         xmlns:view="clr-namespace:Hackernews.WPF.MVVM.View"
-        d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:MainWindow}"
         Title="MainWindow"
         Height="600"
         Width="1000"
@@ -64,7 +64,7 @@
                 </TextBlock>
             </StackPanel>
 
-            <Button Command="{Binding CloseCommand}"
+            <Button Command="{Binding MainWindowVM.CloseCommand}"
                     Grid.Column="1"
                     Width="25"
                     Height="25"
@@ -86,24 +86,25 @@
                     </Style>
                 </StackPanel.Resources>
                 <RadioButton Content="Home"
-                             Command="{Binding FullscreenVM.SelectHomeCommand}"
+                             Command="{Binding MainWindowVM.FullscreenVM.SelectHomeCommand}"
                              x:Name="homeNavButton"
                              />
                 <RadioButton Content="Profile"
-                             Command="{Binding FullscreenVM.SelectProfileCommand}"/>
-                
-                <RadioButton Content="Settings" Command="{Binding FullscreenVM.SelectSettingsCommand}"/>
+                             Command="{Binding MainWindowVM.FullscreenVM.SelectProfileCommand}"/>
+
+                <RadioButton Content="Settings"
+                             Command="{Binding MainWindowVM.FullscreenVM.SelectSettingsCommand}"/>
 
                 <Border Style="{StaticResource separatorStyle}" />
                 
                 <RadioButton Content="Users"
-                             Command="{Binding EntityVM.SelectUsersCommand}" />
+                             Command="{Binding MainWindowVM.EntityVM.SelectUsersCommand}" />
                 <RadioButton Content="Boards"
-                             Command="{Binding EntityVM.SelectBoardsCommand}" />
+                             Command="{Binding MainWindowVM.EntityVM.SelectBoardsCommand}" />
                 <RadioButton Content="Articles"
-                             Command="{Binding EntityVM.SelectArticlesCommand}" />
+                             Command="{Binding MainWindowVM.EntityVM.SelectArticlesCommand}" />
                 <RadioButton Content="Comments"
-                             Command="{Binding EntityVM.SelectCommentsCommand}" />
+                             Command="{Binding MainWindowVM.EntityVM.SelectCommentsCommand}" />
             </StackPanel>
 
             <!--Main Panel-->
@@ -124,36 +125,36 @@
                     <!--Fullscreen views-->
                     <ContentControl Grid.RowSpan="4"
                                     Grid.ColumnSpan="2"
-                                    Content="{Binding FullscreenVM.SelectedFullscreenViewModel}" />
+                                    Content="{Binding MainWindowVM.FullscreenVM.SelectedFullscreenViewModel}" />
                     
                    <!--Temp button-->
-                    <Button Command="{Binding EntityCreationViewModel.ShowBoardCreationWindowCommand}"
+                    <Button Command="{Binding MainWindowVM.EntityCreationViewModel.ShowBoardCreationWindowCommand}"
                             Content="Create board"
                             Style="{DynamicResource PaginationButtonStyle}"
-                            Visibility="{Binding FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
+                            Visibility="{Binding MainWindowVM.FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
                             Margin="0 0 10 10"/>
 
                     <!--List views-->
                     <ContentControl Grid.RowSpan="3"
                                     Grid.Row="1"
                                     Margin="0 0 10 -10"
-                                    Content="{Binding EntityVM.SelectedListViewModel}" />
+                                    Content="{Binding MainWindowVM.EntityVM.SelectedListViewModel}" />
 
                     <!--Details views-->
                     <ContentControl Grid.Column="1"
                                     Grid.Row="1"
-                                    Content="{Binding EntityVM.SelectedDetailsViewModel}" 
+                                    Content="{Binding MainWindowVM.EntityVM.SelectedDetailsViewModel}" 
                                     Height="480"/>
 
                     <!--Pagination-->
                     <view:NavigationControl Grid.Row="2"
                                             Grid.Column="1"
                                             Margin="0 0 0 10"
-                                            Visibility="{Binding FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
-                                            PrevPageCommand="{Binding EntityVM.SelectedListViewModel.EntityPageVM.PrevPageCommand}"
-                                            CurrentPageNumber="{Binding EntityVM.SelectedListViewModel.EntityPageVM.CurrentPage}"
-                                            TotalPageCount="{Binding EntityVM.SelectedListViewModel.EntityPageVM.TotalPages}"
-                                            NextPageCommand="{Binding EntityVM.SelectedListViewModel.EntityPageVM.NextPageCommand}" />
+                                            Visibility="{Binding MainWindowVM.FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
+                                            PrevPageCommand="{Binding MainWindowVM.EntityVM.SelectedListViewModel.EntityPageVM.PrevPageCommand}"
+                                            CurrentPageNumber="{Binding MainWindowVM.EntityVM.SelectedListViewModel.EntityPageVM.CurrentPage}"
+                                            TotalPageCount="{Binding MainWindowVM.EntityVM.SelectedListViewModel.EntityPageVM.TotalPages}"
+                                            NextPageCommand="{Binding MainWindowVM.EntityVM.SelectedListViewModel.EntityPageVM.NextPageCommand}" />
                 </Grid>
             </Border>
             
