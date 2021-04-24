@@ -14,6 +14,7 @@ namespace Hackernews.WPF.ViewModels
 	public class LoginWindowViewModel : BaseViewModel
 	{
 		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
 		private bool _loading;
 		public bool Loading
 		{
@@ -59,13 +60,13 @@ namespace Hackernews.WPF.ViewModels
 
 		public RegisterViewModel RegisterViewModel { get; }
 
-		public LoginWindowViewModel(IEventAggregator ea, ISignInManager signInManager, IApiClient apiClient, LoginModelViewModel loginModelVM, RegisterViewModel registerVM)
+		public LoginWindowViewModel(IEventAggregator ea,LoginModelViewModel loginModelVM, RegisterViewModel registerVM, IViewManager viewManager)
 		{
 			_ea = ea;
 
 			LoginModelViewModel = loginModelVM;
 			RegisterViewModel = registerVM;
-
+			_viewManager = viewManager;
 			SelectLoginModelCommand = new DelegateCommand(SelectLoginModel);
 			SelectRegisterModelCommand = new DelegateCommand(SelectRegisterModel);
 
@@ -85,7 +86,7 @@ namespace Hackernews.WPF.ViewModels
 		private void SwitchToMainWindow(LoginWindowSwitchToMainWindowMessage msg)
 		{
 			_ea.SendMessage(new OpenMainWindowMessage());
-			_ea.SendMessage(new CloseLoginWindowMessage());
+			_viewManager.Close(this);
 		}
 	}
 }
