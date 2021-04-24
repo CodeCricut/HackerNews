@@ -3,6 +3,7 @@ using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.ViewModel.EntityHomeWindow;
 using Hackernews.WPF.MVVM.ViewModel.Articles;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.EntityHomeWindow;
@@ -31,6 +32,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		#region Home window
 		private EntityHomeWindow _entityHomeWindow;
 		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
 		private readonly IApiClient _apiClient;
 		private readonly PrivateUserViewModel _userVM;
 
@@ -61,16 +63,13 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 		#endregion
 
-		public EntityHomeViewModel(IEventAggregator ea, IApiClient apiClient, PrivateUserViewModel userVM)
+		public EntityHomeViewModel(IEventAggregator ea,  IApiClient apiClient, PrivateUserViewModel userVM)
 		{
 			_ea = ea;
 			_apiClient = apiClient;
 			_userVM = userVM;
 
 			CloseCommand = new DelegateCommand(CloseWindow);
-
-			//ea.RegisterHandler<ShowBoardHomeMessage>(msg => ShowBoardHome(msg.BoardVM));
-			//ea.RegisterHandler<ShowArticleHomeMessage>(msg => ShowArticleHome(msg.ArticleVm));
 		}
 
 		public void ShowBoardHome(BoardViewModel boardVm)
