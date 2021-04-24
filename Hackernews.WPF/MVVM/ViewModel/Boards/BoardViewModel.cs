@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
@@ -25,6 +26,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private GetBoardModel _board;
 		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
 		private readonly IApiClient _apiClient;
 		private readonly PrivateUserViewModel _userVm;
 
@@ -43,9 +45,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowBoardHomeCommand { get; }
 
-		public BoardViewModel(IEventAggregator ea, IApiClient apiClient, PrivateUserViewModel userVm)
+		public BoardViewModel(IEventAggregator ea, 
+			IViewManager viewManager,
+			IApiClient apiClient, PrivateUserViewModel userVm)
 		{
 			_ea = ea;
+			_viewManager = viewManager;
 			_apiClient = apiClient;
 			_userVm = userVm;
 			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
@@ -55,8 +60,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowBoardHome(object _ = null)
 		{
-			// _ea.SendMessage(new ShowBoardHomeMessage(boardVM: this));
-			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _apiClient, _userVm);
+			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _viewManager,_apiClient, _userVm);
 			boardHomeVm.ShowBoardHome(this);
 		}
 

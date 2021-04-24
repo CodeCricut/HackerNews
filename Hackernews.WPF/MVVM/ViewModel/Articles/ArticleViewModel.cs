@@ -2,6 +2,7 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.ViewModel.EntityHomeWindow;
 using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Images;
@@ -19,6 +20,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	public class ArticleViewModel : BaseEntityViewModel
 	{
 		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
 		private readonly PrivateUserViewModel _privateUserVM;
 		private readonly IApiClient _apiClient;
 		private GetArticleModel _article;
@@ -41,9 +43,10 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowArticleHomeCommand { get; }
 
-		public ArticleViewModel(IEventAggregator ea, PrivateUserViewModel privateUser, IApiClient apiClient)
+		public ArticleViewModel(IEventAggregator ea, IViewManager viewManager, PrivateUserViewModel privateUser, IApiClient apiClient)
 		{
 			_ea = ea;
+			_viewManager = viewManager;
 			_privateUserVM = privateUser;
 			_apiClient = apiClient;
 			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
@@ -56,7 +59,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		private void ShowArticleHome(object _ = null)
 		{
 			//_ea.SendMessage(new ShowArticleHomeMessage(articleVm: this));
-			EntityHomeViewModel articleHomeVm = new EntityHomeViewModel(_ea, _apiClient, _privateUserVM);
+			EntityHomeViewModel articleHomeVm = new EntityHomeViewModel(_ea, _viewManager, _apiClient, _privateUserVM);
 			articleHomeVm.ShowArticleHome(this);
 		}
 

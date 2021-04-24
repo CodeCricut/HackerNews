@@ -13,6 +13,11 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class EntityHomeViewModel : BaseViewModel
 	{
+		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
+		private readonly IApiClient _apiClient;
+		private readonly PrivateUserViewModel _userVM;
+
 		#region View switcher
 		private object _selectedHomeViewModel;
 		public object SelectedHomeViewModel
@@ -26,73 +31,58 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 		public bool HomeVMIsSelected => SelectedHomeViewModel != null;
-
 		#endregion
 
-		#region Home window
-		private EntityHomeWindow _entityHomeWindow;
-		private readonly IEventAggregator _ea;
-		private readonly IViewManager _viewManager;
-		private readonly IApiClient _apiClient;
-		private readonly PrivateUserViewModel _userVM;
-
-		//public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
 
-		private void OpenWindow(object parameter = null)
-		{
-			System.Windows.Application.Current.Dispatcher.Invoke(() =>
-			{
-				if (_entityHomeWindow == null || _entityHomeWindow.IsClosed)
-				{
-					// Create and show new window if already disposed
-					_entityHomeWindow = new EntityHomeWindow(this);
-				}
-				_entityHomeWindow.Show();
-			});
-		}
-
-		private void CloseWindow(object parameter = null)
-		{
-			System.Windows.Application.Current.Dispatcher.Invoke(() =>
-			{
-				// Close if not disposed
-				if (_entityHomeWindow != null && !_entityHomeWindow.IsClosed)
-					_entityHomeWindow.Close();
-			});
-		}
-		#endregion
-
-		public EntityHomeViewModel(IEventAggregator ea,  IApiClient apiClient, PrivateUserViewModel userVM)
+		public EntityHomeViewModel(IEventAggregator ea, 
+			IViewManager viewManager, 
+			IApiClient apiClient, 
+			PrivateUserViewModel userVM)
 		{
 			_ea = ea;
+			_viewManager = viewManager;
 			_apiClient = apiClient;
 			_userVM = userVM;
 
-			CloseCommand = new DelegateCommand(CloseWindow);
+			CloseCommand = new DelegateCommand(_ => _viewManager.Close(this));
 		}
 
 		public void ShowBoardHome(BoardViewModel boardVm)
 		{
-			// Copy the board vm to keep it always selected
-			var newBoardVm = new BoardViewModel(_ea, _apiClient, _userVM)
-			{
-				Board = boardVm.Board,
-				IsSelected = true
-			};
-
-			BoardHomeViewModel boardHomeVM = new BoardHomeViewModel(_ea, newBoardVm, _apiClient, _userVM);
-			boardHomeVM.LoadBoardCommand.Execute();
-
-			SelectedHomeViewModel = boardHomeVM;
+			SelectBoardVM(boardVm);
 
 			OpenWindow();
 		}
 
 		public void ShowArticleHome(ArticleViewModel articleVm)
 		{
+			SelectArticleVM(articleVm);
+
+			OpenWindow();
+		}
+
+		private void OpenWindow(object _ = null) => _viewManager.Show(this);
+
+		private void SelectBoardVM(BoardViewModel boardVm)
+		{
+			// Copy the board vm to keep it always selected
+			var newBoardVm = new BoardViewModel(_ea, _viewManager, _apiClient, _userVM)
+			{
+				Board = boardVm.Board,
+				IsSelected = true
+			};
+
+			BoardHomeViewModel boardHomeVM = new BoardHomeViewModel(_ea, _viewManager, newBoardVm, _apiClient, _userVM);
+			boardHomeVM.LoadBoardCommand.Execute();
+
+			SelectedHomeViewModel = boardHomeVM;
+		}
+
+		private void SelectArticleVM(ArticleViewModel articleVm)
+		{
 			// Copy the article vm reference to keep it always selected.
-			var newArticleVm = new ArticleViewModel(_ea, _userVM, _apiClient)
+			var newArticleVm = new ArticleViewModel(_ea, _viewManager, _userVM, _apiClient)
 			{
 				Article = articleVm.Article,
 				IsSelected = true
@@ -103,8 +93,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			articleHomeVm.LoadArticleCommand.Execute();
 
 			SelectedHomeViewModel = articleHomeVm;
-
-			OpenWindow();
 		}
 	}
 }

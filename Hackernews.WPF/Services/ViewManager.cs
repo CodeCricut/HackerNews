@@ -55,7 +55,7 @@ namespace Hackernews.WPF.Services
 				if (!_activeViews.ContainsKey(viewModel)) return false;
 
 				var view = _activeViews.GetValueOrDefault(viewModel);
-				
+
 				view?.Close();
 
 				return _activeViews.Remove(viewModel);

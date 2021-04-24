@@ -4,6 +4,7 @@ using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
@@ -63,6 +64,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand SelectCommentsCommand { get; }
 
 		public MainWindowEntityViewModel(IEventAggregator ea,
+			IViewManager viewManager,
 			PrivateUserViewModel userVM,
 			IApiClient apiClient)
 		{
@@ -71,14 +73,15 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			ea.RegisterHandler<EntityDeselectedMessage>(msg => DeselectEntityVM());
 
 			// Hows that for a class signature + constructor?
+			// TODO: these vms absolutely need to be injected
 			UserListViewModel = new UserListViewModel(createLoadCommand: entityVM => new LoadUsersCommand(entityVM, apiClient));
-			BoardListViewModel = new BoardListViewModel(createLoadCommand: entityVM => new LoadBoardsCommand(entityVM, apiClient, ea, userVM));
-			ArticleListViewModel = new ArticleListViewModel(createLoadCommand: entityVM => new LoadArticlesCommand(entityVM, userVM, ea, apiClient));
+			BoardListViewModel = new BoardListViewModel(createLoadCommand: entityVM => new LoadBoardsCommand(entityVM, viewManager, apiClient, ea, userVM));
+			ArticleListViewModel = new ArticleListViewModel(createLoadCommand: entityVM => new LoadArticlesCommand(entityVM, viewManager, userVM, ea, apiClient));
 			CommentListViewModel = new CommentListViewModel(createLoadCommand: entityVM => new LoadCommentsCommand(entityVM, apiClient));
 
 			PublicUserViewModel = new PublicUserViewModel(apiClient);
-			BoardViewModel = new BoardViewModel(ea, apiClient, userVM);
-			ArticleViewModel = new ArticleViewModel(ea, userVM, apiClient);
+			BoardViewModel = new BoardViewModel(ea, viewManager, apiClient, userVM);
+			ArticleViewModel = new ArticleViewModel(ea, viewManager, userVM, apiClient);
 			CommentViewModel = new CommentViewModel();
 
 			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);

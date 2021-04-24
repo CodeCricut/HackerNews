@@ -2,6 +2,7 @@
 using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.WPF.MessageBus.Core;
@@ -31,11 +32,11 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 		private void LoadBoardArticles() => BoardArticleListVM.LoadCommand.Execute(BoardViewModel.Board.ArticleIds);
 
-		public BoardHomeViewModel(IEventAggregator ea, BoardViewModel boardVM, IApiClient apiClient, PrivateUserViewModel privateUserVM)
+		public BoardHomeViewModel(IEventAggregator ea, IViewManager viewManager, BoardViewModel boardVM, IApiClient apiClient, PrivateUserViewModel privateUserVM)
 		{
 			BoardViewModel = boardVM;
 
-			BoardArticleListVM = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadCommand: entityListVm => new LoadArticlesByIdsCommand(entityListVm, apiClient, ea, privateUserVM));
+			BoardArticleListVM = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadCommand: entityListVm => new LoadArticlesByIdsCommand(entityListVm, viewManager, apiClient, ea, privateUserVM));
 
 			LoadBoardCommand = new AsyncDelegateCommand(LoadBoard);
 		}

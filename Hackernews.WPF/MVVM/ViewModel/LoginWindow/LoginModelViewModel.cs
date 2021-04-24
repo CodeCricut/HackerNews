@@ -71,7 +71,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 				_ea.SendMessage(new LoginWindowSwitchToMainWindowMessage());
 			}
-			catch (System.Exception)
+			catch (System.Exception e)
 			{
 				Username = "";
 				Password.Clear();

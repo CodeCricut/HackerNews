@@ -1,7 +1,13 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Core;
+using Hackernews.WPF.Factories;
 using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Boards;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +51,13 @@ namespace Hackernews.WPF.Configuration
 			services.AddSingleton<IEventAggregator, EventAggregator>();
 
 			services.AddSingleton<IViewManager, ViewManager>();
+
+			services.AddSingleton<ILoadEntityCommandFactoryPrincipal, LoadEntityCommandFactoryPrincipal>();
+			services.AddSingleton<ILoadBoardCommandFactory, LoadBoardCommandFactory>();
+			services.AddSingleton<ILoadArticleCommandFactory, LoadArticleCommandFactory>();
+			services.AddSingleton<ILoadCommentCommandFactory, LoadCommentCommandFactory>();
+			services.AddSingleton<ILoadUserCommandFactory, LoadUserCommandFactory>();
+
 
 			return services;
 		}

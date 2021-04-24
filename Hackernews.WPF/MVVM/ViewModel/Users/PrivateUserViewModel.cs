@@ -1,11 +1,13 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
 using Hackernews.WPF.Core.Commands;
+using Hackernews.WPF.Factories;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
+using Hackernews.WPF.Services;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
@@ -23,7 +25,9 @@ namespace Hackernews.WPF.ViewModels
 	public class PrivateUserViewModel : BaseViewModel
 	{
 		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
 		private readonly IApiClient _apiClient;
+		private readonly ILoadEntityCommandFactoryPrincipal _loadCommandFactoryPrincipal;
 
 		#region User and User Props
 		private GetPrivateUserModel _user = new GetPrivateUserModel();
@@ -120,10 +124,16 @@ namespace Hackernews.WPF.ViewModels
 
 		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
-		public PrivateUserViewModel(IEventAggregator ea, IApiClient apiClient)
-		{
+		public PrivateUserViewModel(IEventAggregator ea,
+			IViewManager viewManager,
+			IApiClient apiClient,
+			ILoadEntityCommandFactoryPrincipal loadCommandFactoryPrincipal
+		)
+			{
 			_ea = ea;
+			_viewManager = viewManager;
 			_apiClient = apiClient;
+			_loadCommandFactoryPrincipal = loadCommandFactoryPrincipal;
 			InstantiateOwnedViewModels();
 
 			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUserAsync);
@@ -132,18 +142,17 @@ namespace Hackernews.WPF.ViewModels
 
 		private void InstantiateOwnedViewModels()
 		{
+			var loadBoardCallback = _loadCommandFactoryPrincipal.BoardCF.CreateLoadBoardCommandCallback(LoadEntityListType.LoadByIds, this);
+			BoardsModeratingListViewModel = new BoardListViewModel(loadBoardCallback);
+			BoardsSubscribedListViewModel = new BoardListViewModel(loadBoardCallback);
 
-			CreateBaseCommand<EntityListViewModel<BoardViewModel, GetBoardModel>> createLoadBoardsByIdsCommand = entityListVM => new LoadBoardsByIdsCommand(entityListVM, _apiClient,_ea, this);
-			BoardsModeratingListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
-			BoardsSubscribedListViewModel = new EntityListViewModel<BoardViewModel, GetBoardModel>(createLoadBoardsByIdsCommand);
+			var loadArticleCallback = _loadCommandFactoryPrincipal.ArticleCF.CreateLoadArticleCommandCallback(LoadEntityListType.LoadByIds, this);
+			ArticlesWrittenListViewModel = new ArticleListViewModel(loadArticleCallback);
+			ArticlesSavedListViewModel = new ArticleListViewModel(loadArticleCallback);
 
-			CreateBaseCommand<EntityListViewModel<ArticleViewModel, GetArticleModel>> createLoadArticlesByIdsCommand = entityListVm => new LoadArticlesByIdsCommand(entityListVm, _apiClient,_ea,  this);
-			ArticlesWrittenListViewModel = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadArticlesByIdsCommand);
-			ArticlesSavedListViewModel = new EntityListViewModel<ArticleViewModel, GetArticleModel>(createLoadArticlesByIdsCommand);
-
-			CreateBaseCommand<EntityListViewModel<CommentViewModel, GetCommentModel>> createLoadCommentsByIdsCommand = entityListVm => new LoadCommentsByIdsCommand(entityListVm, _apiClient);
-			CommentsWrittenListViewModel = new EntityListViewModel<CommentViewModel, GetCommentModel>(createLoadCommentsByIdsCommand);
-			CommentsSavedListViewModel = new EntityListViewModel<CommentViewModel, GetCommentModel>(createLoadCommentsByIdsCommand);
+			var loadCommentCallbaack = _loadCommandFactoryPrincipal.CommentCF.CreateLoadCommentCommandCallback(LoadEntityListType.LoadByIds);
+			CommentsWrittenListViewModel = new CommentListViewModel(loadCommentCallbaack);
+			CommentsSavedListViewModel = new CommentListViewModel(loadCommentCallbaack);
 		}
 
 		private async Task TryLoadPrivateUserAsync(object parameter = null)
