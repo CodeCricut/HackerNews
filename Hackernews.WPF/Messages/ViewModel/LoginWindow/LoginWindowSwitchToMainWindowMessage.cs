@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HackerNews.WPF.MessageBus.ViewModel.LoginWindow
 {
-	public sealed class LoginWindowSwitchToMainWindowMessage
-	{
-	}
+	//public sealed class LoginWindowSwitchToMainWindowMessage
+	//{
+	//}
 }

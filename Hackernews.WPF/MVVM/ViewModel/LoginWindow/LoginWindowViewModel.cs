@@ -86,7 +86,17 @@ namespace Hackernews.WPF.ViewModels
 		private void SwitchToMainWindow(LoginWindowSwitchToMainWindowMessage msg)
 		{
 			_ea.SendMessage(new OpenMainWindowMessage());
+		}
+
+		public void ShowWindow()
+		{
+			_viewManager.Show(this);
+		}
+
+		public void CloseWindow()
+		{
 			_viewManager.Close(this);
+
 		}
 	}
 }

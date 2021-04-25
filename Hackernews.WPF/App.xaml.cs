@@ -49,37 +49,38 @@ namespace Hackernews.WPF
 			_ea = ServiceProvider.GetRequiredService<IEventAggregator>();
 			_signInManager = ServiceProvider.GetRequiredService<ISignInManager>();
 
-			RegisterApplicationHandlers();
-		}
-
-		private void RegisterApplicationHandlers()
-		{
+			//RegisterApplicationHandlers();
 			_ea.RegisterHandler<ChangeSkinMessage>(msg => ChangeSkin(msg.NewSkin));
-			_ea.RegisterHandler<OpenMainWindowMessage>(msg => OpenMainWindow());
 			_ea.RegisterHandler<CloseApplicationMessage>(msg => Application.Current.Shutdown());
-			_ea.RegisterHandler<LogoutRequestedMessage>(async msg => { await Logout(); OpenLoginWindow(); });
 		}
 
-		private void OpenMainWindow()
-		{
-			var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
-			var mainVm = ServiceProvider.GetRequiredService<MainWindowViewModel>();
+		//private void RegisterApplicationHandlers()
+		//{
+		//	_ea.RegisterHandler<OpenMainWindowMessage>(msg => OpenMainWindow());
+		// _ea.RegisterHandler<CloseApplicationMessage>(msg => Application.Current.Shutdown());
+		//	_ea.RegisterHandler<LogoutRequestedMessage>(async msg => { await Logout(); OpenLoginWindow(); });
+		//}
 
-			viewManager.Show(mainVm);
-		}
+		//private void OpenMainWindow()
+		//{
+		//	var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
+		//	var mainVm = ServiceProvider.GetRequiredService<MainWindowViewModel>();
 
-		private void OpenLoginWindow()
-		{
-			var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
-			var loginVm = ServiceProvider.GetRequiredService<LoginWindowViewModel>();
+		//	viewManager.Show(mainVm);
+		//}
 
-			viewManager.Show(loginVm);
-		}
+		//private void OpenLoginWindow()
+		//{
+		//	var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
+		//	var loginVm = ServiceProvider.GetRequiredService<LoginWindowViewModel>();
 
-		private async Task Logout()
-		{
-			await _signInManager.SignOutAsync();
-		}
+		//	viewManager.Show(loginVm);
+		//}
+
+		//private async Task Logout()
+		//{
+		//	await _signInManager.SignOutAsync();
+		//}
 
 		private void ConfigureServices(ServiceCollection services)
 		{
@@ -95,6 +96,14 @@ namespace Hackernews.WPF
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			OpenLoginWindow();
+		}
+
+		private void OpenLoginWindow()
+		{
+			var viewManager = ServiceProvider.GetRequiredService<IViewManager>();
+			var loginVm = ServiceProvider.GetRequiredService<LoginWindowViewModel>();
+
+			viewManager.Show(loginVm);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.Services;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
@@ -12,40 +13,44 @@ namespace Hackernews.WPF.ViewModels
 	public class MainWindowViewModel : BaseViewModel
 	{
 		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
 
-		public ICommand CloseCommand { get; }
-
-		public ICommand LogoutCommand { get; }
-
+		#region Owned VMs
 		public PrivateUserViewModel PrivateUserViewModel { get; }
 
 		public MainWindowFullscreenViewModel FullscreenVM { get; }
 		public MainWindowEntityViewModel EntityVM { get; }
 		public EntityCreationViewModel EntityCreationViewModel { get; }
-		// public EntityHomeViewModel EntityHomeViewModel { get; }
+		#endregion
+
+		public ICommand CloseCommand { get; }
 
 		public MainWindowViewModel(IEventAggregator ea,
+			IViewManager viewManager,
 			PrivateUserViewModel userVM,
 			MainWindowEntityViewModel entityVm,
 			MainWindowFullscreenViewModel fullscreenVm,
-			EntityCreationViewModel entityCreationVm,
-			EntityHomeViewModel entityHomeVm)
+			EntityCreationViewModel entityCreationVm)
 		{
 			_ea = ea;
+			_viewManager = viewManager;
 
 			PrivateUserViewModel = userVM;
-
 			EntityVM = entityVm;
 			FullscreenVM = fullscreenVm;
 			EntityCreationViewModel = entityCreationVm;
-			// EntityHomeViewModel = entityHomeVm;
 
-			LogoutCommand = new DelegateCommand(SendLogoutRequest);
-			CloseCommand = new DelegateCommand(SendCloseWindowRequest);
+			CloseCommand = new DelegateCommand(_ => CloseWindow());
 		}
 
-		private void SendLogoutRequest(object parameter = null) => _ea.SendMessage(new LogoutRequestedMessage());
+		public void OpenWindow()
+		{
+			_viewManager.Show(this);
+		}
 
-		private void SendCloseWindowRequest(object _ = null) => _ea.SendMessage(new CloseMainWindowMessage());
+		public void CloseWindow()
+		{
+			_viewManager.Close(this);
+		}
 	}
 }

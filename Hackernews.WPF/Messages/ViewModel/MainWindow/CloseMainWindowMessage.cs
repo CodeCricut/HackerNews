@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HackerNews.WPF.MessageBus.ViewModel.MainWindow
 {
-	public sealed class CloseMainWindowMessage
-	{
-	}
+	//public sealed class CloseMainWindowMessage
+	//{
+	//}
 }

@@ -38,6 +38,7 @@ namespace Hackernews.WPF.Services
 
 			return Application.Current.Dispatcher.Invoke(() =>
 			{
+				// Ah a code smell appears, but I know not how to dispel it!
 				var view = (Window)(App.Current as App).ServiceProvider.GetService(viewType);
 				if (view == null) return false;
 
