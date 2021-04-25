@@ -1,6 +1,5 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
-using Hackernews.WPF.Messages.ViewModel.EntityHomeWindow;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;

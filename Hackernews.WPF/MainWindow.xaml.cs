@@ -16,20 +16,14 @@ namespace Hackernews.WPF
 	/// </summary>
 	public partial class MainWindow : Window, IHaveViewModel<MainWindowViewModel>
 	{
-		private readonly IEventAggregator _ea;
 
 		public MainWindowViewModel MainWindowVM { get; private set; }
 
-		public MainWindow(IEventAggregator ea)
+		public MainWindow()
 		{
 			InitializeComponent();
 
-			_ea = ea;
-
 			DataContext = this;
-
-			ea.RegisterHandler<CloseMainWindowMessage>(CloseApp);
-			ea.RegisterHandler<LogoutRequestedMessage>(CloseWindow);
 
 			this.Loaded += MainWindow_Loaded;
 		}
@@ -52,20 +46,6 @@ namespace Hackernews.WPF
 			{
 				this.DragMove();
 			}
-		}
-
-		private void CloseApp(CloseMainWindowMessage msg)
-		{
-			_ea.SendMessage(new CloseApplicationMessage());
-		}
-
-		private void CloseWindow(LogoutRequestedMessage msg)
-		{
-			// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
-			_ea.UnregisterHandler<CloseMainWindowMessage>(CloseApp);
-			_ea.UnregisterHandler<LogoutRequestedMessage>(CloseWindow);
-
-			this.Close();
 		}
 	}
 }

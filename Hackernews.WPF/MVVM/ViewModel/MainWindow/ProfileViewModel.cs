@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
@@ -25,6 +26,10 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			LogoutCommand = new DelegateCommand(Logout);
 		}
 
-		private void Logout(object _ = null) => _ea.SendMessage(new LogoutRequestedMessage());
+		private void Logout(object _ = null)
+		{
+			_ea.SendMessage(new MainWindowSwitchToLoginWindowMessage());
+			_ea.PostMessage(new LogoutRequestedMessage());
+		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Hackernews.WPF
 			InitializeComponent();
 			_ea = ea;
 
-			ea.RegisterHandler<CloseLoginWindowMessage>(CloseWindow);
+			//ea.RegisterHandler<CloseLoginWindowMessage>(CloseWindow);
 
 			rootElement.DataContext = this;
 		}
@@ -41,12 +41,12 @@ namespace Hackernews.WPF
 			}
 		}
 
-		private void CloseWindow(CloseLoginWindowMessage msg)
-		{
-			// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
-			_ea.UnregisterHandler<CloseLoginWindowMessage>(CloseWindow);
-			this.Close();
-		}
+		//private void CloseWindow(CloseLoginWindowMessage msg)
+		//{
+		//	// In order to prevent a memory leak, this short-living subscriber must unsubscribe from potentially long-living publishers.
+		//	_ea.UnregisterHandler<CloseLoginWindowMessage>(CloseWindow);
+		//	this.Close();
+		//}
 
 	}
 }

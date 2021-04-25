@@ -46,11 +46,15 @@ namespace Hackernews.WPF.Configuration
 
 			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
 			services.AddSingleton<ISignInManager, WpfSignInManager>();
+			
 			services.AddSingleton<PrivateUserViewModel>();
+			
 
 			services.AddSingleton<IEventAggregator, EventAggregator>();
 
 			services.AddSingleton<IViewManager, ViewManager>();
+
+			services.AddSingleton<AppMessageHandler>();
 
 			services.AddSingleton<ILoadEntityCommandFactoryPrincipal, LoadEntityCommandFactoryPrincipal>();
 			services.AddSingleton<ILoadBoardCommandFactory, LoadBoardCommandFactory>();

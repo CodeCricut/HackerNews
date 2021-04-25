@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models;

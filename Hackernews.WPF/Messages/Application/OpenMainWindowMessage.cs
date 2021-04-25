@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HackerNews.WPF.MessageBus.ViewModel.MainWindow
+namespace Hackernews.WPF.Messages.Application
 {
 	public sealed class OpenMainWindowMessage
 	{

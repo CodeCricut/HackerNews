@@ -1,5 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Messages.Application;
+using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
 using HackerNews.WPF.MessageBus.Core;
@@ -60,7 +62,10 @@ namespace Hackernews.WPF.ViewModels
 
 		public RegisterViewModel RegisterViewModel { get; }
 
-		public LoginWindowViewModel(IEventAggregator ea,LoginModelViewModel loginModelVM, RegisterViewModel registerVM, IViewManager viewManager)
+		public LoginWindowViewModel(IEventAggregator ea,
+			LoginModelViewModel loginModelVM, 
+			RegisterViewModel registerVM, 
+			IViewManager viewManager)
 		{
 			_ea = ea;
 
@@ -72,21 +77,16 @@ namespace Hackernews.WPF.ViewModels
 
 			SelectedViewModel = LoginModelViewModel;
 
-			CloseCommand = new DelegateCommand(_ => ea.SendMessage(new CloseLoginWindowMessage()));
+			CloseCommand = new DelegateCommand(_ => CloseWindow());
 
 			ea.RegisterHandler<LoginWindowLoadingChangedMessage>(LoadingChanged);
 			ea.RegisterHandler<LoginWindowInvalidUserInputChanged>(InvalidUserInputChanged);
-			ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
+			//ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
 		}
 
 		private void LoadingChanged(LoginWindowLoadingChangedMessage msg) => Loading = msg.IsLoading;
 
 		private void InvalidUserInputChanged(LoginWindowInvalidUserInputChanged msg) => InvalidUserInput = msg.InvalidUserInput;
-
-		private void SwitchToMainWindow(LoginWindowSwitchToMainWindowMessage msg)
-		{
-			_ea.SendMessage(new OpenMainWindowMessage());
-		}
 
 		public void ShowWindow()
 		{
@@ -96,7 +96,6 @@ namespace Hackernews.WPF.ViewModels
 		public void CloseWindow()
 		{
 			_viewManager.Close(this);
-
 		}
 	}
 }

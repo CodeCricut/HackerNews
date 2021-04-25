@@ -6,7 +6,6 @@ using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.EntityHomeWindow;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
