@@ -1,12 +1,5 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
-using Hackernews.WPF.Services;
+﻿using Hackernews.WPF.Core;
 using Hackernews.WPF.ViewModels;
-using HackerNews.WPF.MessageBus.Application;
-using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hackernews.WPF

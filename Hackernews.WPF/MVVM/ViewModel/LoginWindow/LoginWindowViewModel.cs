@@ -1,14 +1,9 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.Application;
-using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
-using System;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.ViewModels
@@ -63,8 +58,8 @@ namespace Hackernews.WPF.ViewModels
 		public RegisterViewModel RegisterViewModel { get; }
 
 		public LoginWindowViewModel(IEventAggregator ea,
-			LoginModelViewModel loginModelVM, 
-			RegisterViewModel registerVM, 
+			LoginModelViewModel loginModelVM,
+			RegisterViewModel registerVM,
 			IViewManager viewManager)
 		{
 			_ea = ea;

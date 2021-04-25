@@ -33,9 +33,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand CloseCommand { get; }
 
-		public EntityHomeViewModel(IEventAggregator ea, 
-			IViewManager viewManager, 
-			IApiClient apiClient, 
+		public EntityHomeViewModel(IEventAggregator ea,
+			IViewManager viewManager,
+			IApiClient apiClient,
 			PrivateUserViewModel userVM)
 		{
 			_ea = ea;

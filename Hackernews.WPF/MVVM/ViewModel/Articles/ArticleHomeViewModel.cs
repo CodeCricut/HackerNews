@@ -4,9 +4,6 @@ using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Comments;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Articles

@@ -1,11 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
-using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.Factories;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
-using Hackernews.WPF.MVVM.ViewModel.Boards;
-using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using HackerNews.Domain.Common.Models.Articles;
@@ -129,7 +125,7 @@ namespace Hackernews.WPF.ViewModels
 			IApiClient apiClient,
 			ILoadEntityCommandFactoryPrincipal loadCommandFactoryPrincipal
 		)
-			{
+		{
 			_ea = ea;
 			_viewManager = viewManager;
 			_apiClient = apiClient;

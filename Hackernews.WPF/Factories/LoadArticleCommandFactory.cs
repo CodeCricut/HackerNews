@@ -7,9 +7,6 @@ using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.WPF.MessageBus.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.Factories
 {

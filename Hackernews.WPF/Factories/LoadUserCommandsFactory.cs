@@ -1,11 +1,8 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
-using Hackernews.WPF.Core.Commands;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
-using Hackernews.WPF.ViewModels;
-using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
 
@@ -35,7 +32,7 @@ namespace Hackernews.WPF.Factories
 		{
 			return loadCommandType switch
 			{
-				LoadEntityListType.LoadAll => entityListVm => new LoadUsersCommand(entityListVm,  _apiClient),
+				LoadEntityListType.LoadAll => entityListVm => new LoadUsersCommand(entityListVm, _apiClient),
 				_ => entityListVm => new LoadUsersByIdsCommand(entityListVm, _apiClient),
 			};
 		}

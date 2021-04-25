@@ -1,14 +1,8 @@
 ﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
 using Hackernews.WPF.Factories;
 using Hackernews.WPF.Factories.ViewModels;
-using Hackernews.WPF.MVVM.ViewModel;
-using Hackernews.WPF.MVVM.ViewModel.Boards;
-using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
-using HackerNews.Domain.Common.Models.Boards;
-using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +22,7 @@ namespace Hackernews.WPF.Configuration
 			services.AddTransient<EntityCreationWindow>();
 
 			// Register all vms
-			services.Scan(scan => 
+			services.Scan(scan =>
 				scan.FromCallingAssembly()
 					.AddClasses(c => c.AssignableTo<BaseViewModel>()) // 1. Find the concrete vms
 					.UsingRegistrationStrategy(RegistrationStrategy.Skip) // 2. Define how to handle duplicates
@@ -47,9 +41,9 @@ namespace Hackernews.WPF.Configuration
 
 			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
 			services.AddSingleton<ISignInManager, WpfSignInManager>();
-			
+
 			services.AddSingleton<PrivateUserViewModel>();
-			
+
 
 			services.AddSingleton<IEventAggregator, EventAggregator>();
 

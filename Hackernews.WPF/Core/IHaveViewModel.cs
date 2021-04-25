@@ -1,10 +1,4 @@
-﻿using Hackernews.WPF.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-
-namespace Hackernews.WPF.Core
+﻿namespace Hackernews.WPF.Core
 {
 	public interface IHaveViewModel<TViewModel>
 	{

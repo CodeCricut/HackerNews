@@ -24,7 +24,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public override PublicUserViewModel ConstructEntityViewModel(GetPublicUserModel getModel)
 		{
-			return new PublicUserViewModel( _apiClient) { User = getModel };
+			return new PublicUserViewModel(_apiClient) { User = getModel };
 		}
 	}
 

@@ -35,7 +35,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand SelectProfileCommand { get; }
 		public ICommand SelectSettingsCommand { get; }
 
-		public MainWindowFullscreenViewModel(IEventAggregator ea, 
+		public MainWindowFullscreenViewModel(IEventAggregator ea,
 			HomeViewModel homeVm,
 			ProfileViewModel profileVm,
 			SettingsViewModel settingsVm)

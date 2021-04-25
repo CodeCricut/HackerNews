@@ -3,7 +3,6 @@ using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
-using System;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel

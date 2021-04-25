@@ -2,17 +2,9 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.Services;
-using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.Core;
-using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hackernews.WPF

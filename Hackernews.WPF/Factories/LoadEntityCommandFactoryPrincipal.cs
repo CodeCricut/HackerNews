@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hackernews.WPF.Factories
+﻿namespace Hackernews.WPF.Factories
 {
 	public interface ILoadEntityCommandFactoryPrincipal
 	{

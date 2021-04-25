@@ -11,56 +11,29 @@ namespace Hackernews.WPF.Services
 {
 	public class AppMessageHandler
 	{
-		//
-		//private readonly PrivateUserViewModel _userVm;
-		//private readonly MainWindowEntityViewModel _mainWindowEntityVm;
-		//private readonly MainWindowFullscreenViewModel _mainWindowFullscreenVm;
-		//private readonly EntityCreationViewModel _entityCreationVm;
-		//private readonly LoginModelViewModel _loginModelVm;
-		//private readonly RegisterViewModel _registerVm;
-		//private MainWindowViewModel _mainWindowVm;
-		//private LoginWindowViewModel _loginWindowVm;
-
 		private readonly IEventAggregator _ea;
-		private readonly IViewManager _viewManager;
 		private readonly ISignInManager _signInManager;
 		private readonly IMainWindowVmFactory _mainWindowVmFactory;
 		private readonly ILoginWindowVmFactory _loginWindowVmFactory;
 
 		public AppMessageHandler(IEventAggregator ea,
-			IViewManager viewManager,
 			ISignInManager signInManager,
-			//PrivateUserViewModel userVm,
-			//MainWindowEntityViewModel mainWindowEntityVm,
-			//MainWindowFullscreenViewModel mainWindowFullscreenVm,
-			//EntityCreationViewModel entityCreationVm,
-			//LoginModelViewModel loginModelVm,
-			//RegisterViewModel registerVm,
-
 			IMainWindowVmFactory mainWindowVmFactory,
 			ILoginWindowVmFactory loginWindowVmFactory
 			)
 		{
 			_ea = ea;
-			_viewManager = viewManager;
 			_signInManager = signInManager;
 			_mainWindowVmFactory = mainWindowVmFactory;
 			_loginWindowVmFactory = loginWindowVmFactory;
-			//_userVm = userVm;
-			//_mainWindowEntityVm = mainWindowEntityVm;
-			//_mainWindowFullscreenVm = mainWindowFullscreenVm;
-			//_entityCreationVm = entityCreationVm;
-			//_loginModelVm = loginModelVm;
-			//_registerVm = registerVm;
 
 			ea.RegisterHandler<ChangeSkinMessage>(msg => ChangeSkin(msg.NewSkin));
+			
+			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await LogoutAsync());
+			ea.RegisterHandler<CloseApplicationMessage>(msg => CloseApplication());
 
 			ea.RegisterHandler<OpenMainWindowMessage>(msg => OpenMainWindow());
 			ea.RegisterHandler<OpenLoginWindowMessage>(msg => OpenLoginWindow());
-
-			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await LogoutAsync());
-
-			ea.RegisterHandler<CloseApplicationMessage>(msg => CloseApplication());
 
 			ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(LoginWindowSwitchToMainWindow);
 			ea.RegisterHandler<MainWindowSwitchToLoginWindowMessage>(MainWindowSwitchToLoginWindow);

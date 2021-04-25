@@ -1,10 +1,8 @@
 ﻿using Hackernews.WPF.Core;
 using Hackernews.WPF.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace Hackernews.WPF.Services

@@ -44,7 +44,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowBoardHomeCommand { get; }
 
-		public BoardViewModel(IEventAggregator ea, 
+		public BoardViewModel(IEventAggregator ea,
 			IViewManager viewManager,
 			IApiClient apiClient, PrivateUserViewModel userVm)
 		{
@@ -59,7 +59,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowBoardHome(object _ = null)
 		{
-			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _viewManager,_apiClient, _userVm);
+			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _viewManager, _apiClient, _userVm);
 			boardHomeVm.ShowBoardHome(this);
 		}
 

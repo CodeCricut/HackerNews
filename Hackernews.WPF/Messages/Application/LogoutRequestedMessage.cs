@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile
+﻿namespace HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile
 {
 	/// <summary>
 	/// Message sent when the user requests to logout.
