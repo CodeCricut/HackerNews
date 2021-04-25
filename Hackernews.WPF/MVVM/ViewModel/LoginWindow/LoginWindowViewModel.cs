@@ -81,7 +81,8 @@ namespace Hackernews.WPF.ViewModels
 
 			ea.RegisterHandler<LoginWindowLoadingChangedMessage>(LoadingChanged);
 			ea.RegisterHandler<LoginWindowInvalidUserInputChanged>(InvalidUserInputChanged);
-			//ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(SwitchToMainWindow);
+
+			ea.RegisterHandler<CloseLoginWindowMessage>(msg => CloseWindow());
 		}
 
 		private void LoadingChanged(LoginWindowLoadingChangedMessage msg) => Loading = msg.IsLoading;
@@ -95,6 +96,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public void CloseWindow()
 		{
+			_ea.UnregisterHandler<CloseLoginWindowMessage>(msg => CloseWindow());
 			_viewManager.Close(this);
 		}
 	}

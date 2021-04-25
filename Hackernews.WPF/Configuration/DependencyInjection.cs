@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.ApiClients;
 using Hackernews.WPF.Core;
 using Hackernews.WPF.Factories;
+using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Common;
@@ -62,6 +63,11 @@ namespace Hackernews.WPF.Configuration
 			services.AddSingleton<ILoadCommentCommandFactory, LoadCommentCommandFactory>();
 			services.AddSingleton<ILoadUserCommandFactory, LoadUserCommandFactory>();
 
+			// TODO:
+			// hmmmm it will create new instances when injected, but objects created by the same
+			// factory instance will have the same dependency references...
+			services.AddTransient<IMainWindowVmFactory, MainWindowVmFactory>();
+			services.AddTransient<ILoginWindowVmFactory, LoginWindowVmFactory>();
 
 			return services;
 		}

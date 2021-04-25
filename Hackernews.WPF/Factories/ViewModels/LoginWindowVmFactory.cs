@@ -8,14 +8,19 @@ using System.Text;
 
 namespace Hackernews.WPF.Factories.ViewModels
 {
-	public class LoginWindowViewModelFactory : ViewModelFactory<LoginWindowViewModel>
+	public interface ILoginWindowVmFactory
+	{
+		LoginWindowViewModel Create();
+	}
+
+	public class LoginWindowVmFactory : ILoginWindowVmFactory
 	{
 		private readonly IEventAggregator _ea;
 		private readonly LoginModelViewModel _loginModelVm;
 		private readonly RegisterViewModel _registerVm;
 		private readonly IViewManager _viewManager;
 
-		public LoginWindowViewModelFactory(IEventAggregator ea,
+		public LoginWindowVmFactory(IEventAggregator ea,
 			LoginModelViewModel loginModelVm,
 			RegisterViewModel registerVm,
 			IViewManager viewManager)
@@ -26,6 +31,10 @@ namespace Hackernews.WPF.Factories.ViewModels
 			_viewManager = viewManager;
 		}
 
-		public LoginWindowViewModel Create() => new LoginWindowViewModel(_ea, _loginModelVm, _registerVm, _viewManager);
+		public LoginWindowViewModel Create() => new LoginWindowViewModel(
+			_ea,
+			_loginModelVm,
+			_registerVm,
+			_viewManager);
 	}
 }
