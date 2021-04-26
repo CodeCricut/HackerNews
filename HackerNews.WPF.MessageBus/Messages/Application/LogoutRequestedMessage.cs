@@ -1,4 +1,4 @@
-﻿namespace HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile
+﻿namespace HackerNews.WPF.MessageBus.Messages.Application
 {
 	/// <summary>
 	/// Message sent when the user requests to logout.

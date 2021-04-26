@@ -1,4 +1,4 @@
-﻿namespace Hackernews.WPF.Messages.ViewModel.LoginWindow
+﻿namespace HackerNews.WPF.MessageBus.Messages.Application
 {
 	public class LoginWindowSwitchToMainWindowMessage
 	{

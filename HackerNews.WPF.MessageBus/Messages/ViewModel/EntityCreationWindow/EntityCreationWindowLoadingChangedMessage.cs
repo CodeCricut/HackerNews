@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hackernews.WPF.Messages.ViewModel.EntityCreationWindow
+namespace HackerNews.WPF.MessageBus.Messages.ViewModel.EntityCreationWindow
 {
 	public sealed class EntityCreationWindowLoadingChangedMessage
 	{

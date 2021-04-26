@@ -1,4 +1,4 @@
-﻿namespace HackerNews.WPF.MessageBus.Application
+﻿namespace HackerNews.WPF.MessageBus.Messages.Application
 {
 	/// <summary>
 	/// Event fired when application is requested to stop.

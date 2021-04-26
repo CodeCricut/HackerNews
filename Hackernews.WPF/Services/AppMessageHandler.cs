@@ -1,12 +1,9 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
-using Hackernews.WPF.Messages.Application;
-using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.MVVM.ViewModel;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.WPF.Core;
-using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
+using HackerNews.WPF.MessageBus.Messages.Application;
 using System;
 using System.Threading.Tasks;
 

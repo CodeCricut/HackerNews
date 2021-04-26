@@ -12,6 +12,7 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.Messages.ViewModel.MainWindow;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
 using System.Threading.Tasks;
 using System.Windows.Input;

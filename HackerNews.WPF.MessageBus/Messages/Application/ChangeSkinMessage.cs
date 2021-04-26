@@ -1,6 +1,6 @@
 ﻿using HackerNews.WPF.Core;
 
-namespace HackerNews.WPF.MessageBus.Application
+namespace HackerNews.WPF.MessageBus.Messages.Application
 {
 	/// <summary>
 	/// This event is fired when a change/assignment to the application skin is made.

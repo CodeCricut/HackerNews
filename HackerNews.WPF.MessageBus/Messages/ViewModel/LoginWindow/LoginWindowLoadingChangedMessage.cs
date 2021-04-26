@@ -1,4 +1,4 @@
-﻿namespace HackerNews.WPF.MessageBus.ViewModel.LoginWindow
+﻿namespace HackerNews.WPF.MessageBus.Messages.ViewModel.LoginWindow
 {
 	public sealed class LoginWindowLoadingChangedMessage
 	{

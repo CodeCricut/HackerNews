@@ -1,4 +1,4 @@
-﻿namespace Hackernews.WPF.Messages.Application
+﻿namespace HackerNews.WPF.MessageBus.Messages.Application
 {
 	public sealed class MainWindowSwitchToLoginWindowMessage
 	{
