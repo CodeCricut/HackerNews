@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.Core.Commands;
+using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
@@ -64,30 +65,36 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand SelectCommentsCommand { get; }
 
 		public MainWindowEntityViewModel(IEventAggregator ea,
-			IViewManager viewManager,
-			PrivateUserViewModel userVM,
-			IApiClient apiClient)
+
+			PublicUserViewModel publicUserVm,
+			BoardViewModel boardVm,
+			ArticleViewModel articleVm,
+			CommentViewModel commentVm,
+
+			IUserListViewModelFactory userListViewModelFactory,
+			IBoardListViewModelFactory boardListViewModelFactory,
+			IArticleListViewModelFactory articleListViewModelFactory,
+			ICommentListViewModelFactory commentListViewModelFactory
+			)
 		{
 			_ea = ea;
 
-			ea.RegisterHandler<EntityDeselectedMessage>(msg => DeselectEntityVM());
+			PublicUserViewModel = publicUserVm;
+			BoardViewModel = boardVm;
+			ArticleViewModel = articleVm;
+			CommentViewModel = commentVm;
 
-			// Hows that for a class signature + constructor?
-			// TODO: these vms absolutely need to be injected
-			UserListViewModel = new UserListViewModel(createLoadCommand: entityVM => new LoadUsersCommand(entityVM, apiClient));
-			BoardListViewModel = new BoardListViewModel(createLoadCommand: entityVM => new LoadBoardsCommand(entityVM, viewManager, apiClient, ea, userVM));
-			ArticleListViewModel = new ArticleListViewModel(createLoadCommand: entityVM => new LoadArticlesCommand(entityVM, viewManager, userVM, ea, apiClient));
-			CommentListViewModel = new CommentListViewModel(createLoadCommand: entityVM => new LoadCommentsCommand(entityVM, apiClient));
-
-			PublicUserViewModel = new PublicUserViewModel(apiClient);
-			BoardViewModel = new BoardViewModel(ea, viewManager, apiClient, userVM);
-			ArticleViewModel = new ArticleViewModel(ea, viewManager, userVM, apiClient);
-			CommentViewModel = new CommentViewModel();
+			UserListViewModel = userListViewModelFactory.Create(LoadEntityListEnum.LoadAll);
+			BoardListViewModel = boardListViewModelFactory.Create(LoadEntityListEnum.LoadAll);
+			ArticleListViewModel = articleListViewModelFactory.Create(LoadEntityListEnum.LoadAll);
+			CommentListViewModel = commentListViewModelFactory.Create(LoadEntityListEnum.LoadAll);
 
 			SelectUsersCommand = new AsyncDelegateCommand(SelectUsersAsync);
 			SelectBoardsCommand = new AsyncDelegateCommand(SelectBoardsAsync);
 			SelectArticlesCommand = new AsyncDelegateCommand(SelectArticlesAsync);
 			SelectCommentsCommand = new AsyncDelegateCommand(SelectCommentsAsync);
+
+			ea.RegisterHandler<EntityDeselectedMessage>(msg => DeselectEntityVM());
 		}
 
 		public async Task SelectUsersAsync(object parameter = null)

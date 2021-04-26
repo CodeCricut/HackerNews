@@ -17,7 +17,7 @@ namespace HackerNews.ApiConsumer.Core
 		Task<PaginatedList<TResponse>> GetByIdsAsync(List<int> ids, PagingParams pagingParams);
 	}
 
-	public abstract class EntityApiClient<TPost, TResponse> : IEntityApiClient<TPost, TResponse>
+	internal abstract class EntityApiClient<TPost, TResponse> : IEntityApiClient<TPost, TResponse>
 		where TPost : class
 		where TResponse : class
 	{

@@ -2,6 +2,7 @@
 using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.MVVM.ViewModel;
+using HackerNews.ApiConsumer.Core;
 using HackerNews.WPF.Core;
 using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;

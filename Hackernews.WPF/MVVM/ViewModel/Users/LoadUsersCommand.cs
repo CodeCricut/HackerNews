@@ -1,5 +1,8 @@
-﻿using Hackernews.WPF.MVVM.ViewModel.Common;
+﻿using Hackernews.WPF.Factories.ViewModels;
+using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.ApiConsumer.EntityClients;
+using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using System.Collections.Generic;
@@ -7,45 +10,54 @@ using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {
-	public class LoadUsersByIdsCommand : LoadEntityListByIdsCommand<PublicUserViewModel, GetPublicUserModel>
+	public interface ILoadUserCommand { }
+	public class LoadUsersByIdsCommand : LoadEntityListByIdsCommand<PublicUserViewModel, GetPublicUserModel>, ILoadUserCommand
 	{
-		private readonly IApiClient _apiClient;
+		private readonly IUserApiClient _userApiClient;
+		private readonly IPublicUserViewModelFactory _publicUserViewModelFactory;
 
 		public LoadUsersByIdsCommand(EntityListViewModel<PublicUserViewModel, GetPublicUserModel> listVM,
-			IApiClient apiClient) : base(listVM)
+			IUserApiClient userApiClient,
+			IPublicUserViewModelFactory publicUserViewModelFactory
+			) : base(listVM)
 		{
-			_apiClient = apiClient;
+			_userApiClient = userApiClient;
+			_publicUserViewModelFactory = publicUserViewModelFactory;
 		}
 
 		public override Task<PaginatedList<GetPublicUserModel>> LoadEntityModelsAsync(List<int> ids, PagingParams pagingParams)
-		{
-			return _apiClient.GetAsync<GetPublicUserModel>(ids, pagingParams, "users");
-		}
+			=> _userApiClient.GetByIdsAsync(ids, pagingParams);
 
 		public override PublicUserViewModel ConstructEntityViewModel(GetPublicUserModel getModel)
 		{
-			return new PublicUserViewModel(_apiClient) { User = getModel };
+			var pubUserVm = _publicUserViewModelFactory.Create();
+			pubUserVm.User = getModel;
+			return pubUserVm;
 		}
 	}
 
-	public class LoadUsersCommand : LoadEntityListCommand<PublicUserViewModel, GetPublicUserModel>
+	public class LoadUsersCommand : LoadEntityListCommand<PublicUserViewModel, GetPublicUserModel>, ILoadUserCommand
 	{
-		private readonly IApiClient _apiClient;
+		private readonly IUserApiClient _userApiClient;
+		private readonly IPublicUserViewModelFactory _publicUserViewModelFactory;
 
 		public LoadUsersCommand(EntityListViewModel<PublicUserViewModel, GetPublicUserModel> listVM,
-			IApiClient apiClient) : base(listVM)
+			IUserApiClient userApiClient,
+			IPublicUserViewModelFactory publicUserViewModelFactory
+			) : base(listVM)
 		{
-			_apiClient = apiClient;
-		}
-
-		public override PublicUserViewModel ConstructEntityViewModel(GetPublicUserModel getModel)
-		{
-			return new PublicUserViewModel(_apiClient) { User = getModel };
+			_userApiClient = userApiClient;
+			_publicUserViewModelFactory = publicUserViewModelFactory;
 		}
 
 		public override Task<PaginatedList<GetPublicUserModel>> LoadEntityModelsAsync(PagingParams pagingParams)
+			=> _userApiClient.GetPageAsync(pagingParams);
+
+		public override PublicUserViewModel ConstructEntityViewModel(GetPublicUserModel getModel)
 		{
-			return _apiClient.GetPageAsync<GetPublicUserModel>(pagingParams, "users");
+			var pubUserVm = _publicUserViewModelFactory.Create();
+			pubUserVm.User = getModel;
+			return pubUserVm;
 		}
 	}
 }

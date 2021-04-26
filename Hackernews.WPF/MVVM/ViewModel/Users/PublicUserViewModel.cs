@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using System;
@@ -32,8 +33,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			}
 		}
 
-		private readonly IApiClient _apiClient;
-
+		private readonly IImageApiClient _imageApiClient;
 		private BitmapImage _userImage;
 		public BitmapImage UserImage
 		{
@@ -45,15 +45,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			if (User?.ProfileImageId > 0)
 			{
-				GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(User.ProfileImageId, "images");
+				GetImageModel imgModel = await _imageApiClient.GetImageAsync(User.ProfileImageId);
 				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
 				UserImage = bitmapImg;
 			}
 		}
 
-		public PublicUserViewModel(IApiClient apiClient)
+		public PublicUserViewModel(IImageApiClient imageApiClient)
 		{
-			_apiClient = apiClient;
+			_imageApiClient = imageApiClient;
+
 			LoadEntityCommand = new AsyncDelegateCommand(LoadUserAsync);
 		}
 

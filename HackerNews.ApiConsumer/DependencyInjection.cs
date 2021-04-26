@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.EntityClients;
+using HackerNews.ApiConsumer.Account;
+using HackerNews.ApiConsumer.Images;
 
 namespace HackerNews.ApiConsumer
 {
@@ -25,6 +27,14 @@ namespace HackerNews.ApiConsumer
 			services.AddSingleton<IBoardApiClient, BoardApiClient>();
 			services.AddSingleton<ICommentApiClient, CommentApiClient>();
 			services.AddSingleton<IUserApiClient, UserApiClient>();
+
+			services.AddSingleton<IImageApiClient, ImageApiClient>();
+
+			services.AddSingleton<IRegistrationApiClient, RegistrationApiClient>();
+
+			services.AddSingleton<IPrivateUserApiClient, PrivateUserApiClient>();
+
+			services.AddSingleton<ISignInManager, ApiConsumerSignInManager>();
 
 			return services;
 		}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.ApiConsumer.Core
 {
-	public interface IApiClient
+	internal interface IApiClient
 	{
 		Task<TResponse> PostAsync<TPost, TResponse>(TPost postModel, string endpoint = "") where TPost : class
 																							where TResponse : class;

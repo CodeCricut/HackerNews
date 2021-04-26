@@ -3,6 +3,7 @@ using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.Messages.ViewModel.EntityCreationWindow;
 using Hackernews.WPF.ViewModels;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.WPF.MessageBus.Core;
 using System;
@@ -14,7 +15,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 	{
 		private PostBoardModel _postBoardModel = new PostBoardModel();
 		private readonly IEventAggregator _ea;
-		private readonly IApiClient _apiClient;
+		private readonly IBoardApiClient _boardApiClient;
 
 		private PostBoardModel PostBoardModel
 		{
@@ -28,11 +29,11 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 		public AsyncDelegateCommand CreateBoardCommand { get; set; }
 
-		public BoardCreationViewModel(IEventAggregator ea, IApiClient apiClient)
+		public BoardCreationViewModel(IEventAggregator ea, IBoardApiClient boardApiClient)
 		{
 			CreateBoardCommand = new AsyncDelegateCommand(CreateBoardAsync, CanCreateBoard);
 			_ea = ea;
-			_apiClient = apiClient;
+			_boardApiClient = boardApiClient;
 		}
 
 		private async Task CreateBoardAsync(object parameter = null)
@@ -42,7 +43,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 			try
 			{
-				var getBoardModel = await _apiClient.PostAsync<PostBoardModel, GetBoardModel>(PostBoardModel, "boards");
+				var getBoardModel = await _boardApiClient.PostAsync(PostBoardModel);
 
 				_ea.SendMessage(new CloseEntityCreationWindowMessage());
 			}

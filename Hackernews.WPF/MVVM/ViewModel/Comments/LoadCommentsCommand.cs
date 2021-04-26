@@ -1,5 +1,6 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using System.Collections.Generic;
@@ -9,17 +10,17 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 {
 	public class LoadCommentsByIdsCommand : LoadEntityListByIdsCommand<CommentViewModel, GetCommentModel>
 	{
-		private readonly IApiClient _apiClient;
+		private readonly ICommentApiClient _commentApiClient;
 
 		public LoadCommentsByIdsCommand(EntityListViewModel<CommentViewModel, GetCommentModel> listVM,
-			IApiClient apiClient) : base(listVM)
+			ICommentApiClient commentApiClient) : base(listVM)
 		{
-			_apiClient = apiClient;
+			_commentApiClient = commentApiClient;
 		}
 
 		public override Task<PaginatedList<GetCommentModel>> LoadEntityModelsAsync(List<int> ids, PagingParams pagingParams)
 		{
-			return _apiClient.GetAsync<GetCommentModel>(ids, pagingParams, "comments");
+			return _commentApiClient.GetByIdsAsync(ids, pagingParams);
 		}
 
 		public override CommentViewModel ConstructEntityViewModel(GetCommentModel getModel)
@@ -30,12 +31,12 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 
 	public class LoadCommentsCommand : LoadEntityListCommand<CommentViewModel, GetCommentModel>
 	{
-		private readonly IApiClient _apiClient;
+		private readonly ICommentApiClient _commentApiClient;
 
 		public LoadCommentsCommand(EntityListViewModel<CommentViewModel, GetCommentModel> listVM,
-			IApiClient apiClient) : base(listVM)
+			ICommentApiClient commentApiClient) : base(listVM)
 		{
-			_apiClient = apiClient;
+			_commentApiClient = commentApiClient;
 		}
 
 		public override CommentViewModel ConstructEntityViewModel(GetCommentModel getModel)
@@ -45,7 +46,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Comments
 
 		public override Task<PaginatedList<GetCommentModel>> LoadEntityModelsAsync(PagingParams pagingParams)
 		{
-			return _apiClient.GetPageAsync<GetCommentModel>(pagingParams, "comments");
+			return _commentApiClient.GetPageAsync(pagingParams);
 		}
 	}
 }

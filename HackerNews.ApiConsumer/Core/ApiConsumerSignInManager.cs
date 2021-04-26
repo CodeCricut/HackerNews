@@ -1,10 +1,9 @@
-﻿using HackerNews.ApiConsumer.Core;
-using HackerNews.Domain.Common.Models;
+﻿using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Hackernews.WPF.Services
+namespace HackerNews.ApiConsumer.Core
 {
 	public interface ISignInManager
 	{
@@ -12,14 +11,12 @@ namespace Hackernews.WPF.Services
 		Task SignOutAsync();
 	}
 
-	public class WpfSignInManager : ISignInManager
+	internal class ApiConsumerSignInManager : ISignInManager
 	{
-		private readonly IJwtPrincipal _jwtPrincipal;
 		private readonly IApiClient _apiClient;
 
-		public WpfSignInManager(IJwtPrincipal jwtPrincipal, IApiClient apiClient)
+		public ApiConsumerSignInManager(IApiClient apiClient)
 		{
-			_jwtPrincipal = jwtPrincipal;
 			_apiClient = apiClient;
 		}
 
@@ -27,7 +24,6 @@ namespace Hackernews.WPF.Services
 		{
 			var jwt = await _apiClient.PostAsync<LoginModel, Jwt>(loginModel, "account/login");
 			_apiClient.SetAuthorizationHeader(new AuthenticationHeaderValue("Bearer", jwt.Token));
-			//_jwtPrincipal.SetJwt(jwt);
 		}
 
 		public async Task SignOutAsync()

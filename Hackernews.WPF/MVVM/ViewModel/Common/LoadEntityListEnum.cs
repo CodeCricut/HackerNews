@@ -1,6 +1,6 @@
 ﻿namespace Hackernews.WPF.MVVM.ViewModel.Common
 {
-	public enum LoadEntityListType
+	public enum LoadEntityListEnum
 	{
 		LoadByIds,
 		LoadAll

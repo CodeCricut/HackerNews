@@ -1,8 +1,12 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.Factories.ViewModels;
+using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Articles;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.ApiConsumer.EntityClients;
+using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Entities;
@@ -18,10 +22,12 @@ namespace Hackernews.WPF.MVVM.ViewModel
 {
 	public class ArticleViewModel : BaseEntityViewModel
 	{
-		private readonly IEventAggregator _ea;
-		private readonly IViewManager _viewManager;
 		private readonly PrivateUserViewModel _privateUserVM;
-		private readonly IApiClient _apiClient;
+		private readonly IArticleViewModelFactory _articleViewModelFactory;
+		private readonly IArticleHomeViewModelFactory _articleHomeViewModelFactory;
+		private readonly IImageApiClient _imageApiClient;
+		private readonly IEntityHomeViewModelFactory _entityHomeViewModelFactory;
+
 		private GetArticleModel _article;
 		public GetArticleModel Article
 		{
@@ -42,12 +48,21 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowArticleHomeCommand { get; }
 
-		public ArticleViewModel(IEventAggregator ea, IViewManager viewManager, PrivateUserViewModel privateUser, IApiClient apiClient)
+		public ArticleViewModel(
+			IArticleViewModelFactory articleViewModelFactory,
+			IArticleHomeViewModelFactory articleHomeViewModelFactory,
+			IImageApiClient imageApiClient,
+			IEntityHomeViewModelFactory entityHomeViewModelFactory,
+			PrivateUserViewModel privateUser
+			)
 		{
-			_ea = ea;
-			_viewManager = viewManager;
 			_privateUserVM = privateUser;
-			_apiClient = apiClient;
+			_articleViewModelFactory = articleViewModelFactory;
+			_articleHomeViewModelFactory = articleHomeViewModelFactory;
+			_imageApiClient = imageApiClient;
+			_entityHomeViewModelFactory = entityHomeViewModelFactory;
+
+			// TODO: go through ea.
 			_privateUserVM.PropertyChanged += new PropertyChangedEventHandler((obj, target) => RaiseUserCreatedArticleChanged());
 
 			LoadEntityCommand = new AsyncDelegateCommand(LoadArticleAsync);
@@ -57,9 +72,18 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowArticleHome(object _ = null)
 		{
-			//_ea.SendMessage(new ShowArticleHomeMessage(articleVm: this));
-			EntityHomeViewModel articleHomeVm = new EntityHomeViewModel(_ea, _viewManager, _apiClient, _privateUserVM);
-			articleHomeVm.ShowArticleHome(this);
+			EntityHomeViewModel entityHome = _entityHomeViewModelFactory.Create();
+
+			// Copy the article vm reference to keep it always selected.
+			var newArticleVm = _articleViewModelFactory.Create();
+			newArticleVm.Article = this.Article;
+			newArticleVm.IsSelected = true;
+			newArticleVm.LoadEntityCommand.Execute();
+
+			ArticleHomeViewModel articleHomeVm = _articleHomeViewModelFactory.Create(newArticleVm);
+			articleHomeVm.LoadArticleCommand.Execute();
+
+			entityHome.ShowArticleHome(articleHomeVm);
 		}
 
 		private BitmapImage _articleImage;
@@ -77,7 +101,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			if (Article?.AssociatedImageId > 0)
 			{
-				GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(Article.AssociatedImageId, "images");
+				GetImageModel imgModel = await _imageApiClient.GetImageAsync(Article.AssociatedImageId);
 				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
 				ArticleImage = bitmapImg;
 			}

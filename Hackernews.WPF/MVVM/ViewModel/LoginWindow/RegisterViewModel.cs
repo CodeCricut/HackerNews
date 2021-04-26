@@ -1,7 +1,7 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.ViewModel.LoginWindow;
-using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
@@ -71,13 +71,13 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		#endregion
 
 		private readonly ISignInManager _signInManager;
-		private readonly IApiClient _apiClient;
+		private readonly IRegistrationApiClient _registrationClient;
 
-		public RegisterViewModel(IEventAggregator ea, ISignInManager signInManager, IApiClient apiClient)
+		public RegisterViewModel(IEventAggregator ea, ISignInManager signInManager, IRegistrationApiClient registrationClient)
 		{
 			_ea = ea;
 			_signInManager = signInManager;
-			_apiClient = apiClient;
+			_registrationClient = registrationClient;
 
 			RegisterCommand = new AsyncDelegateCommand(RegisterAsync, CanRegister);
 		}
@@ -96,7 +96,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 			try
 			{
-				Jwt jwt = await _apiClient.PostAsync<RegisterUserModel, Jwt>(_registerModel, "account/register");
+				Jwt jwt = await _registrationClient.RegisterAsync(RegisterModel);
 
 				var loginModel = new LoginModel
 				{

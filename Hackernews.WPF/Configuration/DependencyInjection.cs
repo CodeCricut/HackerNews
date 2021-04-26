@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.Factories;
+using Hackernews.WPF.Factories.Commands;
 using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
@@ -31,7 +32,6 @@ namespace Hackernews.WPF.Configuration
 			services.AddSingleton<LoginWindowViewModel>();
 
 			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
-			services.AddSingleton<ISignInManager, WpfSignInManager>();
 
 			services.AddSingleton<PrivateUserViewModel>();
 
@@ -42,17 +42,38 @@ namespace Hackernews.WPF.Configuration
 
 			services.AddSingleton<AppMessageHandler>();
 
-			services.AddSingleton<ILoadEntityCommandFactoryPrincipal, LoadEntityCommandFactoryPrincipal>();
-			services.AddSingleton<ILoadBoardCommandFactory, LoadBoardCommandFactory>();
-			services.AddSingleton<ILoadArticleCommandFactory, LoadArticleCommandFactory>();
-			services.AddSingleton<ILoadCommentCommandFactory, LoadCommentCommandFactory>();
-			services.AddSingleton<ILoadUserCommandFactory, LoadUserCommandFactory>();
+			//services.AddSingleton<ILoadEntityCommandFactoryPrincipal, LoadEntityCommandFactoryPrincipal>();
+			//services.AddSingleton<ILoadBoardCommandFactory, LoadBoardCommandFactory>();
+			//services.AddSingleton<ILoadArticleCommandFactory, LoadArticleCommandFactory>();
+			//services.AddSingleton<ILoadCommentCommandFactory, LoadCommentCommandFactory>();
+			//services.AddSingleton<ILoadUserCommandFactory, LoadUserCommandFactory>();
 
-			// TODO:
-			// hmmmm it will create new instances when injected, but objects created by the same
-			// factory instance will have the same dependency references...
 			services.AddTransient<IMainWindowVmFactory, MainWindowVmFactory>();
+
 			services.AddTransient<ILoginWindowVmFactory, LoginWindowVmFactory>();
+			
+			services.AddTransient<IPublicUserViewModelFactory, PublicUserViewModelFactory>();
+			services.AddTransient<ILoadUsersCommandFactory, LoadUsersCommandFactory>();
+			services.AddTransient<IUserListViewModelFactory, UserListViewModelFactory>();
+
+			services.AddTransient<IBoardViewModelFactory, BoardViewModelFactory>();
+			services.AddTransient<ILoadBoardsCommandFactory, LoadBoardsCommandFactory>();
+			services.AddTransient<IBoardListViewModelFactory, BoardListViewModelFactory>();
+			services.AddTransient<IBoardHomeViewModelFactory, BoardHomeViewModelFactory>();
+
+			services.AddTransient<IArticleViewModelFactory, ArticleViewModelFactory>();
+			services.AddTransient<ILoadArticlesCommandFactory, LoadArticlesCommandFactory>();
+			services.AddTransient<IArticleListViewModelFactory, ArticleListViewModelFactory>();
+			services.AddTransient<IArticleHomeViewModelFactory, ArticleHomeViewModelFactory>();
+
+			services.AddTransient<ICommentViewModelFactory, CommentViewModelFactory>();
+			services.AddTransient<ILoadCommentsCommandFactory, LoadCommentsCommandFactory>();
+			services.AddTransient<ICommentListViewModelFactory, CommentListViewModelFactory>();
+
+			services.AddTransient<IEntityHomeViewModelFactory, EntityHomeViewModelFactory>();
+
+
+
 			//services.AddTransient<IBoardCreationVmFactory, BoardCreationVmFactory>();
 
 			return services;

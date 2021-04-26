@@ -1,8 +1,11 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.Factories.ViewModels;
+using Hackernews.WPF.Helpers;
+using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.WPF.MessageBus.Core;
@@ -24,10 +27,10 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		}
 
 		private GetBoardModel _board;
-		private readonly IEventAggregator _ea;
-		private readonly IViewManager _viewManager;
-		private readonly IApiClient _apiClient;
-		private readonly PrivateUserViewModel _userVm;
+		private readonly IBoardViewModelFactory _boardViewModelFactory;
+		private readonly IBoardHomeViewModelFactory _boardHomeViewModelFactory;
+		private readonly IEntityHomeViewModelFactory _entityHomeViewModelFactory;
+		private readonly IImageApiClient _imageApiClient;
 
 		public GetBoardModel Board
 		{
@@ -44,14 +47,16 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public ICommand ShowBoardHomeCommand { get; }
 
-		public BoardViewModel(IEventAggregator ea,
-			IViewManager viewManager,
-			IApiClient apiClient, PrivateUserViewModel userVm)
+		public BoardViewModel(
+			IBoardViewModelFactory boardViewModelFactory,
+			IBoardHomeViewModelFactory boardHomeViewModelFactory,
+			IEntityHomeViewModelFactory entityHomeViewModelFactory,
+			IImageApiClient imageApiClient)
 		{
-			_ea = ea;
-			_viewManager = viewManager;
-			_apiClient = apiClient;
-			_userVm = userVm;
+			_boardViewModelFactory = boardViewModelFactory;
+			_boardHomeViewModelFactory = boardHomeViewModelFactory;
+			_entityHomeViewModelFactory = entityHomeViewModelFactory;
+			_imageApiClient = imageApiClient;
 			LoadEntityCommand = new AsyncDelegateCommand(LoadBoardAsync);
 
 			ShowBoardHomeCommand = new DelegateCommand(ShowBoardHome);
@@ -59,9 +64,17 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowBoardHome(object _ = null)
 		{
-			// todo: make factory
-			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _viewManager, _apiClient, _userVm);
-			boardHomeVm.ShowBoardHome(this);
+			EntityHomeViewModel boardHomeVm = _entityHomeViewModelFactory.Create();
+
+			// Copy the board vm to keep it always selected
+			var newBoardVm = _boardViewModelFactory.Create();
+			newBoardVm.Board = this.Board;
+			newBoardVm.IsSelected = true;
+
+			BoardHomeViewModel boardHomeVM = _boardHomeViewModelFactory.Create(newBoardVm);
+			boardHomeVM.LoadBoardCommand.Execute();
+
+			boardHomeVm.ShowBoardHome(boardHomeVM);
 		}
 
 		private BitmapImage _boardImage;
@@ -80,7 +93,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		{
 			if (Board?.BoardImageId > 0)
 			{
-				GetImageModel imgModel = await _apiClient.GetAsync<GetImageModel>(Board.BoardImageId, "images");
+				GetImageModel imgModel = await _imageApiClient.GetImageAsync(Board.BoardImageId);
 				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
 				BoardImage = bitmapImg;
 			}

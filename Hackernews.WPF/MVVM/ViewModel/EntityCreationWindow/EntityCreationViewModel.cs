@@ -61,7 +61,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private readonly IEventAggregator _ea;
 		private readonly IViewManager _viewManager;
-		private readonly IApiClient _apiClient;
 
 		//public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
@@ -80,13 +79,11 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public EntityCreationViewModel(IEventAggregator ea,
 		IViewManager viewManager,
-		IApiClient apiClient,
 		BoardCreationViewModel boardCreationVm
 		)
 		{
 			_ea = ea;
 			_viewManager = viewManager;
-			_apiClient = apiClient;
 			BoardCreationViewModel = boardCreationVm;
 
 			SelectedViewModel = BoardCreationViewModel;
