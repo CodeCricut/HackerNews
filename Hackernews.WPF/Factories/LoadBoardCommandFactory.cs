@@ -1,10 +1,10 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Core;
+﻿using Hackernews.WPF.Core;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.WPF.MessageBus.Core;
 

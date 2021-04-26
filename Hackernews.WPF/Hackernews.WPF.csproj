@@ -16,16 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Scrutor" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HackerNews.Application\HackerNews.Application.csproj" />
+    <ProjectReference Include="..\HackerNews.ApiConsumer\HackerNews.ApiConsumer.csproj" />
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
-    <ProjectReference Include="..\HackerNews.Infrastructure\HackerNews.Infrastructure.csproj" />
-    <ProjectReference Include="..\HackerNews.Web\HackerNews.Web.csproj" />
     <ProjectReference Include="..\HackerNews.WPF.MessageBus\HackerNews.WPF.MessageBus.csproj" />
   </ItemGroup>
 

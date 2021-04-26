@@ -1,8 +1,8 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.Messages.ViewModel.EntityCreationWindow;
 using Hackernews.WPF.ViewModels;
+using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.WPF.MessageBus.Core;
 using System;

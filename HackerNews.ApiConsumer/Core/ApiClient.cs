@@ -5,7 +5,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Hackernews.WPF.ApiClients
+namespace HackerNews.ApiConsumer.Core
 {
 	public interface IApiClient
 	{
@@ -19,7 +19,7 @@ namespace Hackernews.WPF.ApiClients
 		void SetAuthorizationHeader(AuthenticationHeaderValue value);
 	}
 
-	public class ApiClient : IApiClient
+	internal class ApiClient : IApiClient
 	{
 		private readonly HttpClient _httpClient;
 
@@ -88,7 +88,7 @@ namespace Hackernews.WPF.ApiClients
 		{
 			SetAuthorizationHeaderForInstance();
 			string url = $"{endpoint}";
-			var response = await _httpClient.PostAsync<TPost>(url, postModel, new JsonMediaTypeFormatter());
+			var response = await _httpClient.PostAsync(url, postModel, new JsonMediaTypeFormatter());
 
 			response.EnsureSuccessStatusCode();
 			var content = await response.Content.ReadAsAsync<TResponse>();

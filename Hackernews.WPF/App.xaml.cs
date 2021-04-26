@@ -2,6 +2,7 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.Services;
+using HackerNews.ApiConsumer;
 using HackerNews.WPF.Core;
 using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,9 @@ namespace Hackernews.WPF
 		{
 			ServiceCollection services = new ServiceCollection();
 			var config = AppConfiguration.GetServiceConfiguration();
+			
 			services.AddWPF(config);
+			services.AddApiConsumer();
 
 			ServiceProvider = services.BuildServiceProvider();
 

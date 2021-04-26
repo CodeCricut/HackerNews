@@ -1,5 +1,5 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.MVVM.ViewModel.Common;
+﻿using Hackernews.WPF.MVVM.ViewModel.Common;
+using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using System.Collections.Generic;

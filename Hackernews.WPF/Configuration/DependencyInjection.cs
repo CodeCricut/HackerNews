@@ -1,5 +1,4 @@
-﻿using Hackernews.WPF.ApiClients;
-using Hackernews.WPF.Factories;
+﻿using Hackernews.WPF.Factories;
 using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
@@ -30,14 +29,6 @@ namespace Hackernews.WPF.Configuration
 					  .WithTransientLifetime());  // 3. Set the lifetime for the services
 
 			services.AddSingleton<LoginWindowViewModel>();
-			services.AddHttpClient();
-
-			services.AddHttpClient<IApiClient, ApiClient>(config =>
-			{
-				// TODO: put in config file
-				string baseUrl = "https://localhost:44300/api/";
-				config.BaseAddress = new System.Uri(baseUrl);
-			});
 
 			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
 			services.AddSingleton<ISignInManager, WpfSignInManager>();
