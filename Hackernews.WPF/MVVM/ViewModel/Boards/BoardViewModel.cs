@@ -5,6 +5,7 @@ using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
+using HackerNews.WPF.Core.Commands;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;

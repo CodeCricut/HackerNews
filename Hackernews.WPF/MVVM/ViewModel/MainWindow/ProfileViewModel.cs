@@ -1,5 +1,4 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
-using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;

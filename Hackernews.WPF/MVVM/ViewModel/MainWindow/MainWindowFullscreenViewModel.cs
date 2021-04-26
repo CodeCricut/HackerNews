@@ -1,4 +1,4 @@
-﻿using Hackernews.WPF.Helpers;
+﻿using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.MainWindow;

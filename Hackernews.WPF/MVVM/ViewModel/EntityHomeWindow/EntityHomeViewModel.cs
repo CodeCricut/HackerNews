@@ -1,7 +1,7 @@
-﻿using Hackernews.WPF.Helpers;
-using Hackernews.WPF.MVVM.ViewModel.Articles;
+﻿using Hackernews.WPF.MVVM.ViewModel.Articles;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.Services;
+using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
 using System.Windows.Input;
 

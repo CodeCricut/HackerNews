@@ -7,6 +7,7 @@ using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Entities;
+using HackerNews.WPF.Core.Commands;
 using System;
 using System.ComponentModel;
 using System.Linq;
