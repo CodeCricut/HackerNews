@@ -14,26 +14,14 @@ namespace Hackernews.WPF.Factories.ViewModels
 	public class EntityHomeViewModelFactory : IEntityHomeViewModelFactory
 	{
 		private readonly IViewManager _viewManager;
-		private readonly IBoardViewModelFactory _boardViewModelFactory;
-		private readonly IBoardHomeViewModelFactory _boardHomeViewModelFactory;
-		private readonly IArticleViewModelFactory _articleViewModelFactory;
-		private readonly IArticleHomeViewModelFactory _articleHomeViewModelFactory;
 
-		public EntityHomeViewModelFactory(IViewManager viewManager,
-			IBoardViewModelFactory boardViewModelFactory,
-			IBoardHomeViewModelFactory boardHomeViewModelFactory,
-			IArticleViewModelFactory articleViewModelFactory,
-			IArticleHomeViewModelFactory articleHomeViewModelFactory
+		public EntityHomeViewModelFactory(IViewManager viewManager
 			)
 		{
 			_viewManager = viewManager;
-			_boardViewModelFactory = boardViewModelFactory;
-			_boardHomeViewModelFactory = boardHomeViewModelFactory;
-			_articleViewModelFactory = articleViewModelFactory;
-			_articleHomeViewModelFactory = articleHomeViewModelFactory;
 		}
 
 		public EntityHomeViewModel Create()
-			=> new EntityHomeViewModel(_viewManager, _articleViewModelFactory, _articleHomeViewModelFactory);
+			=> new EntityHomeViewModel(_viewManager);
 	}
 }

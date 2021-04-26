@@ -13,8 +13,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 	public class EntityHomeViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
-		private readonly IArticleViewModelFactory _articleViewModelFactory;
-		private readonly IArticleHomeViewModelFactory _articleHomeViewModelFactory;
 
 		#region View switcher
 		private object _selectedHomeViewModel;
@@ -34,13 +32,9 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand CloseCommand { get; }
 
 		public EntityHomeViewModel(
-			IViewManager viewManager,
-			IArticleViewModelFactory articleViewModelFactory,
-			IArticleHomeViewModelFactory articleHomeViewModelFactory)
+			IViewManager viewManager)
 		{
 			_viewManager = viewManager;
-			_articleViewModelFactory = articleViewModelFactory;
-			_articleHomeViewModelFactory = articleHomeViewModelFactory;
 
 			CloseCommand = new DelegateCommand(_ => _viewManager.Close(this));
 		}
@@ -68,8 +62,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void SelectArticleVM(ArticleHomeViewModel articleHomeVm)
 		{
-			
-
 			SelectedHomeViewModel = articleHomeVm;
 		}
 	}
