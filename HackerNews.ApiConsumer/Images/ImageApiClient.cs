@@ -1,8 +1,5 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Images;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.ApiConsumer.Images

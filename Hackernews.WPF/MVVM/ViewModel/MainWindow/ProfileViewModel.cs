@@ -1,14 +1,12 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Helpers;
-using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
-using HackerNews.Domain.Entities;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
+using HackerNews.WPF.MessageBus.Messages.Application;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -33,7 +31,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		public AsyncDelegateCommand LoadProfileCommand { get; }
 
-		public ProfileViewModel(IEventAggregator ea, 
+		public ProfileViewModel(IEventAggregator ea,
 			PrivateUserViewModel privateUserViewModel,
 
 			IBoardListViewModelFactory boardListViewModelFactory,

@@ -1,6 +1,5 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;

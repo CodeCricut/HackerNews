@@ -1,8 +1,5 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.Factories.ViewModels
 {

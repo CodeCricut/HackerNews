@@ -1,5 +1,4 @@
-﻿using Hackernews.WPF.Factories;
-using Hackernews.WPF.Factories.Commands;
+﻿using Hackernews.WPF.Factories.Commands;
 using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
@@ -51,7 +50,7 @@ namespace Hackernews.WPF.Configuration
 			services.AddTransient<IMainWindowVmFactory, MainWindowVmFactory>();
 
 			services.AddTransient<ILoginWindowVmFactory, LoginWindowVmFactory>();
-			
+
 			services.AddTransient<IPublicUserViewModelFactory, PublicUserViewModelFactory>();
 			services.AddTransient<ILoadUsersCommandFactory, LoadUsersCommandFactory>();
 			services.AddTransient<IUserListViewModelFactory, UserListViewModelFactory>();

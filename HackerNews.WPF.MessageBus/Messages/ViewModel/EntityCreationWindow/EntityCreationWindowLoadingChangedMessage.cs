@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.WPF.MessageBus.Messages.ViewModel.EntityCreationWindow
+﻿namespace HackerNews.WPF.MessageBus.Messages.ViewModel.EntityCreationWindow
 {
 	public sealed class EntityCreationWindowLoadingChangedMessage
 	{

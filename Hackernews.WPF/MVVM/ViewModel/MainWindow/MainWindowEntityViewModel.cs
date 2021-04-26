@@ -1,19 +1,13 @@
-﻿using Hackernews.WPF.Core.Commands;
-using Hackernews.WPF.Factories.ViewModels;
+﻿using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Helpers;
-using Hackernews.WPF.MVVM.ViewModel.Boards;
-using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
-using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.MainWindow;
-using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
 using System.Threading.Tasks;
 using System.Windows.Input;
 

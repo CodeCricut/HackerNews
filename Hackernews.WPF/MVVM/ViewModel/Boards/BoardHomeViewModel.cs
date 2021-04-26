@@ -1,13 +1,8 @@
-﻿using Hackernews.WPF.Core.Commands;
-using Hackernews.WPF.Factories.ViewModels;
+﻿using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
-using HackerNews.ApiConsumer.Core;
-using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Articles;
-using HackerNews.WPF.MessageBus.Core;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Boards
@@ -36,7 +31,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 		private void LoadBoardArticles() => BoardArticleListVM.LoadCommand.Execute(BoardViewModel.Board.ArticleIds);
 
 		public BoardHomeViewModel(
-			BoardViewModel boardVM, 
+			BoardViewModel boardVM,
 			IArticleListViewModelFactory articleListViewModelFactory)
 		{
 			BoardViewModel = boardVM;

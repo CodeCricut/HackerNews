@@ -1,11 +1,5 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
-using Hackernews.WPF.Services;
-using Hackernews.WPF.ViewModels;
 using HackerNews.ApiConsumer.Images;
-using HackerNews.WPF.MessageBus.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.Factories.ViewModels
 {

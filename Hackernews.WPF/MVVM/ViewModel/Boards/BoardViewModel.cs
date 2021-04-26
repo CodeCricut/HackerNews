@@ -2,13 +2,9 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.Services;
-using Hackernews.WPF.ViewModels;
-using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Images;
-using HackerNews.WPF.MessageBus.Core;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;

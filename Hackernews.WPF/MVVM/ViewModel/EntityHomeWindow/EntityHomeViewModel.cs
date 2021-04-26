@@ -1,11 +1,8 @@
-﻿using Hackernews.WPF.Factories.ViewModels;
-using Hackernews.WPF.Helpers;
+﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Articles;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
-using HackerNews.ApiConsumer.Core;
-using HackerNews.WPF.MessageBus.Core;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel

@@ -15,16 +15,8 @@ namespace HackerNews.Mvc.Controllers
 
 		public FileContentResult Wpf()
 		{
-			try
-			{
-				var file = System.IO.File.ReadAllBytes(@"C:\Users\ajori\Pictures\Saved Pictures\walrus.jpg");
-				return new FileContentResult(file, "image/jpeg");
-			}
-			catch (Exception e)
-			{
-
-				throw;
-			}
+			var file = System.IO.File.ReadAllBytes(@"C:\Users\ajori\Pictures\Saved Pictures\walrus.jpg");
+			return new FileContentResult(file, "image/jpeg");
 		}
 	}
 }

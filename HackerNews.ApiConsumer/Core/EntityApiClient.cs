@@ -1,7 +1,5 @@
 ﻿using HackerNews.Domain.Common.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.ApiConsumer.Core

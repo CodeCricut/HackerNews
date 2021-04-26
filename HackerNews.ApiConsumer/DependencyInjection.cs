@@ -1,12 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.EntityClients;
-using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.Images;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HackerNews.ApiConsumer
 {

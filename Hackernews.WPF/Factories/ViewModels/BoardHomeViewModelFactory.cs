@@ -1,12 +1,5 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
-using Hackernews.WPF.Services;
-using Hackernews.WPF.ViewModels;
-using HackerNews.ApiConsumer.EntityClients;
-using HackerNews.WPF.MessageBus.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.Factories.ViewModels
 {

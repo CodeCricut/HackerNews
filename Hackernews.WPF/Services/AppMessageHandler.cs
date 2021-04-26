@@ -4,7 +4,6 @@ using HackerNews.ApiConsumer.Core;
 using HackerNews.WPF.Core;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.Application;
-using System;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.Services
@@ -31,7 +30,7 @@ namespace Hackernews.WPF.Services
 			_loginWindowVmFactory = loginWindowVmFactory;
 			_entityCreationVm = entityCreationVm;
 			ea.RegisterHandler<ChangeSkinMessage>(msg => ChangeSkin(msg.NewSkin));
-			
+
 			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await LogoutAsync());
 			ea.RegisterHandler<CloseApplicationMessage>(msg => CloseApplication());
 
@@ -81,6 +80,6 @@ namespace Hackernews.WPF.Services
 
 		private async Task LogoutAsync() => await _signInManager.SignOutAsync();
 
-		private void CloseApplication() => 	App.Current.Shutdown();
+		private void CloseApplication() => App.Current.Shutdown();
 	}
 }

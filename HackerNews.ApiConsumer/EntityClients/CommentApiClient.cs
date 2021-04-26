@@ -1,8 +1,5 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Comments;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.ApiConsumer.EntityClients
 {

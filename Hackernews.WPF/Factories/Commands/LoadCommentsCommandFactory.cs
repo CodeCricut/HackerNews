@@ -4,9 +4,6 @@ using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Comments;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.Factories.Commands
 {

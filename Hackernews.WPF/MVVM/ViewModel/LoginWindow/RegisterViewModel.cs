@@ -1,12 +1,12 @@
 ﻿using Hackernews.WPF.Helpers;
-using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.ViewModels;
 using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
+using HackerNews.WPF.MessageBus.Messages.Application;
+using HackerNews.WPF.MessageBus.Messages.ViewModel.LoginWindow;
 using System;
 using System.Threading.Tasks;
 

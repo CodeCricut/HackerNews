@@ -1,8 +1,8 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.Core;
-using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
+using HackerNews.WPF.MessageBus.Messages.Application;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel

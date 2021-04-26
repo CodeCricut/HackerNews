@@ -1,9 +1,6 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Articles;
 using HackerNews.ApiConsumer.EntityClients;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hackernews.WPF.Factories.ViewModels
 {

@@ -1,10 +1,10 @@
 ﻿using Hackernews.WPF.Helpers;
-using Hackernews.WPF.Messages.ViewModel.LoginWindow;
 using Hackernews.WPF.ViewModels;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.LoginWindow;
+using HackerNews.WPF.MessageBus.Messages.Application;
+using HackerNews.WPF.MessageBus.Messages.ViewModel.LoginWindow;
 using System.Security;
 using System.Threading.Tasks;
 
@@ -72,7 +72,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 				_ea.SendMessage(new LoginWindowSwitchToMainWindowMessage());
 			}
-			catch (System.Exception e)
+			catch (System.Exception)
 			{
 				Username = "";
 				Password.Clear();

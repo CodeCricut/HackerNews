@@ -1,8 +1,5 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.ApiConsumer.EntityClients
 {
@@ -12,7 +9,7 @@ namespace HackerNews.ApiConsumer.EntityClients
 
 	}
 
-	internal class UserApiClient : EntityApiClient<RegisterUserModel, GetPublicUserModel>,  IUserApiClient
+	internal class UserApiClient : EntityApiClient<RegisterUserModel, GetPublicUserModel>, IUserApiClient
 	{
 		public UserApiClient(IApiClient apiClient) : base(apiClient, "users")
 		{
