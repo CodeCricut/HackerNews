@@ -40,12 +40,6 @@ namespace Hackernews.WPF.Configuration
 
 			services.AddSingleton<AppMessageHandler>();
 
-			//services.AddSingleton<ILoadEntityCommandFactoryPrincipal, LoadEntityCommandFactoryPrincipal>();
-			//services.AddSingleton<ILoadBoardCommandFactory, LoadBoardCommandFactory>();
-			//services.AddSingleton<ILoadArticleCommandFactory, LoadArticleCommandFactory>();
-			//services.AddSingleton<ILoadCommentCommandFactory, LoadCommentCommandFactory>();
-			//services.AddSingleton<ILoadUserCommandFactory, LoadUserCommandFactory>();
-
 			services.AddTransient<IMainWindowVmFactory, MainWindowVmFactory>();
 
 			services.AddTransient<ILoginWindowVmFactory, LoginWindowVmFactory>();
@@ -69,10 +63,6 @@ namespace Hackernews.WPF.Configuration
 			services.AddTransient<ICommentListViewModelFactory, CommentListViewModelFactory>();
 
 			services.AddTransient<IEntityHomeViewModelFactory, EntityHomeViewModelFactory>();
-
-
-
-			//services.AddTransient<IBoardCreationVmFactory, BoardCreationVmFactory>();
 
 			return services;
 		}

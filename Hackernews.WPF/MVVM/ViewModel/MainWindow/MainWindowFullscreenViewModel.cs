@@ -46,7 +46,6 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			ProfileViewModel = profileVm;
 			SettingsViewModel = settingsVm;
 
-
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectProfileCommand = new DelegateCommand(SelectProfile);
 			SelectSettingsCommand = new DelegateCommand(SelectSettings);

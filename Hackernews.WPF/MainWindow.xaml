@@ -131,7 +131,7 @@
                     <Button Command="{Binding MainWindowVM.EntityCreationViewModel.ShowBoardCreationWindowCommand}"
                             Content="Create board"
                             Style="{DynamicResource PaginationButtonStyle}"
-                            Visibility="{Binding MainWindowVM.FullscreenVM.NotInFullscreenMode, Converter={StaticResource boolToVis}}"
+                            Visibility="{Binding MainWindowVM.EntityVM.AreBoardsSelected, Converter={StaticResource boolToVis}}"
                             Margin="0 0 10 10"/>
 
                     <!--List views-->

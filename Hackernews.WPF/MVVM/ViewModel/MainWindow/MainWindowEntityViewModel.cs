@@ -45,6 +45,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 			{
 				_selectedDetailsViewModel = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(nameof(AreBoardsSelected));
 			}
 		}
 
@@ -58,6 +59,8 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public ICommand SelectBoardsCommand { get; }
 		public ICommand SelectArticlesCommand { get; }
 		public ICommand SelectCommentsCommand { get; }
+
+		public bool AreBoardsSelected { get => SelectedDetailsViewModel == BoardViewModel; }
 
 		public MainWindowEntityViewModel(IEventAggregator ea,
 
