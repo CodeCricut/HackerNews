@@ -62,6 +62,7 @@ namespace Hackernews.WPF.Configuration
 			// factory instance will have the same dependency references...
 			services.AddTransient<IMainWindowVmFactory, MainWindowVmFactory>();
 			services.AddTransient<ILoginWindowVmFactory, LoginWindowVmFactory>();
+			//services.AddTransient<IBoardCreationVmFactory, BoardCreationVmFactory>();
 
 			return services;
 		}

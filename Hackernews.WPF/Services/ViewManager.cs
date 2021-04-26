@@ -32,6 +32,8 @@ namespace Hackernews.WPF.Services
 		public bool Show<TViewModel>(TViewModel viewModel)
 			where TViewModel : BaseViewModel
 		{
+			if (_activeViews.ContainsKey(viewModel))
+				return false;
 			Type viewType = GetViewForViewModel(viewModel.GetType());
 
 			return Application.Current.Dispatcher.Invoke(() =>

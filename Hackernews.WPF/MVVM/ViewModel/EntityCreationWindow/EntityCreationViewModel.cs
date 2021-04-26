@@ -1,7 +1,12 @@
 ﻿using Hackernews.WPF.ApiClients;
+using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Helpers;
+using Hackernews.WPF.Messages.Application;
+using Hackernews.WPF.Messages.ViewModel.EntityCreationWindow;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
+using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.MessageBus.Core;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -44,59 +49,56 @@ namespace Hackernews.WPF.MVVM.ViewModel
 		public bool CreationVMIsSelected => SelectedViewModel != null;
 
 		public ICommand ShowBoardCreationWindowCommand { get; }
-
 		private void ShowBoardCreationWindow(object parameter = null)
 		{
 			SelectedViewModel = BoardCreationViewModel;
-			OpenWindow(parameter);
+			OpenWindow();
 		}
 
 		#endregion
 
 		public BoardCreationViewModel BoardCreationViewModel { get; set; }
 
-		private EntityCreationWindow _entityCreationWindow;
+		private readonly IEventAggregator _ea;
+		private readonly IViewManager _viewManager;
+		private readonly IApiClient _apiClient;
 
 		//public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
 
 
-		// TODO: use view manager
-		private void OpenWindow(object parameter = null)
+		public void OpenWindow() => _viewManager.Show(this);
+
+		public void CloseWindow()
 		{
-			//App.Current.Dispatcher.Invoke(() =>
-			//{
-			//	if (_entityCreationWindow == null || _entityCreationWindow.IsClosed)
-			//	{
-			//		// Create and show new window if already disposed
-			//		_entityCreationWindow = new EntityCreationWindow(this);
-			//	}
-			//	_entityCreationWindow.Show();
-			//});
+			_ea.UnregisterHandler<CloseEntityCreationWindowMessage>(msg => CloseWindow());
+			_ea.UnregisterHandler<EntityCreationWindowLoadingChangedMessage>(msg => Loading = msg.IsLoading);
+			_ea.UnregisterHandler<EntityCreationWindowInvalidInputChangedMessage>(msg => InvalidUserInput = msg.InvalidInput);
+
+			_viewManager.Close(this);
 		}
 
-		private void CloseWindow(object parameter = null)
+		public EntityCreationViewModel(IEventAggregator ea,
+		IViewManager viewManager,
+		IApiClient apiClient,
+		BoardCreationViewModel boardCreationVm
+		)
 		{
-			//App.Current.Dispatcher.Invoke(() =>
-			//{
-			//	// Close if not disposed
-			//	if (_entityCreationWindow != null && !_entityCreationWindow.IsClosed)
-			//	{
-			//		_entityCreationWindow.Close();
-			//	}
-			//});
-		}
+			_ea = ea;
+			_viewManager = viewManager;
+			_apiClient = apiClient;
+			BoardCreationViewModel = boardCreationVm;
 
-		public EntityCreationViewModel(IApiClient apiClient)
-		{
-			BoardCreationViewModel = new BoardCreationViewModel(this, apiClient);
-			//_entityCreationWindow = new EntityCreationWindow(this);
+			SelectedViewModel = BoardCreationViewModel;
+
 
 			ShowBoardCreationWindowCommand = new DelegateCommand(ShowBoardCreationWindow);
-			//OpenCommand = new DelegateCommand(OpenWindow);
-			CloseCommand = new DelegateCommand(CloseWindow);
+			CloseCommand = new DelegateCommand(_ => CloseWindow());
 
-			//SelectedViewModel = BoardCreationViewModel;
+
+			ea.RegisterHandler<CloseEntityCreationWindowMessage>(msg => CloseWindow());
+			ea.RegisterHandler<EntityCreationWindowLoadingChangedMessage>(msg => Loading = msg.IsLoading);
+			ea.RegisterHandler<EntityCreationWindowInvalidInputChangedMessage>(msg => InvalidUserInput = msg.InvalidInput);
 		}
 	}
 }

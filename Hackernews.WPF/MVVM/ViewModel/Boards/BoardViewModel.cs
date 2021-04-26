@@ -59,6 +59,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 		private void ShowBoardHome(object _ = null)
 		{
+			// todo: make factory
 			EntityHomeViewModel boardHomeVm = new EntityHomeViewModel(_ea, _viewManager, _apiClient, _userVm);
 			boardHomeVm.ShowBoardHome(this);
 		}

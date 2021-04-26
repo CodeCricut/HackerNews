@@ -1,32 +1,37 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.Messages.ViewModel.LoginWindow;
+using Hackernews.WPF.MVVM.ViewModel;
 using HackerNews.WPF.Core;
 using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow.Profile;
+using System;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.Services
 {
+	// TODO: extract view instantiation to separate handler
 	public class AppMessageHandler
 	{
 		private readonly IEventAggregator _ea;
 		private readonly ISignInManager _signInManager;
 		private readonly IMainWindowVmFactory _mainWindowVmFactory;
 		private readonly ILoginWindowVmFactory _loginWindowVmFactory;
+		private readonly EntityCreationViewModel _entityCreationVm;
 
 		public AppMessageHandler(IEventAggregator ea,
 			ISignInManager signInManager,
 			IMainWindowVmFactory mainWindowVmFactory,
-			ILoginWindowVmFactory loginWindowVmFactory
+			ILoginWindowVmFactory loginWindowVmFactory,
+			EntityCreationViewModel entityCreationVm
 			)
 		{
 			_ea = ea;
 			_signInManager = signInManager;
 			_mainWindowVmFactory = mainWindowVmFactory;
 			_loginWindowVmFactory = loginWindowVmFactory;
-
+			_entityCreationVm = entityCreationVm;
 			ea.RegisterHandler<ChangeSkinMessage>(msg => ChangeSkin(msg.NewSkin));
 			
 			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await LogoutAsync());
@@ -34,6 +39,7 @@ namespace Hackernews.WPF.Services
 
 			ea.RegisterHandler<OpenMainWindowMessage>(msg => OpenMainWindow());
 			ea.RegisterHandler<OpenLoginWindowMessage>(msg => OpenLoginWindow());
+			//ea.RegisterHandler<OpenEntityCreationWindowMessage>(msg => OpenEntityCreationWindow());
 
 			ea.RegisterHandler<LoginWindowSwitchToMainWindowMessage>(LoginWindowSwitchToMainWindow);
 			ea.RegisterHandler<MainWindowSwitchToLoginWindowMessage>(MainWindowSwitchToLoginWindow);
@@ -48,43 +54,35 @@ namespace Hackernews.WPF.Services
 		{
 			var mainWindowVm = _mainWindowVmFactory.Create();
 			mainWindowVm.OpenWindow();
-			//_mainWindowVm = new MainWindowViewModel(_ea, _viewManager, _userVm, _mainWindowEntityVm, _mainWindowFullscreenVm, _entityCreationVm);
-			//_mainWindowVm.OpenWindow();
 		}
 
 		private void OpenLoginWindow()
 		{
 			var loginWindowVm = _loginWindowVmFactory.Create();
 			loginWindowVm.ShowWindow();
-			//_loginWindowVm = new LoginWindowViewModel(_ea, _loginModelVm, _registerVm, _viewManager);
-			//_loginWindowVm.ShowWindow();
 		}
+
+
+		//private void OpenEntityCreationWindow()
+		//{
+		//	_entityCreationVm.OpenWindow();
+		//}
+
 
 		private void LoginWindowSwitchToMainWindow(LoginWindowSwitchToMainWindowMessage msg)
 		{
 			_ea.SendMessage(new OpenMainWindowMessage());
 			_ea.SendMessage(new CloseLoginWindowMessage());
-			//OpenMainWindow();
-			//_loginWindowVm?.CloseWindow();
 		}
 
 		private void MainWindowSwitchToLoginWindow(MainWindowSwitchToLoginWindowMessage msg)
 		{
 			_ea.SendMessage(new OpenLoginWindowMessage());
 			_ea.SendMessage(new CloseMainWindowMessage());
-			//OpenLoginWindow();
-			//_mainWindowVm?.CloseWindow();
 		}
 
-		private async Task LogoutAsync()
-		{
-			await _signInManager.SignOutAsync();
-		}
+		private async Task LogoutAsync() => await _signInManager.SignOutAsync();
 
-		private void CloseApplication()
-		{
-			App.Current.Shutdown();
-		}
-
+		private void CloseApplication() => 	App.Current.Shutdown();
 	}
 }
