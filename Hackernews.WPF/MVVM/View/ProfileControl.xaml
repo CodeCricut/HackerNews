@@ -81,9 +81,9 @@
                             <controls:BoardListControl Grid.RowSpan="3"
                                                        Grid.Row="1"
                                                        Margin="0 10 5 0"
-                                                       BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel}" />
+                                                       BoardsListViewModel="{Binding ProfileViewModel.BoardsModeratingListViewModel}" />
 
-                            <boards:MultiBoardDetailsControl BoardViewModels="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel.Entities}"
+                            <boards:MultiBoardDetailsControl BoardViewModels="{Binding ProfileViewModel.BoardsModeratingListViewModel.Entities}"
                                                              Margin="5 10 0 0"
                                                              Grid.Row="1"
                                                              Grid.Column="1" />
@@ -91,11 +91,11 @@
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
-                                                    PrevPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel.EntityPageVM.PrevPageCommand}"
+                                                    PrevPageCommand="{Binding ProfileViewModel.BoardsModeratingListViewModel.EntityPageVM.PrevPageCommand}"
                                                     PrevPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.BoardModeratingIds}"
-                                                    CurrentPageNumber="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel.EntityPageVM.CurrentPage}"
-                                                    TotalPageCount="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel.EntityPageVM.TotalPages}"
-                                                    NextPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.BoardsModeratingListViewModel.EntityPageVM.NextPageCommand}"
+                                                    CurrentPageNumber="{Binding ProfileViewModel.BoardsModeratingListViewModel.EntityPageVM.CurrentPage}"
+                                                    TotalPageCount="{Binding ProfileViewModel.BoardsModeratingListViewModel.EntityPageVM.TotalPages}"
+                                                    NextPageCommand="{Binding ProfileViewModel.BoardsModeratingListViewModel.EntityPageVM.NextPageCommand}"
                                                     NextPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.BoardModeratingIds}" />
                         </Grid>
 
@@ -118,21 +118,21 @@
                             <controls:BoardListControl Grid.RowSpan="3"
                                                        Grid.Row="1"
                                                        Margin="0 10 5 0"
-                                                       BoardsListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel}" />
+                                                       BoardsListViewModel="{Binding ProfileViewModel.BoardsSubscribedListViewModel}" />
 
                             <boards:MultiBoardDetailsControl Margin="5 10 0 0"
                                                              Grid.Row="1"
                                                              Grid.Column="1"
-                                                             BoardViewModels="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel.Entities}" />
+                                                             BoardViewModels="{Binding ProfileViewModel.BoardsSubscribedListViewModel.Entities}" />
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
-                                                    PrevPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel.EntityPageVM.PrevPageCommand}"
+                                                    PrevPageCommand="{Binding ProfileViewModel.BoardsSubscribedListViewModel.EntityPageVM.PrevPageCommand}"
                                                     PrevPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.BoardSubcribedIds}"
-                                                    CurrentPageNumber="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel.EntityPageVM.CurrentPage}"
-                                                    TotalPageCount="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel.EntityPageVM.TotalPages}"
-                                                    NextPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.BoardsSubscribedListViewModel.EntityPageVM.NextPageCommand}"
+                                                    CurrentPageNumber="{Binding ProfileViewModel.BoardsSubscribedListViewModel.EntityPageVM.CurrentPage}"
+                                                    TotalPageCount="{Binding ProfileViewModel.BoardsSubscribedListViewModel.EntityPageVM.TotalPages}"
+                                                    NextPageCommand="{Binding ProfileViewModel.BoardsSubscribedListViewModel.EntityPageVM.NextPageCommand}"
                                                     NextPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.BoardSubcribedIds}" />
                         </Grid>
 
@@ -155,20 +155,20 @@
                             <controls:ArticleListControl Grid.RowSpan="3"
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
-                                                         ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel, Mode=OneWay}" />
+                                                         ArticleListViewModel="{Binding ProfileViewModel.ArticlesWrittenListViewModel, Mode=OneWay}" />
                             <articles:MultiArticleDetailsControl Margin="5 10 0 0"
                                                                  Grid.Row="1"
                                                                  Grid.Column="1"
-                                                                 ArticleViewModels="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.Entities, Mode=OneWay}" />
+                                                                 ArticleViewModels="{Binding ProfileViewModel.ArticlesWrittenListViewModel.Entities, Mode=OneWay}" />
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
-                                                    PrevPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.EntityPageVM.PrevPageCommand}"
+                                                    PrevPageCommand="{Binding ProfileViewModel.ArticlesWrittenListViewModel.EntityPageVM.PrevPageCommand}"
                                                     PrevPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.ArticleIds}"
-                                                    CurrentPageNumber="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.EntityPageVM.CurrentPage}"
-                                                    TotalPageCount="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.EntityPageVM.TotalPages}"
-                                                    NextPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesWrittenListViewModel.EntityPageVM.NextPageCommand}"
+                                                    CurrentPageNumber="{Binding ProfileViewModel.ArticlesWrittenListViewModel.EntityPageVM.CurrentPage}"
+                                                    TotalPageCount="{Binding ProfileViewModel.ArticlesWrittenListViewModel.EntityPageVM.TotalPages}"
+                                                    NextPageCommand="{Binding ProfileViewModel.ArticlesWrittenListViewModel.EntityPageVM.NextPageCommand}"
                                                     NextPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.ArticleIds}" />
                         </Grid>
 
@@ -191,21 +191,21 @@
                             <controls:ArticleListControl Grid.RowSpan="3"
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
-                                                         ArticleListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel, Mode=OneWay}" />
+                                                         ArticleListViewModel="{Binding ProfileViewModel.ArticlesSavedListViewModel, Mode=OneWay}" />
 
                             <articles:MultiArticleDetailsControl  Grid.Row="1"
                                                                   Grid.Column="1"
                                                                   Margin="5 10 0 0"
-                                                                  ArticleViewModels="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.Entities, Mode=OneWay}" />
+                                                                  ArticleViewModels="{Binding ProfileViewModel.ArticlesSavedListViewModel.Entities, Mode=OneWay}" />
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
-                                                    PrevPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.EntityPageVM.PrevPageCommand}"
+                                                    PrevPageCommand="{Binding ProfileViewModel.ArticlesSavedListViewModel.EntityPageVM.PrevPageCommand}"
                                                     PrevPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.SavedArticleIds}"
-                                                    CurrentPageNumber="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.EntityPageVM.CurrentPage}"
-                                                    TotalPageCount="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.EntityPageVM.TotalPages}"
-                                                    NextPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.ArticlesSavedListViewModel.EntityPageVM.NextPageCommand}"
+                                                    CurrentPageNumber="{Binding ProfileViewModel.ArticlesSavedListViewModel.EntityPageVM.CurrentPage}"
+                                                    TotalPageCount="{Binding ProfileViewModel.ArticlesSavedListViewModel.EntityPageVM.TotalPages}"
+                                                    NextPageCommand="{Binding ProfileViewModel.ArticlesSavedListViewModel.EntityPageVM.NextPageCommand}"
                                                     NextPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.SavedArticleIds}" />
                         </Grid>
 
@@ -228,21 +228,21 @@
                             <controls:CommentListControl Grid.RowSpan="3"
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
-                                                         CommentListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel, Mode=OneWay}" />
+                                                         CommentListViewModel="{Binding ProfileViewModel.CommentsWrittenListViewModel, Mode=OneWay}" />
 
                             <comments:MultiCommentDetailsControl Margin="5 10 0 0"
                                                                  Grid.Row="1"
                                                                  Grid.Column="1"
-                                                                 CommentViewModels="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel.Entities, Mode=OneWay}" />
+                                                                 CommentViewModels="{Binding ProfileViewModel.CommentsWrittenListViewModel.Entities, Mode=OneWay}" />
 
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
-                                                    PrevPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel.EntityPageVM.PrevPageCommand}"
+                                                    PrevPageCommand="{Binding ProfileViewModel.CommentsWrittenListViewModel.EntityPageVM.PrevPageCommand}"
                                                     PrevPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.CommentIds}"
-                                                    CurrentPageNumber="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel.EntityPageVM.CurrentPage}"
-                                                    TotalPageCount="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel.EntityPageVM.TotalPages}"
-                                                    NextPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.CommentsWrittenListViewModel.EntityPageVM.NextPageCommand}"
+                                                    CurrentPageNumber="{Binding ProfileViewModel.CommentsWrittenListViewModel.EntityPageVM.CurrentPage}"
+                                                    TotalPageCount="{Binding ProfileViewModel.CommentsWrittenListViewModel.EntityPageVM.TotalPages}"
+                                                    NextPageCommand="{Binding ProfileViewModel.CommentsWrittenListViewModel.EntityPageVM.NextPageCommand}"
                                                     NextPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.CommentIds}" />
                         </Grid>
 
@@ -267,20 +267,20 @@
                             <controls:CommentListControl Grid.RowSpan="3"
                                                          Grid.Row="1"
                                                          Margin="0 10 5 0"
-                                                         CommentListViewModel="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel, Mode=OneWay}" />
+                                                         CommentListViewModel="{Binding ProfileViewModel.CommentsSavedListViewModel, Mode=OneWay}" />
 
                             <comments:MultiCommentDetailsControl  Margin="5 10 0 0"
                                                                   Grid.Row="1"
                                                                   Grid.Column="1"
-                                                                  CommentViewModels="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel.Entities, Mode=OneWay}" />
+                                                                  CommentViewModels="{Binding ProfileViewModel.CommentsSavedListViewModel.Entities, Mode=OneWay}" />
                             <view:NavigationControl Grid.Row="3"
                                                     Grid.Column="1"
                                                     Margin="0 20 0 0"
-                                                    PrevPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel.EntityPageVM.PrevPageCommand}"
+                                                    PrevPageCommand="{Binding ProfileViewModel.CommentsSavedListViewModel.EntityPageVM.PrevPageCommand}"
                                                     PrevPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.SavedCommentIds}"
-                                                    CurrentPageNumber="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel.EntityPageVM.CurrentPage}"
-                                                    TotalPageCount="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel.EntityPageVM.TotalPages}"
-                                                    NextPageCommand="{Binding ProfileViewModel.PrivateUserViewModel.CommentsSavedListViewModel.EntityPageVM.NextPageCommand}"
+                                                    CurrentPageNumber="{Binding ProfileViewModel.CommentsSavedListViewModel.EntityPageVM.CurrentPage}"
+                                                    TotalPageCount="{Binding ProfileViewModel.CommentsSavedListViewModel.EntityPageVM.TotalPages}"
+                                                    NextPageCommand="{Binding ProfileViewModel.CommentsSavedListViewModel.EntityPageVM.NextPageCommand}"
                                                     NextPageCommandParameter="{Binding ProfileViewModel.PrivateUserViewModel.SavedCommentIds}" />
                         </Grid>
                     </Grid>

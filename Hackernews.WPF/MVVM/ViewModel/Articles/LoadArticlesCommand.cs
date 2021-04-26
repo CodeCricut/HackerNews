@@ -16,16 +16,13 @@ namespace Hackernews.WPF.Core.Commands
 	public class LoadArticlesByIdsCommand : LoadEntityListByIdsCommand<ArticleViewModel, GetArticleModel>
 	{
 		private readonly IArticleApiClient _articleApiClient;
-		private readonly PrivateUserViewModel _userVm;
 		private readonly IArticleViewModelFactory _articleViewModelFactory;
 
 		public LoadArticlesByIdsCommand(EntityListViewModel<ArticleViewModel, GetArticleModel> listVM,
 			IArticleApiClient articleApiClient,
-			PrivateUserViewModel userVm,
 			IArticleViewModelFactory articleViewModelFactory) : base(listVM)
 		{
 			_articleApiClient = articleApiClient;
-			_userVm = userVm;
 			_articleViewModelFactory = articleViewModelFactory;
 		}
 

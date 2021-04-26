@@ -1,15 +1,6 @@
-﻿using Hackernews.WPF.Factories;
-using Hackernews.WPF.Factories.ViewModels;
-using Hackernews.WPF.Helpers;
-using Hackernews.WPF.MVVM.ViewModel;
-using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.Services;
+﻿using Hackernews.WPF.Helpers;
 using HackerNews.ApiConsumer.Account;
-using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.Images;
-using HackerNews.Domain.Common.Models.Articles;
-using HackerNews.Domain.Common.Models.Boards;
-using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
@@ -24,13 +15,12 @@ namespace Hackernews.WPF.ViewModels
 	public class PrivateUserViewModel : BaseViewModel
 	{
 		private readonly IEventAggregator _ea;
-		private readonly IViewManager _viewManager;
 		private readonly IPrivateUserApiClient _privateUserApiClient;
 		private readonly IImageApiClient _imageApiClient;
 
 		#region User and User Props
 		private GetPrivateUserModel _user = new GetPrivateUserModel();
-		private GetPrivateUserModel User
+		public GetPrivateUserModel User
 		{
 			get => _user; set
 			{
@@ -112,45 +102,21 @@ namespace Hackernews.WPF.ViewModels
 		public IEnumerable<int> BoardSubcribedIds { get => User?.BoardsSubscribed; }
 		#endregion
 
-		public EntityListViewModel<BoardViewModel, GetBoardModel> BoardsModeratingListViewModel { get; }
-		public EntityListViewModel<BoardViewModel, GetBoardModel> BoardsSubscribedListViewModel { get;  }
-
-		public EntityListViewModel<ArticleViewModel, GetArticleModel> ArticlesWrittenListViewModel { get;  }
-		public EntityListViewModel<ArticleViewModel, GetArticleModel> ArticlesSavedListViewModel { get; }
-
-		public EntityListViewModel<CommentViewModel, GetCommentModel> CommentsWrittenListViewModel { get; }
-		public EntityListViewModel<CommentViewModel, GetCommentModel> CommentsSavedListViewModel { get; }
-
-		public AsyncDelegateCommand TryLoadUserCommand { get; }
 
 		public PrivateUserViewModel(IEventAggregator ea,
-			IViewManager viewManager,
 			IPrivateUserApiClient privateUserApiClient,
-			IImageApiClient imageApiClient,
-			
-			IBoardListViewModelFactory boardListViewModelFactory,
-			IArticleListViewModelFactory articleListViewModelFactory,
-			ICommentListViewModelFactory commentListViewModelFactory
+			IImageApiClient imageApiClient
 		)
 		{
 			_ea = ea;
-			_viewManager = viewManager;
 			_privateUserApiClient = privateUserApiClient;
 			_imageApiClient = imageApiClient;
 
-			BoardsModeratingListViewModel = boardListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
-			BoardsSubscribedListViewModel = boardListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
+			_ea.RegisterHandler<LoadPrivateUserMessage>(async msg => await LoadUserAsync());
 
-			ArticlesWrittenListViewModel = articleListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
-			ArticlesSavedListViewModel = articleListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
-			CommentsWrittenListViewModel = commentListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
-			CommentsSavedListViewModel = commentListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
-
-			TryLoadUserCommand = new AsyncDelegateCommand(TryLoadPrivateUserAsync);
-			_ea.RegisterHandler<LoadPrivateUserMessage>(async msg => await TryLoadPrivateUserAsync());
 		}
 
-		private async Task TryLoadPrivateUserAsync(object parameter = null)
+		public async Task LoadUserAsync()
 		{
 			User = await _privateUserApiClient.GetAsync();
 			if (User?.ProfileImageId > 0)
@@ -159,23 +125,7 @@ namespace Hackernews.WPF.ViewModels
 				BitmapImage bitmapImg = BitmapUtil.LoadImage(imgModel.ImageData);
 				UserImage = bitmapImg;
 			}
-
-			await LoadOwnedViewModelsAsync();
 		}
 
-		private async Task LoadOwnedViewModelsAsync()
-		{
-			await Task.Factory.StartNew(() =>
-			{
-				BoardsModeratingListViewModel.LoadCommand.TryExecute(User.BoardsModerating);
-				BoardsSubscribedListViewModel.LoadCommand.TryExecute(User.BoardsSubscribed);
-
-				ArticlesWrittenListViewModel.LoadCommand.TryExecute(User.ArticleIds);
-				ArticlesSavedListViewModel.LoadCommand.TryExecute(User.SavedArticles);
-
-				CommentsWrittenListViewModel.LoadCommand.TryExecute(User.CommentIds);
-				CommentsSavedListViewModel.LoadCommand.TryExecute(User.SavedComments);
-			});
-		}
 	}
 }
