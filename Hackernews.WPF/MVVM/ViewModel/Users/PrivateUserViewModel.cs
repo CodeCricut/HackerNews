@@ -4,7 +4,6 @@ using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.ViewModel.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -111,9 +110,6 @@ namespace Hackernews.WPF.ViewModels
 			_ea = ea;
 			_privateUserApiClient = privateUserApiClient;
 			_imageApiClient = imageApiClient;
-
-			_ea.RegisterHandler<LoadPrivateUserMessage>(async msg => await LoadUserAsync());
-
 		}
 
 		public async Task LoadUserAsync()

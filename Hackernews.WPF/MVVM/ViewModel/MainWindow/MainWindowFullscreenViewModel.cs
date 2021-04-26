@@ -2,7 +2,6 @@
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.ViewModel.MainWindow;
-using HackerNews.WPF.MessageBus.ViewModel.Users;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel
@@ -67,7 +66,7 @@ namespace Hackernews.WPF.MVVM.ViewModel
 
 			SelectedFullscreenViewModel = ProfileViewModel;
 
-			_ea.SendMessage(new LoadPrivateUserMessage());
+			ProfileViewModel.LoadProfileCommand.Execute();
 		}
 
 		public void SelectSettings(object parameter = null)

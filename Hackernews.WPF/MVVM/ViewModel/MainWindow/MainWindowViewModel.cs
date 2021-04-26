@@ -2,6 +2,7 @@
 using Hackernews.WPF.Messages.Application;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
+using HackerNews.WPF.MessageBus.Application;
 using HackerNews.WPF.MessageBus.Core;
 using System.Windows.Input;
 
@@ -37,7 +38,7 @@ namespace Hackernews.WPF.ViewModels
 			FullscreenVM = fullscreenVm;
 			EntityCreationViewModel = entityCreationVm;
 
-			CloseCommand = new DelegateCommand(_ => CloseWindow());
+			CloseCommand = new DelegateCommand(_ => CloseApplication());
 
 			ea.RegisterHandler<CloseMainWindowMessage>(msg => CloseWindow());
 		}
@@ -51,6 +52,11 @@ namespace Hackernews.WPF.ViewModels
 		{
 			_ea.UnregisterHandler<CloseMainWindowMessage>(msg => CloseWindow());
 			_viewManager.Close(this);
+		}
+
+		private void CloseApplication()
+		{
+			_ea.SendMessage(new CloseApplicationMessage());
 		}
 	}
 }
