@@ -1,10 +1,10 @@
-﻿using Hackernews.WPF.Core;
-using Hackernews.WPF.Factories.ViewModels;
+﻿using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.WPF.Core.Commands;
 
 namespace Hackernews.WPF.Factories.Commands
 {

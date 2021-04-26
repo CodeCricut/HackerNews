@@ -1,5 +1,5 @@
-﻿using Hackernews.WPF.Core;
-using Hackernews.WPF.ViewModels;
+﻿using HackerNews.WPF.Core.View;
+using HackerNews.WPF.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

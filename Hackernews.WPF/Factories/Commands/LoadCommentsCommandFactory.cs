@@ -1,9 +1,9 @@
-﻿using Hackernews.WPF.Core;
-using Hackernews.WPF.MVVM.ViewModel;
+﻿using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.MVVM.ViewModel.Comments;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.WPF.Core.Commands;
 
 namespace Hackernews.WPF.Factories.Commands
 {

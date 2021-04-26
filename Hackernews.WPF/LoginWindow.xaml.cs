@@ -1,5 +1,5 @@
-﻿using Hackernews.WPF.Core;
-using Hackernews.WPF.ViewModels;
+﻿using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.Core.View;
 using HackerNews.WPF.MessageBus.Core;
 using System.Windows;
 

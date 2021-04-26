@@ -1,5 +1,5 @@
-﻿using Hackernews.WPF.Core;
-using HackerNews.Domain.Common.Models;
+﻿using HackerNews.Domain.Common.Models;
+using HackerNews.WPF.Core.Commands;
 using System.Threading.Tasks;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Common

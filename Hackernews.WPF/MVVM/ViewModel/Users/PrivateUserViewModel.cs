@@ -3,6 +3,7 @@ using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.Images;
 using HackerNews.Domain.Common.Models.Images;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
 using System;
 using System.Collections.Generic;

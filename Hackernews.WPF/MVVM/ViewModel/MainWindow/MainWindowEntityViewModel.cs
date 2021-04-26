@@ -1,11 +1,11 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
-using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel.Common;
-using Hackernews.WPF.ViewModels;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.Core.Commands;
+using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.MainWindow;
 using System.Threading.Tasks;

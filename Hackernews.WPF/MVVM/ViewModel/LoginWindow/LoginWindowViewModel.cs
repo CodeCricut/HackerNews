@@ -1,6 +1,7 @@
 ﻿using Hackernews.WPF.Helpers;
 using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
+using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.Application;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.LoginWindow;

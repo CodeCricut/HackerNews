@@ -2,6 +2,7 @@
 using Hackernews.WPF.Factories.ViewModels;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +30,6 @@ namespace Hackernews.WPF.Configuration
 					  .WithTransientLifetime());  // 3. Set the lifetime for the services
 
 			services.AddSingleton<LoginWindowViewModel>();
-
-			services.AddSingleton<IJwtPrincipal, JwtPrincipal>();
 
 			services.AddSingleton<PrivateUserViewModel>();
 

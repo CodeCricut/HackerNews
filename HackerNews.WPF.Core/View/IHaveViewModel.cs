@@ -1,4 +1,4 @@
-﻿namespace Hackernews.WPF.Core
+﻿namespace HackerNews.WPF.Core.View
 {
 	public interface IHaveViewModel<TViewModel>
 	{

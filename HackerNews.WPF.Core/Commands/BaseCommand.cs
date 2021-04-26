@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Hackernews.WPF.Core
+namespace HackerNews.WPF.Core.Commands
 {
 	public abstract class BaseCommand : ICommand
 	{

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Hackernews.WPF.Helpers
+namespace HackerNews.WPF.Core.Commands
 {
 	public class AsyncDelegateCommand : ICommand
 	{

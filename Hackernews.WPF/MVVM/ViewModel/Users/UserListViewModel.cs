@@ -1,6 +1,6 @@
-﻿using Hackernews.WPF.Core;
-using Hackernews.WPF.MVVM.ViewModel.Common;
+﻿using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.Core.Commands;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {

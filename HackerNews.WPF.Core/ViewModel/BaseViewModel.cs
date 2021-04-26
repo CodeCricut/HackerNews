@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Hackernews.WPF.ViewModels
+namespace HackerNews.WPF.Core.ViewModel
 {
 	public abstract class BaseViewModel : INotifyPropertyChanged
 	{

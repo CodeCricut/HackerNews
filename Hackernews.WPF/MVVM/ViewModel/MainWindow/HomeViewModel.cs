@@ -1,4 +1,4 @@
-﻿using Hackernews.WPF.ViewModels;
+﻿using HackerNews.WPF.Core.ViewModel;
 
 namespace Hackernews.WPF.MVVM.ViewModel
 {

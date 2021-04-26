@@ -1,5 +1,5 @@
-﻿using Hackernews.WPF.Core;
-using Hackernews.WPF.MVVM.ViewModel;
+﻿using Hackernews.WPF.MVVM.ViewModel;
+using HackerNews.WPF.Core.View;
 using System.Windows;
 
 namespace Hackernews.WPF
