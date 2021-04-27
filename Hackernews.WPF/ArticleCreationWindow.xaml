@@ -1,26 +1,19 @@
-﻿<Window x:Class="Hackernews.WPF.EntityCreationWindow"
+﻿<Window x:Class="Hackernews.WPF.ArticleCreationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hackernews.WPF"
-        xmlns:view="clr-namespace:Hackernews.WPF.MVVM.View"
+        xmlns:articles="clr-namespace:Hackernews.WPF.MVVM.View.Articles"
         mc:Ignorable="d"
-        Title="EntityCreationWindow"
+        Title="ArticleCreationWindow"
         Height="450"
         Width="800"
-        WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Theme/EntityCreationDataTemplates.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+        Background="Transparent"
+        WindowStyle="None">
     <Grid x:Name="rootElement"
-          d:DataContext="{d:DesignInstance Type=local:EntityCreationWindow}">
+          d:DataContext="{d:DesignInstance Type=local:ArticleCreationWindow}">
         <Border x:Name="clipBorder"
                 CornerRadius="20"
                 Background="{DynamicResource skinBackgroundBrush}"
@@ -51,7 +44,7 @@
                        Fill="Transparent" />
 
             <!--Exit button-->
-            <Button Command="{Binding EntityCreationViewModel.CloseCommand}"
+            <Button Command="{Binding ArticleCreationViewModel.CloseCommand}"
                     Grid.Column="2"
                     Width="25"
                     Height="25"
@@ -59,11 +52,12 @@
                     VerticalAlignment="Top"
                     Margin="0 20 20 0"
                     FontSize="20"
-                    Style="{StaticResource ExitButton}" 
-                    IsTabStop="False"/>
+                    Style="{StaticResource ExitButton}"
+                    IsTabStop="False" />
 
-            <view:EntityCreationControl EntityCreationViewModel="{Binding EntityCreationViewModel}"
-                                        Grid.Column="1" Grid.Row="1"/>
+            <articles:ArticleCreationControl ArticleCreationViewModel="{Binding ArticleCreationViewModel}"
+                                         Grid.Column="1"
+                                         Grid.Row="1" />
         </Grid>
     </Grid>
 </Window>

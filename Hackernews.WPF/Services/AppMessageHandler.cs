@@ -15,20 +15,17 @@ namespace Hackernews.WPF.Services
 		private readonly ISignInManager _signInManager;
 		private readonly IMainWindowVmFactory _mainWindowVmFactory;
 		private readonly ILoginWindowVmFactory _loginWindowVmFactory;
-		private readonly EntityCreationViewModel _entityCreationVm;
 
 		public AppMessageHandler(IEventAggregator ea,
 			ISignInManager signInManager,
 			IMainWindowVmFactory mainWindowVmFactory,
-			ILoginWindowVmFactory loginWindowVmFactory,
-			EntityCreationViewModel entityCreationVm
+			ILoginWindowVmFactory loginWindowVmFactory
 			)
 		{
 			_ea = ea;
 			_signInManager = signInManager;
 			_mainWindowVmFactory = mainWindowVmFactory;
 			_loginWindowVmFactory = loginWindowVmFactory;
-			_entityCreationVm = entityCreationVm;
 			ea.RegisterHandler<ChangeSkinMessage>(msg => ChangeSkin(msg.NewSkin));
 
 			ea.RegisterHandler<LogoutRequestedMessage>(async msg => await LogoutAsync());
@@ -58,13 +55,6 @@ namespace Hackernews.WPF.Services
 			var loginWindowVm = _loginWindowVmFactory.Create();
 			loginWindowVm.ShowWindow();
 		}
-
-
-		//private void OpenEntityCreationWindow()
-		//{
-		//	_entityCreationVm.OpenWindow();
-		//}
-
 
 		private void LoginWindowSwitchToMainWindow(LoginWindowSwitchToMainWindowMessage msg)
 		{

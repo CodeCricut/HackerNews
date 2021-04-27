@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
+using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.Services;
 using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
@@ -18,7 +19,7 @@ namespace Hackernews.WPF.ViewModels
 
 		public MainWindowFullscreenViewModel FullscreenVM { get; }
 		public MainWindowEntityViewModel EntityVM { get; }
-		public EntityCreationViewModel EntityCreationViewModel { get; }
+		public BoardCreationViewModel BoardCreationViewModel { get; }
 		#endregion
 
 		public ICommand CloseCommand { get; }
@@ -28,7 +29,7 @@ namespace Hackernews.WPF.ViewModels
 			PrivateUserViewModel userVM,
 			MainWindowEntityViewModel entityVm,
 			MainWindowFullscreenViewModel fullscreenVm,
-			EntityCreationViewModel entityCreationVm)
+			BoardCreationViewModel boardCreationViewModel)
 		{
 			_ea = ea;
 			_viewManager = viewManager;
@@ -36,8 +37,7 @@ namespace Hackernews.WPF.ViewModels
 			PrivateUserViewModel = userVM;
 			EntityVM = entityVm;
 			FullscreenVM = fullscreenVm;
-			EntityCreationViewModel = entityCreationVm;
-
+			BoardCreationViewModel = boardCreationViewModel;
 			CloseCommand = new DelegateCommand(_ => CloseApplication());
 
 			ea.RegisterHandler<CloseMainWindowMessage>(msg => CloseWindow());

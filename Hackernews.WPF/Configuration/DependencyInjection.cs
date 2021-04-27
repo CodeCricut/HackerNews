@@ -19,7 +19,8 @@ namespace Hackernews.WPF.Configuration
 			services.AddTransient<MainWindow>();
 			services.AddTransient<LoginWindow>();
 			services.AddTransient<EntityHomeWindow>();
-			services.AddTransient<EntityCreationWindow>();
+			services.AddTransient<BoardCreationWindow>();
+			services.AddTransient<ArticleCreationWindow>();
 
 			// Register all vms
 			services.Scan(scan =>
@@ -52,11 +53,13 @@ namespace Hackernews.WPF.Configuration
 			services.AddTransient<ILoadBoardsCommandFactory, LoadBoardsCommandFactory>();
 			services.AddTransient<IBoardListViewModelFactory, BoardListViewModelFactory>();
 			services.AddTransient<IBoardHomeViewModelFactory, BoardHomeViewModelFactory>();
+			services.AddTransient<IBoardCreationViewModelFactory, BoardCreationViewModelFactory>();
 
 			services.AddTransient<IArticleViewModelFactory, ArticleViewModelFactory>();
 			services.AddTransient<ILoadArticlesCommandFactory, LoadArticlesCommandFactory>();
 			services.AddTransient<IArticleListViewModelFactory, ArticleListViewModelFactory>();
 			services.AddTransient<IArticleHomeViewModelFactory, ArticleHomeViewModelFactory>();
+			services.AddTransient<IArticleCreationViewModelFactory, ArticleCreationViewModelFactory>();
 
 			services.AddTransient<ICommentViewModelFactory, CommentViewModelFactory>();
 			services.AddTransient<ILoadCommentsCommandFactory, LoadCommentsCommandFactory>();

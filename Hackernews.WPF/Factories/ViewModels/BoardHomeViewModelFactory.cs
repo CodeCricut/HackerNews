@@ -5,25 +5,23 @@ namespace Hackernews.WPF.Factories.ViewModels
 {
 	public interface IBoardHomeViewModelFactory
 	{
-		//BoardHomeViewModel Create();
 		BoardHomeViewModel Create(BoardViewModel boardVm);
 	}
 
 	public class BoardHomeViewModelFactory : IBoardHomeViewModelFactory
 	{
 		private readonly IArticleListViewModelFactory _articleListViewModelFactory;
+		private readonly IArticleCreationViewModelFactory _articleCreationViewModelFactory;
 
 		public BoardHomeViewModelFactory(
-			//IBoardViewModelFactory boardVmFactory,
-			IArticleListViewModelFactory articleListViewModelFactory)
+			IArticleListViewModelFactory articleListViewModelFactory,
+			IArticleCreationViewModelFactory articleCreationViewModelFactory)
 		{
 			_articleListViewModelFactory = articleListViewModelFactory;
+			_articleCreationViewModelFactory = articleCreationViewModelFactory;
 		}
 
-		//public BoardHomeViewModel Create()
-		//	=> new BoardHomeViewModel(_boardVmFactory.Create(), _articleListViewModelFactory);
-
 		public BoardHomeViewModel Create(BoardViewModel boardVm)
-			=> new BoardHomeViewModel(boardVm, _articleListViewModelFactory);
+			=> new BoardHomeViewModel(boardVm, _articleListViewModelFactory, _articleCreationViewModelFactory);
 	}
 }

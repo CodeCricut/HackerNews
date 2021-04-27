@@ -127,8 +127,8 @@
                                     Grid.ColumnSpan="2"
                                     Content="{Binding MainWindowVM.FullscreenVM.SelectedFullscreenViewModel}" />
                     
-                   <!--Temp button-->
-                    <Button Command="{Binding MainWindowVM.EntityCreationViewModel.ShowBoardCreationWindowCommand}"
+                   <!--Create board button-->
+                    <Button Command="{Binding MainWindowVM.BoardCreationViewModel.OpenCommand}"
                             Content="Create board"
                             Style="{DynamicResource PaginationButtonStyle}"
                             Visibility="{Binding MainWindowVM.EntityVM.AreBoardsSelected, Converter={StaticResource boolToVis}}"

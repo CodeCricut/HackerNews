@@ -1,4 +1,5 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
+using Hackernews.WPF.MVVM.ViewModel.Articles;
 using Hackernews.WPF.MVVM.ViewModel.Common;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.WPF.Core.Commands;
@@ -12,6 +13,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 		// article list vm
 		public EntityListViewModel<ArticleViewModel, GetArticleModel> BoardArticleListVM { get; }
+		public ArticleCreationViewModel ArticleCreationVm { get; }
 
 		// Board vm
 		public BoardViewModel BoardViewModel { get; }
@@ -32,10 +34,13 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 
 		public BoardHomeViewModel(
 			BoardViewModel boardVM,
-			IArticleListViewModelFactory articleListViewModelFactory)
+			IArticleListViewModelFactory articleListViewModelFactory,
+			IArticleCreationViewModelFactory articleCreationViewModelFactory
+			)
 		{
 			BoardViewModel = boardVM;
 			BoardArticleListVM = articleListViewModelFactory.Create(LoadEntityListEnum.LoadByIds);
+			ArticleCreationVm = articleCreationViewModelFactory.Create(boardVM.Board);
 
 			LoadBoardCommand = new AsyncDelegateCommand(LoadBoard);
 		}

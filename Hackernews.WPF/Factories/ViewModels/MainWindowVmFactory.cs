@@ -17,21 +17,21 @@ namespace Hackernews.WPF.Factories.ViewModels
 		private readonly PrivateUserViewModel _userVm;
 		private readonly MainWindowEntityViewModel _entityVm;
 		private readonly MainWindowFullscreenViewModel _fullscreenVm;
-		private readonly EntityCreationViewModel _entityCreationVm;
+		private readonly IBoardCreationViewModelFactory _boardCreationViewModelFactory;
 
 		public MainWindowVmFactory(IEventAggregator ea,
 			IViewManager viewManager,
 			PrivateUserViewModel userVm,
 			MainWindowEntityViewModel entityVm,
 			MainWindowFullscreenViewModel fullscreenVm,
-			EntityCreationViewModel entityCreationVm)
+			IBoardCreationViewModelFactory boardCreationViewModelFactory)
 		{
 			_ea = ea;
 			_viewManager = viewManager;
 			_userVm = userVm;
 			_entityVm = entityVm;
 			_fullscreenVm = fullscreenVm;
-			_entityCreationVm = entityCreationVm;
+			_boardCreationViewModelFactory = boardCreationViewModelFactory;
 		}
 
 		public MainWindowViewModel Create() => new MainWindowViewModel(
@@ -40,6 +40,6 @@ namespace Hackernews.WPF.Factories.ViewModels
 			_userVm,
 			_entityVm,
 			_fullscreenVm,
-			_entityCreationVm);
+			_boardCreationViewModelFactory.Create());
 	}
 }
