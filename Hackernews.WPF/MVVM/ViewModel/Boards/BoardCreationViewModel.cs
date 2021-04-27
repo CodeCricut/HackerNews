@@ -81,7 +81,9 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 			{
 				var getBoardModel = await _boardApiClient.PostAsync(PostBoardModel);
 
-				_ea.SendMessage(new CloseEntityCreationWindowMessage());
+				CloseWindow();
+
+				// TODO: send reload boards message
 			}
 			catch (Exception)
 			{

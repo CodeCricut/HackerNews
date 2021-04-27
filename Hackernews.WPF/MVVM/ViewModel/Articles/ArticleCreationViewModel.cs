@@ -76,7 +76,9 @@ namespace Hackernews.WPF.MVVM.ViewModel.Articles
 			{
 				var getArticleModel = await _articleApiClient.PostAsync(PostArticleModel);
 
-				_ea.SendMessage(new CloseEntityCreationWindowMessage());
+				CloseWindow();
+
+				// TODO: send reload articles message
 			}
 			catch (Exception)
 			{
