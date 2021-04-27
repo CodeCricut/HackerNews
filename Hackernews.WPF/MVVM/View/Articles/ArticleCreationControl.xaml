@@ -22,7 +22,9 @@
 
             <TextBlock Text="Type"
                        Margin="0 20 0 5" />
-            <ComboBox ItemsSource="{Binding ArticleCreationViewModel.TestComboboxSource}" SelectedValue="{Binding ArticleCreationViewModel.Type}" />
+            <ComboBox ItemsSource="{Binding ArticleCreationViewModel.TestComboboxSource}"
+                      SelectedValue="{Binding ArticleCreationViewModel.Type}"
+                      />
 
             <Button Margin="0 20"
                     Style="{StaticResource PaginationButtonStyle}"
