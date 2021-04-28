@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.WPF.MessageBus",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.WPF.Core", "HackerNews.WPF.Core\HackerNews.WPF.Core.csproj", "{9C961F7C-4125-4EA6-8590-6A51CC7FCC7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.ApiConsumer", "HackerNews.ApiConsumer\HackerNews.ApiConsumer.csproj", "{7F52B635-F8B1-4A85-A8E8-633829722306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.ApiConsumer", "HackerNews.ApiConsumer\HackerNews.ApiConsumer.csproj", "{7F52B635-F8B1-4A85-A8E8-633829722306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
