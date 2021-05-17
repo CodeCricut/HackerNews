@@ -1,6 +1,9 @@
 ﻿using Application.IntegrationTests.Common;
 using HackerNews.Application.Articles.Commands.DeleteArticle;
+using HackerNews.Domain.Entities;
+using HackerNews.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,7 +20,8 @@ namespace Application.IntegrationTests.Articles.Commands.DeleteArticle
 			Assert.False(article.Deleted);
 			var articleId = article.Id;
 
-			var sut = new DeleteArticleHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var sut = new DeleteArticleHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object,
+				articleOperationValidatorMock.Object);
 
 			// Act
 			bool result = await sut.Handle(new DeleteArticleCommand(articleId), new System.Threading.CancellationToken(false));

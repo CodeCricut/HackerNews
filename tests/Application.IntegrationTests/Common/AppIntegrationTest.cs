@@ -51,6 +51,7 @@ namespace Application.IntegrationTests.Common
 		protected IQueryable<Article> articles;
 		protected Article article;
 		protected Mock<IDeletedEntityPolicyValidator<Article>> deletedArticleValidatorMock;
+		protected Mock<IAdminLevelOperationValidator<Article>> articleOperationValidatorMock;
 
 		protected IQueryable<Comment> comments;
 		protected Comment comment;
@@ -98,6 +99,11 @@ namespace Application.IntegrationTests.Common
 			deletedArticleValidatorMock = new Mock<IDeletedEntityPolicyValidator<Article>>();
 			deletedArticleValidatorMock.Setup(m => m.ValidateEntityQuerable(It.IsAny<IQueryable<Article>>(), It.IsAny<DeletedEntityPolicy>())).Returns(articles);
 			deletedArticleValidatorMock.Setup(m => m.ValidateEntity(It.IsAny<Article>(), It.IsAny<DeletedEntityPolicy>())).Returns(article);
+
+			articleOperationValidatorMock = new Mock<IAdminLevelOperationValidator<Article>>();
+			articleOperationValidatorMock.Setup(m => m.CanDeleteEntityAsync(It.IsAny<Article>(), It.IsAny<AdminLevel>())).ReturnsAsync(true);
+			articleOperationValidatorMock.Setup(m => m.CanModifyEntityAsync(It.IsAny<Article>(), It.IsAny<AdminLevel>())).ReturnsAsync(true);
+
 
 			//===== Comments =====//
 			comments = await unitOfWork.Comments.GetEntitiesAsync();

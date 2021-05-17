@@ -24,7 +24,7 @@ namespace Application.IntegrationTests.Articles.Commands.UpdateArticle
 				Type = "meta"
 			};
 
-			var sut = new UpdateArticleHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object);
+			var sut = new UpdateArticleHandler(unitOfWork, mediator, mapper, currentUserServiceMock.Object, articleOperationValidatorMock.Object);
 
 			// Act
 			GetArticleModel sutResult = await sut.Handle(new UpdateArticleCommand(article.Id, updateArticleModel), new CancellationToken(false));
