@@ -49,6 +49,7 @@ namespace HackerNews.Api.Controllers
 		[HttpPost("Register")]
 		public async Task<Jwt> Register([FromBody] RegisterUserModel registerModel)
 		{
+			// TODO: returns invalid request
 			User user = await Mediator.Send(new RegisterUserCommand(registerModel));
 
 			return await _jwtGeneratorService.GenererateJwtFromUser(user);

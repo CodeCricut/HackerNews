@@ -75,6 +75,7 @@ namespace HackerNews.Api.Controllers
 		[Authorize]
 		public async Task<ActionResult<GetArticleModel>> Put(int key, [FromBody] PostArticleModel updateModel)
 		{
+			// Throws some type of validation error
 			return Ok(await Mediator.Send(new UpdateArticleCommand(key, updateModel)));
 		}
 	}

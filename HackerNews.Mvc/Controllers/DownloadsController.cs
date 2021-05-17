@@ -11,11 +11,5 @@ namespace HackerNews.Mvc.Controllers
 		{
 			_environment = environment;
 		}
-
-		public FileContentResult Wpf()
-		{
-			var file = System.IO.File.ReadAllBytes(@"C:\Users\ajori\Pictures\Saved Pictures\walrus.jpg");
-			return new FileContentResult(file, "image/jpeg");
-		}
 	}
 }
