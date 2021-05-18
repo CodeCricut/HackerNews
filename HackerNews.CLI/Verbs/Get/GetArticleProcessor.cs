@@ -15,5 +15,10 @@ namespace HackerNews.CLI.Verbs.Get
 		public GetArticleProcessor(IEntityApiClient<PostArticleModel, GetArticleModel> entityApiClient, IEntityLogger<GetArticleModel> entityLogger, IEntityWriter<GetArticleModel> entityWriter) : base(entityApiClient, entityLogger, entityWriter)
 		{
 		}
+
+		protected override void ConfigureWriter(GetVerbOptions options, IEntityWriter<GetArticleModel> writer)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

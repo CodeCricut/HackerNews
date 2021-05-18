@@ -14,7 +14,8 @@ namespace HackerNews.CLI.FileWriters
 	{
 		public async Task<bool> WriteToFileAsync(string fileLoc, IEnumerable<string> lines)
 		{
-			if (!System.IO.File.Exists(fileLoc)) return false;
+			if (!System.IO.File.Exists(fileLoc)) 
+				return false;
 
 			using System.IO.StreamWriter file = new System.IO.StreamWriter(fileLoc);
 			try

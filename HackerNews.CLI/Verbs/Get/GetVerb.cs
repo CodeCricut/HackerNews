@@ -8,8 +8,32 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
+	interface IGetBoardVerbOptions
+	{
+		[Option("includeBoardId", SetName = "boards")]
+		public bool IncludeBoardId { get; set; }
+		[Option("includeBoardTitle", SetName = "boards")]
+		public bool IncludeBoardTitle { get; set; }
+		[Option("includeBoardDescription", SetName = "boards")]
+		public bool IncludeBoardDescription { get; set; }
+		[Option("includeBoardCreateDate", SetName = "boards")]
+		public bool IncludeBoardCreateDate { get; set; }
+		[Option("includeBoardCreatorId", SetName = "boards")]
+		public bool IncludeBoardCreatorId { get; set; }
+		[Option("includeBoardModeratorIds", SetName = "boards")]
+		public bool IncludeBoardModeratorIds { get; set; }
+		[Option("includeBoardSubscriberIds", SetName = "boards")]
+		public bool IncludeBoardSubscriberIds { get; set; }
+		[Option("includeBoardArticleIds", SetName = "boards")]
+		public bool IncludeBoardArticleIds { get; set; }
+		[Option("includeBoardDeleted", SetName = "boards")]
+		public bool IncludeBoardDeleted { get; set; }
+		[Option("includeBoardImageId", SetName = "boards")]
+		public bool IncludeBoardImageId { get; set; }
+	}
+
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
-	public class GetVerbOptions
+	public class GetVerbOptions : IGetBoardVerbOptions
 	{
 		[Option('t', "type", Required = true, HelpText = "The type of entity to retrieve (board, article, comment, user).")]
 		public string Type { get; set; }
@@ -31,6 +55,21 @@ namespace HackerNews.CLI.Verbs.Get
 
 		[Option("ids", HelpText = "The IDs of the entity to be gotten.")]
 		public IEnumerable<int> Ids { get; set; }
+
+		[Option("includeAllFields", HelpText = "Output all fields of the retrieved boards")]
+		public bool IncludeAllFields { get; set; }
+
+		// Boards
+		public bool IncludeBoardId { get; set; }
+		public bool IncludeBoardTitle { get; set; }
+		public bool IncludeBoardDescription { get; set; }
+		public bool IncludeBoardCreateDate { get; set; }
+		public bool IncludeBoardCreatorId { get; set; }
+		public bool IncludeBoardModeratorIds { get; set; }
+		public bool IncludeBoardSubscriberIds { get; set; }
+		public bool IncludeBoardArticleIds { get; set; }
+		public bool IncludeBoardDeleted { get; set; }
+		public bool IncludeBoardImageId { get; set; }
 	}
 
 	public class GetVerb : IHostedService

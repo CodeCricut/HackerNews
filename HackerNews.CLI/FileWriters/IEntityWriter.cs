@@ -1,4 +1,5 @@
-﻿using HackerNews.Domain.Common.Models;
+﻿using HackerNews.CLI.InclusionConfiguration;
+using HackerNews.Domain.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,6 @@ namespace HackerNews.CLI.FileWriters
 	{
 		Task WriteEntityAsync(string fileLoc, TGetModel entity);
 		Task WriteEntityPageAsync(string fileLoc, PaginatedList<TGetModel> entityPage);
+		void Configure(BoardInclusionConfiguration config);
 	}
 }

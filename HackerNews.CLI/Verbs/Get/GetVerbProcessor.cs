@@ -13,7 +13,7 @@ namespace HackerNews.CLI.Verbs.Get
 		Task ProcessGetVerbOptionsAsync(GetVerbOptions options);
 	}
 
-	public class GetVerbProcessor<TPostModel, TGetModel> : IGetVerbProcessor<TPostModel, TGetModel>
+	public abstract class GetVerbProcessor<TPostModel, TGetModel> : IGetVerbProcessor<TPostModel, TGetModel>
 	{
 		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
 		private readonly IEntityLogger<TGetModel> _entityLogger;
@@ -30,6 +30,8 @@ namespace HackerNews.CLI.Verbs.Get
 
 		public async Task ProcessGetVerbOptionsAsync(GetVerbOptions options)
 		{
+			ConfigureWriter(options, _entityWriter);
+
 			if (options.Id > 0)
 			{
 				TGetModel entity = await GetEntityAsync(options.Id);
@@ -80,5 +82,7 @@ namespace HackerNews.CLI.Verbs.Get
 			if (!string.IsNullOrEmpty(options.File))
 				_entityWriter.WriteEntityAsync(options.File, entity);
 		}
+
+		protected abstract void ConfigureWriter(GetVerbOptions options, IEntityWriter<TGetModel> writer);
 	}
 }

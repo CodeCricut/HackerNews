@@ -1,4 +1,5 @@
-﻿using HackerNews.Domain.Common.Models;
+﻿using HackerNews.CLI.InclusionConfiguration;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,11 @@ namespace HackerNews.CLI.FileWriters
 {
 	public class PublicUserCsvWriter : IEntityWriter<GetPublicUserModel>
 	{
+		public void Configure(BoardInclusionConfiguration config)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Task WriteEntityAsync(string fileLoc, GetPublicUserModel entity)
 		{
 			throw new NotImplementedException();
