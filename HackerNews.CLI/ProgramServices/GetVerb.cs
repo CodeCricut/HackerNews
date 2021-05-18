@@ -1,20 +1,9 @@
 ﻿using CommandLine;
-using HackerNews.ApiConsumer.Account;
-using HackerNews.ApiConsumer.Core;
-using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.CLI.Services;
 using HackerNews.CLI.Util;
-using HackerNews.Domain.Common.Models;
-using HackerNews.Domain.Common.Models.Articles;
-using HackerNews.Domain.Common.Models.Boards;
-using HackerNews.Domain.Common.Models.Comments;
-using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,18 +32,18 @@ namespace HackerNews.CLI.ProgramServices
 	{
 		private readonly ILogger<GetVerb> _logger;
 		private readonly GetVerbOptions _options;
-		private readonly GetVerbProcessor<GetBoardModel> _boardVerbProcessor;
-		private readonly GetVerbProcessor<GetArticleModel> _articleVerbProcessor;
-		private readonly GetVerbProcessor<GetCommentModel> _commentVerbProcessor;
-		private readonly GetVerbProcessor<GetPublicUserModel> _userVerbProcessor;
+		private readonly IGetBoardProcessor _boardVerbProcessor;
+		private readonly IGetArticleProcessor _articleVerbProcessor;
+		private readonly IGetCommentProcessor _commentVerbProcessor;
+		private readonly IGetPublicUserProcessor _userVerbProcessor;
 
 		public GetVerb(
 			GetVerbOptions options,
 			ILogger<GetVerb> logger,
-			GetVerbProcessor<GetBoardModel> boardVerbProcessor,
-			GetVerbProcessor<GetArticleModel> articleVerbProcessor,
-			GetVerbProcessor<GetCommentModel> commentVerbProcessor,
-			GetVerbProcessor<GetPublicUserModel> userVerbProcessor)
+			IGetBoardProcessor boardVerbProcessor,
+			IGetArticleProcessor articleVerbProcessor,
+			IGetCommentProcessor commentVerbProcessor,
+			IGetPublicUserProcessor userVerbProcessor)
 		{
 			_options = options;
 			_logger = logger;

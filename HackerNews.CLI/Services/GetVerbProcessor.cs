@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.ProgramServices;
+﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.ProgramServices;
 using HackerNews.Domain.Common.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,23 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Services
 {
-	public abstract class GetVerbProcessor<TGetModel>
+	public interface IGetVerbProcessor<TPostModel, TGetModel>
 	{
+		Task ProcessGetVerbOptionsAsync(GetVerbOptions options);
+	}
+
+	public class GetVerbProcessor<TPostModel, TGetModel>
+	{
+		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
+		private readonly IEntityLogger<TGetModel> _entityLogger;
+
+		public GetVerbProcessor(IEntityApiClient<TPostModel, TGetModel> entityApiClient,
+			IEntityLogger<TGetModel> entityLogger)
+		{
+			_entityApiClient = entityApiClient;
+			_entityLogger = entityLogger;
+		}
+
 		public async Task ProcessGetVerbOptionsAsync(GetVerbOptions options)
 		{
 			if (options.Id > 0)
@@ -30,14 +46,29 @@ namespace HackerNews.CLI.Services
 			OutputEntityPage(entityPage);
 		}
 
-		protected abstract Task<PaginatedList<TGetModel>> GetEntitiesAsync(IEnumerable<int> ids, PagingParams pagingParams);
+		protected virtual Task<PaginatedList<TGetModel>> GetEntitiesAsync(IEnumerable<int> ids, PagingParams pagingParams)
+		{
+			return _entityApiClient.GetByIdsAsync(ids.ToList(), pagingParams);
+		}
 
-		protected abstract Task<PaginatedList<TGetModel>> GetEntitiesAsync(PagingParams pagingParams);
+		protected virtual Task<PaginatedList<TGetModel>> GetEntitiesAsync(PagingParams pagingParams)
+		{
+			return _entityApiClient.GetPageAsync(pagingParams);
+		}
 
-		protected abstract Task<TGetModel> GetEntityAsync(int id);
+		protected virtual Task<TGetModel> GetEntityAsync(int id)
+		{
+			return _entityApiClient.GetByIdAsync(id);
+		}
 
-		protected abstract void OutputEntityPage(PaginatedList<TGetModel> entityPage);
+		protected virtual void OutputEntityPage(PaginatedList<TGetModel> entityPage)
+		{
+			_entityLogger.LogEntityPage(entityPage);
+		}
 
-		protected abstract void OutputEntity(TGetModel entity);
+		protected virtual void OutputEntity(TGetModel entity)
+		{
+			_entityLogger.LogEntity(entity);
+		}
 	}
 }

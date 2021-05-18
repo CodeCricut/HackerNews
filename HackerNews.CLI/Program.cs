@@ -95,17 +95,20 @@ namespace HackerNews.CLI
 
 			services.AddSerilogLogger(configuration);
 
-			services.AddSingleton<GetVerbProcessor<GetBoardModel>, GetBoardProcessor>();
-			services.AddSingleton<GetBoardProcessor>();
+			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
+				.AddSingleton<IGetVerbProcessor<PostBoardModel, GetBoardModel>, GetBoardProcessor>();
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
 
-			services.AddSingleton<GetVerbProcessor<GetArticleModel>, GetArticleProcessor>();
+			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
+				.AddSingleton<IGetVerbProcessor<PostArticleModel, GetArticleModel>, GetArticleProcessor>();
 			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>();
 
-			services.AddSingleton<GetVerbProcessor<GetCommentModel>, GetCommentProcessor>();
+			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
+				.AddSingleton<IGetVerbProcessor<PostCommentModel, GetCommentModel>, GetCommentProcessor>();
 			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>();
 
-			services.AddSingleton<GetVerbProcessor<GetPublicUserModel>, GetPublicUserProcessor>();
+			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
+				.AddSingleton<IGetVerbProcessor<RegisterUserModel, GetPublicUserModel>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
 			services.AddDomain(configuration)
