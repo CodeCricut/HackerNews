@@ -1,6 +1,7 @@
 ﻿using HackerNews.ApiConsumer;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Verbs.Get;
+using HackerNews.CLI.Verbs.Register;
 using HackerNews.Domain;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
@@ -95,6 +96,7 @@ namespace HackerNews.CLI
 
 			services.AddSerilogLogger(configuration);
 
+			// Get Verb
 			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
 				.AddSingleton<IGetVerbProcessor<PostBoardModel, GetBoardModel>, GetBoardProcessor>();
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
@@ -111,8 +113,11 @@ namespace HackerNews.CLI
 				.AddSingleton<IGetVerbProcessor<RegisterUserModel, GetPublicUserModel>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
+			services.AddSingleton<IJwtLogger, JwtLogger>();
+
 			services.AddDomain(configuration)
 				.AddApiConsumer();
+
 
 			AddProgramServices(services);
 		}
@@ -123,6 +128,7 @@ namespace HackerNews.CLI
 		private static void AddProgramServices(IServiceCollection services)
 		{
 			services.AddProgramService<GetVerb, GetVerbOptions>(_args);
+			services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
 		}
 	}
 }
