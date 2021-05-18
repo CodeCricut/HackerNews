@@ -1,10 +1,12 @@
 ﻿using CommandLine;
 using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.EntityClients;
+using HackerNews.Domain.Common.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,7 +34,6 @@ namespace HackerNews.CLI.ProgramServices
 
 	public class GetVerb : BaseVerb
 	{
-		private readonly GetVerbOptions _opts;
 		private readonly ILogger<GetVerb> _logger;
 		private readonly GetVerbOptions _options;
 
@@ -54,6 +55,25 @@ namespace HackerNews.CLI.ProgramServices
 
 		public override Task StartAsync(CancellationToken cancellationToken)
 		{
+			if (_options.Id > 0)
+			{
+				return BoardApiClient.GetByIdAsync(_options.Id);
+			}
+			else {
+				PagingParams pagingParams = new PagingParams();
+				if (_options.PageNumber > 0) pagingParams.PageNumber = _options.PageNumber;
+				if (_options.PageSize > 0) pagingParams.PageSize = _options.PageSize;
+
+
+				if (_options.Ids.Count() > 0)
+				{
+					return BoardApiClient.GetByIdsAsync(_options.Ids.ToList(), pagingParams);
+				} else
+				{
+					return BoardApiClient.GetPageAsync(pagingParams);
+				}
+			}
+				
 			throw new NotImplementedException();
 		}
 
