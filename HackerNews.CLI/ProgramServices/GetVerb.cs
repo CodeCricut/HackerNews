@@ -44,24 +44,27 @@ namespace HackerNews.CLI.ProgramServices
 		private readonly ILogger<GetVerb> _logger;
 		private readonly GetVerbOptions _options;
 		private readonly GetVerbProcessor<GetBoardModel> _boardVerbProcessor;
+		private readonly GetVerbProcessor<GetArticleModel> _articleVerbProcessor;
 
 		public GetVerb(
 			GetVerbOptions options,
 			ILogger<GetVerb> logger,
-			GetVerbProcessor<GetBoardModel> boardVerbProcessor)
+			GetVerbProcessor<GetBoardModel> boardVerbProcessor,
+			GetVerbProcessor<GetArticleModel> articleVerbProcessor)
 		{
 			_options = options;
 			_logger = logger;
 			_boardVerbProcessor = boardVerbProcessor;
+			_articleVerbProcessor = articleVerbProcessor;
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			if (_options.Type.IsBoardType())
 				await _boardVerbProcessor.ProcessGetVerbOptionsAsync(_options);
-			/*
 			else if (_options.Type.IsArticleType())
-				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
+				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
+			/*
 			else if (_options.Type.IsCommentType())
 				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
 			else if (_options.Type.IsUserType())
@@ -71,6 +74,7 @@ namespace HackerNews.CLI.ProgramServices
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()

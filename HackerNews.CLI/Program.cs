@@ -2,6 +2,7 @@
 using HackerNews.CLI.ProgramServices;
 using HackerNews.CLI.Services;
 using HackerNews.Domain;
+using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,11 +93,15 @@ namespace HackerNews.CLI
 
 			services.AddSerilogLogger(configuration);
 
-			services.AddSingleton<IBoardLogger, BoardLogger>();
+			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
+			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>();
 
 			services.AddSingleton<GetVerbProcessor<GetBoardModel>, GetBoardProcessor>();
 			services.AddSingleton<GetBoardProcessor>();
 
+
+			services.AddSingleton<GetVerbProcessor<GetArticleModel>, GetArticleProcessor>();
+			services.AddSingleton<GetArticleProcessor>();
 
 			services.AddDomain(configuration)
 				.AddApiConsumer();

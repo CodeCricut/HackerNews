@@ -10,10 +10,10 @@ namespace HackerNews.CLI.Services
 	public class GetBoardProcessor : GetVerbProcessor<GetBoardModel>
 	{
 		private readonly IBoardApiClient _boardApiClient;
-		private readonly IBoardLogger _boardLogger;
+		private readonly IEntityLogger<GetBoardModel> _boardLogger;
 
 		public GetBoardProcessor(IBoardApiClient boardApiClient,
-			IBoardLogger boardLogger)
+			IEntityLogger<GetBoardModel> boardLogger)
 		{
 			_boardApiClient = boardApiClient;
 			_boardLogger = boardLogger;
@@ -36,12 +36,12 @@ namespace HackerNews.CLI.Services
 
 		protected override void OutputEntityPage(PaginatedList<GetBoardModel> entityPage)
 		{
-			_boardLogger.LogBoardPage(entityPage);
+			_boardLogger.LogEntityPage(entityPage);
 		}
 
 		protected override void OutputEntity(GetBoardModel entity)
 		{
-			_boardLogger.LogBoard(entity);
+			_boardLogger.LogEntity(entity);
 		}
 	}
 }
