@@ -5,6 +5,7 @@ using HackerNews.Domain;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -99,12 +100,13 @@ namespace HackerNews.CLI
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
 
 			services.AddSingleton<GetVerbProcessor<GetArticleModel>, GetArticleProcessor>();
-			services.AddSingleton<GetArticleProcessor>();
 			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>();
 
 			services.AddSingleton<GetVerbProcessor<GetCommentModel>, GetCommentProcessor>();
-			services.AddSingleton<GetCommentProcessor>();
 			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>();
+
+			services.AddSingleton<GetVerbProcessor<GetPublicUserModel>, GetPublicUserProcessor>();
+			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
 			services.AddDomain(configuration)
 				.AddApiConsumer();

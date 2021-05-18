@@ -39,26 +39,29 @@ namespace HackerNews.CLI.ProgramServices
 		public IEnumerable<int> Ids { get; set; }
 	}
 
-	public class GetVerb : IHostedService, IDisposable
+	public class GetVerb : IHostedService
 	{
 		private readonly ILogger<GetVerb> _logger;
 		private readonly GetVerbOptions _options;
 		private readonly GetVerbProcessor<GetBoardModel> _boardVerbProcessor;
 		private readonly GetVerbProcessor<GetArticleModel> _articleVerbProcessor;
 		private readonly GetVerbProcessor<GetCommentModel> _commentVerbProcessor;
+		private readonly GetVerbProcessor<GetPublicUserModel> _userVerbProcessor;
 
 		public GetVerb(
 			GetVerbOptions options,
 			ILogger<GetVerb> logger,
 			GetVerbProcessor<GetBoardModel> boardVerbProcessor,
 			GetVerbProcessor<GetArticleModel> articleVerbProcessor,
-			GetVerbProcessor<GetCommentModel> commentVerbProcessor)
+			GetVerbProcessor<GetCommentModel> commentVerbProcessor,
+			GetVerbProcessor<GetPublicUserModel> userVerbProcessor)
 		{
 			_options = options;
 			_logger = logger;
 			_boardVerbProcessor = boardVerbProcessor;
 			_articleVerbProcessor = articleVerbProcessor;
 			_commentVerbProcessor = commentVerbProcessor;
+			_userVerbProcessor = userVerbProcessor;
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
@@ -68,20 +71,14 @@ namespace HackerNews.CLI.ProgramServices
 			else if (_options.Type.IsArticleType())
 				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
 			else if (_options.Type.IsCommentType())
-				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
-			/*
-			else if (_options.Type.IsUserType())
-				await _userTypeVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
-			*/
+				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
+			else if (_options.Type.IsPublicUserType())
+				await _userVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			return Task.CompletedTask;
-		}
-
-		public void Dispose()
-		{
 		}
 	}
 }
