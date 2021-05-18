@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HackerNews.ApiConsumer;
+using HackerNews.CLI.ProgramServices;
+using HackerNews.Domain;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -87,15 +90,18 @@ namespace HackerNews.CLI
 
 			services.AddSerilogLogger(configuration);
 
-			AddProgramServices();
+			AddProgramServices(services);
+
+			services.AddDomain(configuration)
+				.AddApiConsumer();
 		}
 
 		/// <summary>
 		/// Add the main program services responsible for doing things based on CLI args.
 		/// </summary>
-		private static void AddProgramServices()
+		private static void AddProgramServices(IServiceCollection services)
 		{
-
+			services.AddProgramService<GetVerb, GetVerbOptions>(_args);
 		}
 	}
 }

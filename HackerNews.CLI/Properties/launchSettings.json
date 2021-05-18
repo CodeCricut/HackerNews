@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HackerNews.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "get -t \"article\" --id 1"
+    }
+  }
+}
