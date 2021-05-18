@@ -28,12 +28,23 @@ namespace HackerNews.CLI.Verbs.Post
 		public string ArticleText { get; set; }
 		[Option("articleBoardId", SetName = "articles", HelpText = "The id of the parent board to assign to the article being posted")]
 		public int ArticleBoardId { get; set; }
-	} 
+	}
+
+	interface IPostCommentOptions
+	{
+		[Option("commentText", SetName = "comments", HelpText = "The text to assign to the comment being posted")]
+		public string CommentText { get; set; }
+		[Option("commentArticleId", SetName = "comments", HelpText = "The parent article id to which to assign to the comment being posted")]
+		public int CommentArticleId { get; set; }
+		[Option("commentCommentId", SetName = "comments", HelpText = "The parent comment id to which to assign to the comment being posted")]
+		public int CommentCommentId { get; set; }
+	}
 
 	[Verb("post", HelpText = "Post an entity to the server.")]
 	public class PostVerbOptions : 
 		IPostBoardOptions,
-		IPostArticleOptions
+		IPostArticleOptions,
+		IPostCommentOptions
 	{
 		[Option('u', "username", Required = true, HelpText = "The username to login with.")]
 		public string Username { get; set; }
@@ -50,6 +61,11 @@ namespace HackerNews.CLI.Verbs.Post
 		public string ArticleTitle { get; set; }
 		public string ArticleText { get; set; }
 		public int ArticleBoardId { get; set; }
+
+		// Comments
+		public string CommentText { get; set; }
+		public int CommentArticleId { get; set; }
+		public int CommentCommentId { get; set; }
 	}
 
 	public class PostVerb : IHostedService
@@ -58,16 +74,19 @@ namespace HackerNews.CLI.Verbs.Post
 		private readonly ILogger<PostVerb> _logger;
 		private readonly IPostBoardProcessor _postBoardProcessor;
 		private readonly IPostArticleProcessor _postArticleProcessor;
+		private readonly IPostCommentProcessor _postCommentProcessor;
 
 		public PostVerb(PostVerbOptions options, 
 			ILogger<PostVerb> logger,
 			IPostBoardProcessor postBoardProcessor,
-			IPostArticleProcessor postArticleProcessor)
+			IPostArticleProcessor postArticleProcessor,
+			IPostCommentProcessor postCommentProcessor)
 		{
 			_options = options;
 			_logger = logger;
 			_postBoardProcessor = postBoardProcessor;
 			_postArticleProcessor = postArticleProcessor;
+			_postCommentProcessor = postCommentProcessor;
 		}
 
 		public Task StartAsync(CancellationToken cancellationToken)
@@ -76,6 +95,8 @@ namespace HackerNews.CLI.Verbs.Post
 				return _postBoardProcessor.ProcessGetVerbOptionsAsync(_options);
 			else if (_options.IsArticleType())
 				return _postArticleProcessor.ProcessGetVerbOptionsAsync(_options);
+			else if (_options.IsCommentType())
+				return _postCommentProcessor.ProcessGetVerbOptionsAsync(_options);
 			throw new Exception();
 		}
 

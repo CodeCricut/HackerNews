@@ -124,6 +124,9 @@ namespace HackerNews.CLI
 			services.AddSingleton<IPostArticleProcessor, PostArticleProcessor>()
 				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel>, PostArticleProcessor>();
 
+			services.AddSingleton<IPostCommentProcessor, PostCommentProcessor>()
+				.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel>, PostCommentProcessor>();
+
 			services.AddDomain(configuration)
 				.AddApiConsumer();
 

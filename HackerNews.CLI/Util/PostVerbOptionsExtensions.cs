@@ -20,8 +20,7 @@ namespace HackerNews.CLI.Util
 
 		public static bool IsCommentType(this PostVerbOptions options)
 		{
-			// TODO:
-			return false;
+			return !string.IsNullOrEmpty(options.CommentText);
 		}
 
 		public static bool IsPublicUserType(this PostVerbOptions options)
