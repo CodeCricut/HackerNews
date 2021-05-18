@@ -1,7 +1,7 @@
 ﻿using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using Microsoft.Extensions.Logging;
-namespace HackerNews.CLI.Services
+namespace HackerNews.CLI.Loggers
 {
 	public class CommentLogger : IEntityLogger<GetCommentModel>
 	{

@@ -1,6 +1,6 @@
 ﻿using HackerNews.ApiConsumer;
-using HackerNews.CLI.ProgramServices;
-using HackerNews.CLI.Services;
+using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Verbs.Get;
 using HackerNews.Domain;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;

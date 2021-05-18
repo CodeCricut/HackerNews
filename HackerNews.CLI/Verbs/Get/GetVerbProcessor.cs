@@ -1,11 +1,11 @@
 ﻿using HackerNews.ApiConsumer.Core;
-using HackerNews.CLI.ProgramServices;
+using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Services
+namespace HackerNews.CLI.Verbs.Get
 {
 	public interface IGetVerbProcessor<TPostModel, TGetModel>
 	{
@@ -39,9 +39,9 @@ namespace HackerNews.CLI.Services
 
 			PaginatedList<TGetModel> entityPage;
 			if (options.Ids.Count() > 0)
-				 entityPage = await GetEntitiesAsync(options.Ids, pagingParams);
+				entityPage = await GetEntitiesAsync(options.Ids, pagingParams);
 			else
-				 entityPage = await GetEntitiesAsync(pagingParams);
+				entityPage = await GetEntitiesAsync(pagingParams);
 
 			OutputEntityPage(entityPage);
 		}

@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using HackerNews.CLI.Services;
 using HackerNews.CLI.Util;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.ProgramServices
+namespace HackerNews.CLI.Verbs.Get
 {
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
 	public class GetVerbOptions
@@ -58,11 +57,11 @@ namespace HackerNews.CLI.ProgramServices
 			if (_options.Type.IsBoardType())
 				await _boardVerbProcessor.ProcessGetVerbOptionsAsync(_options);
 			else if (_options.Type.IsArticleType())
-				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
+				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options);
 			else if (_options.Type.IsCommentType())
-				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
+				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options);
 			else if (_options.Type.IsPublicUserType())
-				await _userVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
+				await _userVerbProcessor.ProcessGetVerbOptionsAsync(_options);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)

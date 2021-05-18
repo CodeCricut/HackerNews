@@ -2,9 +2,6 @@
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Util
 {

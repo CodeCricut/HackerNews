@@ -1,11 +1,8 @@
 ﻿using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace HackerNews.CLI.Services
+namespace HackerNews.CLI.Loggers
 {
 	public class BoardLogger : IEntityLogger<GetBoardModel>
 	{
