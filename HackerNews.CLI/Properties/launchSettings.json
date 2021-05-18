@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "register -u \"cliUser\" -p \"cliUser\" -f \"cliUser\" -l \"cliUser\""
+      "commandLineArgs": "post -u \"user1\" -p \"user1\" --boardTitle \"board title\""
     }
   }
 }

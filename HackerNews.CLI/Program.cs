@@ -1,6 +1,7 @@
 ﻿using HackerNews.ApiConsumer;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Verbs.Get;
+using HackerNews.CLI.Verbs.Post;
 using HackerNews.CLI.Verbs.Register;
 using HackerNews.Domain;
 using HackerNews.Domain.Common.Models.Articles;
@@ -113,7 +114,15 @@ namespace HackerNews.CLI
 				.AddSingleton<IGetVerbProcessor<RegisterUserModel, GetPublicUserModel>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
+			// Register verb
 			services.AddSingleton<IJwtLogger, JwtLogger>();
+
+			// Post Verb
+			services.AddSingleton<IPostBoardProcessor, PostBoardProcessor>()
+				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel>, PostBoardProcessor>();
+
+			services.AddSingleton<IPostArticleProcessor, PostArticleProcessor>()
+				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel>, PostArticleProcessor>();
 
 			services.AddDomain(configuration)
 				.AddApiConsumer();
@@ -128,6 +137,7 @@ namespace HackerNews.CLI
 		private static void AddProgramServices(IServiceCollection services)
 		{
 			services.AddProgramService<GetVerb, GetVerbOptions>(_args);
+			services.AddProgramService<PostVerb, PostVerbOptions>(_args);
 			services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
 		}
 	}

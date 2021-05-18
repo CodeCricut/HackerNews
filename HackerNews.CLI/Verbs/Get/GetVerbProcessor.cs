@@ -12,7 +12,7 @@ namespace HackerNews.CLI.Verbs.Get
 		Task ProcessGetVerbOptionsAsync(GetVerbOptions options);
 	}
 
-	public class GetVerbProcessor<TPostModel, TGetModel>
+	public class GetVerbProcessor<TPostModel, TGetModel> : IGetVerbProcessor<TPostModel, TGetModel>
 	{
 		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
 		private readonly IEntityLogger<TGetModel> _entityLogger;
