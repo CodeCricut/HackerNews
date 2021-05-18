@@ -1,5 +1,6 @@
 ﻿using HackerNews.ApiConsumer;
 using HackerNews.CLI.ProgramServices;
+using HackerNews.CLI.Services;
 using HackerNews.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -90,10 +91,12 @@ namespace HackerNews.CLI
 
 			services.AddSerilogLogger(configuration);
 
-			AddProgramServices(services);
+			services.AddSingleton<IBoardLogger, BoardLogger>();
 
 			services.AddDomain(configuration)
 				.AddApiConsumer();
+
+			AddProgramServices(services);
 		}
 
 		/// <summary>

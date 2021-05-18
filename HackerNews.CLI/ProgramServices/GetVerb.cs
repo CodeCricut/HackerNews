@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using HackerNews.ApiConsumer.Account;
+using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models;
@@ -56,7 +57,6 @@ namespace HackerNews.CLI.ProgramServices
 
 		public override Task StartAsync(CancellationToken cancellationToken)
 		{
-			Type entityType = _options.Type.ConvertToGetModelType();
 			if (_options.Id > 0)
 			{
 				return BoardApiClient.GetByIdAsync(_options.Id);
