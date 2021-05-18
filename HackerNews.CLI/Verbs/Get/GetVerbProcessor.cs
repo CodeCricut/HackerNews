@@ -1,4 +1,5 @@
 ﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
 using System.Collections.Generic;
@@ -16,12 +17,15 @@ namespace HackerNews.CLI.Verbs.Get
 	{
 		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
 		private readonly IEntityLogger<TGetModel> _entityLogger;
+		private readonly IEntityWriter<TGetModel> _entityWriter;
 
 		public GetVerbProcessor(IEntityApiClient<TPostModel, TGetModel> entityApiClient,
-			IEntityLogger<TGetModel> entityLogger)
+			IEntityLogger<TGetModel> entityLogger,
+			IEntityWriter<TGetModel> entityWriter)
 		{
 			_entityApiClient = entityApiClient;
 			_entityLogger = entityLogger;
+			_entityWriter = entityWriter;
 		}
 
 		public async Task ProcessGetVerbOptionsAsync(GetVerbOptions options)
@@ -29,7 +33,7 @@ namespace HackerNews.CLI.Verbs.Get
 			if (options.Id > 0)
 			{
 				TGetModel entity = await GetEntityAsync(options.Id);
-				OutputEntity(entity);
+				OutputEntity(options, entity);
 				return;
 			}
 
@@ -43,7 +47,7 @@ namespace HackerNews.CLI.Verbs.Get
 			else
 				entityPage = await GetEntitiesAsync(pagingParams);
 
-			OutputEntityPage(entityPage);
+			OutputEntityPage(options, entityPage);
 		}
 
 		protected virtual Task<PaginatedList<TGetModel>> GetEntitiesAsync(IEnumerable<int> ids, PagingParams pagingParams)
@@ -61,14 +65,20 @@ namespace HackerNews.CLI.Verbs.Get
 			return _entityApiClient.GetByIdAsync(id);
 		}
 
-		protected virtual void OutputEntityPage(PaginatedList<TGetModel> entityPage)
+		protected virtual void OutputEntityPage(GetVerbOptions options, PaginatedList<TGetModel> entityPage)
 		{
-			_entityLogger.LogEntityPage(entityPage);
+			if (options.Print)
+				_entityLogger.LogEntityPage(entityPage);
+			if (!string.IsNullOrEmpty(options.File))
+				_entityWriter.WriteEntityPageAsync(options.File, entityPage);
 		}
 
-		protected virtual void OutputEntity(TGetModel entity)
+		protected virtual void OutputEntity(GetVerbOptions options, TGetModel entity)
 		{
-			_entityLogger.LogEntity(entity);
+			if (options.Print)
+				_entityLogger.LogEntity(entity);
+			if (!string.IsNullOrEmpty(options.File))
+				_entityWriter.WriteEntityAsync(options.File, entity);
 		}
 	}
 }

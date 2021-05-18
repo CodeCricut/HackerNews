@@ -14,6 +14,12 @@ namespace HackerNews.CLI.Verbs.Get
 		[Option('t', "type", Required = true, HelpText = "The type of entity to retrieve (board, article, comment, user).")]
 		public string Type { get; set; }
 
+		[Option('p', "print", HelpText = "Print the entities to the console")]
+		public bool Print { get; set; }
+
+		[Option('f', "file",  HelpText = "The location of a file, which if specified, the entities will be written to")]
+		public string File { get; set; }
+
 		[Option("id", HelpText = "The ID of the entity to be gotten.")]
 		public int Id { get; set; }
 

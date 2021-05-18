@@ -1,4 +1,5 @@
 ﻿using HackerNews.ApiConsumer;
+using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Verbs.Get;
 using HackerNews.CLI.Verbs.Post;
@@ -130,6 +131,11 @@ namespace HackerNews.CLI
 			services.AddDomain(configuration)
 				.AddApiConsumer();
 
+			services.AddSingleton<IFileWriter, FileWriter>();
+			services.AddSingleton<IEntityWriter<GetBoardModel>, BoardCsvWriter>();
+			services.AddSingleton<IEntityWriter<GetArticleModel>, ArticleCsvWriter>();
+			services.AddSingleton<IEntityWriter<GetCommentModel>, CommentCsvWriter>();
+			services.AddSingleton<IEntityWriter<GetPublicUserModel>, PublicUserCsvWriter>();
 
 			AddProgramServices(services);
 		}

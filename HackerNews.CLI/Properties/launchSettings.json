@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get -t \"articles\" -n 1 -s 5"
+      "commandLineArgs": "get -t \"boards\" -n 1 -s 5 -f \"C:\\Users\\ajori\\OneDrive\\Desktop\\Junk\\boardoutput.csv\""
     }
   }
 }
