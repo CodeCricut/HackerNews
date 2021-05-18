@@ -20,7 +20,7 @@ namespace HackerNews.CLI.Loggers
 
 		public void LogEntityPage(PaginatedList<GetCommentModel> commentPage)
 		{
-			_logger.LogInformation($"Comment Page: PageSize{commentPage.PageSize}; {commentPage.PageIndex} / {commentPage.TotalCount}");
+			_logger.LogInformation($"Comment Page: PageSize{commentPage.PageSize}; {commentPage.PageIndex} / {commentPage.TotalPages}");
 			_logger.LogInformation("Id\tText\tParentType\tParentId");
 
 			foreach(var comment in commentPage.Items)
