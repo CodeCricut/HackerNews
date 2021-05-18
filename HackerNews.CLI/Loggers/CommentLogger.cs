@@ -14,15 +14,25 @@ namespace HackerNews.CLI.Loggers
 
 		public void LogEntity(GetCommentModel comment)
 		{
-			// TODO
 			string printString = $"COMMENT {comment.Id}: Title={comment.Text}; PostDate{comment.PostDate}";
 			_logger.LogInformation(printString);
 		}
 
 		public void LogEntityPage(PaginatedList<GetCommentModel> commentPage)
 		{
-			// TODO:
-			_logger.LogInformation(commentPage.PageSize.ToString());
+			_logger.LogInformation($"Comment Page: PageSize{commentPage.PageSize}; {commentPage.PageIndex} / {commentPage.TotalCount}");
+			_logger.LogInformation("Id\tText\tParentType\tParentId");
+
+			foreach(var comment in commentPage.Items)
+			{
+				string parentType = comment.ParentArticleId <= 0
+					? "Article"
+					: "Comment";
+				int parentId = comment.ParentArticleId <= 0
+					? comment.ParentArticleId
+					: comment.ParentCommentId;
+				_logger.LogInformation($"{comment.Id}\t{comment.Text}\t{parentType}\t{parentId}");
+			}
 		}
 	}
 }
