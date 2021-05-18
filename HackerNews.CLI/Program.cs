@@ -2,6 +2,7 @@
 using HackerNews.CLI.ProgramServices;
 using HackerNews.CLI.Services;
 using HackerNews.Domain;
+using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -92,6 +93,10 @@ namespace HackerNews.CLI
 			services.AddSerilogLogger(configuration);
 
 			services.AddSingleton<IBoardLogger, BoardLogger>();
+
+			services.AddSingleton<GetVerbProcessor<GetBoardModel>, GetBoardProcessor>();
+			services.AddSingleton<GetBoardProcessor>();
+
 
 			services.AddDomain(configuration)
 				.AddApiConsumer();

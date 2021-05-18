@@ -2,8 +2,13 @@
 using HackerNews.ApiConsumer.Account;
 using HackerNews.ApiConsumer.Core;
 using HackerNews.ApiConsumer.EntityClients;
+using HackerNews.CLI.Services;
 using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models;
+using HackerNews.Domain.Common.Models.Articles;
+using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Comments;
+using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -34,59 +39,42 @@ namespace HackerNews.CLI.ProgramServices
 		public IEnumerable<int> Ids { get; set; }
 	}
 
-	public class GetVerb : BaseVerb
+	public class GetVerb : IHostedService, IDisposable
 	{
 		private readonly ILogger<GetVerb> _logger;
 		private readonly GetVerbOptions _options;
+		private readonly GetVerbProcessor<GetBoardModel> _boardVerbProcessor;
 
 		public GetVerb(
-			ILogger<GetVerb> logger,
 			GetVerbOptions options,
-
-			IBoardApiClient boardApiClient, 
-			IArticleApiClient articleApiClient, 
-			ICommentApiClient commentApiClient, 
-			IUserApiClient userApiClient, 
-			IRegistrationApiClient registrationApiClient, 
-			IPrivateUserApiClient privateUserApiClient) 
-			: base(boardApiClient, articleApiClient, commentApiClient, userApiClient, registrationApiClient, privateUserApiClient)
+			ILogger<GetVerb> logger,
+			GetVerbProcessor<GetBoardModel> boardVerbProcessor)
 		{
-			_logger = logger;
 			_options = options;
+			_logger = logger;
+			_boardVerbProcessor = boardVerbProcessor;
 		}
 
-		public override Task StartAsync(CancellationToken cancellationToken)
+		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			if (_options.Id > 0)
-			{
-				return BoardApiClient.GetByIdAsync(_options.Id);
-			}
-			else {
-				PagingParams pagingParams = new PagingParams();
-				if (_options.PageNumber > 0) pagingParams.PageNumber = _options.PageNumber;
-				if (_options.PageSize > 0) pagingParams.PageSize = _options.PageSize;
-
-
-				if (_options.Ids.Count() > 0)
-				{
-					return BoardApiClient.GetByIdsAsync(_options.Ids.ToList(), pagingParams);
-				} else
-				{
-					return BoardApiClient.GetPageAsync(pagingParams);
-				}
-			}
-				
-			throw new NotImplementedException();
+			if (_options.Type.IsBoardType())
+				await _boardVerbProcessor.ProcessGetVerbOptionsAsync(_options);
+			/*
+			else if (_options.Type.IsArticleType())
+				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
+			else if (_options.Type.IsCommentType())
+				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
+			else if (_options.Type.IsUserType())
+				await _userTypeVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
+			*/
 		}
 
-		public override Task StopAsync(CancellationToken cancellationToken)
+		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
 		}
 
-		public override void Dispose()
+		public void Dispose()
 		{
-			throw new NotImplementedException();
 		}
 	}
 }
