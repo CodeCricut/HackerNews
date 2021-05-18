@@ -45,17 +45,20 @@ namespace HackerNews.CLI.ProgramServices
 		private readonly GetVerbOptions _options;
 		private readonly GetVerbProcessor<GetBoardModel> _boardVerbProcessor;
 		private readonly GetVerbProcessor<GetArticleModel> _articleVerbProcessor;
+		private readonly GetVerbProcessor<GetCommentModel> _commentVerbProcessor;
 
 		public GetVerb(
 			GetVerbOptions options,
 			ILogger<GetVerb> logger,
 			GetVerbProcessor<GetBoardModel> boardVerbProcessor,
-			GetVerbProcessor<GetArticleModel> articleVerbProcessor)
+			GetVerbProcessor<GetArticleModel> articleVerbProcessor,
+			GetVerbProcessor<GetCommentModel> commentVerbProcessor)
 		{
 			_options = options;
 			_logger = logger;
 			_boardVerbProcessor = boardVerbProcessor;
 			_articleVerbProcessor = articleVerbProcessor;
+			_commentVerbProcessor = commentVerbProcessor;
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
@@ -64,9 +67,9 @@ namespace HackerNews.CLI.ProgramServices
 				await _boardVerbProcessor.ProcessGetVerbOptionsAsync(_options);
 			else if (_options.Type.IsArticleType())
 				await _articleVerbProcessor.ProcessGetVerbOptionsAsync(_options); 
-			/*
 			else if (_options.Type.IsCommentType())
 				await _commentVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
+			/*
 			else if (_options.Type.IsUserType())
 				await _userTypeVerbProcessor.ProcessGetVerbOptionsAsync(_options); // TODO
 			*/
