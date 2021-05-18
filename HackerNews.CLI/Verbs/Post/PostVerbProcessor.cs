@@ -1,9 +1,6 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Post
