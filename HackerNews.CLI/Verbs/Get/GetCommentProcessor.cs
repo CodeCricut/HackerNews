@@ -8,12 +8,12 @@ using HackerNews.Domain.Common.Models.Comments;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetCommentProcessor : IGetVerbProcessor<GetCommentModel>
+	public interface IGetCommentProcessor : IGetVerbProcessor<GetCommentModel, GetCommentsVerbOptions>
 	{
 
 	}
 
-	public class GetCommentProcessor : GetVerbProcessor<GetCommentModel>, IGetCommentProcessor
+	public class GetCommentProcessor : GetVerbProcessor<GetCommentModel, GetCommentsVerbOptions>, IGetCommentProcessor
 	{
 		private readonly IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> _configEntityWriter;
 
@@ -25,7 +25,7 @@ namespace HackerNews.CLI.Verbs.Get
 			_configEntityWriter = entityWriter;
 		}
 
-		public override void ConfigureProcessor(GetVerbOptions options)
+		public override void ConfigureProcessor(GetCommentsVerbOptions options)
 		{
 			_configEntityWriter.Configure(options.GetCommentInclusionConfiguration());
 		}

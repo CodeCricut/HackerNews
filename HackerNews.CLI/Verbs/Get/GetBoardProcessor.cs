@@ -8,12 +8,12 @@ using HackerNews.Domain.Common.Models.Boards;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetBoardProcessor : IGetVerbProcessor<GetBoardModel>
+	public interface IGetBoardProcessor : IGetVerbProcessor<GetBoardModel, GetBoardsVerbOptions>
 	{
 
 	}
 
-	public class GetBoardProcessor : GetVerbProcessor<GetBoardModel>, IGetBoardProcessor
+	public class GetBoardProcessor : GetVerbProcessor<GetBoardModel, GetBoardsVerbOptions>, IGetBoardProcessor
 	{
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _configEntityWriter;
 
@@ -25,7 +25,7 @@ namespace HackerNews.CLI.Verbs.Get
 			_configEntityWriter = entityWriter;
 		}
 
-		public override void ConfigureProcessor(GetVerbOptions options)
+		public override void ConfigureProcessor(GetBoardsVerbOptions options)
 		{
 			_configEntityWriter.Configure(options.GetBoardInclusionConfiguration());
 		}

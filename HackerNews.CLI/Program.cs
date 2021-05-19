@@ -102,21 +102,21 @@ namespace HackerNews.CLI
 
 			// Get Verb
 			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetBoardModel>, GetBoardProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsVerbOptions>, GetBoardProcessor>();
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
 
 			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetArticleModel>, GetArticleProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticlesVerbOptions>, GetArticleProcessor>();
 			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>();
 
 			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetCommentModel>, GetCommentProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsVerbOptions>, GetCommentProcessor>();
 			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>();
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetPublicUserModel>, GetPublicUserProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersVerbOptions>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
-
+			
 			// Register verb
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 
@@ -159,7 +159,11 @@ namespace HackerNews.CLI
 		/// </summary>
 		private static void AddProgramServices(IServiceCollection services)
 		{
-			services.AddProgramService<GetVerb, GetVerbOptions>(_args);
+			services.AddProgramService<GetBoardsVerb, GetBoardsVerbOptions>(_args);
+			services.AddProgramService<GetArticlesVerb, GetArticlesVerbOptions>(_args);
+			services.AddProgramService<GetCommentsVerb, GetCommentsVerbOptions>(_args);
+			services.AddProgramService<GetPublicUsersVerb, GetPublicUsersVerbOptions>(_args);
+
 			services.AddProgramService<PostVerb, PostVerbOptions>(_args);
 			services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
 		}

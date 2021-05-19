@@ -7,12 +7,12 @@ using HackerNews.Domain.Common.Models.Articles;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetArticleProcessor : IGetVerbProcessor<GetArticleModel>
+	public interface IGetArticleProcessor : IGetVerbProcessor<GetArticleModel, GetArticlesVerbOptions>
 	{
 
 	}
 
-	public class GetArticleProcessor : GetVerbProcessor<GetArticleModel>, IGetArticleProcessor
+	public class GetArticleProcessor : GetVerbProcessor<GetArticleModel, GetArticlesVerbOptions>, IGetArticleProcessor
 	{
 		private readonly IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> _configEntityWriter;
 
@@ -24,7 +24,7 @@ namespace HackerNews.CLI.Verbs.Get
 			_configEntityWriter = entityWriter;
 		}
 
-		public override void ConfigureProcessor(GetVerbOptions options)
+		public override void ConfigureProcessor(GetArticlesVerbOptions options)
 		{
 			_configEntityWriter.Configure(options.GetArticleInclusionConfiguration());
 		}

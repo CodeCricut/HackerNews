@@ -8,12 +8,12 @@ using HackerNews.Domain.Common.Models.Users;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetPublicUserProcessor : IGetVerbProcessor<GetPublicUserModel>
+	public interface IGetPublicUserProcessor : IGetVerbProcessor<GetPublicUserModel, GetPublicUsersVerbOptions>
 	{
 
 	}
 
-	public class GetPublicUserProcessor : GetVerbProcessor<GetPublicUserModel>,
+	public class GetPublicUserProcessor : GetVerbProcessor<GetPublicUserModel, GetPublicUsersVerbOptions>,
 		IGetPublicUserProcessor
 	{
 		private readonly IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> _configEntityWriter;
@@ -26,7 +26,7 @@ namespace HackerNews.CLI.Verbs.Get
 			_configEntityWriter = entityWriter;
 		}
 
-		public override void ConfigureProcessor(GetVerbOptions options)
+		public override void ConfigureProcessor(GetPublicUsersVerbOptions options)
 		{
 			_configEntityWriter.Configure(options.GetPublicUserInclusionConfiguration());
 		}

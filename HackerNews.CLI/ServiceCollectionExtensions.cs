@@ -9,6 +9,7 @@ using System;
 
 namespace HackerNews.CLI
 {
+	// TODO: If no hosted service could be found for the command, print possible promlems (ie. the list of failure to bind messages)
 	public static class ServiceCollectionExtensions
 	{
 		/// <summary>

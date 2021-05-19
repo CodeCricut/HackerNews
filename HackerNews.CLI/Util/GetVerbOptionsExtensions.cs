@@ -5,7 +5,7 @@ namespace HackerNews.CLI.Util
 {
 	public static class GetVerbOptionsExtensions
 	{
-		public static BoardInclusionConfiguration GetBoardInclusionConfiguration(this GetVerbOptions options)
+		public static BoardInclusionConfiguration GetBoardInclusionConfiguration(this GetBoardsVerbOptions options)
 		{
 			return new BoardInclusionConfiguration(options.IncludeAllFields)
 			{
@@ -22,7 +22,7 @@ namespace HackerNews.CLI.Util
 			};
 		}
 
-		public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetVerbOptions options)
+		public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetArticlesVerbOptions options)
 		{
 			return new ArticleInclusionConfiguration()
 			{
@@ -42,7 +42,7 @@ namespace HackerNews.CLI.Util
 			};
 		}
 
-		public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetVerbOptions options)
+		public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetCommentsVerbOptions options)
 		{
 			return new CommentInclusionConfiguration()
 			{
@@ -62,7 +62,7 @@ namespace HackerNews.CLI.Util
 			};
 		}
 
-		public static PublicUserInclusionConfiguration GetPublicUserInclusionConfiguration(this GetVerbOptions options)
+		public static PublicUserInclusionConfiguration GetPublicUserInclusionConfiguration(this GetPublicUsersVerbOptions options)
 		{
 			return new PublicUserInclusionConfiguration()
 			{

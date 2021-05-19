@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get -t \"users\" -n 1 -s 5 --includeUserId --includeUserKarma -f \"C:\\Users\\ajori\\OneDrive\\Desktop\\Junk\\kljdsf.csv\""
+      "commandLineArgs": "get -u --id 1 --print"
     }
   }
 }

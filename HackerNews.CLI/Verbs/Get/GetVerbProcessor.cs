@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetVerbProcessor<GetModel>
+	public interface IGetVerbProcessor<GetModel, TOptions>
+
+		where TOptions : IGetEntityVerbOptions
 	{
-		void ConfigureProcessor(GetVerbOptions options);
-		Task ProcessGetVerbOptionsAsync(GetVerbOptions options);
+		void ConfigureProcessor(TOptions options);
+		Task ProcessGetVerbOptionsAsync(TOptions options);
 	}
 
-	public abstract class GetVerbProcessor<TGetModel> : 
-		IGetVerbProcessor<TGetModel>
+	public abstract class GetVerbProcessor<TGetModel, TOptions> : 
+		IGetVerbProcessor<TGetModel, TOptions>
+		where TOptions : IGetEntityVerbOptions
 	{
 		protected IGetEntityRepository<TGetModel> EntityRepository { get; private set; }
 		protected IEntityLogger<TGetModel> EntityLogger { get; private set; }
@@ -30,7 +33,7 @@ namespace HackerNews.CLI.Verbs.Get
 			EntityWriter = entityWriter;
 		}
 
-		public async Task ProcessGetVerbOptionsAsync(GetVerbOptions options)
+		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
 			ConfigureProcessor(options);
 
@@ -55,7 +58,7 @@ namespace HackerNews.CLI.Verbs.Get
 		}
 
 
-		protected virtual void OutputEntityPage(GetVerbOptions options, PaginatedList<TGetModel> entityPage)
+		protected virtual void OutputEntityPage(TOptions options, PaginatedList<TGetModel> entityPage)
 		{
 			if (options.Print)
 				EntityLogger.LogEntityPage(entityPage);
@@ -63,7 +66,7 @@ namespace HackerNews.CLI.Verbs.Get
 				EntityWriter.WriteEntityPageAsync(options.File, entityPage);
 		}
 
-		protected virtual void OutputEntity(GetVerbOptions options, TGetModel entity)
+		protected virtual void OutputEntity(TOptions options, TGetModel entity)
 		{
 			if (options.Print)
 				EntityLogger.LogEntity(entity);
@@ -71,6 +74,6 @@ namespace HackerNews.CLI.Verbs.Get
 				EntityWriter.WriteEntityAsync(options.File, entity);
 		}
 
-		public abstract void ConfigureProcessor(GetVerbOptions options);
+		public abstract void ConfigureProcessor(TOptions options);
 	}
 }
