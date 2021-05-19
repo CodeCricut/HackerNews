@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using System.Collections.Generic;
 
-namespace HackerNews.CLI.Verbs.Get
+namespace HackerNews.CLI.Verbs.GetEntity
 {
 	public interface IGetEntityVerbOptions
 	{

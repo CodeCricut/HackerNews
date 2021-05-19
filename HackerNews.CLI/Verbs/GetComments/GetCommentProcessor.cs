@@ -4,9 +4,10 @@ using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Util;
+using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models.Comments;
 
-namespace HackerNews.CLI.Verbs.Get
+namespace HackerNews.CLI.Verbs.GetComments
 {
 	public interface IGetCommentProcessor : IGetVerbProcessor<GetCommentModel, GetCommentsVerbOptions>
 	{
@@ -17,9 +18,9 @@ namespace HackerNews.CLI.Verbs.Get
 	{
 		private readonly IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> _configEntityWriter;
 
-		public GetCommentProcessor(IGetEntityRepository<GetCommentModel> entityRepository, 
-			IEntityLogger<GetCommentModel> entityLogger, 
-			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter) 
+		public GetCommentProcessor(IGetEntityRepository<GetCommentModel> entityRepository,
+			IEntityLogger<GetCommentModel> entityLogger,
+			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter)
 			: base(entityRepository, entityLogger, entityWriter)
 		{
 			_configEntityWriter = entityWriter;

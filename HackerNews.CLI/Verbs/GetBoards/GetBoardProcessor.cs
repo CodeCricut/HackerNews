@@ -4,9 +4,10 @@ using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Util;
+using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models.Boards;
 
-namespace HackerNews.CLI.Verbs.Get
+namespace HackerNews.CLI.Verbs.GetBoards
 {
 	public interface IGetBoardProcessor : IGetVerbProcessor<GetBoardModel, GetBoardsVerbOptions>
 	{
@@ -17,9 +18,9 @@ namespace HackerNews.CLI.Verbs.Get
 	{
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _configEntityWriter;
 
-		public GetBoardProcessor(IGetEntityRepository<GetBoardModel> entityRepository, 
-			IEntityLogger<GetBoardModel> entityLogger, 
-			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter) 
+		public GetBoardProcessor(IGetEntityRepository<GetBoardModel> entityRepository,
+			IEntityLogger<GetBoardModel> entityLogger,
+			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter)
 			: base(entityRepository, entityLogger, entityWriter)
 		{
 			_configEntityWriter = entityWriter;

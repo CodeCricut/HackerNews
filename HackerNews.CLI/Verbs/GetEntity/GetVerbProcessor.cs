@@ -5,7 +5,7 @@ using HackerNews.Domain.Common.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Verbs.Get
+namespace HackerNews.CLI.Verbs.GetEntity
 {
 	public interface IGetVerbProcessor<GetModel, TOptions>
 
@@ -15,7 +15,7 @@ namespace HackerNews.CLI.Verbs.Get
 		Task ProcessGetVerbOptionsAsync(TOptions options);
 	}
 
-	public abstract class GetVerbProcessor<TGetModel, TOptions> : 
+	public abstract class GetVerbProcessor<TGetModel, TOptions> :
 		IGetVerbProcessor<TGetModel, TOptions>
 		where TOptions : IGetEntityVerbOptions
 	{

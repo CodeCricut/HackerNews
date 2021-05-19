@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Verbs.GetEntity;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -6,15 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Verbs.Get
+namespace HackerNews.CLI.Verbs.GetArticles
 {
 	[Verb("get-a", HelpText = "Get articles from the database.")]
 	public class GetArticlesVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
 	{
-		//// Unique id for this verb
-		//[Option('a', "articles", Required = true, HelpText = "Get articles.")]
-		//public bool GetArticles { get; set; }
-
 		[Option("IncludeId")]
 		public bool IncludeId { get; set; }
 		[Option("IncludeType")]
@@ -42,7 +39,6 @@ namespace HackerNews.CLI.Verbs.Get
 		[Option("IncludeAssociatedImageId")]
 		public bool IncludeAssociatedImageId { get; set; }
 	}
-
 
 	public class GetArticlesVerb : IHostedService
 	{

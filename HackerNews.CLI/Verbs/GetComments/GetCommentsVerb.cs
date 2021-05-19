@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Verbs.GetEntity;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Verbs.Get
+namespace HackerNews.CLI.Verbs.GetComments
 {
 	[Verb("get-c", HelpText = "Get comments from the database.")]
 	public class GetCommentsVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
