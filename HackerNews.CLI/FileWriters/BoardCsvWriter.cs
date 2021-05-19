@@ -85,22 +85,19 @@ namespace HackerNews.CLI.FileWriters
 			char delimiter = ',';
 			StringBuilder body = new StringBuilder();
 			if (_inclusionConfig.IncludeId) body.Append($"{board.Id},");
-			if (_inclusionConfig.IncludeTitle) body.Append($"{Quote(board.Title)},");
-			if (_inclusionConfig.IncludeDescription) body.Append($"{Quote(board.Description)},");
-			if (_inclusionConfig.IncludeCreateDate) body.Append($"{Quote(board.CreateDate.ToString())},");
+			if (_inclusionConfig.IncludeTitle) body.Append($"{board.Title.Quote()},");
+			if (_inclusionConfig.IncludeDescription) body.Append($"{board.Description.Quote()},");
+			if (_inclusionConfig.IncludeCreateDate) body.Append($"{board.CreateDate.ToString().Quote()},");
 			if (_inclusionConfig.IncludeCreatorId) body.Append($"{board.CreatorId},");
-			if (_inclusionConfig.IncludeModeratorIds) body.Append($"{Quote(board.ModeratorIds.ToDelimitedList(delimiter))},");
-			if (_inclusionConfig.IncludeSubscriberIds) body.Append($"{Quote(board.SubscriberIds.ToDelimitedList(delimiter))},");
-			if (_inclusionConfig.IncludeArticleIds) body.Append($"{Quote(board.ArticleIds.ToDelimitedList(delimiter))},");
+			if (_inclusionConfig.IncludeModeratorIds) body.Append($"{board.ModeratorIds.ToDelimitedList(delimiter).Quote()},");
+			if (_inclusionConfig.IncludeSubscriberIds) body.Append($"{board.SubscriberIds.ToDelimitedList(delimiter).Quote()},");
+			if (_inclusionConfig.IncludeArticleIds) body.Append($"{board.ArticleIds.ToDelimitedList(delimiter).Quote()},");
 			if (_inclusionConfig.IncludeDeleted) body.Append($"{board.Deleted},");
 			if (_inclusionConfig.IncludeBoardImageId) body.Append($"{board.BoardImageId},");
 
 			return body.ToString();
 		}
 
-		private string Quote(string s)
-		{
-			return $"\"{s}\"";
-		}
+		
 	}
 }
