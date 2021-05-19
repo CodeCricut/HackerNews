@@ -62,9 +62,38 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeArticleAssociatedImageId { get; set; }
 	}
 
+	interface IGetCommentVerbOptions
+	{
+		[Option("includeCommentId", SetName = "comments")]
+		public bool IncludeCommentId { get; set; }
+		[Option("includeCommentUserId", SetName = "comments")]
+		public bool IncludeCommentUserId { get; set; }
+		[Option("includeCommentText", SetName = "comments")]
+		public bool IncludeCommentText { get; set; }
+		[Option("includeCommentUrl", SetName = "comments")]
+		public bool IncludeCommentUrl { get; set; }
+		[Option("includeCommentKarma", SetName = "comments")]
+		public bool IncludeCommentKarma { get; set; }
+		[Option("includeCommentCommentIds", SetName = "comments")]
+		public bool IncludeCommentCommentIds { get; set; }
+		[Option("includeCommentParentCommentId", SetName = "comments")]
+		public bool IncludeCommentParentCommentId { get; set; }
+		[Option("includeCommentParentArticleId", SetName = "comments")]
+		public bool IncludeCommentParentArticleId { get; set; }
+		[Option("includeCommentDeleted", SetName = "comments")]
+		public bool IncludeCommentDeleted { get; set; }
+		[Option("includeCommentUsersLiked", SetName = "comments")]
+		public bool IncludeCommentUsersLiked { get; set; }
+		[Option("includeCommentUsersDisliked", SetName = "comments")]
+		public bool IncludeCommentUsersDisliked { get; set; }
+		[Option("includeCommentPostDate", SetName = "comments")]
+		public bool IncludeCommentPostDate { get; set; }
+		[Option("includeCommentBoardId", SetName = "comments")]
+		public bool IncludeCommentBoardId { get; set; }
+	}
+
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
-	public class GetVerbOptions : IGetBoardVerbOptions,
-		IGetArticleVerbOptions
+	public class GetVerbOptions : IGetBoardVerbOptions, IGetArticleVerbOptions, IGetCommentVerbOptions
 	{
 		[Option('t', "type", Required = true, HelpText = "The type of entity to retrieve (board, article, comment, user).")]
 		public string Type { get; set; }
@@ -116,6 +145,21 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeArticleBoardId { get; set; }
 		public bool IncludeArticleDeleted { get; set; }
 		public bool IncludeArticleAssociatedImageId { get; set; }
+
+		// Comments
+		public bool IncludeCommentId { get; set; }
+		public bool IncludeCommentUserId { get; set; }
+		public bool IncludeCommentText { get; set; }
+		public bool IncludeCommentUrl { get; set; }
+		public bool IncludeCommentKarma { get; set; }
+		public bool IncludeCommentCommentIds { get; set; }
+		public bool IncludeCommentParentCommentId { get; set; }
+		public bool IncludeCommentParentArticleId { get; set; }
+		public bool IncludeCommentDeleted { get; set; }
+		public bool IncludeCommentUsersLiked { get; set; }
+		public bool IncludeCommentUsersDisliked { get; set; }
+		public bool IncludeCommentPostDate { get; set; }
+		public bool IncludeCommentBoardId { get; set; }
 	}
 
 	public class GetVerb : IHostedService

@@ -34,7 +34,19 @@ namespace HackerNews.CLI.Util
 		{
 			return new CommentInclusionConfiguration()
 			{
-				// TODO
+				IncludeId				= options.IncludeCommentId,
+				IncludeUserId			= options.IncludeCommentUserId,
+				IncludeText				= options.IncludeCommentText,
+				IncludeUrl				= options.IncludeCommentUrl,
+				IncludeKarma			= options.IncludeCommentKarma,
+				IncludeCommentIds		= options.IncludeCommentCommentIds,
+				IncludeParentCommentId	= options.IncludeCommentParentCommentId,
+				IncludeParentArticleId	= options.IncludeCommentParentArticleId,
+				IncludeDeleted			= options.IncludeCommentDeleted,
+				IncludeUsersLiked		= options.IncludeCommentUsersLiked,
+				IncludeUsersDisliked	= options.IncludeCommentUsersDisliked,
+				IncludePostDate			= options.IncludeCommentPostDate,
+				IncludeBoardId			= options.IncludeCommentBoardId
 			};
 		}
 
