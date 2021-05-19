@@ -92,8 +92,28 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeCommentBoardId { get; set; }
 	}
 
+	interface IGetPublicUserVerbOptions
+	{
+		[Option("includeUserId", SetName = "users")]
+		public bool IncludeUserId { get; set; }
+		[Option("includeUserUsername", SetName = "users")]
+		public bool IncludeUserUsername { get; set; }
+		[Option("includeUserKarma", SetName = "users")]
+		public bool IncludeUserKarma { get; set; }
+		[Option("includeUserArticleIds", SetName = "users")]
+		public bool IncludeUserArticleIds { get; set; }
+		[Option("includeUserCommentIds", SetName = "users")]
+		public bool IncludeUserCommentIds { get; set; }
+		[Option("includeUserJoinDate", SetName = "users")]
+		public bool IncludeUserJoinDate { get; set; }
+		[Option("includeUserDeleted", SetName = "users")]
+		public bool IncludeUserDeleted { get; set; }
+		[Option("includeUserProfileImageId", SetName = "users")]
+		public bool IncludeUserProfileImageId { get; set; }
+	}
+
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
-	public class GetVerbOptions : IGetBoardVerbOptions, IGetArticleVerbOptions, IGetCommentVerbOptions
+	public class GetVerbOptions : IGetBoardVerbOptions, IGetArticleVerbOptions, IGetCommentVerbOptions, IGetPublicUserVerbOptions
 	{
 		[Option('t', "type", Required = true, HelpText = "The type of entity to retrieve (board, article, comment, user).")]
 		public string Type { get; set; }
@@ -160,6 +180,16 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeCommentUsersDisliked { get; set; }
 		public bool IncludeCommentPostDate { get; set; }
 		public bool IncludeCommentBoardId { get; set; }
+
+		//  Users
+		public bool IncludeUserId { get; set; }
+		public bool IncludeUserUsername { get; set; }
+		public bool IncludeUserKarma { get; set; }
+		public bool IncludeUserArticleIds { get; set; }
+		public bool IncludeUserCommentIds { get; set; }
+		public bool IncludeUserJoinDate { get; set; }
+		public bool IncludeUserDeleted { get; set; }
+		public bool IncludeUserProfileImageId { get; set; }
 	}
 
 	public class GetVerb : IHostedService

@@ -26,7 +26,19 @@ namespace HackerNews.CLI.Util
 		{
 			return new ArticleInclusionConfiguration()
 			{
-				// TODO
+				IncludeId					= options.IncludeArticleId,
+				IncludeType					= options.IncludeArticleType,
+				IncludeUserId				= options.IncludeArticleUserId,
+				IncludeText					= options.IncludeArticleText,
+				IncludeCommentIds			= options.IncludeArticleCommentIds,
+				IncludeKarma				= options.IncludeArticleKarma,
+				IncludeTitle				= options.IncludeArticleTitle,
+				IncludeUsersLiked			= options.IncludeArticleUsersLiked,
+				IncludeUsersDisliked		= options.IncludeArticleUsersDisliked,
+				IncludePostDate				= options.IncludeArticlePostDate,
+				IncludeBoardId				= options.IncludeArticleBoardId,
+				IncludeDeleted				= options.IncludeArticleDeleted,
+				IncludeAssociatedImageId	= options.IncludeArticleAssociatedImageId
 			};
 		}
 
@@ -54,7 +66,14 @@ namespace HackerNews.CLI.Util
 		{
 			return new PublicUserInclusionConfiguration()
 			{
-				// TODO
+				IncludeId				= options.IncludeUserId,
+				IncludeUsername			= options.IncludeUserUsername,
+				IncludeKarma			= options.IncludeUserKarma,
+				IncludeArticleIds		= options.IncludeUserArticleIds,
+				IncludeCommentIds		= options.IncludeUserCommentIds,
+				IncludeJoinDate			= options.IncludeUserJoinDate,
+				IncludeDeleted			= options.IncludeUserDeleted,
+				IncludeProfileImageId	= options.IncludeUserProfileImageId
 			};
 		}
 	}
