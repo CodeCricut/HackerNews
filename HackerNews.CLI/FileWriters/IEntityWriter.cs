@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.FileWriters
 {
-	public interface IEntityWriter<TGetModel> // , TInclusionConfig
+	public interface IEntityWriter<TGetModel> 
 	{
 		Task WriteEntityAsync(string fileLoc, TGetModel entity);
 		Task WriteEntityPageAsync(string fileLoc, PaginatedList<TGetModel> entityPage);

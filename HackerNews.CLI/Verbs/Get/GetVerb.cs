@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using HackerNews.CLI.Util;
+using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -112,6 +113,9 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeUserProfileImageId { get; set; }
 	}
 
+	// TODO: i believe that you can use the same verb name for multiple verbs. If that is the case, all get/post verbs should be split up.
+	// [Verb("get")]
+	// GetBoardVerbOptions
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
 	public class GetVerbOptions : IGetBoardVerbOptions, IGetArticleVerbOptions, IGetCommentVerbOptions, IGetPublicUserVerbOptions
 	{
