@@ -1,5 +1,7 @@
 ﻿using HackerNews.ApiConsumer;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
+using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Verbs.Get;
 using HackerNews.CLI.Verbs.Post;
@@ -100,19 +102,19 @@ namespace HackerNews.CLI
 
 			// Get Verb
 			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
-				.AddSingleton<IGetVerbProcessor<PostBoardModel, GetBoardModel>, GetBoardProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetBoardModel>, GetBoardProcessor>();
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
 
 			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
-				.AddSingleton<IGetVerbProcessor<PostArticleModel, GetArticleModel>, GetArticleProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetArticleModel>, GetArticleProcessor>();
 			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>();
 
 			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
-				.AddSingleton<IGetVerbProcessor<PostCommentModel, GetCommentModel>, GetCommentProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetCommentModel>, GetCommentProcessor>();
 			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>();
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
-				.AddSingleton<IGetVerbProcessor<RegisterUserModel, GetPublicUserModel>, GetPublicUserProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetPublicUserModel>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
 			// Register verb
@@ -133,9 +135,21 @@ namespace HackerNews.CLI
 
 			services.AddSingleton<IFileWriter, FileWriter>();
 			services.AddSingleton<IEntityWriter<GetBoardModel>, BoardCsvWriter>();
+			services.AddSingleton<IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration>, BoardCsvWriter>();
+
 			services.AddSingleton<IEntityWriter<GetArticleModel>, ArticleCsvWriter>();
+			services.AddSingleton<IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration>, ArticleCsvWriter>();
+
 			services.AddSingleton<IEntityWriter<GetCommentModel>, CommentCsvWriter>();
+			services.AddSingleton<IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration>, CommentCsvWriter>();
+
 			services.AddSingleton<IEntityWriter<GetPublicUserModel>, PublicUserCsvWriter>();
+			services.AddSingleton<IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration>, PublicUserCsvWriter>();
+
+			services.AddSingleton<IGetEntityRepository<GetBoardModel>, GetBoardRepository>();
+			services.AddSingleton<IGetEntityRepository<GetArticleModel>, GetArticleRepository>();
+			services.AddSingleton<IGetEntityRepository<GetCommentModel>, GetCommentRepository>();
+			services.AddSingleton<IGetEntityRepository<GetPublicUserModel>, GetPublicUserRepository>();
 
 			AddProgramServices(services);
 		}

@@ -32,8 +32,39 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeBoardImageId { get; set; }
 	}
 
+	interface IGetArticleVerbOptions
+	{
+		[Option("includeArticleId", SetName = "articles")]
+		public bool IncludeArticleId { get; set; }
+		[Option("includeArticleType", SetName = "articles")]
+		public bool IncludeArticleType { get; set; }
+		[Option("includeArticleUserId", SetName = "articles")]
+		public bool IncludeArticleUserId { get; set; }
+		[Option("includeArticleText", SetName = "articles")]
+		public bool IncludeArticleText { get; set; }
+		[Option("includeArticleCommentIds", SetName = "articles")]
+		public bool IncludeArticleCommentIds { get; set; }
+		[Option("includeArticleKarma", SetName = "articles")]
+		public bool IncludeArticleKarma { get; set; }
+		[Option("includeArticleTitle", SetName = "articles")]
+		public bool IncludeArticleTitle { get; set; }
+		[Option("includeArticleUsersLiked", SetName = "articles")]
+		public bool IncludeArticleUsersLiked { get; set; }
+		[Option("includeArticleUsersDisliked", SetName = "articles")]
+		public bool IncludeArticleUsersDisliked { get; set; }
+		[Option("includeArticlePostDate", SetName = "articles")]
+		public bool IncludeArticlePostDate { get; set; }
+		[Option("includeArticleBoardId", SetName = "articles")]
+		public bool IncludeArticleBoardId { get; set; }
+		[Option("includeArticleDeleted", SetName = "articles")]
+		public bool IncludeArticleDeleted { get; set; }
+		[Option("includeArticleAssociatedImageId", SetName = "articles")]
+		public bool IncludeArticleAssociatedImageId { get; set; }
+	}
+
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
-	public class GetVerbOptions : IGetBoardVerbOptions
+	public class GetVerbOptions : IGetBoardVerbOptions,
+		IGetArticleVerbOptions
 	{
 		[Option('t', "type", Required = true, HelpText = "The type of entity to retrieve (board, article, comment, user).")]
 		public string Type { get; set; }
@@ -70,6 +101,21 @@ namespace HackerNews.CLI.Verbs.Get
 		public bool IncludeBoardArticleIds { get; set; }
 		public bool IncludeBoardDeleted { get; set; }
 		public bool IncludeBoardImageId { get; set; }
+
+		// Articles
+		public bool IncludeArticleId { get; set; }
+		public bool IncludeArticleType { get; set; }
+		public bool IncludeArticleUserId { get; set; }
+		public bool IncludeArticleText { get; set; }
+		public bool IncludeArticleCommentIds { get; set; }
+		public bool IncludeArticleKarma { get; set; }
+		public bool IncludeArticleTitle { get; set; }
+		public bool IncludeArticleUsersLiked { get; set; }
+		public bool IncludeArticleUsersDisliked { get; set; }
+		public bool IncludeArticlePostDate { get; set; }
+		public bool IncludeArticleBoardId { get; set; }
+		public bool IncludeArticleDeleted { get; set; }
+		public bool IncludeArticleAssociatedImageId { get; set; }
 	}
 
 	public class GetVerb : IHostedService

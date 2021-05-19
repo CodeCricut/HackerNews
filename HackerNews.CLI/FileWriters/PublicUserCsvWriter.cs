@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.FileWriters
 {
-	public class PublicUserCsvWriter : IEntityWriter<GetPublicUserModel>
+	public class PublicUserCsvWriter : IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration>
 	{
-		public void Configure(BoardInclusionConfiguration config)
+		public void Configure(PublicUserInclusionConfiguration config)
 		{
 			throw new NotImplementedException();
 		}

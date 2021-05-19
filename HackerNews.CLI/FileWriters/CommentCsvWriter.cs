@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.FileWriters
 {
-	public class CommentCsvWriter : IEntityWriter<GetCommentModel>
+	public class CommentCsvWriter : IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration>
 	{
-		public void Configure(BoardInclusionConfiguration config)
+		public void Configure(CommentInclusionConfiguration config)
 		{
 			throw new NotImplementedException();
 		}

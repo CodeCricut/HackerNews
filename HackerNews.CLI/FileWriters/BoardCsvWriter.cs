@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.FileWriters
 {
-	public class BoardCsvWriter : IEntityWriter<GetBoardModel>
+	public class BoardCsvWriter : IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration>
 	{
 		private readonly IFileWriter _fileWriter;
 		private readonly ILogger<BoardCsvWriter> _logger;
@@ -97,7 +97,5 @@ namespace HackerNews.CLI.FileWriters
 
 			return body.ToString();
 		}
-
-		
 	}
 }

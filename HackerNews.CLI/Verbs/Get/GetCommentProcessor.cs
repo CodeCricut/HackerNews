@@ -1,24 +1,33 @@
 ﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
+using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Comments;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetCommentProcessor : IGetVerbProcessor<PostCommentModel, GetCommentModel>
+	public interface IGetCommentProcessor : IGetVerbProcessor<GetCommentModel>
 	{
 
 	}
 
-	public class GetCommentProcessor : GetVerbProcessor<PostCommentModel, GetCommentModel>, IGetCommentProcessor
+	public class GetCommentProcessor : GetVerbProcessor<GetCommentModel>, IGetCommentProcessor
 	{
-		public GetCommentProcessor(IEntityApiClient<PostCommentModel, GetCommentModel> entityApiClient, IEntityLogger<GetCommentModel> entityLogger, IEntityWriter<GetCommentModel> entityWriter) : base(entityApiClient, entityLogger, entityWriter)
+		private readonly IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> _configEntityWriter;
+
+		public GetCommentProcessor(IGetEntityRepository<GetCommentModel> entityRepository, 
+			IEntityLogger<GetCommentModel> entityLogger, 
+			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter) 
+			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityWriter = entityWriter;
 		}
 
-		protected override void ConfigureWriter(GetVerbOptions options, IEntityWriter<GetCommentModel> writer)
+		public override void ConfigureProcessor(GetVerbOptions options)
 		{
-			throw new System.NotImplementedException();
+			_configEntityWriter.Configure(options.GetCommentInclusionConfiguration());
 		}
 	}
 }

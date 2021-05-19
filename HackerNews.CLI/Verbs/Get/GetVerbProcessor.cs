@@ -1,40 +1,42 @@
-﻿using HackerNews.ApiConsumer.Core;
+﻿using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetVerbProcessor<TPostModel, TGetModel>
+	public interface IGetVerbProcessor<GetModel>
 	{
+		void ConfigureProcessor(GetVerbOptions options);
 		Task ProcessGetVerbOptionsAsync(GetVerbOptions options);
 	}
 
-	public abstract class GetVerbProcessor<TPostModel, TGetModel> : IGetVerbProcessor<TPostModel, TGetModel>
+	public abstract class GetVerbProcessor<TGetModel> : 
+		IGetVerbProcessor<TGetModel>
 	{
-		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
-		private readonly IEntityLogger<TGetModel> _entityLogger;
-		private readonly IEntityWriter<TGetModel> _entityWriter;
+		protected IGetEntityRepository<TGetModel> EntityRepository { get; private set; }
+		protected IEntityLogger<TGetModel> EntityLogger { get; private set; }
+		protected IEntityWriter<TGetModel> EntityWriter { get; private set; }
 
-		public GetVerbProcessor(IEntityApiClient<TPostModel, TGetModel> entityApiClient,
+		public GetVerbProcessor(
+			IGetEntityRepository<TGetModel> entityRepository,
 			IEntityLogger<TGetModel> entityLogger,
 			IEntityWriter<TGetModel> entityWriter)
 		{
-			_entityApiClient = entityApiClient;
-			_entityLogger = entityLogger;
-			_entityWriter = entityWriter;
+			EntityRepository = entityRepository;
+			EntityLogger = entityLogger;
+			EntityWriter = entityWriter;
 		}
 
 		public async Task ProcessGetVerbOptionsAsync(GetVerbOptions options)
 		{
-			ConfigureWriter(options, _entityWriter);
+			ConfigureProcessor(options);
 
 			if (options.Id > 0)
 			{
-				TGetModel entity = await GetEntityAsync(options.Id);
+				TGetModel entity = await EntityRepository.GetByIdAsync(options.Id);
 				OutputEntity(options, entity);
 				return;
 			}
@@ -45,44 +47,30 @@ namespace HackerNews.CLI.Verbs.Get
 
 			PaginatedList<TGetModel> entityPage;
 			if (options.Ids.Count() > 0)
-				entityPage = await GetEntitiesAsync(options.Ids, pagingParams);
+				entityPage = await EntityRepository.GetByIdsAsync(options.Ids, pagingParams);
 			else
-				entityPage = await GetEntitiesAsync(pagingParams);
+				entityPage = await EntityRepository.GetPageAsync(pagingParams);
 
 			OutputEntityPage(options, entityPage);
 		}
 
-		protected virtual Task<PaginatedList<TGetModel>> GetEntitiesAsync(IEnumerable<int> ids, PagingParams pagingParams)
-		{
-			return _entityApiClient.GetByIdsAsync(ids.ToList(), pagingParams);
-		}
-
-		protected virtual Task<PaginatedList<TGetModel>> GetEntitiesAsync(PagingParams pagingParams)
-		{
-			return _entityApiClient.GetPageAsync(pagingParams);
-		}
-
-		protected virtual Task<TGetModel> GetEntityAsync(int id)
-		{
-			return _entityApiClient.GetByIdAsync(id);
-		}
 
 		protected virtual void OutputEntityPage(GetVerbOptions options, PaginatedList<TGetModel> entityPage)
 		{
 			if (options.Print)
-				_entityLogger.LogEntityPage(entityPage);
+				EntityLogger.LogEntityPage(entityPage);
 			if (!string.IsNullOrEmpty(options.File))
-				_entityWriter.WriteEntityPageAsync(options.File, entityPage);
+				EntityWriter.WriteEntityPageAsync(options.File, entityPage);
 		}
 
 		protected virtual void OutputEntity(GetVerbOptions options, TGetModel entity)
 		{
 			if (options.Print)
-				_entityLogger.LogEntity(entity);
+				EntityLogger.LogEntity(entity);
 			if (!string.IsNullOrEmpty(options.File))
-				_entityWriter.WriteEntityAsync(options.File, entity);
+				EntityWriter.WriteEntityAsync(options.File, entity);
 		}
 
-		protected abstract void ConfigureWriter(GetVerbOptions options, IEntityWriter<TGetModel> writer);
+		public abstract void ConfigureProcessor(GetVerbOptions options);
 	}
 }

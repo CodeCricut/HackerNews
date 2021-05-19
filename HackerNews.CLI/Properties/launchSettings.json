@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get -t \"boards\" -n 1 -s 5 --includeBoardId --includeBoardTitle --includeBoardDescription  -f \"C:\\Users\\ajori\\OneDrive\\Desktop\\Junk\\test2.csv\""
+      "commandLineArgs": "get -t \"boards\" -n 1 -s 5 --includeBoardId --includeBoardTitle --includeBoardDescription  -f \"C:\\Users\\ajori\\OneDrive\\Desktop\\Junk\\test2.csv\" -p"
     }
   }
 }

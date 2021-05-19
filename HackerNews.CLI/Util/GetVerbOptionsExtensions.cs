@@ -21,5 +21,29 @@ namespace HackerNews.CLI.Util
 				IncludeBoardImageId = options.IncludeBoardImageId
 			};
 		}
+
+		public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetVerbOptions options)
+		{
+			return new ArticleInclusionConfiguration()
+			{
+				// TODO
+			};
+		}
+
+		public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetVerbOptions options)
+		{
+			return new CommentInclusionConfiguration()
+			{
+				// TODO
+			};
+		}
+
+		public static PublicUserInclusionConfiguration GetPublicUserInclusionConfiguration(this GetVerbOptions options)
+		{
+			return new PublicUserInclusionConfiguration()
+			{
+				// TODO
+			};
+		}
 	}
 }

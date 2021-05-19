@@ -1,4 +1,5 @@
 ﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
@@ -7,21 +8,26 @@ using HackerNews.Domain.Common.Models.Boards;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetBoardProcessor : IGetVerbProcessor<PostBoardModel, GetBoardModel>
+	public interface IGetBoardProcessor : IGetVerbProcessor<GetBoardModel>
 	{
 
 	}
 
-	public class GetBoardProcessor : GetVerbProcessor<PostBoardModel, GetBoardModel>, IGetBoardProcessor
+	public class GetBoardProcessor : GetVerbProcessor<GetBoardModel>, IGetBoardProcessor
 	{
-		public GetBoardProcessor(IEntityApiClient<PostBoardModel, GetBoardModel> entityApiClient, IEntityLogger<GetBoardModel> entityLogger, IEntityWriter<GetBoardModel> entityWriter) : base(entityApiClient, entityLogger, entityWriter)
+		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _configEntityWriter;
+
+		public GetBoardProcessor(IGetEntityRepository<GetBoardModel> entityRepository, 
+			IEntityLogger<GetBoardModel> entityLogger, 
+			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter) 
+			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityWriter = entityWriter;
 		}
 
-		protected override void ConfigureWriter(GetVerbOptions options, IEntityWriter<GetBoardModel> writer)
+		public override void ConfigureProcessor(GetVerbOptions options)
 		{
-			BoardInclusionConfiguration config = options.GetBoardInclusionConfiguration();
-			writer.Configure(config);
+			_configEntityWriter.Configure(options.GetBoardInclusionConfiguration());
 		}
 	}
 }

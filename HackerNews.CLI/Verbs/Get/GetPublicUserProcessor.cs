@@ -1,25 +1,34 @@
 ﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
+using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Users;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	public interface IGetPublicUserProcessor : IGetVerbProcessor<RegisterUserModel, GetPublicUserModel>
+	public interface IGetPublicUserProcessor : IGetVerbProcessor<GetPublicUserModel>
 	{
 
 	}
 
-	public class GetPublicUserProcessor : GetVerbProcessor<RegisterUserModel, GetPublicUserModel>,
+	public class GetPublicUserProcessor : GetVerbProcessor<GetPublicUserModel>,
 		IGetPublicUserProcessor
 	{
-		public GetPublicUserProcessor(IEntityApiClient<RegisterUserModel, GetPublicUserModel> entityApiClient, IEntityLogger<GetPublicUserModel> entityLogger, IEntityWriter<GetPublicUserModel> entityWriter) : base(entityApiClient, entityLogger, entityWriter)
+		private readonly IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> _configEntityWriter;
+
+		public GetPublicUserProcessor(IGetEntityRepository<GetPublicUserModel> entityRepository, 
+			IEntityLogger<GetPublicUserModel> entityLogger, 
+			IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> entityWriter) 
+			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityWriter = entityWriter;
 		}
 
-		protected override void ConfigureWriter(GetVerbOptions options, IEntityWriter<GetPublicUserModel> writer)
+		public override void ConfigureProcessor(GetVerbOptions options)
 		{
-			throw new System.NotImplementedException();
+			_configEntityWriter.Configure(options.GetPublicUserInclusionConfiguration());
 		}
 	}
 }
