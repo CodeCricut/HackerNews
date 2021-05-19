@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Post
 {
-	public interface IPostVerbProcessor<TPostModel, TGetModel>
+	public interface IPostVerbProcessor<TPostModel, TGetModel, TOptions>
+		where TOptions : IPostEntityVerbOptions
 	{
-		Task ProcessGetVerbOptionsAsync(PostVerbOptions options);
+		TPostModel ConstructPostModel(TOptions options);
+		Task ProcessGetVerbOptionsAsync(TOptions options);
 	}
 
-	public abstract class PostVerbProcessor<TPostModel, TGetModel> : IPostVerbProcessor<TPostModel, TGetModel>
+	public abstract class PostVerbProcessor<TPostModel, TGetModel, TOptions> 
+		: IPostVerbProcessor<TPostModel, TGetModel, TOptions>
+		where TOptions : IPostEntityVerbOptions
 	{
 		private readonly ISignInManager _signInManager;
 		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
@@ -26,8 +30,9 @@ namespace HackerNews.CLI.Verbs.Post
 			_entityLogger = entityLogger;
 		}
 
-		public async Task ProcessGetVerbOptionsAsync(PostVerbOptions options)
+		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
+			// TODO: handle bad requests
 			LoginModel loginModel = new LoginModel() { UserName = options.Username, Password = options.Password };
 			await _signInManager.SignInAsync(loginModel);
 
@@ -36,6 +41,6 @@ namespace HackerNews.CLI.Verbs.Post
 			_entityLogger.LogEntity(getModel);
 		}
 
-		protected abstract TPostModel ConstructPostModel(PostVerbOptions options);
+		public abstract TPostModel ConstructPostModel(TOptions options);
 	}
 }

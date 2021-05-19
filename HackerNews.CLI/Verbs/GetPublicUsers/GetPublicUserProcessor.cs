@@ -1,5 +1,4 @@
-﻿using HackerNews.ApiConsumer.Core;
-using HackerNews.CLI.EntityRepository;
+﻿using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;

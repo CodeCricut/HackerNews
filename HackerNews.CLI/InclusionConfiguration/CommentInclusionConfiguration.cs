@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.CLI.InclusionConfiguration
+﻿namespace HackerNews.CLI.InclusionConfiguration
 {
 	public class CommentInclusionConfiguration
 	{
@@ -15,8 +11,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 		public bool IncludeParentCommentId { get; set; }
 		public bool IncludeParentArticleId { get; set; }
 		public bool IncludeDeleted { get; set; }
-		public bool IncludeUsersLiked { get; set; } 
-		public bool IncludeUsersDisliked { get; set; } 
+		public bool IncludeUsersLiked { get; set; }
+		public bool IncludeUsersDisliked { get; set; }
 		public bool IncludePostDate { get; set; }
 		public bool IncludeBoardId { get; set; }
 	}

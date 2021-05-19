@@ -1,10 +1,8 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.EntityRepository

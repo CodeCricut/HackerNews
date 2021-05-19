@@ -37,7 +37,7 @@ namespace HackerNews.CLI.FileWriters
 
 		public Task WriteEntityPageAsync(string fileLoc, PaginatedList<GetBoardModel> entityPage)
 		{
-			return WriteEntitiesToFileAsync(fileLoc, entityPage.Items);	
+			return WriteEntitiesToFileAsync(fileLoc, entityPage.Items);
 		}
 
 		private async Task WriteEntitiesToFileAsync(string fileLoc, IEnumerable<GetBoardModel> boards)

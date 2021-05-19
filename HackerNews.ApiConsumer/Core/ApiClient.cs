@@ -19,6 +19,7 @@ namespace HackerNews.ApiConsumer.Core
 		void SetAuthorizationHeader(AuthenticationHeaderValue value);
 	}
 
+	// TODO: use response pattern instead of throwing if http error
 	internal class ApiClient : IApiClient
 	{
 		private readonly HttpClient _httpClient;

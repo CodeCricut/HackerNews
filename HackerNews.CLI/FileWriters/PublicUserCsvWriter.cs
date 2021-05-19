@@ -98,7 +98,7 @@ namespace HackerNews.CLI.FileWriters
 
 			if (_inclusionConfig.IncludeId)
 				body.Append($"{user.Id},");
-			if(_inclusionConfig.IncludeUsername)
+			if (_inclusionConfig.IncludeUsername)
 				body.Append($"{user.Username.Quote()},");
 			if (_inclusionConfig.IncludeKarma)
 				body.Append($"{user.Karma},");

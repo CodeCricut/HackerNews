@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.CLI.Util
+﻿namespace HackerNews.CLI.Util
 {
 	public static class StringExtensions
 	{

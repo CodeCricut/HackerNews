@@ -10,6 +10,9 @@ using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.CLI.Verbs.GetPublicUsers;
 using HackerNews.CLI.Verbs.Post;
+using HackerNews.CLI.Verbs.PostArticle;
+using HackerNews.CLI.Verbs.PostBoard;
+using HackerNews.CLI.Verbs.PostComment;
 using HackerNews.CLI.Verbs.Register;
 using HackerNews.Domain;
 using HackerNews.Domain.Common.Models.Articles;
@@ -127,13 +130,16 @@ namespace HackerNews.CLI
 
 			// Post Verb
 			services.AddSingleton<IPostBoardProcessor, PostBoardProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel>, PostBoardProcessor>();
+				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardVerbOptions>, 
+					PostBoardProcessor>();
 
 			services.AddSingleton<IPostArticleProcessor, PostArticleProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel>, PostArticleProcessor>();
+				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleVerbOptions>, 
+					PostArticleProcessor>();
 
 			services.AddSingleton<IPostCommentProcessor, PostCommentProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel>, PostCommentProcessor>();
+				.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentVerbOptions>, 
+					PostCommentProcessor>();
 
 			services.AddDomain(configuration)
 				.AddApiConsumer();
@@ -165,11 +171,15 @@ namespace HackerNews.CLI
 		private static void AddHostedServices(IServiceCollection services)
 		{
 			var types = new Type[]
-						{
+			{
 				typeof(GetBoardsVerbOptions),
 				typeof(GetArticlesVerbOptions),
 				typeof(GetCommentsVerbOptions),
-				typeof(GetPublicUsersVerbOptions)
+				typeof(GetPublicUsersVerbOptions),
+
+				typeof(PostBoardVerbOptions),
+				typeof(PostArticleVerbOptions),
+				typeof(PostCommentVerbOptions)
 			};
 			Parser.Default
 				.ParseArguments(_args, types)
@@ -182,13 +192,13 @@ namespace HackerNews.CLI
 		/// </summary>
 		private static void AddProgramServices(IServiceCollection services)
 		{
-			services.AddProgramService<GetBoardsVerb, GetBoardsVerbOptions>(_args);
-			services.AddProgramService<GetArticlesVerb, GetArticlesVerbOptions>(_args);
-			services.AddProgramService<GetCommentsVerb, GetCommentsVerbOptions>(_args);
-			services.AddProgramService<GetPublicUsersVerb, GetPublicUsersVerbOptions>(_args);
+			//services.AddProgramService<GetBoardsVerb, GetBoardsVerbOptions>(_args);
+			//services.AddProgramService<GetArticlesVerb, GetArticlesVerbOptions>(_args);
+			//services.AddProgramService<GetCommentsVerb, GetCommentsVerbOptions>(_args);
+			//services.AddProgramService<GetPublicUsersVerb, GetPublicUsersVerbOptions>(_args);
 
-			services.AddProgramService<PostVerb, PostVerbOptions>(_args);
-			services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
+			//services.AddProgramService<PostVerb, PostEntityVerbOptions>(_args);
+			//services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
 		}
 
 		private static void Run(object obj, IServiceCollection services)
@@ -210,6 +220,18 @@ namespace HackerNews.CLI
 				case GetPublicUsersVerbOptions u:
 					services.AddSingleton(u);
 					services.AddHostedService<GetPublicUsersVerb>();
+					break;
+				case PostBoardVerbOptions b:
+					services.AddSingleton(b);
+					services.AddHostedService<PostBoardVerb>();
+					break;
+				case PostArticleVerbOptions a:
+					services.AddSingleton(a);
+					services.AddHostedService<PostArticleVerb>();
+					break;
+				case PostCommentVerbOptions c:
+					services.AddSingleton(c);
+					services.AddHostedService<PostCommentVerb>();
 					break;
 			}
 		}

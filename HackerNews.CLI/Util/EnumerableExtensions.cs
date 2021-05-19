@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace HackerNews.CLI.Util
@@ -9,7 +8,7 @@ namespace HackerNews.CLI.Util
 		public static string ToDelimitedList<T>(this IEnumerable<T> list, char delimiter = ',')
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach(T item in list)
+			foreach (T item in list)
 				sb.Append($"{item}{delimiter} ");
 
 			return sb.ToString();

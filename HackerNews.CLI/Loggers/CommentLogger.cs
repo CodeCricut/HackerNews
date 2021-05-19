@@ -23,7 +23,7 @@ namespace HackerNews.CLI.Loggers
 			_logger.LogInformation($"Comment Page: PageSize{commentPage.PageSize}; {commentPage.PageIndex} / {commentPage.TotalPages}");
 			_logger.LogInformation("Id\tText\tParentType\tParentId");
 
-			foreach(var comment in commentPage.Items)
+			foreach (var comment in commentPage.Items)
 			{
 				string parentType = comment.ParentArticleId <= 0
 					? "Article"

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.FileWriters
@@ -14,7 +13,7 @@ namespace HackerNews.CLI.FileWriters
 	{
 		public async Task<bool> WriteToFileAsync(string fileLoc, IEnumerable<string> lines)
 		{
-			if (!System.IO.File.Exists(fileLoc)) 
+			if (!System.IO.File.Exists(fileLoc))
 				return false;
 
 			using System.IO.StreamWriter file = new System.IO.StreamWriter(fileLoc);
