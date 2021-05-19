@@ -40,7 +40,7 @@ namespace Hackernews.WPF
 			var config = AppConfiguration.GetServiceConfiguration();
 
 			services.AddWPF(config);
-			services.AddApiConsumer();
+			services.AddApiConsumer(config);
 
 			ServiceProvider = services.BuildServiceProvider();
 

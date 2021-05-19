@@ -6,20 +6,20 @@ using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HackerNews.ApiConsumer
 {
 	public static class DependencyInjection
 	{
-		public static IServiceCollection AddApiConsumer(this IServiceCollection services)
+		public static IServiceCollection AddApiConsumer(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddHttpClient();
 
+			string baseUrl = configuration.GetValue<string>("baseUrl");
 			services.AddHttpClient<IApiClient, ApiClient>(config =>
 			{
-				// TODO: put in config file
-				string baseUrl = "https://localhost:44300/api/";
 				config.BaseAddress = new System.Uri(baseUrl);
 			});
 

@@ -142,7 +142,7 @@ namespace HackerNews.CLI
 					PostCommentProcessor>();
 
 			services.AddDomain(configuration)
-				.AddApiConsumer();
+				.AddApiConsumer(configuration);
 
 			services.AddSingleton<IFileWriter, FileWriter>();
 			services.AddSingleton<IEntityWriter<GetBoardModel>, BoardCsvWriter>();

@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.WPF.Core", "Hack
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.ApiConsumer", "HackerNews.ApiConsumer\HackerNews.ApiConsumer.csproj", "{7F52B635-F8B1-4A85-A8E8-633829722306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI", "HackerNews.CLI\HackerNews.CLI.csproj", "{4A16DC86-59F0-4DEF-A3C8-0CBDE7CD6E50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.CLI", "HackerNews.CLI\HackerNews.CLI.csproj", "{4A16DC86-59F0-4DEF-A3C8-0CBDE7CD6E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,7 +10,8 @@ namespace Hackernews.WPF.Configuration
 		{
 			var config = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json", 
+				optional: false, reloadOnChange: true)
 				.Build();
 
 			return config;
