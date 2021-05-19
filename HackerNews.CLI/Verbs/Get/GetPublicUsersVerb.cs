@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	[Verb("get", HelpText = "Get users.")]
+	[Verb("get-u", HelpText = "Get users from the database.")]
 	public class GetPublicUsersVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
 	{
-		[Option('u', "users", Required = true, HelpText = "Get users.")]
-		public bool GetUsers { get; set; }
+		//[Option('u', "users", Required = true, HelpText = "Get users.")]
+		//public bool GetUsers { get; set; }
 
-		[Option("includeUserId", SetName = "users")]
-		public bool IncludeUserId { get; set; }
-		[Option("includeUserUsername", SetName = "users")]
-		public bool IncludeUserUsername { get; set; }
-		[Option("includeUserKarma", SetName = "users")]
-		public bool IncludeUserKarma { get; set; }
-		[Option("includeUserArticleIds", SetName = "users")]
-		public bool IncludeUserArticleIds { get; set; }
-		[Option("includeUserCommentIds", SetName = "users")]
-		public bool IncludeUserCommentIds { get; set; }
-		[Option("includeUserJoinDate", SetName = "users")]
-		public bool IncludeUserJoinDate { get; set; }
-		[Option("includeUserDeleted", SetName = "users")]
-		public bool IncludeUserDeleted { get; set; }
-		[Option("includeUserProfileImageId", SetName = "users")]
-		public bool IncludeUserProfileImageId { get; set; }
+		[Option("IncludeId")]
+		public bool IncludeId { get; set; }
+		[Option("IncludeUsername")]
+		public bool IncludeUsername { get; set; }
+		[Option("IncludeKarma")]
+		public bool IncludeKarma { get; set; }
+		[Option("IncludeArticleIds")]
+		public bool IncludeArticleIds { get; set; }
+		[Option("IncludeCommentIds")]
+		public bool IncludeCommentIds { get; set; }
+		[Option("includeUserJoinDate")]
+		public bool IncludeJoinDate { get; set; }
+		[Option("includeUserDeleted")]
+		public bool IncludeDeleted { get; set; }
+		[Option("includeUserProfileImageId")]
+		public bool IncludeProfileImageId { get; set; }
 	}
 
 	public class GetPublicUsersVerb : IHostedService

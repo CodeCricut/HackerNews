@@ -48,13 +48,25 @@ namespace HackerNews.CLI
 		{
 			bool added = false;
 
-			new Parser().ParseArguments(args, new[] { typeof(TOption) })
+			//Parser.Default
+			new Parser(settings =>
+			{
+				settings.AutoHelp = true;
+				settings.CaseInsensitiveEnumValues = true;
+				settings.CaseSensitive = false;
+				settings.HelpWriter = Console.Error;
+			})
+				.ParseArguments(args, new[] { typeof(TOption) })
 				.WithParsed(opt =>
 				{
 					services.AddSingleton<TOption>((TOption)opt);
 					added = true;
 				})
-				.WithNotParsed(opt => added = false);
+				.WithNotParsed(opt =>
+				{
+					added = false;
+					opt.Output();
+				});
 
 			return added;
 		}

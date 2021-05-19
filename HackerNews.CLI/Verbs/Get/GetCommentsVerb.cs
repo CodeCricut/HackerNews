@@ -8,38 +8,38 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	[Verb("get", HelpText = "Get comments.")]
+	[Verb("get-c", HelpText = "Get comments from the database.")]
 	public class GetCommentsVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
 	{
-		[Option('c', "comments", Required = true, HelpText = "Get comments.")]
-		public bool GetComments { get; set; }
+		//[Option('c', "comments", Required = true, HelpText = "Get comments.")]
+		//public bool GetComments { get; set; }
 
-		[Option("includeCommentId", SetName = "comments")]
-		public bool IncludeCommentId { get; set; }
-		[Option("includeCommentUserId", SetName = "comments")]
-		public bool IncludeCommentUserId { get; set; }
-		[Option("includeCommentText", SetName = "comments")]
-		public bool IncludeCommentText { get; set; }
-		[Option("includeCommentUrl", SetName = "comments")]
-		public bool IncludeCommentUrl { get; set; }
-		[Option("includeCommentKarma", SetName = "comments")]
-		public bool IncludeCommentKarma { get; set; }
-		[Option("includeCommentCommentIds", SetName = "comments")]
-		public bool IncludeCommentCommentIds { get; set; }
-		[Option("includeCommentParentCommentId", SetName = "comments")]
-		public bool IncludeCommentParentCommentId { get; set; }
-		[Option("includeCommentParentArticleId", SetName = "comments")]
-		public bool IncludeCommentParentArticleId { get; set; }
-		[Option("includeCommentDeleted", SetName = "comments")]
-		public bool IncludeCommentDeleted { get; set; }
-		[Option("includeCommentUsersLiked", SetName = "comments")]
-		public bool IncludeCommentUsersLiked { get; set; }
-		[Option("includeCommentUsersDisliked", SetName = "comments")]
-		public bool IncludeCommentUsersDisliked { get; set; }
-		[Option("includeCommentPostDate", SetName = "comments")]
-		public bool IncludeCommentPostDate { get; set; }
-		[Option("includeCommentBoardId", SetName = "comments")]
-		public bool IncludeCommentBoardId { get; set; }
+		[Option("IncludeId")]
+		public bool IncludeId { get; set; }
+		[Option("IncludeUserId")]
+		public bool IncludeUserId { get; set; }
+		[Option("IncludeText")]
+		public bool IncludeText { get; set; }
+		[Option("IncludeUrl")]
+		public bool IncludeUrl { get; set; }
+		[Option("IncludeKarma")]
+		public bool IncludeKarma { get; set; }
+		[Option("IncludeCommentIds")]
+		public bool IncludeCommentIds { get; set; }
+		[Option("IncludeParentCommentId")]
+		public bool IncludeParentCommentId { get; set; }
+		[Option("IncludeParentArticleId")]
+		public bool IncludeParentArticleId { get; set; }
+		[Option("IncludeDeleted")]
+		public bool IncludeDeleted { get; set; }
+		[Option("IncludeUsersLiked")]
+		public bool IncludeUsersLiked { get; set; }
+		[Option("IncludeUsersDisliked")]
+		public bool IncludeUsersDisliked { get; set; }
+		[Option("IncludePostDate")]
+		public bool IncludePostDate { get; set; }
+		[Option("IncludeBoardId")]
+		public bool IncludeBoardId { get; set; }
 	}
 
 	public class GetCommentsVerb : IHostedService

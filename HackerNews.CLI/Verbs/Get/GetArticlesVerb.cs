@@ -8,39 +8,39 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	[Verb("get")]
+	[Verb("get-a", HelpText = "Get articles from the database.")]
 	public class GetArticlesVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
 	{
-		// Unique id for this verb
-		[Option('a', "articles", Required = true, HelpText = "Get articles.")]
-		public bool GetArticles { get; set; }
+		//// Unique id for this verb
+		//[Option('a', "articles", Required = true, HelpText = "Get articles.")]
+		//public bool GetArticles { get; set; }
 
-		[Option("includeArticleId", SetName = "articles")]
-		public bool IncludeArticleId { get; set; }
-		[Option("includeArticleType", SetName = "articles")]
-		public bool IncludeArticleType { get; set; }
-		[Option("includeArticleUserId", SetName = "articles")]
-		public bool IncludeArticleUserId { get; set; }
-		[Option("includeArticleText", SetName = "articles")]
-		public bool IncludeArticleText { get; set; }
-		[Option("includeArticleCommentIds", SetName = "articles")]
-		public bool IncludeArticleCommentIds { get; set; }
-		[Option("includeArticleKarma", SetName = "articles")]
-		public bool IncludeArticleKarma { get; set; }
-		[Option("includeArticleTitle", SetName = "articles")]
-		public bool IncludeArticleTitle { get; set; }
-		[Option("includeArticleUsersLiked", SetName = "articles")]
-		public bool IncludeArticleUsersLiked { get; set; }
-		[Option("includeArticleUsersDisliked", SetName = "articles")]
-		public bool IncludeArticleUsersDisliked { get; set; }
-		[Option("includeArticlePostDate", SetName = "articles")]
-		public bool IncludeArticlePostDate { get; set; }
-		[Option("includeArticleBoardId", SetName = "articles")]
-		public bool IncludeArticleBoardId { get; set; }
-		[Option("includeArticleDeleted", SetName = "articles")]
-		public bool IncludeArticleDeleted { get; set; }
-		[Option("includeArticleAssociatedImageId", SetName = "articles")]
-		public bool IncludeArticleAssociatedImageId { get; set; }
+		[Option("IncludeId")]
+		public bool IncludeId { get; set; }
+		[Option("IncludeType")]
+		public bool IncludeType { get; set; }
+		[Option("IncludeUserId")]
+		public bool IncludeUserId { get; set; }
+		[Option("IncludeText")]
+		public bool IncludeText { get; set; }
+		[Option("IncludeCommentIds")]
+		public bool IncludeCommentIds { get; set; }
+		[Option("IncludeKarma")]
+		public bool IncludeKarma { get; set; }
+		[Option("IncludeTitle")]
+		public bool IncludeTitle { get; set; }
+		[Option("IncludeUsersLiked")]
+		public bool IncludeUsersLiked { get; set; }
+		[Option("IncludeUsersDisliked")]
+		public bool IncludeUsersDisliked { get; set; }
+		[Option("IncludePostDate")]
+		public bool IncludePostDate { get; set; }
+		[Option("IncludeBoardId")]
+		public bool IncludeBoardId { get; set; }
+		[Option("IncludeDeleted")]
+		public bool IncludeDeleted { get; set; }
+		[Option("IncludeAssociatedImageId")]
+		public bool IncludeAssociatedImageId { get; set; }
 	}
 
 

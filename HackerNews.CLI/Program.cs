@@ -1,4 +1,5 @@
-﻿using HackerNews.ApiConsumer;
+﻿using CommandLine;
+using HackerNews.ApiConsumer;
 using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
@@ -116,7 +117,7 @@ namespace HackerNews.CLI
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersVerbOptions>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
-			
+
 			// Register verb
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 
@@ -151,7 +152,25 @@ namespace HackerNews.CLI
 			services.AddSingleton<IGetEntityRepository<GetCommentModel>, GetCommentRepository>();
 			services.AddSingleton<IGetEntityRepository<GetPublicUserModel>, GetPublicUserRepository>();
 
-			AddProgramServices(services);
+			//AddProgramServices(services);
+
+			AddHostedServices(services);
+		}
+
+		// TODO: use reflection to find all verb option types
+		private static void AddHostedServices(IServiceCollection services)
+		{
+			var types = new Type[]
+						{
+				typeof(GetBoardsVerbOptions),
+				typeof(GetArticlesVerbOptions),
+				typeof(GetCommentsVerbOptions),
+				typeof(GetPublicUsersVerbOptions)
+			};
+			Parser.Default
+				.ParseArguments(_args, types)
+				.WithParsed(o => Run(o, services))
+				.WithNotParsed(errors => errors.Output());
 		}
 
 		/// <summary>
@@ -166,6 +185,29 @@ namespace HackerNews.CLI
 
 			services.AddProgramService<PostVerb, PostVerbOptions>(_args);
 			services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
+		}
+
+		private static void Run(object obj, IServiceCollection services)
+		{
+			switch (obj)
+			{
+				case GetBoardsVerbOptions b:
+					services.AddSingleton(b);
+					services.AddHostedService<GetBoardsVerb>();
+					break;
+				case GetArticlesVerbOptions a:
+					services.AddSingleton(a);
+					services.AddHostedService<GetArticlesVerb>();
+					break;
+				case GetCommentsVerbOptions c:
+					services.AddSingleton(c);
+					services.AddHostedService<GetCommentsVerb>();
+					break;
+				case GetPublicUsersVerbOptions u:
+					services.AddSingleton(u);
+					services.AddHostedService<GetPublicUsersVerb>();
+					break;
+			}
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace HackerNews.CLI.Verbs.Get
 		[Option("ids", HelpText = "The IDs of the entity to be gotten.")]
 		public IEnumerable<int> Ids { get; set; }
 
-		[Option("includeAllFields", HelpText = "Output all fields of the retrieved boards")]
+		[Option("all", HelpText = "Output all fields of the retrieved entities")]
 		public bool IncludeAllFields { get; set; }
 	}
 }

@@ -8,33 +8,33 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Get
 {
-	[Verb("get", HelpText = "Get boards from the database.")]
+	[Verb("get-b", HelpText = "Get boards from the database.")]
 	public class GetBoardsVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
 	{
-		// Distinguishes this from other get verbs
-		[Option('b', "boards", Required = true, HelpText = "Get boards.")]
-		public bool GetBoards { get; set; }
+		//// Distinguishes this from other get verbs
+		//[Option('b', "boards", Required = true, HelpText = "Get boards.")]
+		//public bool GetBoards { get; set; }
 
-		[Option("includeBoardId", SetName = "boards")]
-		public bool IncludeBoardId { get; set; }
-		[Option("includeBoardTitle", SetName = "boards")]
-		public bool IncludeBoardTitle { get; set; }
-		[Option("includeBoardDescription", SetName = "boards")]
-		public bool IncludeBoardDescription { get; set; }
-		[Option("includeBoardCreateDate", SetName = "boards")]
-		public bool IncludeBoardCreateDate { get; set; }
-		[Option("includeBoardCreatorId", SetName = "boards")]
-		public bool IncludeBoardCreatorId { get; set; }
-		[Option("includeBoardModeratorIds", SetName = "boards")]
-		public bool IncludeBoardModeratorIds { get; set; }
-		[Option("includeBoardSubscriberIds", SetName = "boards")]
-		public bool IncludeBoardSubscriberIds { get; set; }
-		[Option("includeBoardArticleIds", SetName = "boards")]
-		public bool IncludeBoardArticleIds { get; set; }
-		[Option("includeBoardDeleted", SetName = "boards")]
-		public bool IncludeBoardDeleted { get; set; }
-		[Option("includeBoardImageId", SetName = "boards")]
-		public bool IncludeBoardImageId { get; set; }
+		[Option("IncludeId")]
+		public bool IncludeId { get; set; }
+		[Option("IncludeTitle")]
+		public bool IncludeTitle { get; set; }
+		[Option("IncludeDescription")]
+		public bool IncludeDescription { get; set; }
+		[Option("IncludeCreateDate")]
+		public bool IncludeCreateDate { get; set; }
+		[Option("IncludeCreatorId")]
+		public bool IncludeCreatorId { get; set; }
+		[Option("IncludeModeratorIds")]
+		public bool IncludeModeratorIds { get; set; }
+		[Option("IncludeSubscriberIds")]
+		public bool IncludeSubscriberIds { get; set; }
+		[Option("IncludeArticleIds")]
+		public bool IncludeArticleIds { get; set; }
+		[Option("IncludeDeleted")]
+		public bool IncludeDeleted { get; set; }
+		[Option("IncludeImageId")]
+		public bool IncludeImageId { get; set; }
 	}
 
 	public class GetBoardsVerb : IHostedService

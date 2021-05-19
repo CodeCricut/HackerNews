@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get -u --id 1 --print"
+      "commandLineArgs": "get-u -p --id 1"
     }
   }
 }
