@@ -2,6 +2,21 @@
 {
 	public class PublicUserInclusionConfiguration
 	{
+		public PublicUserInclusionConfiguration(bool includeAll = true)
+		{
+			if (includeAll)
+			{
+				IncludeId = true;
+				IncludeUsername = true;
+				IncludeKarma = true;
+				IncludeArticleIds = true;
+				IncludeCommentIds = true;
+				IncludeJoinDate = true;
+				IncludeDeleted = true;
+				IncludeProfileImageId = true;
+			}
+		}
+
 		public bool IncludeId { get; set; }
 		public bool IncludeUsername { get; set; }
 		public bool IncludeKarma { get; set; }

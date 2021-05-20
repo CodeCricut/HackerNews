@@ -2,6 +2,26 @@
 {
 	public class CommentInclusionConfiguration
 	{
+		public CommentInclusionConfiguration(bool includeAll = true)
+		{
+			if (includeAll)
+			{
+				IncludeId = true;
+				IncludeUserId = true;
+				IncludeText = true;
+				IncludeUrl = true;
+				IncludeKarma = true;
+				IncludeCommentIds = true;
+				IncludeParentCommentId = true;
+				IncludeParentArticleId = true;
+				IncludeDeleted = true;
+				IncludeUsersLiked = true;
+				IncludeUsersDisliked = true;
+				IncludePostDate = true;
+				IncludeBoardId = true;
+			}
+		}
+
 		public bool IncludeId { get; set; }
 		public bool IncludeUserId { get; set; }
 		public bool IncludeText { get; set; }

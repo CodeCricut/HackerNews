@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI
 {
+	// TODO:
+	// fix --all flag for Get verbs
+	// add -v --verbose flag
 	class Program
 	{
 		private static string[] _args = new string[0];

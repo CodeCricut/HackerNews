@@ -10,6 +10,7 @@ namespace HackerNews.CLI.Util
 	{
 		public static BoardInclusionConfiguration GetBoardInclusionConfiguration(this GetBoardsOptions options)
 		{
+			if (options.IncludeAllFields) return new BoardInclusionConfiguration(true);
 			return new BoardInclusionConfiguration(options.IncludeAllFields)
 			{
 				IncludeId = options.IncludeId,
@@ -27,7 +28,9 @@ namespace HackerNews.CLI.Util
 
 		public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetArticleOptions options)
 		{
-			return new ArticleInclusionConfiguration()
+			if (options.IncludeAllFields) return new ArticleInclusionConfiguration(true);
+
+			return new ArticleInclusionConfiguration(options.IncludeAllFields)
 			{
 				IncludeId = options.IncludeId,
 				IncludeType = options.IncludeType,
@@ -47,7 +50,9 @@ namespace HackerNews.CLI.Util
 
 		public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetCommentsOptions options)
 		{
-			return new CommentInclusionConfiguration()
+			if (options.IncludeAllFields) return new CommentInclusionConfiguration(true);
+
+			return new CommentInclusionConfiguration(options.IncludeAllFields)
 			{
 				IncludeId = options.IncludeId,
 				IncludeUserId = options.IncludeUserId,
@@ -67,7 +72,9 @@ namespace HackerNews.CLI.Util
 
 		public static PublicUserInclusionConfiguration GetPublicUserInclusionConfiguration(this GetPublicUsersOptions options)
 		{
-			return new PublicUserInclusionConfiguration()
+			if (options.IncludeAllFields) return new PublicUserInclusionConfiguration(true);
+
+			return new PublicUserInclusionConfiguration(options.IncludeAllFields)
 			{
 				IncludeId = options.IncludeId,
 				IncludeUsername = options.IncludeUsername,
