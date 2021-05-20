@@ -32,7 +32,7 @@ namespace HackerNews.CLI.Loggers
 
 		public void LogEntityPage(PaginatedList<GetArticleModel> articlePage)
 		{
-			_logger.LogInformation($"ARTICLE PAGE {articlePage.PageIndex}/{articlePage.TotalPages}; Showing {articlePage.PageSize} / {articlePage.TotalCount} Boards");
+			_logger.LogInformation($"ARTICLE PAGE {articlePage.PageIndex}/{articlePage.TotalPages}; Showing {articlePage.PageSize} / {articlePage.TotalCount} Articles");
 			foreach (var article in articlePage.Items)
 				LogArticle(article);
 		}

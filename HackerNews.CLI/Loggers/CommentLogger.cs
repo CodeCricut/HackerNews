@@ -32,7 +32,7 @@ namespace HackerNews.CLI.Loggers
 
 		public void LogEntityPage(PaginatedList<GetCommentModel> commentPage)
 		{
-			_logger.LogInformation($"COMMENT PAGE {commentPage.PageIndex}/{commentPage.TotalPages}; Showing {commentPage.PageSize} / {commentPage.TotalCount} Boards");
+			_logger.LogInformation($"COMMENT PAGE {commentPage.PageIndex}/{commentPage.TotalPages}; Showing {commentPage.PageSize} / {commentPage.TotalCount} Comments");
 			foreach (var comment in commentPage.Items)
 				LogComment(comment);
 		}

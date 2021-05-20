@@ -44,7 +44,9 @@ namespace HackerNews.CLI
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
-			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
+			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>()
+				.AddSingleton<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, PublicUserLogger>();
+
 
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 

@@ -19,11 +19,11 @@ namespace HackerNews.CLI.Verbs.GetPublicUsers
 		public bool IncludeArticleIds { get; set; }
 		[Option("IncludeCommentIds")]
 		public bool IncludeCommentIds { get; set; }
-		[Option("includeUserJoinDate")]
+		[Option("IncludeJoinDate")]
 		public bool IncludeJoinDate { get; set; }
-		[Option("includeUserDeleted")]
+		[Option("IncludeDeleted")]
 		public bool IncludeDeleted { get; set; }
-		[Option("includeUserProfileImageId")]
+		[Option("IncludeProfileImageId")]
 		public bool IncludeProfileImageId { get; set; }
 	}
 

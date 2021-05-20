@@ -16,19 +16,23 @@ namespace HackerNews.CLI.Verbs.GetPublicUsers
 	public class GetPublicUserProcessor : GetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>,
 		IGetPublicUserProcessor
 	{
+		private readonly IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration> _configEntityLogger;
 		private readonly IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> _configEntityWriter;
 
 		public GetPublicUserProcessor(IGetEntityRepository<GetPublicUserModel> entityRepository,
-			IEntityLogger<GetPublicUserModel> entityLogger,
+			IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> entityWriter)
 			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;
 		}
 
 		public override void ConfigureProcessor(GetPublicUsersOptions options)
 		{
-			_configEntityWriter.Configure(options.GetPublicUserInclusionConfiguration());
+			var config = options.GetPublicUserInclusionConfiguration();
+			_configEntityLogger.Configure(config);
+			_configEntityWriter.Configure(config);
 		}
 	}
 }
