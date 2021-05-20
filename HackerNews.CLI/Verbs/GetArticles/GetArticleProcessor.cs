@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.EntityRepository;
+﻿using HackerNews.CLI.Configuration;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
@@ -23,8 +24,9 @@ namespace HackerNews.CLI.Verbs.GetArticles
 		public GetArticleProcessor(IGetEntityRepository<GetArticleModel> entityRepository,
 			IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> entityWriter,
-			ILogger<GetArticleProcessor> logger)
-			: base(entityRepository, entityLogger, entityWriter, logger)
+			ILogger<GetArticleProcessor> logger,
+			IVerbositySetter verbositySetter)
+			: base(entityRepository, entityLogger, entityWriter, logger, verbositySetter)
 		{
 			
 			_configEntityLogger = entityLogger;

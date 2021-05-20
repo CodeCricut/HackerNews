@@ -17,6 +17,7 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Configuration;
+using HackerNews.CLI.Configuration;
 
 namespace HackerNews.CLI
 {
@@ -85,6 +86,8 @@ namespace HackerNews.CLI
 			services.AddSingleton<IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>, CommentInclusionReader>();
 			services.AddSingleton<IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>, PublicUserInclusionReader>();
 
+
+			services.AddSingleton<IVerbositySetter, VerbositySetter>();
 			return services;
 		}
 	}

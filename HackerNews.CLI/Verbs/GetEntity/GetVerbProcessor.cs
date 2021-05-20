@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.EntityRepository;
+﻿using HackerNews.CLI.Configuration;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
@@ -21,6 +22,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		where TOptions : IGetEntityOptions
 	{
 		private readonly ILogger<GetVerbProcessor<TGetModel, TOptions>> _logger;
+		private readonly IVerbositySetter _appConfigurator;
 
 		protected IGetEntityRepository<TGetModel> EntityRepository { get; private set; }
 		protected IEntityLogger<TGetModel> EntityLogger { get; private set; }
@@ -30,19 +32,24 @@ namespace HackerNews.CLI.Verbs.GetEntity
 			IGetEntityRepository<TGetModel> entityRepository,
 			IEntityLogger<TGetModel> entityLogger,
 			IEntityWriter<TGetModel> entityWriter,
-			ILogger<GetVerbProcessor<TGetModel, TOptions>> logger)
+			ILogger<GetVerbProcessor<TGetModel, TOptions>> logger, 
+			IVerbositySetter appConfigurator)
 		{
 			EntityRepository = entityRepository;
 			EntityLogger = entityLogger;
 			EntityWriter = entityWriter;
 			_logger = logger;
-
+			_appConfigurator = appConfigurator;
 			logger.LogTrace("Created " + this.GetType().Name);
 		}
 
 		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
 			_logger.LogDebug($"Processing Get Verb Options [Processor name: {this.GetType().Name}] [Type name: {options.GetType().Name}]");
+			
+			if (options.Verbose)
+				_appConfigurator.SetVerbository(true);
+			
 			ConfigureProcessor(options);
 
 			if (options.Id > 0)

@@ -12,6 +12,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		public int PageSize { get; set; }
 		public IEnumerable<int> Ids { get; set; }
 		public bool IncludeAllFields { get; set; }
+		public bool Verbose { get; set; }
 	}
 
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
@@ -38,5 +39,8 @@ namespace HackerNews.CLI.Verbs.GetEntity
 
 		[Option("all", HelpText = "Output all fields of the retrieved entities")]
 		public bool IncludeAllFields { get; set; }
+
+		[Option('v', "verbose", HelpText = "Output the most information about what is happening.")]
+		public bool Verbose { get; set; }
 	}
 }

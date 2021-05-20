@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.EntityRepository;
+﻿using HackerNews.CLI.Configuration;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
@@ -6,6 +7,7 @@ using HackerNews.CLI.Util;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
+using Serilog.Core;
 
 namespace HackerNews.CLI.Verbs.GetBoards
 {
@@ -23,8 +25,10 @@ namespace HackerNews.CLI.Verbs.GetBoards
 		public GetBoardProcessor(IGetEntityRepository<GetBoardModel> entityRepository,
 			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter,
-			ILogger<GetBoardProcessor> logger)
-			: base(entityRepository, entityLogger, entityWriter, logger)
+			ILogger<GetBoardProcessor> logger,
+			IVerbositySetter verbositySetter
+			)
+			: base(entityRepository, entityLogger, entityWriter, logger, verbositySetter)
 		{
 			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;

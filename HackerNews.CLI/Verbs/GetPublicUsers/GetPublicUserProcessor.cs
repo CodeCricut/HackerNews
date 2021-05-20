@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.EntityRepository;
+﻿using HackerNews.CLI.Configuration;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
@@ -23,8 +24,9 @@ namespace HackerNews.CLI.Verbs.GetPublicUsers
 		public GetPublicUserProcessor(IGetEntityRepository<GetPublicUserModel> entityRepository,
 			IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> entityWriter,
-			ILogger<GetPublicUserProcessor> logger)
-			: base(entityRepository, entityLogger, entityWriter, logger)
+			ILogger<GetPublicUserProcessor> logger,
+			IVerbositySetter verbositySetter)
+			: base(entityRepository, entityLogger, entityWriter, logger, verbositySetter)
 		{
 			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;

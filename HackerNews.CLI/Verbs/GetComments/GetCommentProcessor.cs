@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.EntityRepository;
+﻿using HackerNews.CLI.Configuration;
+using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
@@ -22,8 +23,9 @@ namespace HackerNews.CLI.Verbs.GetComments
 		public GetCommentProcessor(IGetEntityRepository<GetCommentModel> entityRepository,
 			IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter,
-			ILogger<GetCommentProcessor> logger)
-			: base(entityRepository, entityLogger, entityWriter, logger)
+			ILogger<GetCommentProcessor> logger,
+			IVerbositySetter verbositySetter)
+			: base(entityRepository, entityLogger, entityWriter, logger, verbositySetter)
 		{
 			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;

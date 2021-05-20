@@ -1,4 +1,6 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Configuration;
+using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Verbs.GetArticles;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetComments;
@@ -11,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using Serilog.Extensions.Logging;
 using System;
 using System.Linq;
@@ -21,7 +25,6 @@ namespace HackerNews.CLI
 {
 	public static class ServiceCollectionExtensions
 	{
-		// TODO: If no hosted service could be found for the command, print possible promlems (ie. the list of failure to bind messages)
 		public static IServiceCollection RegisterHostedServiceForVerb(this IServiceCollection services, string[] args)
 		{
 			var types = LoadVerbs();
@@ -35,7 +38,7 @@ namespace HackerNews.CLI
 
 		private static Type[] LoadVerbs()
 		{
-			//load all verb types using Reflection
+			// Load all verb types using Reflection.
 			return Assembly.GetExecutingAssembly().GetTypes()
 				.Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
 		}
@@ -83,12 +86,20 @@ namespace HackerNews.CLI
 		/// <returns>The service collection for chaining.</returns>
 		public static IServiceCollection AddSerilogLogger(this IServiceCollection services, IConfiguration configuration)
 		{
-			var loggerConfig = new LoggerConfiguration()
-						.ReadFrom.Configuration(configuration)
-						.Enrich.FromLogContext();
-						// .MinimumLevel.Verbose(); // If not in appsettings.json, Information is minimum level
+			// LoggingLevelSwitch is used to dynamically change the minimum logging level of logger.
+			string defaultLevelStr = configuration.GetSection("Serilog:MinimumLevel:Default")?.Value;
+			LogEventLevel defaultLevel = Enum.Parse<LogEventLevel>(defaultLevelStr);
 
-			var logger = loggerConfig .CreateLogger();
+			var levelSwitch = new LoggingLevelSwitch(); 
+			levelSwitch.MinimumLevel = defaultLevel; 
+
+			services.AddSingleton(levelSwitch);
+
+			var logger = new LoggerConfiguration()
+						.ReadFrom.Configuration(configuration)
+						.Enrich.FromLogContext()
+						.MinimumLevel.ControlledBy(levelSwitch) // Allows you to dynamically change log level
+						.CreateLogger();
 
 			return services.AddLogging(config =>
 			{
@@ -99,6 +110,12 @@ namespace HackerNews.CLI
 			});
 		}
 
+		/// <summary>
+		/// Register a basic console <see cref="Microsoft.Extensions.Logging.ILogger"/> to the service collection.
+		/// </summary>
+		/// <param name="services"></param>
+		/// <param name="configuration"></param>
+		/// <returns></returns>
 		public static IServiceCollection AddBasicLogger(this IServiceCollection services, IConfiguration configuration)
 		{
 			return services.AddLogging(logging =>
