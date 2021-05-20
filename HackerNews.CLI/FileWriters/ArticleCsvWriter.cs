@@ -25,6 +25,8 @@ namespace HackerNews.CLI.FileWriters
 			_logger = logger;
 			_articleInclusionReader = articleInclusionReader;
 			_inclusionConfig = new ArticleInclusionConfiguration();
+
+			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
 		public void Configure(ArticleInclusionConfiguration config)
@@ -34,6 +36,8 @@ namespace HackerNews.CLI.FileWriters
 
 		public Task WriteEntityAsync(string fileLoc, GetArticleModel entity)
 		{
+			_logger.LogDebug($"Attempting to write article to {fileLoc}...");
+
 			List<GetArticleModel> articles = new List<GetArticleModel>();
 			articles.Add(entity);
 			return WriteEntitiesToFileAsync(fileLoc, articles);
@@ -41,6 +45,8 @@ namespace HackerNews.CLI.FileWriters
 
 		public Task WriteEntityPageAsync(string fileLoc, PaginatedList<GetArticleModel> entityPage)
 		{
+			_logger.LogDebug($"Attempting to write page with {entityPage.Items.Count} article to {fileLoc}...");
+
 			return WriteEntitiesToFileAsync(fileLoc, entityPage.Items);
 		}
 

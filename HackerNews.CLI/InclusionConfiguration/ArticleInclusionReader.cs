@@ -1,5 +1,6 @@
 ﻿using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Articles;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace HackerNews.CLI.InclusionConfiguration
 {
 	public class ArticleInclusionReader : IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>
 	{
+		public ArticleInclusionReader(ILogger<ArticleInclusionReader> logger)
+		{
+			_logger = logger;
+
+			_logger.LogTrace("Created " + this.GetType().Name);
+		}
+
 		private static readonly string ID = "ID";
 		private static readonly string TYPE = "TYPE";
 		private static readonly string USER_ID = "USER ID";
@@ -22,9 +30,12 @@ namespace HackerNews.CLI.InclusionConfiguration
 		private static readonly string BOARD_ID = "BOARD ID";
 		private static readonly string DELETED = "DELETED";
 		private static readonly string ASSOCIATED_IMAGE_ID = "ASSOCIATED IMAGE ID";
+		private readonly ILogger<ArticleInclusionReader> _logger;
 
 		public IEnumerable<string> ReadAllKeys(ArticleInclusionConfiguration config)
 		{
+			_logger.LogTrace("Reading all keys of article.");
+
 			return new string[]
 			{
 				ID,
@@ -45,6 +56,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public Dictionary<string, string> ReadAllKeyValues(ArticleInclusionConfiguration config, GetArticleModel model)
 		{
+			_logger.LogTrace("Reading all key-value-pairs of article.");
+
 			string[] keys = ReadAllKeys(config).ToArray();
 			string[] values = ReadAllValues(config, model).ToArray();
 
@@ -53,6 +66,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public IEnumerable<string> ReadAllValues(ArticleInclusionConfiguration config, GetArticleModel article)
 		{
+			_logger.LogTrace("Reading all values of article.");
+
 			var values = new List<string>();
 			char delimiter = ',';
 
@@ -75,6 +90,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public IEnumerable<string> ReadIncludedKeys(ArticleInclusionConfiguration config)
 		{
+			_logger.LogTrace("Reading included keys of article.");
+
 			var keys = new List<string>();
 			if (config.IncludeId)
 				keys.Add(ID);
@@ -108,6 +125,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public Dictionary<string, string> ReadIncludedKeyValues(ArticleInclusionConfiguration config, GetArticleModel model)
 		{
+			_logger.LogTrace("Reading included key-value-pairs of article.");
+
 			string[] keys = ReadIncludedKeys(config).ToArray();
 			string[] values = ReadIncludedValues(config, model).ToArray();
 
@@ -116,6 +135,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public IEnumerable<string> ReadIncludedValues(ArticleInclusionConfiguration config, GetArticleModel article)
 		{
+			_logger.LogTrace("Reading included values of article.");
+
 			var values = new List<string>();
 			char delimiter = ',';
 
