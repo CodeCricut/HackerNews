@@ -1,33 +1,50 @@
-﻿using HackerNews.Domain.Common.Models;
+﻿using HackerNews.CLI.InclusionConfiguration;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class ArticleLogger : IEntityLogger<GetArticleModel>
+	public class ArticleLogger : IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>
 	{
 		private readonly ILogger<ArticleLogger> _logger;
+		private readonly IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel> _articleInclusionReader;
+		private ArticleInclusionConfiguration _inclusionConfig;
 
-		public ArticleLogger(ILogger<ArticleLogger> logger)
+		public ArticleLogger(ILogger<ArticleLogger> logger,
+			IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel> articleInclusionReader)
 		{
 			_logger = logger;
+			_articleInclusionReader = articleInclusionReader;
+			_inclusionConfig = new ArticleInclusionConfiguration();
+		}
+
+		public void Configure(ArticleInclusionConfiguration config)
+		{
+			_inclusionConfig = config;
 		}
 
 		public void LogEntity(GetArticleModel article)
 		{
-			string printString = $"ARTICLE {article.Id}: Title={article.Title}; Text={article.Text}; PostDate{article.PostDate}";
-			_logger.LogInformation(printString);
+			LogArticle(article);
 		}
 
 		public void LogEntityPage(PaginatedList<GetArticleModel> articlePage)
 		{
-			_logger.LogInformation($"Article Page: PageSize{articlePage.PageSize}; {articlePage.PageIndex} / {articlePage.TotalPages}");
-			_logger.LogInformation("Id\tTitle\tText");
-
+			_logger.LogInformation($"ARTICLE PAGE {articlePage.PageIndex}/{articlePage.TotalPages}; Showing {articlePage.PageSize} / {articlePage.TotalCount} Boards");
 			foreach (var article in articlePage.Items)
-			{
-				_logger.LogInformation($"{article.Id}\t{article.Title}\t{article.Text}");
-			}
+				LogArticle(article);
+		}
+
+		private void LogArticle(GetArticleModel article)
+		{
+			Dictionary<string, string> articleDict = _articleInclusionReader.ReadIncludedKeyValues(_inclusionConfig, article);
+
+			_logger.LogInformation("---------------------");
+			foreach (var kvp in articleDict)
+				_logger.LogInformation($"\t{kvp.Key}={kvp.Value}");
+			_logger.LogInformation("---------------------");
 		}
 	}
 }

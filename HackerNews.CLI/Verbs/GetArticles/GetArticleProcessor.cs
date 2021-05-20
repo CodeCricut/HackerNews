@@ -15,19 +15,23 @@ namespace HackerNews.CLI.Verbs.GetArticles
 
 	public class GetArticleProcessor : GetVerbProcessor<GetArticleModel, GetArticleOptions>, IGetArticleProcessor
 	{
+		private readonly IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> _configEntityLogger;
 		private readonly IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> _configEntityWriter;
 
 		public GetArticleProcessor(IGetEntityRepository<GetArticleModel> entityRepository,
-			IEntityLogger<GetArticleModel> entityLogger,
+			IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> entityWriter)
 			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;
 		}
 
 		public override void ConfigureProcessor(GetArticleOptions options)
 		{
-			_configEntityWriter.Configure(options.GetArticleInclusionConfiguration());
+			var config = options.GetArticleInclusionConfiguration();
+			_configEntityLogger.Configure(config);
+			_configEntityWriter.Configure(config);
 		}
 	}
 }
