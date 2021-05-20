@@ -38,6 +38,9 @@ namespace HackerNews.CLI.Verbs.Register
 				FirstName = _options.Firstname,
 				LastName = _options.Lastname
 			};
+
+			_logger.LogInformation($"Registering user...");
+
 			Jwt jwt = await _registrationApiClient.RegisterAsync(registerModel);
 			_jwtLogger.LogJwt(jwt);
 		}

@@ -45,6 +45,9 @@ namespace HackerNews.CLI.Verbs.GetEntity
 
 		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
+
+
+
 			_logger.LogDebug($"Processing Get Verb Options [Processor name: {this.GetType().Name}] [Type name: {options.GetType().Name}]");
 			
 			if (options.Verbose)

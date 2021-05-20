@@ -1,7 +1,9 @@
 ﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.Configuration;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Verbs.Post;
 using HackerNews.Domain.Common.Models.Boards;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNews.CLI.Verbs.PostBoard
 {
@@ -13,7 +15,7 @@ namespace HackerNews.CLI.Verbs.PostBoard
 	public class PostBoardProcessor : PostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardOptions>,
 		 IPostBoardProcessor
 	{
-		public PostBoardProcessor(ISignInManager signInManager, IEntityApiClient<PostBoardModel, GetBoardModel> entityApiClient, IEntityLogger<GetBoardModel> entityLogger) : base(signInManager, entityApiClient, entityLogger)
+		public PostBoardProcessor(ISignInManager signInManager, IEntityApiClient<PostBoardModel, GetBoardModel> entityApiClient, IEntityLogger<GetBoardModel> entityLogger, ILogger<PostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardOptions>> logger, IVerbositySetter verbositySetter) : base(signInManager, entityApiClient, entityLogger, logger, verbositySetter)
 		{
 		}
 

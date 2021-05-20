@@ -1,6 +1,8 @@
 ﻿using HackerNews.ApiConsumer.Core;
+using HackerNews.CLI.Configuration;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models.Users;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Post
@@ -19,26 +21,65 @@ namespace HackerNews.CLI.Verbs.Post
 		private readonly ISignInManager _signInManager;
 		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;
 		private readonly IEntityLogger<TGetModel> _entityLogger;
+		private readonly ILogger<PostVerbProcessor<TPostModel, TGetModel, TOptions>> _logger;
+		private readonly IVerbositySetter _verbositySetter;
 
 		public PostVerbProcessor(
 			ISignInManager signInManager,
 			IEntityApiClient<TPostModel, TGetModel> entityApiClient,
-			IEntityLogger<TGetModel> entityLogger)
+			IEntityLogger<TGetModel> entityLogger,
+			ILogger<PostVerbProcessor<TPostModel, TGetModel, TOptions>> logger,
+			IVerbositySetter verbositySetter)
 		{
 			_signInManager = signInManager;
 			_entityApiClient = entityApiClient;
 			_entityLogger = entityLogger;
+			_logger = logger;
+			_verbositySetter = verbositySetter;
 		}
 
 		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
-			// TODO: handle bad requests
-			LoginModel loginModel = new LoginModel() { UserName = options.Username, Password = options.Password };
-			await _signInManager.SignInAsync(loginModel);
+			if (options.Verbose)
+				_verbositySetter.SetVerbository(true);
 
-			TPostModel postModel = ConstructPostModel(options);
-			TGetModel getModel = await _entityApiClient.PostAsync(postModel);
-			_entityLogger.LogEntity(getModel);
+			bool signedIn = await TrySignInAsync(options);
+			if (!signedIn) return;
+			await PostEntity(options);
+
+		}
+
+		private async Task PostEntity(TOptions options)
+		{
+			try
+			{
+				_logger.LogInformation("Attempting to post entity...");
+				TPostModel postModel = ConstructPostModel(options);
+				TGetModel getModel = await _entityApiClient.PostAsync(postModel);
+				_logger.LogInformation("Successfully posted entity.");
+				_entityLogger.LogEntity(getModel);
+			}
+			catch (System.Exception e)
+			{
+				_logger.LogError("Error when posting entity. Entity may or may not have been posted to the database.");
+			}
+		}
+
+		/// <returns>Successful.</returns>
+		private async Task<bool> TrySignInAsync(TOptions options)
+		{
+			try
+			{
+				_logger.LogInformation("Attempting to log in...");
+				LoginModel loginModel = new LoginModel() { UserName = options.Username, Password = options.Password };
+				await _signInManager.SignInAsync(loginModel);
+				return true;
+			}
+			catch (System.Exception e)
+			{
+				_logger.LogWarning("Could not log in successfully. Aborting.");
+				return false;
+			}
 		}
 
 		public abstract TPostModel ConstructPostModel(TOptions options);

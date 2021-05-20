@@ -9,11 +9,15 @@ namespace HackerNews.CLI.Verbs.Post
 
 		[Option('p', "password", Required = true, HelpText = "The password to login with.")]
 		public string Password { get; set; }
+
+		[Option('v', "verbose", HelpText = "Enable verbose console output.")]
+		public bool Verbose { get; set; }
 	}
 
 	public class PostEntityOptions : IPostEntityOptions
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }
+		public bool Verbose { get; set; }
 	}
 }

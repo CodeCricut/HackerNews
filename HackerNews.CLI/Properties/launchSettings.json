@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get-b --all -p"
+      "commandLineArgs": "post-b --username \"user1\" --password \"user1\" --Title \"cli board 1\" --Description \"cli description 1\""
     }
   }
 }
