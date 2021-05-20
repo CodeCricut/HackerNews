@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
+
 namespace HackerNews.CLI
 {
 	public static class ServiceCollectionExtensions
