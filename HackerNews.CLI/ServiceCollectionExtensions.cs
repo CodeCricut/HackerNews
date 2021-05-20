@@ -83,21 +83,19 @@ namespace HackerNews.CLI
 		/// <returns>The service collection for chaining.</returns>
 		public static IServiceCollection AddSerilogLogger(this IServiceCollection services, IConfiguration configuration)
 		{
-			var logger = new LoggerConfiguration()
+			var loggerConfig = new LoggerConfiguration()
 						.ReadFrom.Configuration(configuration)
-						.Enrich.FromLogContext()
-						.CreateLogger();
+						.Enrich.FromLogContext();
+						// .MinimumLevel.Verbose(); // If not in appsettings.json, Information is minimum level
+
+			var logger = loggerConfig .CreateLogger();
 
 			return services.AddLogging(config =>
 			{
 				config.ClearProviders();
 				config.AddProvider(new SerilogLoggerProvider(logger));
-				string minimumLevel = configuration.GetSection("Serilog:MinimumLevel")?.Value;
 
-				if (!string.IsNullOrEmpty(minimumLevel))
-				{
-					config.SetMinimumLevel(Enum.Parse<LogLevel>(minimumLevel));
-				}
+				config.SetMinimumLevel(LogLevel.Trace); // This is the absolute minimum level, which can be overriden by Serilog
 			});
 		}
 
@@ -111,11 +109,8 @@ namespace HackerNews.CLI
 					config.IncludeScopes = false;
 					config.TimestampFormat = "hh:mm:ss";
 					});
-				/*
-				 * */
+				
 				logging.AddConfiguration(configuration.GetSection("Logging"));
-				//configuration.Get
-				//logging.SetMinimumLevel(LogLevel.None);
 			});
 		}
 

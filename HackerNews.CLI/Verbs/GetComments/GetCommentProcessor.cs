@@ -5,6 +5,7 @@ using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Util;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models.Comments;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNews.CLI.Verbs.GetComments
 {
@@ -20,8 +21,9 @@ namespace HackerNews.CLI.Verbs.GetComments
 
 		public GetCommentProcessor(IGetEntityRepository<GetCommentModel> entityRepository,
 			IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> entityLogger,
-			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter)
-			: base(entityRepository, entityLogger, entityWriter)
+			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter,
+			ILogger<GetCommentProcessor> logger)
+			: base(entityRepository, entityLogger, entityWriter, logger)
 		{
 			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;

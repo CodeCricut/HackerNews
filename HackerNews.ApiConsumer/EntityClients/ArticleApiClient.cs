@@ -1,5 +1,6 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Articles;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNews.ApiConsumer.EntityClients
 {
@@ -7,7 +8,7 @@ namespace HackerNews.ApiConsumer.EntityClients
 
 	internal class ArticleApiClient : EntityApiClient<PostArticleModel, GetArticleModel>, IArticleApiClient
 	{
-		public ArticleApiClient(IApiClient apiClient) : base(apiClient, "articles")
+		public ArticleApiClient(IApiClient apiClient, ILogger<ArticleApiClient> logger) : base(apiClient, logger, "articles")
 		{
 		}
 	}

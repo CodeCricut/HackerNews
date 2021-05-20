@@ -2,6 +2,7 @@
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,8 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		IGetVerbProcessor<TGetModel, TOptions>
 		where TOptions : IGetEntityOptions
 	{
+		private readonly ILogger<GetVerbProcessor<TGetModel, TOptions>> _logger;
+
 		protected IGetEntityRepository<TGetModel> EntityRepository { get; private set; }
 		protected IEntityLogger<TGetModel> EntityLogger { get; private set; }
 		protected IEntityWriter<TGetModel> EntityWriter { get; private set; }
@@ -26,19 +29,25 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		public GetVerbProcessor(
 			IGetEntityRepository<TGetModel> entityRepository,
 			IEntityLogger<TGetModel> entityLogger,
-			IEntityWriter<TGetModel> entityWriter)
+			IEntityWriter<TGetModel> entityWriter,
+			ILogger<GetVerbProcessor<TGetModel, TOptions>> logger)
 		{
 			EntityRepository = entityRepository;
 			EntityLogger = entityLogger;
 			EntityWriter = entityWriter;
+			_logger = logger;
+
+			logger.LogTrace("Created " + this.GetType().Name);
 		}
 
 		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
+			_logger.LogDebug($"Processing Get Verb Options [Processor name: {this.GetType().Name}] [Type name: {options.GetType().Name}]");
 			ConfigureProcessor(options);
 
 			if (options.Id > 0)
 			{
+				_logger.LogDebug($"Id passed into Get Verb Processor.");
 				TGetModel entity = await EntityRepository.GetByIdAsync(options.Id);
 				OutputEntity(options, entity);
 				return;
@@ -50,9 +59,15 @@ namespace HackerNews.CLI.Verbs.GetEntity
 
 			PaginatedList<TGetModel> entityPage;
 			if (options.Ids.Count() > 0)
+			{
+				_logger.LogDebug($"Multiple IDs passed into Get Verb Processor.");
 				entityPage = await EntityRepository.GetByIdsAsync(options.Ids, pagingParams);
+			}
 			else
+			{
+				_logger.LogDebug("No IDs passed into Get Verb Processor.");
 				entityPage = await EntityRepository.GetPageAsync(pagingParams);
+			}
 
 			OutputEntityPage(options, entityPage);
 		}
@@ -60,18 +75,34 @@ namespace HackerNews.CLI.Verbs.GetEntity
 
 		protected virtual void OutputEntityPage(TOptions options, PaginatedList<TGetModel> entityPage)
 		{
+			_logger.LogDebug($"Outputting entity page [PageIndex={entityPage.PageIndex}] [PageSize={entityPage.PageSize}]");
 			if (options.Print)
+			{
+				_logger.LogDebug($"Print option true.");
 				EntityLogger.LogEntityPage(entityPage);
+			}
 			if (!string.IsNullOrEmpty(options.File))
+			{
+				_logger.LogDebug($"File location passed: {options.File}");
 				EntityWriter.WriteEntityPageAsync(options.File, entityPage);
+			}
 		}
 
 		protected virtual void OutputEntity(TOptions options, TGetModel entity)
 		{
+			_logger.LogDebug($"Outputting entity");
+
 			if (options.Print)
+			{
+				_logger.LogDebug($"Print option true.");
 				EntityLogger.LogEntity(entity);
+			}
+
 			if (!string.IsNullOrEmpty(options.File))
+			{
+				_logger.LogDebug($"File location passed: {options.File}");
 				EntityWriter.WriteEntityAsync(options.File, entity);
+			}
 		}
 
 		public abstract void ConfigureProcessor(TOptions options);

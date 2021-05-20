@@ -1,5 +1,6 @@
 ﻿using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Boards;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 	{
 		private static readonly string ID = "ID";
 		private static readonly string TITLE = "TITLE";
-		private static readonly string DESCRIPTION = "Description";
+		private static readonly string DESCRIPTION = "DESCRIPTION";
 		private static readonly string CREATE_DATE = "CREATE DATE";
 		private static readonly string CREATOR_ID = "CREATOR ID";
 		private static readonly string MODERATOR_IDS = "MODERATOR IDS";
@@ -19,9 +20,19 @@ namespace HackerNews.CLI.InclusionConfiguration
 		private static readonly string ARTICLE_IDS = "ARTICLE IDS";
 		private static readonly string DELETED = "DELETED";
 		private static readonly string BOARD_IMAGE_ID = "BOARD IMAGE ID";
+		private readonly ILogger<BoardInclusionReader> _logger;
+
+		public BoardInclusionReader(ILogger<BoardInclusionReader> logger)
+		{
+			_logger = logger;
+
+			_logger.LogTrace("Created " + this.GetType().Name);
+		}
 
 		public IEnumerable<string> ReadAllKeys(BoardInclusionConfiguration config)
 		{
+			_logger.LogTrace("Reading all keys of board.");
+
 			return new string[]
 			{
 				ID,
@@ -39,6 +50,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public Dictionary<string, string> ReadAllKeyValues(BoardInclusionConfiguration config, GetBoardModel model)
 		{
+			_logger.LogTrace("Reading all key-value-pairs of board.");
+
 			string[] keys = ReadAllKeys(config).ToArray();
 			string[] values = ReadAllValues(config, model).ToArray();
 
@@ -47,6 +60,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public IEnumerable<string> ReadAllValues(BoardInclusionConfiguration config, GetBoardModel board)
 		{
+			_logger.LogTrace("Reading all values of board.");
+
 			var values = new List<string>();
 			char delimiter = ',';
 			
@@ -66,6 +81,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public IEnumerable<string> ReadIncludedKeys(BoardInclusionConfiguration config)
 		{
+			_logger.LogTrace("Reading included keys of board.");
+
 			var keys = new List<string>();
 			if (config.IncludeId) 
 				keys.Add(ID);
@@ -93,6 +110,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public Dictionary<string, string> ReadIncludedKeyValues(BoardInclusionConfiguration config, GetBoardModel model)
 		{
+			_logger.LogTrace("Reading included key-value-pairs of board.");
+
 			string[] keys = ReadIncludedKeys(config).ToArray();
 			string[] values = ReadIncludedValues(config, model).ToArray();
 
@@ -102,6 +121,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 		public IEnumerable<string> ReadIncludedValues(BoardInclusionConfiguration config, GetBoardModel board)
 		{
+			_logger.LogTrace("Reading included values of board.");
+
 			var values = new List<string>();
 			char delimiter = ',';
 

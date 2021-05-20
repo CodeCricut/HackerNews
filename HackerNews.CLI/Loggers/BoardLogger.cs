@@ -19,23 +19,33 @@ namespace HackerNews.CLI.Loggers
 			_logger = logger;
 			_boardInclusionReader = boardInclusionReader;
 			_inclusionConfig = new BoardInclusionConfiguration();
+
+			logger.LogTrace("Created " + this.GetType().Name);
 		}
 
 		public void Configure(BoardInclusionConfiguration config)
 		{
+			_logger.LogTrace("Configuring " + this.GetType().Name);
 			_inclusionConfig = config;
 		}
 
 		public void LogEntity(GetBoardModel board)
 		{
+			_logger.LogDebug("Logging board.");
+
 			LogBoard(board);
 		}
 
 		public void LogEntityPage(PaginatedList<GetBoardModel> boardPage)
 		{
+			_logger.LogDebug("Logging board page.");
+
 			_logger.LogInformation($"BOARD PAGE {boardPage.PageIndex}/{boardPage.TotalPages}; Showing {boardPage.PageSize} / {boardPage.TotalCount} Boards");
 			foreach (var board in boardPage.Items)
+			{
+				_logger.LogTrace($"Logging board with ID={board.Id} in board page.");
 				LogBoard(board);
+			}
 		}
 
 

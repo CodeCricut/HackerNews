@@ -25,10 +25,14 @@ namespace HackerNews.CLI.FileWriters
 			_logger = logger;
 			_boardInclusionReader = boardInclusionReader;
 			_inclusionConfig = new BoardInclusionConfiguration();
+
+			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
 		public Task WriteEntityAsync(string fileLoc, GetBoardModel entity)
 		{
+			_logger.LogDebug($"Attempting to write board to {fileLoc}...");
+
 			List<GetBoardModel> boards = new List<GetBoardModel>();
 			boards.Add(entity);
 			return WriteEntitiesToFileAsync(fileLoc, boards);
@@ -41,6 +45,8 @@ namespace HackerNews.CLI.FileWriters
 
 		public Task WriteEntityPageAsync(string fileLoc, PaginatedList<GetBoardModel> entityPage)
 		{
+			_logger.LogDebug($"Attempting to write page with {entityPage.Items.Count} boards to {fileLoc}...");
+
 			return WriteEntitiesToFileAsync(fileLoc, entityPage.Items);
 		}
 

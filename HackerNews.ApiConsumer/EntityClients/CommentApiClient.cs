@@ -1,5 +1,6 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common.Models.Comments;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNews.ApiConsumer.EntityClients
 {
@@ -7,7 +8,7 @@ namespace HackerNews.ApiConsumer.EntityClients
 
 	internal class CommentApiClient : EntityApiClient<PostCommentModel, GetCommentModel>, ICommentApiClient
 	{
-		public CommentApiClient(IApiClient apiClient) : base(apiClient, "comments")
+		public CommentApiClient(IApiClient apiClient, ILogger<CommentApiClient> logger) : base(apiClient, logger, "comments")
 		{
 		}
 	}

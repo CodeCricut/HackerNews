@@ -22,19 +22,18 @@ namespace HackerNews.CLI
 			using IHost host = builder.Build();
 			try
 			{
+				var logger = host?.Services.GetService<ILogger<Program>>();
+				logger.LogTrace("Starting host...");
 				await host.StartAsync();
+				logger.LogTrace("Host started.");
 			}
 			catch (Exception ex)
 			{
 				var logger = host?.Services.GetService<ILogger<Program>>();
 				if (logger != null)
-				{
 					logger.LogError(ex.Message);
-				}
 				else
-				{
 					Console.WriteLine($"FATAL ERROR: {ex.Message}");
-				}
 				return 1;
 			}
 

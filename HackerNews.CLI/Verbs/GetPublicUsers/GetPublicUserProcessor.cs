@@ -5,6 +5,7 @@ using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Util;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models.Users;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNews.CLI.Verbs.GetPublicUsers
 {
@@ -21,8 +22,9 @@ namespace HackerNews.CLI.Verbs.GetPublicUsers
 
 		public GetPublicUserProcessor(IGetEntityRepository<GetPublicUserModel> entityRepository,
 			IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration> entityLogger,
-			IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> entityWriter)
-			: base(entityRepository, entityLogger, entityWriter)
+			IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> entityWriter,
+			ILogger<GetPublicUserProcessor> logger)
+			: base(entityRepository, entityLogger, entityWriter, logger)
 		{
 			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;
