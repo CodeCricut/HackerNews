@@ -1,4 +1,11 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Verbs.GetArticles;
+using HackerNews.CLI.Verbs.GetBoards;
+using HackerNews.CLI.Verbs.GetComments;
+using HackerNews.CLI.Verbs.GetPublicUsers;
+using HackerNews.CLI.Verbs.PostArticle;
+using HackerNews.CLI.Verbs.PostBoard;
+using HackerNews.CLI.Verbs.PostComment;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -6,69 +13,65 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace HackerNews.CLI
 {
-	// TODO: If no hosted service could be found for the command, print possible promlems (ie. the list of failure to bind messages)
 	public static class ServiceCollectionExtensions
 	{
-		/// <summary>
-		/// If an instance of <typeparamref name="TProgramOptions"/> could be constructed from the <paramref name="args"/>, 
-		/// then register the <typeparamref name="TProgramEntry"/>
-		/// which is dependant upon the <typeparamref name="TProgramOptions"/> as a hosted service.
-		/// </summary>
-		/// <typeparam name="TProgramEntry"></typeparam>
-		/// <typeparam name="TProgramOptions"></typeparam>
-		/// <param name="services"></param>
-		/// <param name="args"></param>
-		/// <returns></returns>
-		public static IServiceCollection AddProgramService<TProgramEntry, TProgramOptions>(this IServiceCollection services, string[] args)
-			where TProgramEntry : class, IHostedService
-			where TProgramOptions : class
+		// TODO: If no hosted service could be found for the command, print possible promlems (ie. the list of failure to bind messages)
+		public static IServiceCollection RegisterHostedServiceForVerb(this IServiceCollection services, string[] args)
 		{
-			if (services.TryAddProgramOption<TProgramOptions>(args))
-			{
-				return services.AddHostedService<TProgramEntry>();
-			}
-			else return services;
+			var types = LoadVerbs();
+
+			Parser.Default.ParseArguments(args, types)
+				.WithParsed(o => RegisterHostedService(o, services))
+				.WithNotParsed(errors => errors.Output());
+
+			return services;
 		}
 
-
-		/// <summary>
-		/// Try to parse the <paramref name="args"/> to construct the relevant <typeparamref name="TOption"/> and register it to the service collection.
-		/// If the options couldn't be constructed, then the service collection will not be modified.
-		/// <see cref="AddProgramService{TProgramEntry, TProgramOptions}(IServiceCollection, string[])"/> is preferable.
-		/// </summary>
-		/// <typeparam name="TOption">The type of option to try to register.</typeparam>
-		/// <param name="services">The service collection to add to.</param>
-		/// <param name="args">The CLI arguments to parse.</param>
-		/// <returns>The <paramref name="args"/> could be parsed and the <typeparamref name="TOption"/> was registerd with the service collection.</returns>
-		public static bool TryAddProgramOption<TOption>(this IServiceCollection services, string[] args)
-			where TOption : class
+		private static Type[] LoadVerbs()
 		{
-			bool added = false;
+			//load all verb types using Reflection
+			return Assembly.GetExecutingAssembly().GetTypes()
+				.Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
+		}
 
-			//Parser.Default
-			new Parser(settings =>
+		private static void RegisterHostedService(object verb, IServiceCollection services)
+		{
+			switch (verb)
 			{
-				settings.AutoHelp = true;
-				settings.CaseInsensitiveEnumValues = true;
-				settings.CaseSensitive = false;
-				settings.HelpWriter = Console.Error;
-			})
-				.ParseArguments(args, new[] { typeof(TOption) })
-				.WithParsed(opt =>
-				{
-					services.AddSingleton<TOption>((TOption)opt);
-					added = true;
-				})
-				.WithNotParsed(opt =>
-				{
-					added = false;
-					opt.Output();
-				});
-
-			return added;
+				case GetBoardsVerbOptions b:
+					services.AddSingleton(b);
+					services.AddHostedService<GetBoardsVerb>();
+					break;
+				case GetArticlesVerbOptions a:
+					services.AddSingleton(a);
+					services.AddHostedService<GetArticlesVerb>();
+					break;
+				case GetCommentsVerbOptions c:
+					services.AddSingleton(c);
+					services.AddHostedService<GetCommentsVerb>();
+					break;
+				case GetPublicUsersVerbOptions u:
+					services.AddSingleton(u);
+					services.AddHostedService<GetPublicUsersVerb>();
+					break;
+				case PostBoardVerbOptions b:
+					services.AddSingleton(b);
+					services.AddHostedService<PostBoardVerb>();
+					break;
+				case PostArticleVerbOptions a:
+					services.AddSingleton(a);
+					services.AddHostedService<PostArticleVerb>();
+					break;
+				case PostCommentVerbOptions c:
+					services.AddSingleton(c);
+					services.AddHostedService<PostCommentVerb>();
+					break;
+			}
 		}
 
 		/// <summary>

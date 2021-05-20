@@ -25,6 +25,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI
@@ -125,10 +127,8 @@ namespace HackerNews.CLI
 				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersVerbOptions>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
-			// Register verb
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 
-			// Post Verb
 			services.AddSingleton<IPostBoardProcessor, PostBoardProcessor>()
 				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardVerbOptions>, 
 					PostBoardProcessor>();
@@ -162,78 +162,7 @@ namespace HackerNews.CLI
 			services.AddSingleton<IGetEntityRepository<GetCommentModel>, GetCommentRepository>();
 			services.AddSingleton<IGetEntityRepository<GetPublicUserModel>, GetPublicUserRepository>();
 
-			//AddProgramServices(services);
-
-			AddHostedServices(services);
-		}
-
-		// TODO: use reflection to find all verb option types
-		private static void AddHostedServices(IServiceCollection services)
-		{
-			var types = new Type[]
-			{
-				typeof(GetBoardsVerbOptions),
-				typeof(GetArticlesVerbOptions),
-				typeof(GetCommentsVerbOptions),
-				typeof(GetPublicUsersVerbOptions),
-
-				typeof(PostBoardVerbOptions),
-				typeof(PostArticleVerbOptions),
-				typeof(PostCommentVerbOptions)
-			};
-			Parser.Default
-				.ParseArguments(_args, types)
-				.WithParsed(o => Run(o, services))
-				.WithNotParsed(errors => errors.Output());
-		}
-
-		/// <summary>
-		/// Add the main program services responsible for doing things based on CLI args.
-		/// </summary>
-		private static void AddProgramServices(IServiceCollection services)
-		{
-			//services.AddProgramService<GetBoardsVerb, GetBoardsVerbOptions>(_args);
-			//services.AddProgramService<GetArticlesVerb, GetArticlesVerbOptions>(_args);
-			//services.AddProgramService<GetCommentsVerb, GetCommentsVerbOptions>(_args);
-			//services.AddProgramService<GetPublicUsersVerb, GetPublicUsersVerbOptions>(_args);
-
-			//services.AddProgramService<PostVerb, PostEntityVerbOptions>(_args);
-			//services.AddProgramService<RegisterVerb, RegisterVerbOptions>(_args);
-		}
-
-		private static void Run(object obj, IServiceCollection services)
-		{
-			switch (obj)
-			{
-				case GetBoardsVerbOptions b:
-					services.AddSingleton(b);
-					services.AddHostedService<GetBoardsVerb>();
-					break;
-				case GetArticlesVerbOptions a:
-					services.AddSingleton(a);
-					services.AddHostedService<GetArticlesVerb>();
-					break;
-				case GetCommentsVerbOptions c:
-					services.AddSingleton(c);
-					services.AddHostedService<GetCommentsVerb>();
-					break;
-				case GetPublicUsersVerbOptions u:
-					services.AddSingleton(u);
-					services.AddHostedService<GetPublicUsersVerb>();
-					break;
-				case PostBoardVerbOptions b:
-					services.AddSingleton(b);
-					services.AddHostedService<PostBoardVerb>();
-					break;
-				case PostArticleVerbOptions a:
-					services.AddSingleton(a);
-					services.AddHostedService<PostArticleVerb>();
-					break;
-				case PostCommentVerbOptions c:
-					services.AddSingleton(c);
-					services.AddHostedService<PostCommentVerb>();
-					break;
-			}
+			services.RegisterHostedServiceForVerb(_args);
 		}
 	}
 }
