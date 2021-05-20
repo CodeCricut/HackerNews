@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using HackerNews.ApiConsumer;
 using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
@@ -13,7 +12,6 @@ using HackerNews.CLI.Verbs.Post;
 using HackerNews.CLI.Verbs.PostArticle;
 using HackerNews.CLI.Verbs.PostBoard;
 using HackerNews.CLI.Verbs.PostComment;
-using HackerNews.Domain;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
@@ -73,6 +71,11 @@ namespace HackerNews.CLI
 			services.AddSingleton<IGetEntityRepository<GetArticleModel>, GetArticleRepository>();
 			services.AddSingleton<IGetEntityRepository<GetCommentModel>, GetCommentRepository>();
 			services.AddSingleton<IGetEntityRepository<GetPublicUserModel>, GetPublicUserRepository>();
+
+			services.AddSingleton<IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel>, BoardInclusionReader>();
+			services.AddSingleton<IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>, ArticleInclusionReader>();
+			services.AddSingleton<IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>, CommentInclusionReader>();
+			services.AddSingleton<IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>, PublicUserInclusionReader>();
 
 			return services;
 		}

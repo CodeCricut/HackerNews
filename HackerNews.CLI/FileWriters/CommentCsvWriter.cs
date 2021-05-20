@@ -14,12 +14,16 @@ namespace HackerNews.CLI.FileWriters
 	{
 		private readonly IFileWriter _fileWriter;
 		private readonly ILogger<CommentCsvWriter> _logger;
+		private readonly IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> _commentInclusionReader;
 		private CommentInclusionConfiguration _inclusionConfig;
 
-		public CommentCsvWriter(IFileWriter writer, ILogger<CommentCsvWriter> logger)
+		public CommentCsvWriter(IFileWriter writer, 
+			ILogger<CommentCsvWriter> logger,
+			IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> commentInclusionReader)
 		{
 			_fileWriter = writer;
 			_logger = logger;
+			_commentInclusionReader = commentInclusionReader;
 			_inclusionConfig = new CommentInclusionConfiguration();
 		}
 
@@ -68,71 +72,28 @@ namespace HackerNews.CLI.FileWriters
 
 		private string GetHeadLine()
 		{
-			StringBuilder head = new StringBuilder();
+			var keys = _commentInclusionReader.ReadIncludedKeys(_inclusionConfig);
 
-			if (_inclusionConfig.IncludeId)
-				head.Append("ID,");
-			if (_inclusionConfig.IncludeUserId)
-				head.Append("USER ID,");
-			if (_inclusionConfig.IncludeText)
-				head.Append("TEXT,");
-			if (_inclusionConfig.IncludeUrl)
-				head.Append("URL");
-			if (_inclusionConfig.IncludeKarma)
-				head.Append("KARMA,");
-			if (_inclusionConfig.IncludeCommentIds)
-				head.Append("COMMENT IDS,");
-			if (_inclusionConfig.IncludeParentCommentId)
-				head.Append("PARENT COMMENT ID");
-			if (_inclusionConfig.IncludeParentArticleId)
-				head.Append("PARENT ARTICLE ID");
-			if (_inclusionConfig.IncludeDeleted)
-				head.Append("DELETED");
-			if (_inclusionConfig.IncludeUsersLiked)
-				head.Append("USERS LIKED");
-			if (_inclusionConfig.IncludeUsersDisliked)
-				head.Append("USERS DISLIKED");
-			if (_inclusionConfig.IncludePostDate)
-				head.Append("POST DATE");
-			if (_inclusionConfig.IncludeBoardId)
-				head.Append("BOARD ID");
+			StringBuilder sb = new StringBuilder();
+			foreach (var key in keys)
+			{
+				sb.Append($"{key},");
+			}
 
-			return head.ToString();
+			return sb.ToString();
 		}
 
 		private string GetBodyLine(GetCommentModel comment)
 		{
-			char delimiter = ',';
-			StringBuilder body = new StringBuilder();
+			var values = _commentInclusionReader.ReadIncludedValues(_inclusionConfig, comment);
 
-			if (_inclusionConfig.IncludeId)
-				body.Append($"{comment.Id},");
-			if (_inclusionConfig.IncludeUserId)
-				body.Append($"{comment.UserId},");
-			if (_inclusionConfig.IncludeText)
-				body.Append($"{comment.Text.Quote()},");
-			if (_inclusionConfig.IncludeUrl)
-				body.Append($"{comment.Url.Quote()},");
-			if (_inclusionConfig.IncludeKarma)
-				body.Append($"{comment.Karma},");
-			if (_inclusionConfig.IncludeCommentIds)
-				body.Append($"{comment.CommentIds.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeParentCommentId)
-				body.Append($"{comment.ParentCommentId},");
-			if (_inclusionConfig.IncludeParentArticleId)
-				body.Append($"{comment.ParentArticleId},");
-			if (_inclusionConfig.IncludeDeleted)
-				body.Append($"{comment.Deleted},");
-			if (_inclusionConfig.IncludeUsersLiked)
-				body.Append($"{comment.UsersLiked.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeUsersDisliked)
-				body.Append($"{comment.UsersDisliked.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludePostDate)
-				body.Append($"{comment.PostDate.ToString().Quote()},");
-			if (_inclusionConfig.IncludeBoardId)
-				body.Append($"{comment.BoardId},");
+			StringBuilder sb = new StringBuilder();
+			foreach (var value in values)
+			{
+				sb.Append($"{value},");
+			}
 
-			return body.ToString();
+			return sb.ToString();
 		}
 	}
 }

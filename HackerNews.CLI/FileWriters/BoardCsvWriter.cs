@@ -14,12 +14,16 @@ namespace HackerNews.CLI.FileWriters
 	{
 		private readonly IFileWriter _fileWriter;
 		private readonly ILogger<BoardCsvWriter> _logger;
+		private readonly IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> _boardInclusionReader;
 		private BoardInclusionConfiguration _inclusionConfig;
 
-		public BoardCsvWriter(IFileWriter writer, ILogger<BoardCsvWriter> logger)
+		public BoardCsvWriter(IFileWriter writer, 
+			ILogger<BoardCsvWriter> logger,
+			IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> boardInclusionReader)
 		{
 			_fileWriter = writer;
 			_logger = logger;
+			_boardInclusionReader = boardInclusionReader;
 			_inclusionConfig = new BoardInclusionConfiguration();
 		}
 
@@ -65,37 +69,28 @@ namespace HackerNews.CLI.FileWriters
 
 		private string GetHeadLine()
 		{
-			StringBuilder head = new StringBuilder();
-			if (_inclusionConfig.IncludeId) head.Append("ID,");
-			if (_inclusionConfig.IncludeTitle) head.Append("TITLE,");
-			if (_inclusionConfig.IncludeDescription) head.Append("DESCRIPTION,");
-			if (_inclusionConfig.IncludeCreateDate) head.Append("CREATE DATE,");
-			if (_inclusionConfig.IncludeCreatorId) head.Append("CREATOR ID,");
-			if (_inclusionConfig.IncludeModeratorIds) head.Append("MODERATOR IDS");
-			if (_inclusionConfig.IncludeSubscriberIds) head.Append("SUBSCRIBER IDS");
-			if (_inclusionConfig.IncludeArticleIds) head.Append("ARTICLE IDS");
-			if (_inclusionConfig.IncludeDeleted) head.Append("DELETED");
-			if (_inclusionConfig.IncludeBoardImageId) head.Append("BOARD IMAGE ID");
+			var keys = _boardInclusionReader.ReadIncludedKeys(_inclusionConfig);
 
-			return head.ToString();
+			StringBuilder sb = new StringBuilder();
+			foreach(var key in keys)
+			{
+				sb.Append($"{key},");
+			}
+
+			return sb.ToString();
 		}
 
 		private string GetBodyLine(GetBoardModel board)
 		{
-			char delimiter = ',';
-			StringBuilder body = new StringBuilder();
-			if (_inclusionConfig.IncludeId) body.Append($"{board.Id},");
-			if (_inclusionConfig.IncludeTitle) body.Append($"{board.Title.Quote()},");
-			if (_inclusionConfig.IncludeDescription) body.Append($"{board.Description.Quote()},");
-			if (_inclusionConfig.IncludeCreateDate) body.Append($"{board.CreateDate.ToString().Quote()},");
-			if (_inclusionConfig.IncludeCreatorId) body.Append($"{board.CreatorId},");
-			if (_inclusionConfig.IncludeModeratorIds) body.Append($"{board.ModeratorIds.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeSubscriberIds) body.Append($"{board.SubscriberIds.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeArticleIds) body.Append($"{board.ArticleIds.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeDeleted) body.Append($"{board.Deleted},");
-			if (_inclusionConfig.IncludeBoardImageId) body.Append($"{board.BoardImageId},");
+			var values = _boardInclusionReader.ReadIncludedValues(_inclusionConfig, board);
 
-			return body.ToString();
+			StringBuilder sb = new StringBuilder();
+			foreach (var value in values)
+			{
+				sb.Append($"{value},");
+			}
+
+			return sb.ToString();
 		}
 	}
 }

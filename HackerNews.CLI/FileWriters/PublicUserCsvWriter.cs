@@ -14,12 +14,16 @@ namespace HackerNews.CLI.FileWriters
 	{
 		private readonly IFileWriter _fileWriter;
 		private readonly ILogger<PublicUserCsvWriter> _logger;
+		private readonly IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel> _userInclusionReader;
 		private PublicUserInclusionConfiguration _inclusionConfig;
 
-		public PublicUserCsvWriter(IFileWriter fileWriter, ILogger<PublicUserCsvWriter> logger)
+		public PublicUserCsvWriter(IFileWriter fileWriter, 
+			ILogger<PublicUserCsvWriter> logger,
+			IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel> userInclusionReader)
 		{
 			_fileWriter = fileWriter;
 			_logger = logger;
+			_userInclusionReader = userInclusionReader;
 			_inclusionConfig = new PublicUserInclusionConfiguration();
 		}
 
@@ -68,52 +72,28 @@ namespace HackerNews.CLI.FileWriters
 
 		private string GetHeadLine()
 		{
-			StringBuilder head = new StringBuilder();
+			var keys = _userInclusionReader.ReadIncludedKeys(_inclusionConfig);
 
-			if (_inclusionConfig.IncludeId)
-				head.Append("ID,");
-			if (_inclusionConfig.IncludeUsername)
-				head.Append("USERNAME,");
-			if (_inclusionConfig.IncludeKarma)
-				head.Append("KARMA,");
-			if (_inclusionConfig.IncludeArticleIds)
-				head.Append("ARTICLE IDS,");
-			if (_inclusionConfig.IncludeCommentIds)
-				head.Append("COMMENT IDS,");
-			if (_inclusionConfig.IncludeJoinDate)
-				head.Append("JOIN DATE,");
-			if (_inclusionConfig.IncludeDeleted)
-				head.Append("DELETED,");
-			if (_inclusionConfig.IncludeProfileImageId)
-				head.Append("PROFILE IMAGE ID,");
+			StringBuilder sb = new StringBuilder();
+			foreach (var key in keys)
+			{
+				sb.Append($"{key},");
+			}
 
-			return head.ToString();
+			return sb.ToString();
 		}
 
 		private string GetBodyLine(GetPublicUserModel user)
 		{
-			char delimiter = ',';
-			StringBuilder body = new StringBuilder();
+			var values = _userInclusionReader.ReadIncludedValues(_inclusionConfig, user);
 
+			StringBuilder sb = new StringBuilder();
+			foreach (var value in values)
+			{
+				sb.Append($"{value},");
+			}
 
-			if (_inclusionConfig.IncludeId)
-				body.Append($"{user.Id},");
-			if (_inclusionConfig.IncludeUsername)
-				body.Append($"{user.Username.Quote()},");
-			if (_inclusionConfig.IncludeKarma)
-				body.Append($"{user.Karma},");
-			if (_inclusionConfig.IncludeArticleIds)
-				body.Append($"{user.ArticleIds.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeCommentIds)
-				body.Append($"{user.CommentIds.ToDelimitedList(delimiter).Quote()},");
-			if (_inclusionConfig.IncludeJoinDate)
-				body.Append($"{user.JoinDate.ToString().Quote()},");
-			if (_inclusionConfig.IncludeDeleted)
-				body.Append($"{user.Deleted},");
-			if (_inclusionConfig.IncludeProfileImageId)
-				body.Append($"{user.ProfileImageId},");
-
-			return body.ToString();
+			return sb.ToString();
 		}
 	}
 }
