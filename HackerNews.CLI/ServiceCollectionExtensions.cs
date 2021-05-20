@@ -100,5 +100,24 @@ namespace HackerNews.CLI
 				}
 			});
 		}
+
+		public static IServiceCollection AddBasicLogger(this IServiceCollection services, IConfiguration configuration)
+		{
+			return services.AddLogging(logging =>
+			{
+				logging.ClearProviders();
+				logging.AddConsole(config =>
+				{
+					config.IncludeScopes = false;
+					config.TimestampFormat = "hh:mm:ss";
+					});
+				/*
+				 * */
+				logging.AddConfiguration(configuration.GetSection("Logging"));
+				//configuration.Get
+				//logging.SetMinimumLevel(LogLevel.None);
+			});
+		}
+
 	}
 }

@@ -32,7 +32,8 @@ namespace HackerNews.CLI.Loggers
 
 		public void LogEntityPage(PaginatedList<GetPublicUserModel> userPage)
 		{
-			_logger.LogInformation($"USER PAGE {userPage.PageIndex}/{userPage.TotalPages}; Showing {userPage.PageSize} / {userPage.TotalCount} Users");
+			_logger.LogInformation($"USER PAGE {userPage.PageIndex}/{userPage.TotalPages}; Showing {userPage.PageSize} / {userPage.TotalCount} Users" +
+				$"");
 			foreach (var user in userPage.Items)
 				LogPublicUser(user);
 		}

@@ -87,8 +87,9 @@ namespace HackerNews.CLI
 			services.AddDomain(configuration)
 				.AddApiConsumer(configuration)
 				.AddCli(configuration);
-			
+
 			services.AddSerilogLogger(configuration);
+			//services.AddBasicLogger(configuration);
 
 			services.RegisterHostedServiceForVerb(_args);
 		}

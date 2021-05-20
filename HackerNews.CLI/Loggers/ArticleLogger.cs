@@ -30,6 +30,7 @@ namespace HackerNews.CLI.Loggers
 			LogArticle(article);
 		}
 
+		// TODO: this logging logic could be abstracted away as it is virtually the same for each entity.
 		public void LogEntityPage(PaginatedList<GetArticleModel> articlePage)
 		{
 			_logger.LogInformation($"ARTICLE PAGE {articlePage.PageIndex}/{articlePage.TotalPages}; Showing {articlePage.PageSize} / {articlePage.TotalCount} Articles");
