@@ -15,19 +15,23 @@ namespace HackerNews.CLI.Verbs.GetBoards
 
 	public class GetBoardProcessor : GetVerbProcessor<GetBoardModel, GetBoardsOptions>, IGetBoardProcessor
 	{
+		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _configEntityLogger;
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _configEntityWriter;
 
 		public GetBoardProcessor(IGetEntityRepository<GetBoardModel> entityRepository,
-			IEntityLogger<GetBoardModel> entityLogger,
+			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter)
 			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;
 		}
 
 		public override void ConfigureProcessor(GetBoardsOptions options)
 		{
-			_configEntityWriter.Configure(options.GetBoardInclusionConfiguration());
+			BoardInclusionConfiguration config = options.GetBoardInclusionConfiguration();
+			_configEntityLogger.Configure(config);
+			_configEntityWriter.Configure(config);
 		}
 	}
 }

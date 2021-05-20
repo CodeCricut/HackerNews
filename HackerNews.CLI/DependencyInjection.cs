@@ -26,7 +26,10 @@ namespace HackerNews.CLI
 		{
 			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsOptions>, GetBoardProcessor>();
-			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
+
+
+			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>()
+				.AddSingleton<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, BoardLogger>();
 
 			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticleOptions>, GetArticleProcessor>();

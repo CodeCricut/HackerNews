@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get-a -s 10 -p -f \"C:\\Users\\ajori\\OneDrive\\Desktop\\Junk\\adfdasf.txt\" --IncludeId --IncludeType --IncludeTitle --IncludeText --IncludePostDate --IncludeKarma"
+      "commandLineArgs": "get-b -s 10 -p --IncludeId --IncludeTitle --IncludeCreatorId"
     }
   }
 }
