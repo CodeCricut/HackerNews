@@ -6,15 +6,6 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.PostBoard
 {
-	[Verb("post-b", HelpText = "Post a board.")]
-	public class PostBoardVerbOptions : PostEntityVerbOptions, IPostEntityVerbOptions
-	{
-		[Option("Title", SetName = "boards", HelpText = "The title to assign to the board being posted")]
-		public string Title { get; set; }
-		[Option("Description", SetName = "boards", HelpText = "The description to assign to the board being posted")]
-		public string Description { get; set; }
-	}
-
 	public class PostBoardVerb : IHostedService
 	{
 		private readonly PostBoardVerbOptions _options;
