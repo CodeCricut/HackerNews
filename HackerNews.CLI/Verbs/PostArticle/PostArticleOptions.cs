@@ -7,7 +7,7 @@ using System.Text;
 namespace HackerNews.CLI.Verbs.PostArticle
 {
 	[Verb("post-a", HelpText = "Post an article")]
-	public class PostArticleVerbOptions : PostEntityVerbOptions, IPostEntityVerbOptions
+	public class PostArticleOptions : PostEntityOptions, IPostEntityOptions
 	{
 		[Option("Type", HelpText = "The type to assign to the article being posted (news, opinion, meta, question)")]
 		public string Type { get; set; }

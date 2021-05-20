@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.PostComment
 {
-	public class PostCommentVerb : IHostedService
+	public class PostCommentHostedService : IHostedService
 	{
-		private readonly PostCommentVerbOptions _options;
+		private readonly PostCommentOptions _options;
 		private readonly IPostCommentProcessor _postCommentProcessor;
 
-		public PostCommentVerb(PostCommentVerbOptions options,
+		public PostCommentHostedService(PostCommentOptions options,
 			IPostCommentProcessor postCommentProcessor)
 		{
 			_options = options;

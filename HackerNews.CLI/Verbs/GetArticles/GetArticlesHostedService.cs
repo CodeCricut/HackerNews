@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.GetArticles
 {
-	public class GetArticlesVerb : IHostedService
+	public class GetArticlesHostedService : IHostedService
 	{
-		private readonly GetArticlesVerbOptions _options;
+		private readonly GetArticleOptions _options;
 		private readonly IGetArticleProcessor _getArticleProcessor;
 
-		public GetArticlesVerb(GetArticlesVerbOptions options,
+		public GetArticlesHostedService(GetArticleOptions options,
 			IGetArticleProcessor getArticleProcessor)
 		{
 			_options = options;

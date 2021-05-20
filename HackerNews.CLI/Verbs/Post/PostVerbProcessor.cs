@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace HackerNews.CLI.Verbs.Post
 {
 	public interface IPostVerbProcessor<TPostModel, TGetModel, TOptions>
-		where TOptions : IPostEntityVerbOptions
+		where TOptions : IPostEntityOptions
 	{
 		TPostModel ConstructPostModel(TOptions options);
 		Task ProcessGetVerbOptionsAsync(TOptions options);
@@ -14,7 +14,7 @@ namespace HackerNews.CLI.Verbs.Post
 
 	public abstract class PostVerbProcessor<TPostModel, TGetModel, TOptions> 
 		: IPostVerbProcessor<TPostModel, TGetModel, TOptions>
-		where TOptions : IPostEntityVerbOptions
+		where TOptions : IPostEntityOptions
 	{
 		private readonly ISignInManager _signInManager;
 		private readonly IEntityApiClient<TPostModel, TGetModel> _entityApiClient;

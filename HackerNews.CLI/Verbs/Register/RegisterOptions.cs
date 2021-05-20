@@ -6,7 +6,7 @@ using System.Text;
 namespace HackerNews.CLI.Verbs.Register
 {
 	[Verb("register", HelpText = "Register as a new user, and print the returned JWT if successful.")]
-	public class RegisterVerbOptions
+	public class RegisterOptions
 	{
 		[Option('u', "username", Required = true, HelpText = "The username to register with.")]
 		public string Username { get; set; }

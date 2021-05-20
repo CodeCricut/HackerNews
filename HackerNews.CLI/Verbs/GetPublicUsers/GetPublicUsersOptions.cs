@@ -7,7 +7,7 @@ using System.Text;
 namespace HackerNews.CLI.Verbs.GetPublicUsers
 {
 	[Verb("get-u", HelpText = "Get users from the database.")]
-	public class GetPublicUsersVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
+	public class GetPublicUsersOptions : GetEntityOptions, IGetEntityOptions
 	{
 		[Option("IncludeId")]
 		public bool IncludeId { get; set; }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.GetPublicUsers
 {
-	public class GetPublicUsersVerb : IHostedService
+	public class GetPublicUsersHostedService : IHostedService
 	{
-		private readonly GetPublicUsersVerbOptions _options;
+		private readonly GetPublicUsersOptions _options;
 		private readonly IGetPublicUserProcessor _getPublicUserProcessor;
 
-		public GetPublicUsersVerb(GetPublicUsersVerbOptions options,
+		public GetPublicUsersHostedService(GetPublicUsersOptions options,
 			IGetPublicUserProcessor getPublicUserProcessor)
 		{
 			_options = options;

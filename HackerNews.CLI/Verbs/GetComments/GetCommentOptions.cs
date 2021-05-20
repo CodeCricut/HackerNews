@@ -4,25 +4,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace HackerNews.CLI.Verbs.GetArticles
+namespace HackerNews.CLI.Verbs.GetComments
 {
-	[Verb("get-a", HelpText = "Get articles from the database.")]
-	public class GetArticlesVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
+	[Verb("get-c", HelpText = "Get comments from the database.")]
+	public class GetCommentsOptions : GetEntityOptions, IGetEntityOptions
 	{
 		[Option("IncludeId")]
 		public bool IncludeId { get; set; }
-		[Option("IncludeType")]
-		public bool IncludeType { get; set; }
 		[Option("IncludeUserId")]
 		public bool IncludeUserId { get; set; }
 		[Option("IncludeText")]
 		public bool IncludeText { get; set; }
-		[Option("IncludeCommentIds")]
-		public bool IncludeCommentIds { get; set; }
+		[Option("IncludeUrl")]
+		public bool IncludeUrl { get; set; }
 		[Option("IncludeKarma")]
 		public bool IncludeKarma { get; set; }
-		[Option("IncludeTitle")]
-		public bool IncludeTitle { get; set; }
+		[Option("IncludeCommentIds")]
+		public bool IncludeCommentIds { get; set; }
+		[Option("IncludeParentCommentId")]
+		public bool IncludeParentCommentId { get; set; }
+		[Option("IncludeParentArticleId")]
+		public bool IncludeParentArticleId { get; set; }
+		[Option("IncludeDeleted")]
+		public bool IncludeDeleted { get; set; }
 		[Option("IncludeUsersLiked")]
 		public bool IncludeUsersLiked { get; set; }
 		[Option("IncludeUsersDisliked")]
@@ -31,9 +35,5 @@ namespace HackerNews.CLI.Verbs.GetArticles
 		public bool IncludePostDate { get; set; }
 		[Option("IncludeBoardId")]
 		public bool IncludeBoardId { get; set; }
-		[Option("IncludeDeleted")]
-		public bool IncludeDeleted { get; set; }
-		[Option("IncludeAssociatedImageId")]
-		public bool IncludeAssociatedImageId { get; set; }
 	}
 }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.PostArticle
 {
-	public class PostArticleVerb : IHostedService
+	public class PostArticleHostedService : IHostedService
 	{
-		private readonly PostArticleVerbOptions _options;
+		private readonly PostArticleOptions _options;
 		private readonly IPostArticleProcessor _postArticleProcessor;
 
-		public PostArticleVerb(PostArticleVerbOptions options,
+		public PostArticleHostedService(PostArticleOptions options,
 			IPostArticleProcessor postArticleProcessor)
 		{
 			_options = options;

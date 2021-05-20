@@ -9,7 +9,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 {
 	public interface IGetVerbProcessor<GetModel, TOptions>
 
-		where TOptions : IGetEntityVerbOptions
+		where TOptions : IGetEntityOptions
 	{
 		void ConfigureProcessor(TOptions options);
 		Task ProcessGetVerbOptionsAsync(TOptions options);
@@ -17,7 +17,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 
 	public abstract class GetVerbProcessor<TGetModel, TOptions> :
 		IGetVerbProcessor<TGetModel, TOptions>
-		where TOptions : IGetEntityVerbOptions
+		where TOptions : IGetEntityOptions
 	{
 		protected IGetEntityRepository<TGetModel> EntityRepository { get; private set; }
 		protected IEntityLogger<TGetModel> EntityLogger { get; private set; }

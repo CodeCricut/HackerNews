@@ -5,19 +5,19 @@ using HackerNews.Domain.Common.Models.Comments;
 
 namespace HackerNews.CLI.Verbs.PostComment
 {
-	public interface IPostCommentProcessor : IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentVerbOptions>
+	public interface IPostCommentProcessor : IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentOptions>
 	{
 
 	}
 
-	public class PostCommentProcessor : PostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentVerbOptions>,
+	public class PostCommentProcessor : PostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentOptions>,
 		IPostCommentProcessor
 	{
 		public PostCommentProcessor(ISignInManager signInManager, IEntityApiClient<PostCommentModel, GetCommentModel> entityApiClient, IEntityLogger<GetCommentModel> entityLogger) : base(signInManager, entityApiClient, entityLogger)
 		{
 		}
 
-		public override PostCommentModel ConstructPostModel(PostCommentVerbOptions options)
+		public override PostCommentModel ConstructPostModel(PostCommentOptions options)
 		{
 			return new PostCommentModel()
 			{

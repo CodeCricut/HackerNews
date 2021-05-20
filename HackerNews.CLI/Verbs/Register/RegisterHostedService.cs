@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.Register
 {
-	public class RegisterVerb : IHostedService
+	public class RegisterHostedService : IHostedService
 	{
-		private readonly RegisterVerbOptions _options;
-		private readonly ILogger<RegisterVerb> _logger;
+		private readonly RegisterOptions _options;
+		private readonly ILogger<RegisterHostedService> _logger;
 		private readonly IRegistrationApiClient _registrationApiClient;
 		private readonly IJwtLogger _jwtLogger;
 
-		public RegisterVerb(RegisterVerbOptions options,
-			ILogger<RegisterVerb> logger,
+		public RegisterHostedService(RegisterOptions options,
+			ILogger<RegisterHostedService> logger,
 			IRegistrationApiClient registrationApiClient,
 			IJwtLogger jwtLogger
 			)

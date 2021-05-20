@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.GetComments
 {
-	public class GetCommentsVerb : IHostedService
+	public class GetCommentsHostedService : IHostedService
 	{
-		private readonly GetCommentsVerbOptions _options;
+		private readonly GetCommentsOptions _options;
 		private readonly IGetCommentProcessor _getCommentProcessor;
 
-		public GetCommentsVerb(GetCommentsVerbOptions options,
+		public GetCommentsHostedService(GetCommentsOptions options,
 			IGetCommentProcessor getCommentProcessor)
 		{
 			_options = options;

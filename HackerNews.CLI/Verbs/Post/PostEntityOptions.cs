@@ -2,7 +2,7 @@
 
 namespace HackerNews.CLI.Verbs.Post
 {
-	public interface IPostEntityVerbOptions
+	public interface IPostEntityOptions
 	{
 		[Option('u', "username", Required = true, HelpText = "The username to login with.")]
 		public string Username { get; set; }
@@ -11,7 +11,7 @@ namespace HackerNews.CLI.Verbs.Post
 		public string Password { get; set; }
 	}
 
-	public class PostEntityVerbOptions : IPostEntityVerbOptions
+	public class PostEntityOptions : IPostEntityOptions
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }

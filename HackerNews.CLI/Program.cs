@@ -112,33 +112,33 @@ namespace HackerNews.CLI
 
 			// Get Verb
 			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsVerbOptions>, GetBoardProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsOptions>, GetBoardProcessor>();
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>();
 
 			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticlesVerbOptions>, GetArticleProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticleOptions>, GetArticleProcessor>();
 			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>();
 
 			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsVerbOptions>, GetCommentProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsOptions>, GetCommentProcessor>();
 			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>();
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersVerbOptions>, GetPublicUserProcessor>();
+				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>();
 
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 
 			services.AddSingleton<IPostBoardProcessor, PostBoardProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardVerbOptions>, 
+				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardOptions>, 
 					PostBoardProcessor>();
 
 			services.AddSingleton<IPostArticleProcessor, PostArticleProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleVerbOptions>, 
+				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleOptions>, 
 					PostArticleProcessor>();
 
 			services.AddSingleton<IPostCommentProcessor, PostCommentProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentVerbOptions>, 
+				.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentOptions>, 
 					PostCommentProcessor>();
 
 			services.AddDomain(configuration)

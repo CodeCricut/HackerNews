@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Verbs.GetEntity
 {
-	public interface IGetEntityVerbOptions
+	public interface IGetEntityOptions
 	{
 		public bool Print { get; set; }
 		public string File { get; set; }
@@ -15,8 +15,8 @@ namespace HackerNews.CLI.Verbs.GetEntity
 	}
 
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
-	public class GetEntityVerbOptions :
-		IGetEntityVerbOptions
+	public class GetEntityOptions :
+		IGetEntityOptions
 	{
 		[Option('p', "print", HelpText = "Print the entities to the console")]
 		public bool Print { get; set; }

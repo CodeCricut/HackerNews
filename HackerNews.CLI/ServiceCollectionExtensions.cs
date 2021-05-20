@@ -43,33 +43,33 @@ namespace HackerNews.CLI
 		{
 			switch (verb)
 			{
-				case GetBoardsVerbOptions b:
+				case GetBoardsOptions b:
 					services.AddSingleton(b);
-					services.AddHostedService<GetBoardsVerb>();
+					services.AddHostedService<GetBoardsHostedService>();
 					break;
-				case GetArticlesVerbOptions a:
+				case GetArticleOptions a:
 					services.AddSingleton(a);
-					services.AddHostedService<GetArticlesVerb>();
+					services.AddHostedService<GetArticlesHostedService>();
 					break;
-				case GetCommentsVerbOptions c:
+				case GetCommentsOptions c:
 					services.AddSingleton(c);
-					services.AddHostedService<GetCommentsVerb>();
+					services.AddHostedService<GetCommentsHostedService>();
 					break;
-				case GetPublicUsersVerbOptions u:
+				case GetPublicUsersOptions u:
 					services.AddSingleton(u);
-					services.AddHostedService<GetPublicUsersVerb>();
+					services.AddHostedService<GetPublicUsersHostedService>();
 					break;
-				case PostBoardVerbOptions b:
+				case PostBoardOptions b:
 					services.AddSingleton(b);
-					services.AddHostedService<PostBoardVerb>();
+					services.AddHostedService<PostBoardHostedService>();
 					break;
-				case PostArticleVerbOptions a:
+				case PostArticleOptions a:
 					services.AddSingleton(a);
-					services.AddHostedService<PostArticleVerb>();
+					services.AddHostedService<PostArticleHostedService>();
 					break;
-				case PostCommentVerbOptions c:
+				case PostCommentOptions c:
 					services.AddSingleton(c);
-					services.AddHostedService<PostCommentVerb>();
+					services.AddHostedService<PostCommentHostedService>();
 					break;
 			}
 		}

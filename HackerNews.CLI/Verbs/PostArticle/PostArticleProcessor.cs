@@ -5,12 +5,12 @@ using HackerNews.Domain.Common.Models.Articles;
 
 namespace HackerNews.CLI.Verbs.PostArticle
 {
-	public interface IPostArticleProcessor : IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleVerbOptions>
+	public interface IPostArticleProcessor : IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleOptions>
 	{
 
 	}
 
-	public class PostArticleProcessor : PostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleVerbOptions>, IPostArticleProcessor
+	public class PostArticleProcessor : PostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleOptions>, IPostArticleProcessor
 	{
 		public PostArticleProcessor(ISignInManager signInManager,
 			IEntityApiClient<PostArticleModel, GetArticleModel> entityApiClient,
@@ -19,7 +19,7 @@ namespace HackerNews.CLI.Verbs.PostArticle
 		{
 		}
 
-		public override PostArticleModel ConstructPostModel(PostArticleVerbOptions options)
+		public override PostArticleModel ConstructPostModel(PostArticleOptions options)
 		{
 			return new PostArticleModel()
 			{

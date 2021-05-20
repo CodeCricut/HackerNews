@@ -7,7 +7,7 @@ using System.Text;
 namespace HackerNews.CLI.Verbs.GetBoards
 {
 	[Verb("get-b", HelpText = "Get boards from the database.")]
-	public class GetBoardsVerbOptions : GetEntityVerbOptions, IGetEntityVerbOptions
+	public class GetBoardsOptions : GetEntityOptions, IGetEntityOptions
 	{
 		[Option("IncludeId")]
 		public bool IncludeId { get; set; }

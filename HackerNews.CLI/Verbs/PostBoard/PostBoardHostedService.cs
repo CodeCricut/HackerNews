@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.Verbs.PostBoard
 {
-	public class PostBoardVerb : IHostedService
+	public class PostBoardHostedService : IHostedService
 	{
-		private readonly PostBoardVerbOptions _options;
+		private readonly PostBoardOptions _options;
 		private readonly IPostBoardProcessor _postBoardProcessor;
 
-		public PostBoardVerb(PostBoardVerbOptions options,
+		public PostBoardHostedService(PostBoardOptions options,
 			IPostBoardProcessor postBoardProcessor)
 		{
 			_options = options;

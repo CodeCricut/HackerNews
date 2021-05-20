@@ -7,7 +7,7 @@ using System.Text;
 namespace HackerNews.CLI.Verbs.PostComment
 {
 	[Verb("post-c", HelpText = "Post a comment.")]
-	public class PostCommentVerbOptions : PostEntityVerbOptions, IPostEntityVerbOptions
+	public class PostCommentOptions : PostEntityOptions, IPostEntityOptions
 	{
 		[Option("Text", SetName = "comments", HelpText = "The text to assign to the comment being posted")]
 		public string Text { get; set; }
