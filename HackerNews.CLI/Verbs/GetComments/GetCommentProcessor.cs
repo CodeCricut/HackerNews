@@ -15,19 +15,23 @@ namespace HackerNews.CLI.Verbs.GetComments
 
 	public class GetCommentProcessor : GetVerbProcessor<GetCommentModel, GetCommentsOptions>, IGetCommentProcessor
 	{
+		private readonly IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> _configEntityLogger;
 		private readonly IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> _configEntityWriter;
 
 		public GetCommentProcessor(IGetEntityRepository<GetCommentModel> entityRepository,
-			IEntityLogger<GetCommentModel> entityLogger,
+			IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter)
 			: base(entityRepository, entityLogger, entityWriter)
 		{
+			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;
 		}
 
 		public override void ConfigureProcessor(GetCommentsOptions options)
 		{
-			_configEntityWriter.Configure(options.GetCommentInclusionConfiguration());
+			var config = options.GetCommentInclusionConfiguration();
+			_configEntityLogger.Configure(config);
+			_configEntityWriter.Configure(config);
 		}
 	}
 }

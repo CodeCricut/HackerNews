@@ -39,7 +39,8 @@ namespace HackerNews.CLI
 
 			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsOptions>, GetCommentProcessor>();
-			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>();
+			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>()
+				.AddSingleton<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, CommentLogger>();
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
