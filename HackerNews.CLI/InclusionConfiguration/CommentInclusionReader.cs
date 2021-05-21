@@ -23,7 +23,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 		public static readonly string POST_DATE = "POST DATE";
 		public static readonly string BOARD_ID = "BOARD ID";
 
-		public IEnumerable<string> ReadAllKeys(CommentInclusionConfiguration config)
+		public IEnumerable<string> ReadAllKeys()
 		{
 			return new string[]
 			{
@@ -43,15 +43,15 @@ namespace HackerNews.CLI.InclusionConfiguration
 			};
 		}
 
-		public Dictionary<string, string> ReadAllKeyValues(CommentInclusionConfiguration config, GetCommentModel model)
+		public Dictionary<string, string> ReadAllKeyValues(GetCommentModel model)
 		{
-			string[] keys = ReadAllKeys(config).ToArray();
-			string[] values = ReadAllValues(config, model).ToArray();
+			string[] keys = ReadAllKeys().ToArray();
+			string[] values = ReadAllValues(model).ToArray();
 
 			return DictionaryUtil.KvpToDictionary(keys, values);
 		}
 
-		public IEnumerable<string> ReadAllValues(CommentInclusionConfiguration config, GetCommentModel comment)
+		public IEnumerable<string> ReadAllValues(GetCommentModel comment)
 		{
 			char delimiter = ',';
 			var values = new List<string>

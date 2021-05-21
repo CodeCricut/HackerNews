@@ -29,7 +29,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
-		public IEnumerable<string> ReadAllKeys(BoardInclusionConfiguration config)
+		public IEnumerable<string> ReadAllKeys()
 		{
 			_logger.LogTrace("Reading all keys of board.");
 
@@ -48,17 +48,17 @@ namespace HackerNews.CLI.InclusionConfiguration
 			};
 		}
 
-		public Dictionary<string, string> ReadAllKeyValues(BoardInclusionConfiguration config, GetBoardModel model)
+		public Dictionary<string, string> ReadAllKeyValues(GetBoardModel model)
 		{
 			_logger.LogTrace("Reading all key-value-pairs of board.");
 
-			string[] keys = ReadAllKeys(config).ToArray();
-			string[] values = ReadAllValues(config, model).ToArray();
+			string[] keys = ReadAllKeys().ToArray();
+			string[] values = ReadAllValues(model).ToArray();
 
 			return DictionaryUtil.KvpToDictionary(keys, values);
 		}
 
-		public IEnumerable<string> ReadAllValues(BoardInclusionConfiguration config, GetBoardModel board)
+		public IEnumerable<string> ReadAllValues(GetBoardModel board)
 		{
 			_logger.LogTrace("Reading all values of board.");
 

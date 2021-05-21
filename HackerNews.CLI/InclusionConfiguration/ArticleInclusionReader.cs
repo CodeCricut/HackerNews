@@ -32,7 +32,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 		private static readonly string ASSOCIATED_IMAGE_ID = "ASSOCIATED IMAGE ID";
 		private readonly ILogger<ArticleInclusionReader> _logger;
 
-		public IEnumerable<string> ReadAllKeys(ArticleInclusionConfiguration config)
+		public IEnumerable<string> ReadAllKeys()
 		{
 			_logger.LogTrace("Reading all keys of article.");
 
@@ -54,17 +54,17 @@ namespace HackerNews.CLI.InclusionConfiguration
 			};
 		}
 
-		public Dictionary<string, string> ReadAllKeyValues(ArticleInclusionConfiguration config, GetArticleModel model)
+		public Dictionary<string, string> ReadAllKeyValues(GetArticleModel model)
 		{
 			_logger.LogTrace("Reading all key-value-pairs of article.");
 
-			string[] keys = ReadAllKeys(config).ToArray();
-			string[] values = ReadAllValues(config, model).ToArray();
+			string[] keys = ReadAllKeys().ToArray();
+			string[] values = ReadAllValues(model).ToArray();
 
 			return DictionaryUtil.KvpToDictionary(keys, values);
 		}
 
-		public IEnumerable<string> ReadAllValues(ArticleInclusionConfiguration config, GetArticleModel article)
+		public IEnumerable<string> ReadAllValues(GetArticleModel article)
 		{
 			_logger.LogTrace("Reading all values of article.");
 

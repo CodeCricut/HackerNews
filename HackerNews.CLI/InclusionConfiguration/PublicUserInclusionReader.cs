@@ -18,7 +18,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 		public static readonly string DELETED = "DELETED";
 		public static readonly string PROFILE_IMAGE_ID = "PROFILE_IMAGE_ID";
 
-		public IEnumerable<string> ReadAllKeys(PublicUserInclusionConfiguration config)
+		public IEnumerable<string> ReadAllKeys()
 		{
 			return new string[]
 			{
@@ -33,15 +33,15 @@ namespace HackerNews.CLI.InclusionConfiguration
 			};
 		}
 
-		public Dictionary<string, string> ReadAllKeyValues(PublicUserInclusionConfiguration config, GetPublicUserModel model)
+		public Dictionary<string, string> ReadAllKeyValues(GetPublicUserModel model)
 		{
-			string[] keys = ReadAllKeys(config).ToArray();
-			string[] values = ReadAllValues(config, model).ToArray();
+			string[] keys = ReadAllKeys().ToArray();
+			string[] values = ReadAllValues(model).ToArray();
 
 			return DictionaryUtil.KvpToDictionary(keys, values);
 		}
 
-		public IEnumerable<string> ReadAllValues(PublicUserInclusionConfiguration config, GetPublicUserModel user)
+		public IEnumerable<string> ReadAllValues(GetPublicUserModel user)
 		{
 			char delimiter = ',';
 

@@ -9,8 +9,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 		IEnumerable<string> ReadIncludedValues(TInclusionConfig config, TGetModel model);
 		Dictionary<string, string> ReadIncludedKeyValues(TInclusionConfig config, TGetModel model);
 
-		IEnumerable<string> ReadAllKeys(TInclusionConfig config);
-		IEnumerable<string> ReadAllValues(TInclusionConfig config, TGetModel model);
-		Dictionary<string, string> ReadAllKeyValues(TInclusionConfig config, TGetModel model);
+		IEnumerable<string> ReadAllKeys();
+		IEnumerable<string> ReadAllValues(TGetModel model);
+		Dictionary<string, string> ReadAllKeyValues(TGetModel model);
 	}
 }
