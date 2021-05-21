@@ -6,45 +6,16 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class ConfigurableCommentLogger : IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>
+	public class ConfigurableCommentLogger : ConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>
 	{
-		private readonly ILogger<ConfigurableCommentLogger> _logger;
-		private readonly IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> _commentInclusionReader;
-		private CommentInclusionConfiguration _inclusionConfig;
-
-		public ConfigurableCommentLogger(ILogger<ConfigurableCommentLogger> logger, 
-			IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> commentInclusionReader)
+		public ConfigurableCommentLogger(ILogger<ConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>> logger, IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> articleInclusionReader, CommentInclusionConfiguration inclusionConfig) : base(logger, articleInclusionReader, inclusionConfig)
 		{
-			_logger = logger;
-			_commentInclusionReader = commentInclusionReader;
-			_inclusionConfig = new CommentInclusionConfiguration();
 		}
 
-		public void Configure(CommentInclusionConfiguration config)
-		{
-			_inclusionConfig = config;
-		}
+		protected override string GetEntityName()
+			=> "Comment";
 
-		public void LogEntity(GetCommentModel comment)
-		{
-			LogComment(comment);
-		}
-
-		public void LogEntityPage(PaginatedList<GetCommentModel> commentPage)
-		{
-			_logger.LogInformation($"COMMENT PAGE {commentPage.PageIndex}/{commentPage.TotalPages}; Showing {commentPage.PageSize} / {commentPage.TotalCount} Comments");
-			foreach (var comment in commentPage.Items)
-				LogComment(comment);
-		}
-
-		private void LogComment(GetCommentModel comment)
-		{
-			Dictionary<string, string> boardDict = _commentInclusionReader.ReadIncludedKeyValues(_inclusionConfig, comment);
-
-			_logger.LogInformation("---------------------");
-			foreach (var kvp in boardDict)
-				_logger.LogInformation($"\t{kvp.Key}={kvp.Value}");
-			_logger.LogInformation("---------------------");
-		}
+		protected override string GetEntityNamePlural()
+			=> "Comments";
 	}
 }

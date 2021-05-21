@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "post-b --username \"user1\" --password \"user1\" --Title \"cli board 3\" --Description \"cli board 4\""
+      "commandLineArgs": "get-b --all -s 10 -v -p -f \"C:\\Users\\ajori\\OneDrive\\Desktop\\Junk\\lsjdflkj..txt\""
     }
   }
 }

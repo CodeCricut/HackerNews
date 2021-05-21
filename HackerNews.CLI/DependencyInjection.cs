@@ -91,8 +91,12 @@ namespace HackerNews.CLI
 			services.AddSingleton<IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>, CommentInclusionReader>();
 			services.AddSingleton<IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>, PublicUserInclusionReader>();
 
-
 			services.AddSingleton<IVerbositySetter, VerbositySetter>();
+
+			services.AddTransient<BoardInclusionConfiguration>();
+			services.AddTransient<ArticleInclusionConfiguration>();
+			services.AddTransient<CommentInclusionConfiguration>();
+			services.AddTransient<PublicUserInclusionConfiguration>();
 			return services;
 		}
 	}

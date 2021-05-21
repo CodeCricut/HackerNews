@@ -8,56 +8,17 @@ using System.Text;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class ConfigurableBoardLogger : 
-		IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>
+	public class ConfigurableBoardLogger :
+		ConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>
 	{
-		private readonly ILogger<ConfigurableBoardLogger> _logger;
-		private readonly IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> _boardInclusionReader;
-		private BoardInclusionConfiguration _inclusionConfig;
-
-		public ConfigurableBoardLogger(ILogger<ConfigurableBoardLogger> logger,
-			IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> boardInclusionReader)
+		public ConfigurableBoardLogger(ILogger<ConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>> logger, IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> articleInclusionReader, BoardInclusionConfiguration inclusionConfig) : base(logger, articleInclusionReader, inclusionConfig)
 		{
-			_logger = logger;
-			_boardInclusionReader = boardInclusionReader;
-			_inclusionConfig = new BoardInclusionConfiguration();
-
-			logger.LogTrace("Created " + this.GetType().Name);
 		}
 
-		public void Configure(BoardInclusionConfiguration config)
-		{
-			_logger.LogTrace("Configuring " + this.GetType().Name);
-			_inclusionConfig = config;
-		}
+		protected override string GetEntityName()
+			=> "Board";
 
-		public void LogEntity(GetBoardModel board)
-		{
-			_logger.LogDebug("Logging board.");
-
-			LogBoard(board);
-		}
-
-		public void LogEntityPage(PaginatedList<GetBoardModel> boardPage)
-		{
-			_logger.LogDebug("Logging board page.");
-
-			_logger.LogInformation($"BOARD PAGE {boardPage.PageIndex}/{boardPage.TotalPages}; Showing {boardPage.PageSize} / {boardPage.TotalCount} Boards");
-			foreach (var board in boardPage.Items)
-			{
-				_logger.LogTrace($"Logging board with ID={board.Id} in board page.");
-				LogBoard(board);
-			}
-		}
-
-		private void LogBoard(GetBoardModel board)
-		{
-			Dictionary<string, string> boardDict = _boardInclusionReader.ReadIncludedKeyValues(_inclusionConfig, board);
-
-			_logger.LogInformation("---------------------");
-			foreach (var kvp in boardDict)
-				_logger.LogInformation($"\t{kvp.Key}={kvp.Value}");
-			_logger.LogInformation("---------------------");
-		}
+		protected override string GetEntityNamePlural()
+			=> "Boards";
 	}
 }
