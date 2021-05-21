@@ -8,40 +8,16 @@ using System.Text;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class PublicUserLogger : IEntityLogger<GetPublicUserModel>
+	public class PublicUserLogger : EntityLogger<GetPublicUserModel>, IEntityLogger<GetPublicUserModel>
 	{
-		private readonly ILogger<PublicUserLogger> _logger;
-		private IEntityReader<GetPublicUserModel> _userReader;
-		private PublicUserInclusionConfiguration _inclusionConfig;
-
-		public PublicUserLogger(ILogger<PublicUserLogger> logger,
-			IEntityReader<GetPublicUserModel> userReader)
+		public PublicUserLogger(ILogger<EntityLogger<GetPublicUserModel>> logger, IEntityReader<GetPublicUserModel> entityReader) : base(logger, entityReader)
 		{
-			_logger = logger;
-			_userReader = userReader;
 		}
 
-		public void LogEntity(GetPublicUserModel user)
-		{
-			LogPublicUser(user);
-		}
+		protected override string GetEntityName()
+			=> "User";
 
-		public void LogEntityPage(PaginatedList<GetPublicUserModel> userPage)
-		{
-			_logger.LogInformation($"USER PAGE {userPage.PageIndex}/{userPage.TotalPages}; Showing {userPage.PageSize} / {userPage.TotalCount} Users" +
-				$"");
-			foreach (var user in userPage.Items)
-				LogPublicUser(user);
-		}
-
-		private void LogPublicUser(GetPublicUserModel user)
-		{
-			Dictionary<string, string> userDict = _userReader.ReadAllKeyValues(user);
-
-			_logger.LogInformation("---------------------");
-			foreach (var kvp in userDict)
-				_logger.LogInformation($"\t{kvp.Key}={kvp.Value}");
-			_logger.LogInformation("---------------------");
-		}
+		protected override string GetEntityPlural()
+			=> "Users";
 	}
 }

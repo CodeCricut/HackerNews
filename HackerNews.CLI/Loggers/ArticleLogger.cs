@@ -6,48 +6,16 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class ArticleLogger : IEntityLogger<GetArticleModel>
+	public class ArticleLogger : EntityLogger<GetArticleModel>, IEntityLogger<GetArticleModel>
 	{
-		private readonly ILogger<ArticleLogger> _logger;
-		private readonly IEntityReader<GetArticleModel> _articleReader;
-
-		public ArticleLogger(ILogger<ArticleLogger> logger,
-			IEntityReader<GetArticleModel> articleReader)
+		public ArticleLogger(ILogger<EntityLogger<GetArticleModel>> logger, IEntityReader<GetArticleModel> entityReader) : base(logger, entityReader)
 		{
-			_logger = logger;
-			_articleReader = articleReader;
-
-			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
-		public void LogEntity(GetArticleModel article)
-		{
-			_logger.LogDebug("Logging article.");
+		protected override string GetEntityName()
+			=> "Article";
 
-			LogArticle(article);
-		}
-
-		// TODO: this logging logic could be abstracted away as it is virtually the same for each entity.
-		public void LogEntityPage(PaginatedList<GetArticleModel> articlePage)
-		{
-			_logger.LogDebug("Logging article page.");
-
-			_logger.LogInformation($"ARTICLE PAGE {articlePage.PageIndex}/{articlePage.TotalPages}; Showing {articlePage.PageSize} / {articlePage.TotalCount} Articles");
-			foreach (var article in articlePage.Items)
-			{
-				_logger.LogTrace($"Logging article with ID={article.Id} in article page.");
-				LogArticle(article);
-			}
-		}
-
-		private void LogArticle(GetArticleModel article)
-		{
-			Dictionary<string, string> articleDict = _articleReader.ReadAllKeyValues(article);
-
-			_logger.LogInformation("---------------------");
-			foreach (var kvp in articleDict)
-				_logger.LogInformation($"\t{kvp.Key}={kvp.Value}");
-			_logger.LogInformation("---------------------");
-		}
+		protected override string GetEntityPlural()
+			=> "Articles";
 	}
 }
