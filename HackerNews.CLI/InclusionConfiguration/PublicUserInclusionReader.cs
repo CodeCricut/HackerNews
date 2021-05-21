@@ -7,7 +7,9 @@ using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class PublicUserInclusionReader : IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>
+	public class PublicUserInclusionReader : 
+		IEntityReader<GetPublicUserModel>,
+		IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>
 	{
 		public static readonly string ID = "ID";
 		public static readonly string USERNAME = "USERNAME";

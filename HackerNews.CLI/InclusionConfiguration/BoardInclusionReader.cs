@@ -8,7 +8,9 @@ using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class BoardInclusionReader : IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel>
+	public class BoardInclusionReader : 
+		IEntityReader<GetBoardModel>,
+		IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel>
 	{
 		private static readonly string ID = "ID";
 		private static readonly string TITLE = "TITLE";

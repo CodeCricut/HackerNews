@@ -8,7 +8,9 @@ using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class ArticleInclusionReader : IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>
+	public class ArticleInclusionReader : 
+		IEntityReader<GetArticleModel>,
+		IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>
 	{
 		public ArticleInclusionReader(ILogger<ArticleInclusionReader> logger)
 		{

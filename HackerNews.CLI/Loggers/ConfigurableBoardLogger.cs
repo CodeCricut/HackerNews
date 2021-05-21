@@ -2,23 +2,33 @@
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class BoardLogger : IEntityLogger<GetBoardModel>
+	public class ConfigurableBoardLogger : 
+		IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>
 	{
-		private readonly ILogger<BoardLogger> _logger;
-		private readonly IEntityReader<GetBoardModel> _boardReader;
+		private readonly ILogger<ConfigurableBoardLogger> _logger;
+		private readonly IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> _boardInclusionReader;
+		private BoardInclusionConfiguration _inclusionConfig;
 
-		public BoardLogger(ILogger<BoardLogger> logger,
-			IEntityReader<GetBoardModel> boardReader)
+		public ConfigurableBoardLogger(ILogger<ConfigurableBoardLogger> logger,
+			IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> boardInclusionReader)
 		{
 			_logger = logger;
-			_boardReader = boardReader;
+			_boardInclusionReader = boardInclusionReader;
+			_inclusionConfig = new BoardInclusionConfiguration();
 
 			logger.LogTrace("Created " + this.GetType().Name);
+		}
+
+		public void Configure(BoardInclusionConfiguration config)
+		{
+			_logger.LogTrace("Configuring " + this.GetType().Name);
+			_inclusionConfig = config;
 		}
 
 		public void LogEntity(GetBoardModel board)
@@ -40,10 +50,9 @@ namespace HackerNews.CLI.Loggers
 			}
 		}
 
-
 		private void LogBoard(GetBoardModel board)
 		{
-			Dictionary<string, string> boardDict = _boardReader.ReadAllKeyValues(board);
+			Dictionary<string, string> boardDict = _boardInclusionReader.ReadIncludedKeyValues(_inclusionConfig, board);
 
 			_logger.LogInformation("---------------------");
 			foreach (var kvp in boardDict)

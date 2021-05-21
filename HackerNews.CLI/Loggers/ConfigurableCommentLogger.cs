@@ -2,22 +2,27 @@
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class CommentLogger : IEntityLogger<GetCommentModel>
+	public class ConfigurableCommentLogger : IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>
 	{
-		private readonly ILogger<CommentLogger> _logger;
-		private readonly IEntityReader<GetCommentModel> _commentReader;
+		private readonly ILogger<ConfigurableCommentLogger> _logger;
+		private readonly IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> _commentInclusionReader;
+		private CommentInclusionConfiguration _inclusionConfig;
 
-		public CommentLogger(ILogger<CommentLogger> logger,
-			IEntityReader<GetCommentModel> commentInclusionReader)
+		public ConfigurableCommentLogger(ILogger<ConfigurableCommentLogger> logger, 
+			IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> commentInclusionReader)
 		{
 			_logger = logger;
-			_commentReader = commentInclusionReader;
+			_commentInclusionReader = commentInclusionReader;
+			_inclusionConfig = new CommentInclusionConfiguration();
+		}
+
+		public void Configure(CommentInclusionConfiguration config)
+		{
+			_inclusionConfig = config;
 		}
 
 		public void LogEntity(GetCommentModel comment)
@@ -34,7 +39,7 @@ namespace HackerNews.CLI.Loggers
 
 		private void LogComment(GetCommentModel comment)
 		{
-			Dictionary<string, string> boardDict = _commentReader.ReadAllKeyValues(comment);
+			Dictionary<string, string> boardDict = _commentInclusionReader.ReadIncludedKeyValues(_inclusionConfig, comment);
 
 			_logger.LogInformation("---------------------");
 			foreach (var kvp in boardDict)

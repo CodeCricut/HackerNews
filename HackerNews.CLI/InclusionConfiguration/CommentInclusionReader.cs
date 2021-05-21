@@ -7,7 +7,9 @@ using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class CommentInclusionReader : IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>
+	public class CommentInclusionReader : 
+		IEntityReader<GetCommentModel>,
+		IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>
 	{
 		public static readonly string ID = "ID";
 		public static readonly string USER_ID = "USER ID";

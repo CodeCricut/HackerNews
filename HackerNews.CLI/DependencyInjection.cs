@@ -30,23 +30,23 @@ namespace HackerNews.CLI
 
 
 			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, BoardLogger>();
+				.AddSingleton<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, ConfigurableBoardLogger>();
 
 			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticleOptions>, GetArticleProcessor>();
 
 			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>, ArticleLogger>();
+				.AddSingleton<IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>, ConfigurableArticleLogger>();
 
 			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsOptions>, GetCommentProcessor>();
 			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, CommentLogger>();
+				.AddSingleton<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, ConfigurableCommentLogger>();
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
 			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, PublicUserLogger>();
+				.AddSingleton<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, ConfigurablePublicUserLogger>();
 
 
 			services.AddSingleton<IJwtLogger, JwtLogger>();
@@ -80,6 +80,11 @@ namespace HackerNews.CLI
 			services.AddSingleton<IGetEntityRepository<GetArticleModel>, GetArticleRepository>();
 			services.AddSingleton<IGetEntityRepository<GetCommentModel>, GetCommentRepository>();
 			services.AddSingleton<IGetEntityRepository<GetPublicUserModel>, GetPublicUserRepository>();
+
+			services.AddSingleton<IEntityReader<GetBoardModel>, BoardInclusionReader>();
+			services.AddSingleton<IEntityReader<GetArticleModel>, ArticleInclusionReader>();
+			services.AddSingleton<IEntityReader<GetCommentModel>, CommentInclusionReader>();
+			services.AddSingleton<IEntityReader<GetPublicUserModel>, PublicUserInclusionReader>();
 
 			services.AddSingleton<IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel>, BoardInclusionReader>();
 			services.AddSingleton<IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>, ArticleInclusionReader>();

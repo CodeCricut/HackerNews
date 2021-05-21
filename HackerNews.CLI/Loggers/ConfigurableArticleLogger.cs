@@ -2,22 +2,34 @@
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace HackerNews.CLI.Loggers
 {
-	public class ArticleLogger : IEntityLogger<GetArticleModel>
+	public class ConfigurableArticleLogger 
+		: IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>
 	{
-		private readonly ILogger<ArticleLogger> _logger;
-		private readonly IEntityReader<GetArticleModel> _articleReader;
+		private readonly ILogger<ConfigurableArticleLogger> _logger;
+		private readonly IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel> _articleInclusionReader;
+		private ArticleInclusionConfiguration _inclusionConfig;
 
-		public ArticleLogger(ILogger<ArticleLogger> logger,
-			IEntityReader<GetArticleModel> articleReader)
+		public ConfigurableArticleLogger(ILogger<ConfigurableArticleLogger> logger,
+			IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel> articleInclusionReader)
 		{
 			_logger = logger;
-			_articleReader = articleReader;
+			_articleInclusionReader = articleInclusionReader;
+			_inclusionConfig = new ArticleInclusionConfiguration();
 
 			_logger.LogTrace("Created " + this.GetType().Name);
+		}
+
+		public void Configure(ArticleInclusionConfiguration config)
+		{
+			_logger.LogTrace("Configuring " + this.GetType().Name);
+
+			_inclusionConfig = config;
 		}
 
 		public void LogEntity(GetArticleModel article)
@@ -42,7 +54,7 @@ namespace HackerNews.CLI.Loggers
 
 		private void LogArticle(GetArticleModel article)
 		{
-			Dictionary<string, string> articleDict = _articleReader.ReadAllKeyValues(article);
+			Dictionary<string, string> articleDict = _articleInclusionReader.ReadIncludedKeyValues(_inclusionConfig, article);
 
 			_logger.LogInformation("---------------------");
 			foreach (var kvp in articleDict)
