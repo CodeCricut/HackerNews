@@ -1,8 +1,5 @@
 ﻿using CommandLine;
 using HackerNews.CLI.Verbs.GetEntity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Verbs.GetArticles
 {

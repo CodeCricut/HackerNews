@@ -6,9 +6,7 @@ using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +32,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> configBoardLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> configBoardWriter,
 			IGetEntityRepository<GetBoardModel> getBoardRepo,
-			
+
 			BoardInclusionConfiguration boardInclusionConfiguration,
 			bool verbose,
 			bool print,
@@ -60,7 +58,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 			_verbositySetter.SetVerbository(_verbose);
 
 			var boardPage = await _getBoardRepo.GetByIdsAsync(_ids, _pagingParams);
-			
+
 			if (_print)
 			{
 				_configBoardLogger.Configure(_boardInclusionConfiguration);

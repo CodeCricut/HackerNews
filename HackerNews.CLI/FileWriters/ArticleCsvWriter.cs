@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Articles;
 using Microsoft.Extensions.Logging;

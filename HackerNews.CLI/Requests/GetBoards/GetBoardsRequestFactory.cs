@@ -6,9 +6,7 @@ using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Requests.GetBoards
 {
@@ -48,7 +46,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 				_configBoardLogger,
 				_configBoardWriter,
 				_getBoardRepo,
-			
+
 				boardInclusionConfig,
 				verbose,
 				print,

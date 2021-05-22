@@ -1,14 +1,12 @@
 ﻿using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Articles;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class ArticleInclusionReader : 
+	public class ArticleInclusionReader :
 		IEntityReader<GetArticleModel>,
 		IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>
 	{

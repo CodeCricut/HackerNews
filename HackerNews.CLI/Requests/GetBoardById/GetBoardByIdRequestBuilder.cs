@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Verbs.GetBoardById
 {
-	public class GetBoardByIdRequestBuilder 
+	public class GetBoardByIdRequestBuilder
 		: IRequestBuilder<GetBoardByIdRequest>
 	{
 		private readonly GetBoardByIdRequestFactory _requestFactory;
@@ -43,13 +43,13 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 			OverrideId.FromOptions(options);
 			OverridePrint.FromOptions(options);
 			OverrideFile.FromOptions(options);
-			
+
 			return this;
 		}
 
 		public GetBoardByIdRequest Build()
 		{
-			foreach(var action in BuildActions)
+			foreach (var action in BuildActions)
 				action.Invoke();
 			return _requestFactory.Create(
 				OverrideInclusion.BoardInclusionConfiguration,

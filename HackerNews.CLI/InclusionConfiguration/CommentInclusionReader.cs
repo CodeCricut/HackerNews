@@ -1,13 +1,11 @@
 ﻿using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Comments;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class CommentInclusionReader : 
+	public class CommentInclusionReader :
 		IEntityReader<GetCommentModel>,
 		IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>
 	{

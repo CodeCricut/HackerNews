@@ -32,7 +32,7 @@ namespace HackerNews.CLI.EntityRepository
 		{
 			_logger.LogTrace("Getting users with IDs " + ids.ToDelimitedList(','));
 
-			var users = await  _entityApiClient.GetByIdsAsync(ids.ToList(), pagingParams);
+			var users = await _entityApiClient.GetByIdsAsync(ids.ToList(), pagingParams);
 
 			if (users.TotalCount != ids.Count()) _logger.LogWarning($"Expected {ids.Count()} articles, got {users.TotalCount}.");
 

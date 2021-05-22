@@ -1,10 +1,8 @@
 ﻿using HackerNews.CLI.Options;
 using HackerNews.CLI.Options.Configuration;
 using HackerNews.CLI.Verbs.Configuration;
-using HackerNews.CLI.Verbs.GetBoardById;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Requests.GetBoards
 {
@@ -16,7 +14,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 
 		public IBoardInclusionRequestConfiguration<GetBoardsRequestBuilder, GetBoardsRequest> OverrideInclusion { get; }
 
-		public IVerbosityRequestConfiguration<GetBoardsRequestBuilder, GetBoardsRequest> OverrideVerbosity { get;  }
+		public IVerbosityRequestConfiguration<GetBoardsRequestBuilder, GetBoardsRequest> OverrideVerbosity { get; }
 
 		public IPrintRequestConfiguration<GetBoardsRequestBuilder, GetBoardsRequest> OverridePrint { get; }
 
@@ -30,7 +28,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 		public GetBoardsRequestBuilder(GetBoardsRequestFactory getBoardsRequestFactory)
 		{
 			_requestFactory = getBoardsRequestFactory;
-		
+
 			BuildActions = new List<Action>();
 
 			OverrideInclusion = new BoardInclusionRequestConfiguration<GetBoardsRequestBuilder, GetBoardsRequest>(this);

@@ -1,5 +1,4 @@
-﻿using CommandLine;
-using HackerNews.ApiConsumer.Account;
+﻿using HackerNews.ApiConsumer.Account;
 using HackerNews.CLI.Loggers;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;

@@ -1,9 +1,7 @@
 ﻿using CommandLine;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetEntity;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Options
 {
@@ -36,7 +34,7 @@ namespace HackerNews.CLI.Options
 		public string FileLocation { get; set; }
 
 		public IEnumerable<int> Ids { get; set; }
-		
+
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }
 	}

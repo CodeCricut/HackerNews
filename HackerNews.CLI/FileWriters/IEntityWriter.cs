@@ -11,6 +11,6 @@ namespace HackerNews.CLI.FileWriters
 
 	public interface IConfigurableEntityWriter<TGetModel, TIncludeConfiguration> : IEntityWriter<TGetModel>
 	{
-		void Configure(TIncludeConfiguration config); 
+		void Configure(TIncludeConfiguration config);
 	}
 }

@@ -1,18 +1,8 @@
 ﻿using CommandLine;
-using HackerNews.CLI.Configuration;
 using HackerNews.CLI.HostedServices;
-using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Options;
-using HackerNews.CLI.Verbs.GetArticles;
-using HackerNews.CLI.Verbs.GetBoards;
-using HackerNews.CLI.Verbs.GetComments;
-using HackerNews.CLI.Verbs.GetPublicUsers;
-using HackerNews.CLI.Verbs.PostArticle;
-using HackerNews.CLI.Verbs.PostBoard;
-using HackerNews.CLI.Verbs.PostComment;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
@@ -57,32 +47,36 @@ namespace HackerNews.CLI
 					services.AddSingleton(b);
 					services.AddHostedService<GetBoardsHostedService>();
 					break;
+				case Options.PostBoardOptions p:
+					services.AddSingleton(p);
+					services.AddHostedService<HostedServices.PostBoardHostedService>();
+					break;
 
 
-				//case GetArticleOptions a:
-				//	services.AddSingleton(a);
-				//	services.AddHostedService<GetArticlesHostedService>();
-				//	break;
-				//case GetCommentsOptions c:
-				//	services.AddSingleton(c);
-				//	services.AddHostedService<GetCommentsHostedService>();
-				//	break;
-				//case GetPublicUsersOptions u:
-				//	services.AddSingleton(u);
-				//	services.AddHostedService<GetPublicUsersHostedService>();
-				//	break;
-				//case PostBoardOptions b:
-				//	services.AddSingleton(b);
-				//	services.AddHostedService<PostBoardHostedService>();
-				//	break;
-				//case PostArticleOptions a:
-				//	services.AddSingleton(a);
-				//	services.AddHostedService<PostArticleHostedService>();
-				//	break;
-				//case PostCommentOptions c:
-				//	services.AddSingleton(c);
-				//	services.AddHostedService<PostCommentHostedService>();
-				//	break;
+					//case GetArticleOptions a:
+					//	services.AddSingleton(a);
+					//	services.AddHostedService<GetArticlesHostedService>();
+					//	break;
+					//case GetCommentsOptions c:
+					//	services.AddSingleton(c);
+					//	services.AddHostedService<GetCommentsHostedService>();
+					//	break;
+					//case GetPublicUsersOptions u:
+					//	services.AddSingleton(u);
+					//	services.AddHostedService<GetPublicUsersHostedService>();
+					//	break;
+					//case PostBoardOptions b:
+					//	services.AddSingleton(b);
+					//	services.AddHostedService<PostBoardHostedService>();
+					//	break;
+					//case PostArticleOptions a:
+					//	services.AddSingleton(a);
+					//	services.AddHostedService<PostArticleHostedService>();
+					//	break;
+					//case PostCommentOptions c:
+					//	services.AddSingleton(c);
+					//	services.AddHostedService<PostCommentHostedService>();
+					//	break;
 			}
 		}
 
@@ -98,8 +92,8 @@ namespace HackerNews.CLI
 			string defaultLevelStr = configuration.GetSection("Serilog:MinimumLevel:Default")?.Value;
 			LogEventLevel defaultLevel = Enum.Parse<LogEventLevel>(defaultLevelStr);
 
-			var levelSwitch = new LoggingLevelSwitch(); 
-			levelSwitch.MinimumLevel = defaultLevel; 
+			var levelSwitch = new LoggingLevelSwitch();
+			levelSwitch.MinimumLevel = defaultLevel;
 
 			services.AddSingleton(levelSwitch);
 
@@ -133,8 +127,8 @@ namespace HackerNews.CLI
 				{
 					config.IncludeScopes = false;
 					config.TimestampFormat = "hh:mm:ss";
-					});
-				
+				});
+
 				logging.AddConfiguration(configuration.GetSection("Logging"));
 			});
 		}

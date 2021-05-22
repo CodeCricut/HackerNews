@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
@@ -17,7 +16,7 @@ namespace HackerNews.CLI.FileWriters
 		private readonly IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> _boardInclusionReader;
 		private BoardInclusionConfiguration _inclusionConfig;
 
-		public BoardCsvWriter(IFileWriter writer, 
+		public BoardCsvWriter(IFileWriter writer,
 			ILogger<BoardCsvWriter> logger,
 			IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel> boardInclusionReader)
 		{
@@ -78,7 +77,7 @@ namespace HackerNews.CLI.FileWriters
 			var keys = _boardInclusionReader.ReadIncludedKeys(_inclusionConfig);
 
 			StringBuilder sb = new StringBuilder();
-			foreach(var key in keys)
+			foreach (var key in keys)
 			{
 				sb.Append($"{key},");
 			}

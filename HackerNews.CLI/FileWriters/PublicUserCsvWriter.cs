@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Logging;
@@ -17,7 +16,7 @@ namespace HackerNews.CLI.FileWriters
 		private readonly IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel> _userInclusionReader;
 		private PublicUserInclusionConfiguration _inclusionConfig;
 
-		public PublicUserCsvWriter(IFileWriter fileWriter, 
+		public PublicUserCsvWriter(IFileWriter fileWriter,
 			ILogger<PublicUserCsvWriter> logger,
 			IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel> userInclusionReader)
 		{

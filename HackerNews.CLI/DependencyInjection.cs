@@ -1,25 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HackerNews.CLI.Configuration;
 using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Requests.GetBoards;
+using HackerNews.CLI.Requests.PostBoard;
 using HackerNews.CLI.Verbs.GetArticles;
-using HackerNews.CLI.Verbs.GetBoards;
+using HackerNews.CLI.Verbs.GetBoardById;
 using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.CLI.Verbs.GetPublicUsers;
-using HackerNews.CLI.Verbs.Post;
-using HackerNews.CLI.Verbs.PostArticle;
-using HackerNews.CLI.Verbs.PostBoard;
-using HackerNews.CLI.Verbs.PostComment;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Configuration;
-using HackerNews.CLI.Configuration;
-using HackerNews.CLI.Verbs.GetBoardById;
-using HackerNews.CLI.Requests.GetBoards;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HackerNews.CLI
 {
@@ -53,17 +49,17 @@ namespace HackerNews.CLI
 
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 
-			services.AddSingleton<IPostBoardProcessor, PostBoardProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardOptions>,
-					PostBoardProcessor>();
+			//services.AddSingleton<IPostBoardProcessor, PostBoardProcessor>()
+			//	.AddSingleton<IPostVerbProcessor<PostBoardModel, GetBoardModel, PostBoardOptions>,
+			//		PostBoardProcessor>();
 
-			services.AddSingleton<IPostArticleProcessor, PostArticleProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleOptions>,
-					PostArticleProcessor>();
+			//services.AddSingleton<IPostArticleProcessor, PostArticleProcessor>()
+			//	.AddSingleton<IPostVerbProcessor<PostArticleModel, GetArticleModel, PostArticleOptions>,
+			//		PostArticleProcessor>();
 
-			services.AddSingleton<IPostCommentProcessor, PostCommentProcessor>()
-				.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentOptions>,
-					PostCommentProcessor>();
+			//services.AddSingleton<IPostCommentProcessor, PostCommentProcessor>()
+			//	.AddSingleton<IPostVerbProcessor<PostCommentModel, GetCommentModel, PostCommentOptions>,
+			//		PostCommentProcessor>();
 
 			services.AddSingleton<IFileWriter, FileWriter>();
 			services.AddSingleton<IEntityWriter<GetBoardModel>, BoardCsvWriter>();
@@ -102,9 +98,12 @@ namespace HackerNews.CLI
 
 			services.AddTransient<GetBoardByIdRequestBuilder>();
 			services.AddTransient<GetBoardByIdRequestFactory>();
-			
+
 			services.AddTransient<GetBoardsRequestBuilder>();
 			services.AddTransient<GetBoardsRequestFactory>();
+
+			services.AddTransient<PostBoardRequestBuilder>();
+			services.AddTransient<PostBoardRequestFactory>();
 
 			return services;
 		}

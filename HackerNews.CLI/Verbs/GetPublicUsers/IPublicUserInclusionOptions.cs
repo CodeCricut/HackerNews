@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.CLI.Verbs.GetPublicUsers
+﻿namespace HackerNews.CLI.Verbs.GetPublicUsers
 {
 	public interface IPublicUserInclusionOptions
 	{

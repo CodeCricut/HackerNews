@@ -2,7 +2,7 @@
 
 namespace HackerNews.CLI.Loggers
 {
-	public interface IEntityLogger<TGetModel> 
+	public interface IEntityLogger<TGetModel>
 	{
 		void LogEntity(TGetModel entity);
 		void LogEntityPage(PaginatedList<TGetModel> entityPage);

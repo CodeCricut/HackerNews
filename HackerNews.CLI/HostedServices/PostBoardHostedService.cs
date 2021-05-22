@@ -1,28 +1,26 @@
 ﻿using HackerNews.CLI.Options;
-using HackerNews.CLI.Requests.GetBoards;
+using HackerNews.CLI.Requests.PostBoard;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.HostedServices
 {
-	public class GetBoardsHostedService : IHostedService
+	public class PostBoardHostedService : IHostedService
 	{
-		private GetBoardsRequest _request;
+		private readonly PostBoardRequest _request;
 
-		public GetBoardsHostedService(
-			GetBoardsOptions options,
-			GetBoardsRequestBuilder requestBuilder
-			)
+		public PostBoardHostedService(PostBoardOptions options,
+			PostBoardRequestBuilder requestBuilder)
 		{
 			_request = requestBuilder
 				.Configure(options)
 				.Build();
 		}
 
-		public async Task StartAsync(CancellationToken cancellationToken)
+		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			await _request.ExecuteAsync();
+			return _request.ExecuteAsync();
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)

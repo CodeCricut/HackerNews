@@ -1,11 +1,7 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Requests;
-using HackerNews.CLI.Verbs.GetBoardById;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetEntity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Verbs.Configuration
 {

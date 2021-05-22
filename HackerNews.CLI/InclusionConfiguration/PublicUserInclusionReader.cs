@@ -1,13 +1,11 @@
 ﻿using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Users;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class PublicUserInclusionReader : 
+	public class PublicUserInclusionReader :
 		IEntityReader<GetPublicUserModel>,
 		IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>
 	{

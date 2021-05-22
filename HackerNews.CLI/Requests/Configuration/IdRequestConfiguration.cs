@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.Requests;
-using HackerNews.CLI.Verbs.GetBoardById;
 using System;
 
 namespace HackerNews.CLI.Verbs.Configuration

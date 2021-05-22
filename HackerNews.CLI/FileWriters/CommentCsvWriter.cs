@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Comments;
 using Microsoft.Extensions.Logging;
@@ -17,7 +16,7 @@ namespace HackerNews.CLI.FileWriters
 		private readonly IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> _commentInclusionReader;
 		private CommentInclusionConfiguration _inclusionConfig;
 
-		public CommentCsvWriter(IFileWriter writer, 
+		public CommentCsvWriter(IFileWriter writer,
 			ILogger<CommentCsvWriter> logger,
 			IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel> commentInclusionReader)
 		{

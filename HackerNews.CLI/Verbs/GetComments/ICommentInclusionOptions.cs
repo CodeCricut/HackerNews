@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HackerNews.CLI.Verbs.GetComments
+﻿namespace HackerNews.CLI.Verbs.GetComments
 {
 	public interface ICommentInclusionOptions
 	{

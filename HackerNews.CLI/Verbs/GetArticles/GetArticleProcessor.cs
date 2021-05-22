@@ -28,7 +28,7 @@ namespace HackerNews.CLI.Verbs.GetArticles
 			IVerbositySetter verbositySetter)
 			: base(entityRepository, entityLogger, entityWriter, logger, verbositySetter)
 		{
-			
+
 			_configEntityLogger = entityLogger;
 			_configEntityWriter = entityWriter;
 			_logger = logger;

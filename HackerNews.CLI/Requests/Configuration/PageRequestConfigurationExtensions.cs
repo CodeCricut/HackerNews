@@ -1,9 +1,6 @@
 ﻿using HackerNews.CLI.Requests;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Options.Configuration
 {

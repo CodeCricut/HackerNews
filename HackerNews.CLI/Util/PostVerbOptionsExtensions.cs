@@ -1,6 +1,4 @@
-﻿using HackerNews.CLI.Verbs.Post;
-
-namespace HackerNews.CLI.Util
+﻿namespace HackerNews.CLI.Util
 {
 	// TODO: check that all required args are included to return true from any method
 	public static class PostVerbOptionsExtensions

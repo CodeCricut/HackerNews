@@ -30,7 +30,7 @@ namespace HackerNews.CLI.EntityRepository
 			GetBoardModel board = await _entityApiClient.GetByIdAsync(id);
 
 			if (board == null) _logger.LogWarning("Could not find board with ID " + id);
-			
+
 			return board;
 		}
 

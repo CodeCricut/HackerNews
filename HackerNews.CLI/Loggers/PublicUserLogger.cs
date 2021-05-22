@@ -1,10 +1,6 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Loggers
 {

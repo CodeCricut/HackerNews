@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Configuration
 {
@@ -27,7 +24,7 @@ namespace HackerNews.CLI.Configuration
 		public void SetVerbository(bool verboseOutput)
 		{
 			if (verboseOutput) _loggingLevelSwitch.MinimumLevel = Serilog.Events.LogEventLevel.Verbose;
-			else _loggingLevelSwitch.MinimumLevel = Serilog.Events.LogEventLevel.Information; 
+			else _loggingLevelSwitch.MinimumLevel = Serilog.Events.LogEventLevel.Information;
 		}
 	}
 }

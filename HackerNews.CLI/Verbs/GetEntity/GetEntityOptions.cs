@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Verbs.GetEntity
 {
-	public interface IGetEntityOptions : 
+	public interface IGetEntityOptions :
 		IVerbosityOptions,
 		IPrintOptions,
 		IFileOptions,

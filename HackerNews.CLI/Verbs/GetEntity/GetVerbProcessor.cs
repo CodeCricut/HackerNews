@@ -32,7 +32,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 			IGetEntityRepository<TGetModel> entityRepository,
 			IEntityLogger<TGetModel> entityLogger,
 			IEntityWriter<TGetModel> entityWriter,
-			ILogger<GetVerbProcessor<TGetModel, TOptions>> logger, 
+			ILogger<GetVerbProcessor<TGetModel, TOptions>> logger,
 			IVerbositySetter appConfigurator)
 		{
 			EntityRepository = entityRepository;
@@ -46,10 +46,10 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		public async Task ProcessGetVerbOptionsAsync(TOptions options)
 		{
 			_logger.LogDebug($"Processing Get Verb Options [Processor name: {this.GetType().Name}] [Type name: {options.GetType().Name}]");
-			
+
 			if (options.Verbose)
 				_appConfigurator.SetVerbository(true);
-			
+
 			ConfigureProcessor(options);
 
 			if (options.Id > 0)

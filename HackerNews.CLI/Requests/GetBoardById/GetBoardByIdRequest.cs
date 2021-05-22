@@ -31,9 +31,9 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter,
 			IGetEntityRepository<GetBoardModel> getBoardRepo,
-			
+
 			BoardInclusionConfiguration boardInclusionConfiguration,
-			bool verbose, 
+			bool verbose,
 			bool print,
 			string fileLocation,
 			int id)
@@ -66,7 +66,7 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 				_entityLogger.Configure(_boardInclusionConfiguration);
 				_entityLogger.LogEntity(board);
 			}
-			
+
 			if (!string.IsNullOrEmpty(_fileLocation))
 			{
 				_entityWriter.Configure(_boardInclusionConfiguration);

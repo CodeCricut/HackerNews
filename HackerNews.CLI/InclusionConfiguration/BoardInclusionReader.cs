@@ -1,14 +1,12 @@
 ﻿using HackerNews.CLI.Util;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HackerNews.CLI.InclusionConfiguration
 {
-	public class BoardInclusionReader : 
+	public class BoardInclusionReader :
 		IEntityReader<GetBoardModel>,
 		IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel>
 	{
@@ -66,7 +64,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 			var values = new List<string>();
 			char delimiter = ',';
-			
+
 			values.Add(board.Id.ToString());
 			values.Add(board.Title.Quote());
 			values.Add(board.Description.Quote());
@@ -86,25 +84,25 @@ namespace HackerNews.CLI.InclusionConfiguration
 			_logger.LogTrace("Reading included keys of board.");
 
 			var keys = new List<string>();
-			if (config.IncludeId) 
+			if (config.IncludeId)
 				keys.Add(ID);
-			if (config.IncludeTitle) 
+			if (config.IncludeTitle)
 				keys.Add(TITLE);
-			if (config.IncludeDescription) 
+			if (config.IncludeDescription)
 				keys.Add(DESCRIPTION);
-			if (config.IncludeCreateDate) 
+			if (config.IncludeCreateDate)
 				keys.Add(CREATE_DATE);
-			if (config.IncludeCreatorId) 
+			if (config.IncludeCreatorId)
 				keys.Add(CREATOR_ID);
-			if (config.IncludeModeratorIds) 
+			if (config.IncludeModeratorIds)
 				keys.Add(MODERATOR_IDS);
-			if (config.IncludeSubscriberIds) 
+			if (config.IncludeSubscriberIds)
 				keys.Add(SUBSCRIBER_IDS);
-			if (config.IncludeArticleIds) 
+			if (config.IncludeArticleIds)
 				keys.Add(ARTICLE_IDS);
-			if (config.IncludeDeleted) 
+			if (config.IncludeDeleted)
 				keys.Add(DELETED);
-			if (config.IncludeBoardImageId) 
+			if (config.IncludeBoardImageId)
 				keys.Add(BOARD_IMAGE_ID);
 
 			return keys;
@@ -119,7 +117,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 
 			return DictionaryUtil.KvpToDictionary(keys, values);
 		}
-		
+
 
 		public IEnumerable<string> ReadIncludedValues(BoardInclusionConfiguration config, GetBoardModel board)
 		{
@@ -129,25 +127,25 @@ namespace HackerNews.CLI.InclusionConfiguration
 			char delimiter = ',';
 
 
-			if (config.IncludeId) 
+			if (config.IncludeId)
 				values.Add(board.Id.ToString());
-			if (config.IncludeTitle) 
+			if (config.IncludeTitle)
 				values.Add(board.Title.Quote());
-			if (config.IncludeDescription) 
+			if (config.IncludeDescription)
 				values.Add(board.Description.Quote());
-			if (config.IncludeCreateDate) 
+			if (config.IncludeCreateDate)
 				values.Add(board.CreateDate.ToString().Quote());
-			if (config.IncludeCreatorId) 
+			if (config.IncludeCreatorId)
 				values.Add(board.CreatorId.ToString());
-			if (config.IncludeModeratorIds) 
+			if (config.IncludeModeratorIds)
 				values.Add(board.ModeratorIds.ToDelimitedList(delimiter).Quote());
-			if (config.IncludeSubscriberIds) 
+			if (config.IncludeSubscriberIds)
 				values.Add(board.SubscriberIds.ToDelimitedList(delimiter).Quote());
-			if (config.IncludeArticleIds) 
+			if (config.IncludeArticleIds)
 				values.Add(board.ArticleIds.ToDelimitedList(delimiter).Quote());
-			if (config.IncludeDeleted) 
+			if (config.IncludeDeleted)
 				values.Add(board.Deleted.ToString());
-			if (config.IncludeBoardImageId) 
+			if (config.IncludeBoardImageId)
 				values.Add(board.BoardImageId.ToString());
 
 			return values;

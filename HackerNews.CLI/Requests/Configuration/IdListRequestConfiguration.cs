@@ -1,7 +1,6 @@
 ﻿using HackerNews.CLI.Requests;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Options.Configuration
 {

@@ -1,6 +1,5 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Verbs.GetArticles;
-using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetPublicUsers;
 
