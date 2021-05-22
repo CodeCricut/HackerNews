@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Options;
+using HackerNews.CLI.Options.Verbs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -39,17 +40,22 @@ namespace HackerNews.CLI
 		{
 			switch (verb)
 			{
-				case GetBoardByIdOptions b:
-					services.AddSingleton(b);
+				case GetBoardByIdOptions opts:
+					services.AddSingleton(opts);
 					services.AddHostedService<GetBoardByIdHostedService>();
 					break;
-				case GetBoardsOptions b:
-					services.AddSingleton(b);
+				case GetBoardsOptions opts:
+					services.AddSingleton(opts);
 					services.AddHostedService<GetBoardsHostedService>();
 					break;
-				case Options.PostBoardOptions p:
-					services.AddSingleton(p);
-					services.AddHostedService<HostedServices.PostBoardHostedService>();
+				case PostBoardOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<PostBoardHostedService>();
+					break;
+
+				case GetArticleByIdOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<GetArticleByIdHostedService>();
 					break;
 
 

@@ -3,9 +3,9 @@ using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Requests.GetArticleById;
 using HackerNews.CLI.Requests.GetBoards;
 using HackerNews.CLI.Requests.PostBoard;
-using HackerNews.CLI.Verbs.GetArticles;
 using HackerNews.CLI.Verbs.GetBoardById;
 using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetEntity;
@@ -30,8 +30,8 @@ namespace HackerNews.CLI
 			services.AddTransient<IEntityLogger<GetBoardModel>, BoardLogger>()
 				.AddTransient<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, ConfigurableBoardLogger>();
 
-			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticleOptions>, GetArticleProcessor>();
+			//services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
+			//	.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticleOptions>, GetArticleProcessor>();
 
 			services.AddTransient<IEntityLogger<GetArticleModel>, ArticleLogger>()
 				.AddTransient<IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>, ConfigurableArticleLogger>();
@@ -102,8 +102,12 @@ namespace HackerNews.CLI
 			services.AddTransient<GetBoardsRequestBuilder>();
 			services.AddTransient<GetBoardsRequestFactory>();
 
+			services.AddTransient<GetArticleByIdRequestBuilder>();
+			services.AddTransient<GetArticleByIdRequestFactory>();
+
 			services.AddTransient<PostBoardRequestBuilder>();
 			services.AddTransient<PostBoardRequestFactory>();
+
 
 			return services;
 		}

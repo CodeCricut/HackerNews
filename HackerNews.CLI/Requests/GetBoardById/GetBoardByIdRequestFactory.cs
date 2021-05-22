@@ -15,7 +15,8 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _entityWriter;
 		private readonly IGetEntityRepository<GetBoardModel> _getBoardRepo;
 
-		public GetBoardByIdRequestFactory(ILogger<GetBoardByIdRequest> logger,
+		public GetBoardByIdRequestFactory(
+			ILogger<GetBoardByIdRequest> logger,
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter,

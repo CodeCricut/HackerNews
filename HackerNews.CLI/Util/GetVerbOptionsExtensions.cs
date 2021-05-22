@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.CLI.Verbs.GetArticles;
 using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetPublicUsers;
 
@@ -25,27 +24,27 @@ namespace HackerNews.CLI.Util
 		//	};
 		//}
 
-		public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetArticleOptions options)
-		{
-			if (options.IncludeAllFields) return new ArticleInclusionConfiguration(true);
+		//public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetArticleOptions options)
+		//{
+		//	if (options.IncludeAllFields) return new ArticleInclusionConfiguration(true);
 
-			return new ArticleInclusionConfiguration(options.IncludeAllFields)
-			{
-				IncludeId = options.IncludeId,
-				IncludeType = options.IncludeType,
-				IncludeUserId = options.IncludeUserId,
-				IncludeText = options.IncludeText,
-				IncludeCommentIds = options.IncludeCommentIds,
-				IncludeKarma = options.IncludeKarma,
-				IncludeTitle = options.IncludeTitle,
-				IncludeUsersLiked = options.IncludeUsersLiked,
-				IncludeUsersDisliked = options.IncludeUsersDisliked,
-				IncludePostDate = options.IncludePostDate,
-				IncludeBoardId = options.IncludeBoardId,
-				IncludeDeleted = options.IncludeDeleted,
-				IncludeAssociatedImageId = options.IncludeAssociatedImageId
-			};
-		}
+		//	return new ArticleInclusionConfiguration(options.IncludeAllFields)
+		//	{
+		//		IncludeId = options.IncludeId,
+		//		IncludeType = options.IncludeType,
+		//		IncludeUserId = options.IncludeUserId,
+		//		IncludeText = options.IncludeText,
+		//		IncludeCommentIds = options.IncludeCommentIds,
+		//		IncludeKarma = options.IncludeKarma,
+		//		IncludeTitle = options.IncludeTitle,
+		//		IncludeUsersLiked = options.IncludeUsersLiked,
+		//		IncludeUsersDisliked = options.IncludeUsersDisliked,
+		//		IncludePostDate = options.IncludePostDate,
+		//		IncludeBoardId = options.IncludeBoardId,
+		//		IncludeDeleted = options.IncludeDeleted,
+		//		IncludeAssociatedImageId = options.IncludeAssociatedImageId
+		//	};
+		//}
 
 		public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetCommentsOptions options)
 		{
