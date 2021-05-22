@@ -25,6 +25,8 @@ namespace HackerNews.CLI.Verbs.Configuration
 		public BoardInclusionRequestConfiguration(TBaseRequestBuilder baseRequest)
 		{
 			BaseRequest = baseRequest;
+
+			BoardInclusionConfiguration = new BoardInclusionConfiguration();
 		}
 
 		public TBaseRequestBuilder SetWhenBuilt(Func<BoardInclusionConfiguration> configCallback)

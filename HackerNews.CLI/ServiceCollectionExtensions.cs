@@ -53,35 +53,36 @@ namespace HackerNews.CLI
 					services.AddSingleton(b);
 					services.AddHostedService<GetBoardByIdHostedService>();
 					break;
-
 				case GetBoardsOptions b:
 					services.AddSingleton(b);
 					services.AddHostedService<GetBoardsHostedService>();
 					break;
-				case GetArticleOptions a:
-					services.AddSingleton(a);
-					services.AddHostedService<GetArticlesHostedService>();
-					break;
-				case GetCommentsOptions c:
-					services.AddSingleton(c);
-					services.AddHostedService<GetCommentsHostedService>();
-					break;
-				case GetPublicUsersOptions u:
-					services.AddSingleton(u);
-					services.AddHostedService<GetPublicUsersHostedService>();
-					break;
-				case PostBoardOptions b:
-					services.AddSingleton(b);
-					services.AddHostedService<PostBoardHostedService>();
-					break;
-				case PostArticleOptions a:
-					services.AddSingleton(a);
-					services.AddHostedService<PostArticleHostedService>();
-					break;
-				case PostCommentOptions c:
-					services.AddSingleton(c);
-					services.AddHostedService<PostCommentHostedService>();
-					break;
+
+
+				//case GetArticleOptions a:
+				//	services.AddSingleton(a);
+				//	services.AddHostedService<GetArticlesHostedService>();
+				//	break;
+				//case GetCommentsOptions c:
+				//	services.AddSingleton(c);
+				//	services.AddHostedService<GetCommentsHostedService>();
+				//	break;
+				//case GetPublicUsersOptions u:
+				//	services.AddSingleton(u);
+				//	services.AddHostedService<GetPublicUsersHostedService>();
+				//	break;
+				//case PostBoardOptions b:
+				//	services.AddSingleton(b);
+				//	services.AddHostedService<PostBoardHostedService>();
+				//	break;
+				//case PostArticleOptions a:
+				//	services.AddSingleton(a);
+				//	services.AddHostedService<PostArticleHostedService>();
+				//	break;
+				//case PostCommentOptions c:
+				//	services.AddSingleton(c);
+				//	services.AddHostedService<PostCommentHostedService>();
+				//	break;
 			}
 		}
 

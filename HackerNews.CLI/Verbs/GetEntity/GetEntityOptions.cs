@@ -27,10 +27,8 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		[Option("id", HelpText = "The ID of the entity to be gotten.")]
 		public int Id { get; set; }
 
-		[Option('n', "page-number", HelpText = "The page number of entities to retrievw.")]
 		public int PageNumber { get; set; }
 
-		[Option('s', "page-size", HelpText = "The page size of entities to retrieve.")]
 		public int PageSize { get; set; }
 
 		[Option("ids", HelpText = "The IDs of the entity to be gotten.")]

@@ -19,6 +19,7 @@ using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Configuration;
 using HackerNews.CLI.Configuration;
 using HackerNews.CLI.Verbs.GetBoardById;
+using HackerNews.CLI.Requests.GetBoards;
 
 namespace HackerNews.CLI
 {
@@ -26,8 +27,8 @@ namespace HackerNews.CLI
 	{
 		public static IServiceCollection AddCli(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsOptions>, GetBoardProcessor>();
+			//services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
+			//	.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsOptions>, GetBoardProcessor>();
 
 
 			services.AddTransient<IEntityLogger<GetBoardModel>, BoardLogger>()
@@ -100,9 +101,10 @@ namespace HackerNews.CLI
 			services.AddTransient<PublicUserInclusionConfiguration>();
 
 			services.AddTransient<GetBoardByIdRequestBuilder>();
-
 			services.AddTransient<GetBoardByIdRequestFactory>();
-
+			
+			services.AddTransient<GetBoardsRequestBuilder>();
+			services.AddTransient<GetBoardsRequestFactory>();
 
 			return services;
 		}

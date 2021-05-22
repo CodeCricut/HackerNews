@@ -8,23 +8,23 @@ namespace HackerNews.CLI.Util
 {
 	public static class GetVerbOptionsExtensions
 	{
-		public static BoardInclusionConfiguration GetBoardInclusionConfiguration(this GetBoardsOptions options)
-		{
-			if (options.IncludeAllFields) return new BoardInclusionConfiguration(true);
-			return new BoardInclusionConfiguration(options.IncludeAllFields)
-			{
-				IncludeId = options.IncludeId,
-				IncludeTitle = options.IncludeTitle,
-				IncludeDescription = options.IncludeDescription,
-				IncludeCreateDate = options.IncludeCreateDate,
-				IncludeCreatorId = options.IncludeCreatorId,
-				IncludeModeratorIds = options.IncludeModeratorIds,
-				IncludeSubscriberIds = options.IncludeSubscriberIds,
-				IncludeArticleIds = options.IncludeArticleIds,
-				IncludeDeleted = options.IncludeDeleted,
-				IncludeBoardImageId = options.IncludeImageId
-			};
-		}
+		//public static BoardInclusionConfiguration GetBoardInclusionConfiguration(this GetBoardsOptions options)
+		//{
+		//	if (options.IncludeAllFields) return new BoardInclusionConfiguration(true);
+		//	return new BoardInclusionConfiguration(options.IncludeAllFields)
+		//	{
+		//		IncludeId = options.IncludeId,
+		//		IncludeTitle = options.IncludeTitle,
+		//		IncludeDescription = options.IncludeDescription,
+		//		IncludeCreateDate = options.IncludeCreateDate,
+		//		IncludeCreatorId = options.IncludeCreatorId,
+		//		IncludeModeratorIds = options.IncludeModeratorIds,
+		//		IncludeSubscriberIds = options.IncludeSubscriberIds,
+		//		IncludeArticleIds = options.IncludeArticleIds,
+		//		IncludeDeleted = options.IncludeDeleted,
+		//		IncludeBoardImageId = options.IncludeImageId
+		//	};
+		//}
 
 		public static ArticleInclusionConfiguration GetArticleInclusionConfiguration(this GetArticleOptions options)
 		{

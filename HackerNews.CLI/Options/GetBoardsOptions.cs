@@ -7,13 +7,14 @@ using System.Text;
 
 namespace HackerNews.CLI.Options
 {
-	[Verb("get-board")]
-	public class GetBoardByIdOptions :
+	[Verb("get-boards")]
+	public class GetBoardsOptions :
 		IBoardInclusionOptions,
 		IVerbosityOptions,
 		IPrintOptions,
 		IFileOptions,
-		IIdOptions
+		IIdListOptions,
+		IPageOptions
 	{
 		public bool IncludeAllFields { get; set; }
 
@@ -34,6 +35,9 @@ namespace HackerNews.CLI.Options
 
 		public string FileLocation { get; set; }
 
-		public int Id { get; set; }
+		public IEnumerable<int> Ids { get; set; }
+		
+		public int PageNumber { get; set; }
+		public int PageSize { get; set; }
 	}
 }

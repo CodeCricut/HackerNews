@@ -6,29 +6,36 @@ using System.Text;
 
 namespace HackerNews.CLI.Verbs.GetBoards
 {
-	[Verb("get-b", HelpText = "Get boards from the database.")]
-	public class GetBoardsOptions : GetEntityOptions, IGetEntityOptions, IBoardInclusionOptions
+	public interface IBoardInclusionOptions : IIncludeAllOptions
 	{
-		[Option("IncludeId")]
+		[Option("includeId")]
 		public bool IncludeId { get; set; }
-		[Option("IncludeTitle")]
+		
+		[Option("includeTitle")]
 		public bool IncludeTitle { get; set; }
-		[Option("IncludeDescription")]
+		
+		[Option("includeDescription")]
 		public bool IncludeDescription { get; set; }
-		[Option("IncludeCreateDate")]
+		
+		[Option("includeCreateDate")]
 		public bool IncludeCreateDate { get; set; }
-		[Option("IncludeCreatorId")]
+		
+		[Option("includeCreatorId")]
 		public bool IncludeCreatorId { get; set; }
-		[Option("IncludeModeratorIds")]
+		
+		[Option("includeModeratorIds")]
 		public bool IncludeModeratorIds { get; set; }
-		[Option("IncludeSubscriberIds")]
+		
+		[Option("includeSubscriberIds")]
 		public bool IncludeSubscriberIds { get; set; }
-		[Option("IncludeArticleIds")]
+		
+		[Option("includeArticleIds")]
 		public bool IncludeArticleIds { get; set; }
-		[Option("IncludeDeleted")]
+		
+		[Option("includeDeleted")]
 		public bool IncludeDeleted { get; set; }
-		[Option("IncludeImageId")]
+		
+		[Option("includeImageId")]
 		public bool IncludeImageId { get; set; }
 	}
-
 }

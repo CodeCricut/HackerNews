@@ -3,74 +3,74 @@ using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
-using HackerNews.CLI.Requests;
+using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Verbs.GetBoardById
+namespace HackerNews.CLI.Requests.GetBoards
 {
-	public class GetBoardByIdRequest : IRequest
+	public class GetBoardsRequest : IRequest
 	{
-		private readonly ILogger<GetBoardByIdRequest> _logger;
+		private readonly ILogger<GetBoardsRequest> _logger;
 		private readonly IVerbositySetter _verbositySetter;
-		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _entityLogger;
-		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _entityWriter;
+		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _configBoardLogger;
+		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _configBoardWriter;
 		private readonly IGetEntityRepository<GetBoardModel> _getBoardRepo;
-
 		private readonly BoardInclusionConfiguration _boardInclusionConfiguration;
 		private readonly bool _verbose;
 		private readonly bool _print;
 		private readonly string _fileLocation;
-		private readonly int _id;
+		private readonly IEnumerable<int> _ids;
+		private readonly PagingParams _pagingParams;
 
-		public GetBoardByIdRequest(
-			ILogger<GetBoardByIdRequest> logger,
+		public GetBoardsRequest(
+			ILogger<GetBoardsRequest> logger,
 			IVerbositySetter verbositySetter,
-			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> entityLogger,
-			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter,
+			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> configBoardLogger,
+			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> configBoardWriter,
 			IGetEntityRepository<GetBoardModel> getBoardRepo,
 			
 			BoardInclusionConfiguration boardInclusionConfiguration,
-			bool verbose, 
+			bool verbose,
 			bool print,
 			string fileLocation,
-			int id)
+			IEnumerable<int> ids,
+			PagingParams pagingParams)
 		{
 			_logger = logger;
 			_verbositySetter = verbositySetter;
-			_entityLogger = entityLogger;
-			_entityWriter = entityWriter;
+			_configBoardLogger = configBoardLogger;
+			_configBoardWriter = configBoardWriter;
 			_getBoardRepo = getBoardRepo;
 			_boardInclusionConfiguration = boardInclusionConfiguration;
 			_verbose = verbose;
 			_print = print;
 			_fileLocation = fileLocation;
-			_id = id;
+			_ids = ids;
+			_pagingParams = pagingParams;
 		}
 
 		public async Task ExecuteAsync()
 		{
 			_verbositySetter.SetVerbository(_verbose);
 
-			GetBoardModel board = await _getBoardRepo.GetByIdAsync(_id);
-			if (board == null)
-			{
-				_logger.LogWarning($"Could not find a board with the ID of {_id}. Aborting request...");
-				return;
-			}
-
+			var boardPage = await _getBoardRepo.GetByIdsAsync(_ids, _pagingParams);
+			
 			if (_print)
 			{
-				_entityLogger.Configure(_boardInclusionConfiguration);
-				_entityLogger.LogEntity(board);
+				_configBoardLogger.Configure(_boardInclusionConfiguration);
+				_configBoardLogger.LogEntityPage(boardPage);
 			}
-			
+
 			if (!string.IsNullOrEmpty(_fileLocation))
 			{
-				_entityWriter.Configure(_boardInclusionConfiguration);
-				await _entityWriter.WriteEntityAsync(_fileLocation, board);
+				_configBoardWriter.Configure(_boardInclusionConfiguration);
+				await _configBoardWriter.WriteEntityPageAsync(_fileLocation, boardPage);
 			}
 		}
 

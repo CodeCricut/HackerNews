@@ -1,23 +1,25 @@
 ﻿using HackerNews.CLI.Options;
-using HackerNews.CLI.Verbs.GetBoardById;
+using HackerNews.CLI.Requests.GetBoards;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.HostedServices
 {
-	public class GetBoardByIdHostedService : IHostedService
+	public class GetBoardsHostedService : IHostedService
 	{
-		private GetBoardByIdRequest _request;
+		private GetBoardsRequest _request;
 
-		public GetBoardByIdHostedService(
-			GetBoardByIdOptions options,
-			GetBoardByIdRequestBuilder getBoardByIdRequestBuilder
+		public GetBoardsHostedService(
+			GetBoardsOptions options,
+			GetBoardsRequestBuilder requestBuilder
 			)
 		{
-			_request = getBoardByIdRequestBuilder
+			_request = requestBuilder
 				.Configure(options)
-				//.OverrideVerbosity.SetWhenBuilt(() => true)
 				.Build();
 		}
 
