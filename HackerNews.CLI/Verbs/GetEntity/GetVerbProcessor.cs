@@ -88,10 +88,10 @@ namespace HackerNews.CLI.Verbs.GetEntity
 				_logger.LogDebug($"Print option true.");
 				EntityLogger.LogEntityPage(entityPage);
 			}
-			if (!string.IsNullOrEmpty(options.File))
+			if (!string.IsNullOrEmpty(options.FileLocation))
 			{
-				_logger.LogDebug($"File location passed: {options.File}");
-				EntityWriter.WriteEntityPageAsync(options.File, entityPage);
+				_logger.LogDebug($"File location passed: {options.FileLocation}");
+				EntityWriter.WriteEntityPageAsync(options.FileLocation, entityPage);
 			}
 		}
 
@@ -105,10 +105,10 @@ namespace HackerNews.CLI.Verbs.GetEntity
 				EntityLogger.LogEntity(entity);
 			}
 
-			if (!string.IsNullOrEmpty(options.File))
+			if (!string.IsNullOrEmpty(options.FileLocation))
 			{
-				_logger.LogDebug($"File location passed: {options.File}");
-				EntityWriter.WriteEntityAsync(options.File, entity);
+				_logger.LogDebug($"File location passed: {options.FileLocation}");
+				EntityWriter.WriteEntityAsync(options.FileLocation, entity);
 			}
 		}
 

@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Verbs.GetEntity
 {
-	public interface IGetEntityOptions
+	public interface IGetEntityOptions : 
+		IVerbosityOptions,
+		IPrintOptions,
+		IFileOptions,
+		IIdOptions,
+		IPageOptions,
+		IIdListOptions,
+		IIncludeAllOptions
 	{
-		public bool Print { get; set; }
-		public string File { get; set; }
-		public int Id { get; set; }
-		public int PageNumber { get; set; }
-		public int PageSize { get; set; }
-		public IEnumerable<int> Ids { get; set; }
-		public bool IncludeAllFields { get; set; }
-		public bool Verbose { get; set; }
 	}
 
 	[Verb("get", HelpText = "Retrieve data from the server, typically with the GET http verb.")]
@@ -23,7 +22,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		public bool Print { get; set; }
 
 		[Option('f', "file", HelpText = "The location of a file, which if specified, the entities will be written to")]
-		public string File { get; set; }
+		public string FileLocation { get; set; }
 
 		[Option("id", HelpText = "The ID of the entity to be gotten.")]
 		public int Id { get; set; }
