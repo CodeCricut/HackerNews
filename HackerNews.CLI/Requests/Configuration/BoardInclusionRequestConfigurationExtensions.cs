@@ -10,7 +10,7 @@ namespace HackerNews.CLI.Verbs.Configuration
 		public static TBaseRequestBuilder FromOptions<TBaseRequestBuilder, TRequest>(
 			this IBoardInclusionRequestConfiguration<TBaseRequestBuilder, TRequest> boardInclusionConfig,
 			IBoardInclusionOptions opts,
-			IIncludeAllOptions allIncludeOpts)
+			IAllInclusionOptions allIncludeOpts)
 			where TBaseRequestBuilder : IRequestBuilder<TRequest>
 		{
 			BoardInclusionConfiguration inclusionConfig;

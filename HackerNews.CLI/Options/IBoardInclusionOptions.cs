@@ -3,7 +3,7 @@ using HackerNews.CLI.Verbs.GetEntity;
 
 namespace HackerNews.CLI.Verbs.GetBoards
 {
-	public interface IBoardInclusionOptions : IIncludeAllOptions
+	public interface IBoardInclusionOptions : IAllInclusionOptions
 	{
 		[Option("includeId")]
 		public bool IncludeId { get; set; }

@@ -1,7 +1,18 @@
-﻿namespace HackerNews.CLI.Verbs.GetComments
+﻿using CommandLine;
+using HackerNews.CLI.Verbs.GetEntity;
+
+namespace HackerNews.CLI.Options.Verbs
 {
-	public interface ICommentInclusionOptions
+	[Verb("get-comment")]
+	public class GetCommentByIdOptions :
+		ICommentInclusionOptions,
+		IVerbosityOptions,
+		IPrintOptions,
+		IFileOptions,
+		IIdOptions
 	{
+		public bool IncludeAllFields { get; set; }
+
 		public bool IncludeId { get; set; }
 		public bool IncludeUserId { get; set; }
 		public bool IncludeText { get; set; }
@@ -15,5 +26,13 @@
 		public bool IncludeUsersDisliked { get; set; }
 		public bool IncludePostDate { get; set; }
 		public bool IncludeBoardId { get; set; }
+
+		public bool Verbose { get; set; }
+
+		public bool Print { get; set; }
+
+		public string FileLocation { get; set; }
+
+		public int Id { get; set; }
 	}
 }

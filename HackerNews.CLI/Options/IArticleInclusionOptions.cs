@@ -3,7 +3,7 @@ using HackerNews.CLI.Verbs.GetEntity;
 
 namespace HackerNews.CLI.Options
 {
-	public interface IArticleInclusionOptions : IIncludeAllOptions
+	public interface IArticleInclusionOptions : IAllInclusionOptions
 	{
 		[Option("includeId")]
 		public bool IncludeId { get; set; }

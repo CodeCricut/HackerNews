@@ -5,9 +5,9 @@ using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Requests.GetArticleById;
 using HackerNews.CLI.Requests.GetBoards;
+using HackerNews.CLI.Requests.GetCommentById;
 using HackerNews.CLI.Requests.PostBoard;
 using HackerNews.CLI.Verbs.GetBoardById;
-using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.CLI.Verbs.GetPublicUsers;
 using HackerNews.Domain.Common.Models.Articles;
@@ -36,8 +36,8 @@ namespace HackerNews.CLI
 			services.AddTransient<IEntityLogger<GetArticleModel>, ArticleLogger>()
 				.AddTransient<IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>, ConfigurableArticleLogger>();
 
-			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsOptions>, GetCommentProcessor>();
+			//services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
+			//	.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsOptions>, GetCommentProcessor>();
 			services.AddTransient<IEntityLogger<GetCommentModel>, CommentLogger>()
 				.AddTransient<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, ConfigurableCommentLogger>();
 
@@ -108,6 +108,8 @@ namespace HackerNews.CLI
 			services.AddTransient<PostBoardRequestBuilder>();
 			services.AddTransient<PostBoardRequestFactory>();
 
+			services.AddTransient<GetCommentByIdRequestBuilder>();
+			services.AddTransient<GetCommentByIdRequestFactory>();
 
 			return services;
 		}

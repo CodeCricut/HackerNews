@@ -1,5 +1,4 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
-using HackerNews.CLI.Verbs.GetComments;
 using HackerNews.CLI.Verbs.GetPublicUsers;
 
 namespace HackerNews.CLI.Util
@@ -46,27 +45,27 @@ namespace HackerNews.CLI.Util
 		//	};
 		//}
 
-		public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetCommentsOptions options)
-		{
-			if (options.IncludeAllFields) return new CommentInclusionConfiguration(true);
+		//public static CommentInclusionConfiguration GetCommentInclusionConfiguration(this GetCommentsOptions options)
+		//{
+		//	if (options.IncludeAllFields) return new CommentInclusionConfiguration(true);
 
-			return new CommentInclusionConfiguration(options.IncludeAllFields)
-			{
-				IncludeId = options.IncludeId,
-				IncludeUserId = options.IncludeUserId,
-				IncludeText = options.IncludeText,
-				IncludeUrl = options.IncludeUrl,
-				IncludeKarma = options.IncludeKarma,
-				IncludeCommentIds = options.IncludeCommentIds,
-				IncludeParentCommentId = options.IncludeParentCommentId,
-				IncludeParentArticleId = options.IncludeParentArticleId,
-				IncludeDeleted = options.IncludeDeleted,
-				IncludeUsersLiked = options.IncludeUsersLiked,
-				IncludeUsersDisliked = options.IncludeUsersDisliked,
-				IncludePostDate = options.IncludePostDate,
-				IncludeBoardId = options.IncludeBoardId
-			};
-		}
+		//	return new CommentInclusionConfiguration(options.IncludeAllFields)
+		//	{
+		//		IncludeId = options.IncludeId,
+		//		IncludeUserId = options.IncludeUserId,
+		//		IncludeText = options.IncludeText,
+		//		IncludeUrl = options.IncludeUrl,
+		//		IncludeKarma = options.IncludeKarma,
+		//		IncludeCommentIds = options.IncludeCommentIds,
+		//		IncludeParentCommentId = options.IncludeParentCommentId,
+		//		IncludeParentArticleId = options.IncludeParentArticleId,
+		//		IncludeDeleted = options.IncludeDeleted,
+		//		IncludeUsersLiked = options.IncludeUsersLiked,
+		//		IncludeUsersDisliked = options.IncludeUsersDisliked,
+		//		IncludePostDate = options.IncludePostDate,
+		//		IncludeBoardId = options.IncludeBoardId
+		//	};
+		//}
 
 		public static PublicUserInclusionConfiguration GetPublicUserInclusionConfiguration(this GetPublicUsersOptions options)
 		{

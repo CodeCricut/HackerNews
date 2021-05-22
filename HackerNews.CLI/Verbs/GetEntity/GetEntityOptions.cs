@@ -10,7 +10,7 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		IIdOptions,
 		IPageOptions,
 		IIdListOptions,
-		IIncludeAllOptions
+		IAllInclusionOptions
 	{
 	}
 
