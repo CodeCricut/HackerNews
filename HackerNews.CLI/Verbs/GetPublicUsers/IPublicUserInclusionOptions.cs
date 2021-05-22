@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace HackerNews.CLI.Verbs.GetPublicUsers
+{
+	public interface IPublicUserInclusionOptions
+	{
+		public bool IncludeId { get; set; }
+		public bool IncludeUsername { get; set; }
+		public bool IncludeKarma { get; set; }
+		public bool IncludeArticleIds { get; set; }
+		public bool IncludeCommentIds { get; set; }
+		public bool IncludeJoinDate { get; set; }
+		public bool IncludeDeleted { get; set; }
+		public bool IncludeProfileImageId { get; set; }
+	}
+}
