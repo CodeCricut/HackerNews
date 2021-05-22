@@ -1,6 +1,8 @@
 ﻿using CommandLine;
 using HackerNews.CLI.Configuration;
+using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Options;
 using HackerNews.CLI.Verbs.GetArticles;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetComments;
@@ -47,6 +49,11 @@ namespace HackerNews.CLI
 		{
 			switch (verb)
 			{
+				case GetBoardByIdOptions b:
+					services.AddSingleton(b);
+					services.AddHostedService<GetBoardByIdHostedService>();
+					break;
+
 				case GetBoardsOptions b:
 					services.AddSingleton(b);
 					services.AddHostedService<GetBoardsHostedService>();

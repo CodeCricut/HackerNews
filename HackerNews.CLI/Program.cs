@@ -28,7 +28,6 @@ namespace HackerNews.CLI
 				var logger = host?.Services.GetService<ILogger<Program>>();
 				logger.LogTrace("Starting host...");
 				await host.StartAsync();
-				logger.LogTrace("Host started.");
 			}
 			catch (Exception ex)
 			{

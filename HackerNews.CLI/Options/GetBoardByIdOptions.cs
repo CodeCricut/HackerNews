@@ -5,36 +5,35 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace HackerNews.CLI.Verbs.GetBoardById
+namespace HackerNews.CLI.Options
 {
 	[Verb("get-board")]
-	public class GetBoardByIdOptions : 
+	public class GetBoardByIdOptions :
 		IBoardInclusionOptions,
-		IIncludeAllOptions,
 		IVerbosityOptions,
 		IPrintOptions,
 		IFileOptions,
 		IIdOptions
 	{
-		[Option("IncludeId")]
+		[Option("includeId")]
 		public bool IncludeId { get; set; }
-		[Option("IncludeTitle")]
+		[Option("includeTitle")]
 		public bool IncludeTitle { get; set; }
-		[Option("IncludeDescription")]
+		[Option("includeDescription")]
 		public bool IncludeDescription { get; set; }
-		[Option("IncludeCreateDate")]
+		[Option("includeCreateDate")]
 		public bool IncludeCreateDate { get; set; }
-		[Option("IncludeCreatorId")]
+		[Option("includeCreatorId")]
 		public bool IncludeCreatorId { get; set; }
-		[Option("IncludeModeratorIds")]
+		[Option("includeModeratorIds")]
 		public bool IncludeModeratorIds { get; set; }
-		[Option("IncludeSubscriberIds")]
+		[Option("includeSubscriberIds")]
 		public bool IncludeSubscriberIds { get; set; }
-		[Option("IncludeArticleIds")]
+		[Option("includeArticleIds")]
 		public bool IncludeArticleIds { get; set; }
-		[Option("IncludeDeleted")]
+		[Option("includeDeleted")]
 		public bool IncludeDeleted { get; set; }
-		[Option("IncludeImageId")]
+		[Option("includeImageId")]
 		public bool IncludeImageId { get; set; }
 
 		[Option('p', "print", HelpText = "Print the entities to the console")]
@@ -43,17 +42,8 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 		[Option('f', "file", HelpText = "The location of a file, which if specified, the entities will be written to")]
 		public string FileLocation { get; set; }
 
-		[Option("id", HelpText = "The ID of the entity to be gotten.")]
+		[Option("id", Required = true, HelpText = "The ID of the entity to be gotten.")]
 		public int Id { get; set; }
-
-		[Option('n', "page-number", HelpText = "The page number of entities to retrievw.")]
-		public int PageNumber { get; set; }
-
-		[Option('s', "page-size", HelpText = "The page size of entities to retrieve.")]
-		public int PageSize { get; set; }
-
-		[Option("ids", HelpText = "The IDs of the entity to be gotten.")]
-		public IEnumerable<int> Ids { get; set; }
 
 		[Option("all", HelpText = "Output all fields of the retrieved entities")]
 		public bool IncludeAllFields { get; set; }

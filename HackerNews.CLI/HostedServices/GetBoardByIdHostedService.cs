@@ -1,12 +1,13 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using HackerNews.CLI.Options;
+using HackerNews.CLI.Verbs.GetBoardById;
+using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Verbs.GetBoardById
+namespace HackerNews.CLI.HostedServices
 {
 	public class GetBoardByIdHostedService : IHostedService
 	{
-		private readonly GetBoardByIdOptions _options;
 		private GetBoardByIdRequest _request;
 
 		public GetBoardByIdHostedService(
@@ -14,11 +15,9 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 			GetBoardByIdRequestBuilder getBoardByIdRequestBuilder
 			)
 		{
-			_options = options;
-
 			_request = getBoardByIdRequestBuilder
-				.Configure(_options)
-				.ConfigureVerbosity(() => true) // overrides previous configuration
+				.Configure(options)
+				.OverrideVerbosity.SetWhenBuilt(() => true)
 				.Build();
 		}
 
@@ -26,7 +25,7 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 		{
 			await _request.ExecuteAsync();
 		}
-		
+
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			return _request.CancelAsync(cancellationToken);

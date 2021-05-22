@@ -18,6 +18,7 @@ using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Configuration;
 using HackerNews.CLI.Configuration;
+using HackerNews.CLI.Verbs.GetBoardById;
 
 namespace HackerNews.CLI
 {
@@ -29,24 +30,24 @@ namespace HackerNews.CLI
 				.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsOptions>, GetBoardProcessor>();
 
 
-			services.AddSingleton<IEntityLogger<GetBoardModel>, BoardLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, ConfigurableBoardLogger>();
+			services.AddTransient<IEntityLogger<GetBoardModel>, BoardLogger>()
+				.AddTransient<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, ConfigurableBoardLogger>();
 
 			services.AddSingleton<IGetArticleProcessor, GetArticleProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetArticleModel, GetArticleOptions>, GetArticleProcessor>();
 
-			services.AddSingleton<IEntityLogger<GetArticleModel>, ArticleLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>, ConfigurableArticleLogger>();
+			services.AddTransient<IEntityLogger<GetArticleModel>, ArticleLogger>()
+				.AddTransient<IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration>, ConfigurableArticleLogger>();
 
 			services.AddSingleton<IGetCommentProcessor, GetCommentProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetCommentModel, GetCommentsOptions>, GetCommentProcessor>();
-			services.AddSingleton<IEntityLogger<GetCommentModel>, CommentLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, ConfigurableCommentLogger>();
+			services.AddTransient<IEntityLogger<GetCommentModel>, CommentLogger>()
+				.AddTransient<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, ConfigurableCommentLogger>();
 
 			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
 				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
-			services.AddSingleton<IEntityLogger<GetPublicUserModel>, PublicUserLogger>()
-				.AddSingleton<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, ConfigurablePublicUserLogger>();
+			services.AddTransient<IEntityLogger<GetPublicUserModel>, PublicUserLogger>()
+				.AddTransient<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, ConfigurablePublicUserLogger>();
 
 
 			services.AddSingleton<IJwtLogger, JwtLogger>();
@@ -97,6 +98,12 @@ namespace HackerNews.CLI
 			services.AddTransient<ArticleInclusionConfiguration>();
 			services.AddTransient<CommentInclusionConfiguration>();
 			services.AddTransient<PublicUserInclusionConfiguration>();
+
+			services.AddTransient<GetBoardByIdRequestBuilder>();
+
+			services.AddTransient<GetBoardByIdRequestFactory>();
+
+
 			return services;
 		}
 	}
