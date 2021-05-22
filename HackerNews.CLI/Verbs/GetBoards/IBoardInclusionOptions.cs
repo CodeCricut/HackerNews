@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HackerNews.CLI.Verbs.GetEntity;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HackerNews.CLI.Verbs.GetBoards
 {
-	public interface IBoardInclusionOptions
+	public interface IBoardInclusionOptions : IIncludeAllOptions
 	{
 		public bool IncludeId { get; set; }
 		public bool IncludeTitle { get; set; }
