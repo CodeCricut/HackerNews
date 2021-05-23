@@ -1,6 +1,7 @@
 ﻿using HackerNews.CLI.Options.Verbs;
 using HackerNews.CLI.Requests.Configuration;
 using HackerNews.CLI.Verbs.Configuration;
+using HackerNews.CLI.Verbs.GetEntity;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,10 @@ namespace HackerNews.CLI.Requests.GetCommentById
 
 		public List<Action> BuildActions { get; }
 
-		public IdRequestConfiguration<GetCommentByIdRequestBuilder, GetCommentByIdRequest> OverrideId { get; }
+		public IIdOptions IdOptions { get; set; }
+		public GetCommentByIdOptions OverrideOptions { get; set; }
+
+		//public IdRequestConfiguration<GetCommentByIdRequestBuilder, GetCommentByIdRequest> OverrideId { get; }
 
 		public ICommentInclusionRequestConfiguration<GetCommentByIdRequestBuilder, GetCommentByIdRequest> OverrideInclusion { get; }
 
@@ -39,6 +43,7 @@ namespace HackerNews.CLI.Requests.GetCommentById
 		{
 			OverrideVerbosity.FromOptions(options);
 			OverrideInclusion.FromOptions(options);
+			IdOptions = options;
 			OverrideId.FromOptions(options);
 			OverridePrint.FromOptions(options);
 			OverrideFile.FromOptions(options);
@@ -57,7 +62,7 @@ namespace HackerNews.CLI.Requests.GetCommentById
 				OverrideVerbosity.Verbose,
 				OverridePrint.Print,
 				OverrideFile.FileLocation,
-				OverrideId.Id);
+				IdOptions.Id);
 		}
 	}
 }

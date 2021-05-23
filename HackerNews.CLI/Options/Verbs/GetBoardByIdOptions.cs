@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Options.Verbs;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetEntity;
 
@@ -6,11 +7,9 @@ namespace HackerNews.CLI.Options
 {
 	[Verb("get-board")]
 	public class GetBoardByIdOptions :
+		IVerbOptions,
 		IBoardInclusionOptions,
-		IVerbosityOptions,
-		IPrintOptions,
-		IFileOptions,
-		IIdOptions
+		IGetEntityByIdOptions
 	{
 		public bool IncludeAllFields { get; set; }
 

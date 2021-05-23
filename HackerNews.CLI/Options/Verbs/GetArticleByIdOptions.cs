@@ -5,12 +5,17 @@ namespace HackerNews.CLI.Options.Verbs
 {
 	[Verb("get-article")]
 	public class GetArticleByIdOptions :
-		IArticleInclusionOptions,
-		IVerbosityOptions,
-		IPrintOptions,
-		IFileOptions,
-		IIdOptions
+		IGetEntityByIdOptions,
+		IVerbOptions,
+		IArticleInclusionOptions
 	{
+		public bool Verbose { get; set; }
+
+		public bool Print { get; set; }
+
+		public string FileLocation { get; set; }
+
+		public int Id { get; set; }
 
 		public bool IncludeAllFields { get; set; }
 
@@ -27,13 +32,5 @@ namespace HackerNews.CLI.Options.Verbs
 		public bool IncludeBoardId { get; set; }
 		public bool IncludeDeleted { get; set; }
 		public bool IncludeAssociatedImageId { get; set; }
-
-		public bool Verbose { get; set; }
-
-		public bool Print { get; set; }
-
-		public string FileLocation { get; set; }
-
-		public int Id { get; set; }
 	}
 }

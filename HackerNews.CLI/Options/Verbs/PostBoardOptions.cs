@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Options.Verbs;
 using HackerNews.CLI.Requests.Configuration;
 using HackerNews.CLI.Verbs.GetEntity;
 
@@ -6,6 +7,7 @@ namespace HackerNews.CLI.Options
 {
 	[Verb("post-board")]
 	public class PostBoardOptions :
+		IVerbOptions,
 		ILoginOptions,
 		IPostBoardOptions,
 		IVerbosityOptions,

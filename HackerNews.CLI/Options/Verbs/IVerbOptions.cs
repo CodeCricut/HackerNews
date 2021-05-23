@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HackerNews.CLI.Requests.GetUserById
+namespace HackerNews.CLI.Options.Verbs
 {
-	class GetUserByIdRequestFactory
+	public interface IVerbOptions
 	{
 	}
 }

@@ -16,6 +16,13 @@ namespace HackerNews.CLI.HostedServices
 		{
 			_request = requestBuilder
 				.Configure(options)
+				.OverrideOptions
+					.SetId(1)
+					.Se
+				.IdOptions.SetValue(1)
+				.
+
+				.Configure(options)
 				.Build();
 		}
 

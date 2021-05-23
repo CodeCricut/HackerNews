@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Options.Verbs;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetEntity;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ namespace HackerNews.CLI.Options
 {
 	[Verb("get-boards")]
 	public class GetBoardsOptions :
+		IVerbOptions,
 		IBoardInclusionOptions,
 		IVerbosityOptions,
 		IPrintOptions,

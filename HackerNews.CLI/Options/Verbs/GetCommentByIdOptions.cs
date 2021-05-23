@@ -5,11 +5,9 @@ namespace HackerNews.CLI.Options.Verbs
 {
 	[Verb("get-comment")]
 	public class GetCommentByIdOptions :
+		IVerbOptions,
 		ICommentInclusionOptions,
-		IVerbosityOptions,
-		IPrintOptions,
-		IFileOptions,
-		IIdOptions
+		IGetEntityByIdOptions
 	{
 		public bool IncludeAllFields { get; set; }
 

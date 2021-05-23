@@ -1,5 +1,4 @@
-﻿using HackerNews.CLI.Options;
-using HackerNews.CLI.Verbs.GetBoardById;
+﻿using HackerNews.CLI.Requests.EntityRequest;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,10 +14,17 @@ namespace HackerNews.CLI.HostedServices
 			GetBoardByIdRequestBuilder getBoardByIdRequestBuilder
 			)
 		{
-			_request = getBoardByIdRequestBuilder
+			GetBoardByIdRequestBuilder builder = getBoardByIdRequestBuilder
 				.Configure(options)
-				//.OverrideVerbosity.SetWhenBuilt(() => true)
-				.Build();
+				.OverrideOptions
+					.SetIncludeAll(true)
+					.SetFileLocation("....")
+					.SetId(1)
+					.SetVerbosity(false);
+
+			builder.BuildActions.Add(() => { });
+
+			_request = builder.Build();
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
