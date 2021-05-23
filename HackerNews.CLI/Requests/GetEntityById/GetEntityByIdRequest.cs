@@ -2,6 +2,7 @@
 using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Request.Core;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

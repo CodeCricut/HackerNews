@@ -1,6 +1,7 @@
 ﻿using HackerNews.CLI.Options;
 using HackerNews.CLI.Requests.GetEntityById;
 using HackerNews.CLI.Verbs.GetBoardById;
+using HackerNews.Domain.Common.Models.Boards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Text;
 namespace HackerNews.CLI.Requests.EntityRequest
 {
 	public class GetBoardByIdRequestBuilder :
-		RequestBuilder<GetBoardByIdRequest, GetBoardByIdOptions>
+		RequestBuilder<GetEntityByIdRequest<GetBoardModel>, GetBoardByIdOptions>
 	{
 		public GetBoardByIdRequestBuilder()
 		{
@@ -17,7 +18,13 @@ namespace HackerNews.CLI.Requests.EntityRequest
 
 		protected override GetBoardByIdRequest BuildRequest()
 		{
-			return new GetBoardByIdRequest();
+			return new GetEntityByIdRequest<GetBoardModel>(
+				_logger,
+				_verbositySetter,
+				_entityLogger,
+				_entityWriter,
+				_getEntityRepo,
+				Options);
 		}
 	}
 }

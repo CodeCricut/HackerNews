@@ -3,7 +3,7 @@ using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
-using HackerNews.CLI.Requests;
+using HackerNews.CLI.Request.Core;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Logging;
 using System.Threading;

@@ -1,4 +1,5 @@
 ﻿using HackerNews.CLI.Options.Verbs;
+using HackerNews.CLI.Request.Core;
 using HackerNews.CLI.Verbs.Configuration;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace HackerNews.CLI.Requests.GetEntityById
 	{
 		public List<Action> BuildActions { get; }
 
-		public TRequestOptions OverrideOptions { get; private set; }
+		public TRequestOptions Options { get; private set; }
 
 		public RequestBuilder()
 		{
@@ -29,7 +30,7 @@ namespace HackerNews.CLI.Requests.GetEntityById
 
 		public IRequestBuilder<TRequest, TRequestOptions> Configure(TRequestOptions options)
 		{
-			OverrideOptions = options;
+			Options = options;
 			return this;
 		}
 

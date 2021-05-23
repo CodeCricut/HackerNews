@@ -1,9 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Requests
+namespace HackerNews.CLI.Request.Core
 {
-	public interface IRequest
+	public interface IRequest<TOptions>
+		where TOptions : IRequestOptions
 	{
 		Task ExecuteAsync();
 		Task CancelAsync(CancellationToken cancellationToken);

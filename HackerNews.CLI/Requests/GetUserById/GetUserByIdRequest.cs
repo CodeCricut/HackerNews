@@ -1,4 +1,5 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
+using HackerNews.CLI.Request.Core;
 using HackerNews.CLI.Requests.GetEntityById;
 using HackerNews.Domain.Common.Models.Boards;
 using System;

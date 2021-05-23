@@ -2,6 +2,7 @@
 using HackerNews.CLI.Configuration;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Request.Core;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Logging;

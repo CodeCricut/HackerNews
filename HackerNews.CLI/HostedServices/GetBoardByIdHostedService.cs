@@ -16,7 +16,7 @@ namespace HackerNews.CLI.HostedServices
 		{
 			GetBoardByIdRequestBuilder builder = getBoardByIdRequestBuilder
 				.Configure(options)
-				.OverrideOptions
+				.Options
 					.SetIncludeAll(true)
 					.SetFileLocation("....")
 					.SetId(1)
