@@ -1,9 +1,6 @@
 ﻿using HackerNews.ApiConsumer.Core;
 using HackerNews.Domain.Common;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +18,10 @@ namespace HackerNews.CLI.MediatR.Commands.PostEntity
 		public TPostModel PostModel { get; }
 	}
 
-	public class PostEntityCommandHandler<TPostModel, TGetModel>
+	// TODO: having three generic args is pretty unweildly
+	public class PostEntityCommandHandler<TRequest, TPostModel, TGetModel> :
+		IRequestHandler<TRequest, TGetModel>
+		where TRequest : PostEntityCommand<TPostModel, TGetModel>
 		where TPostModel : PostModelDto
 		where TGetModel : GetModelDto
 	{
@@ -32,7 +32,7 @@ namespace HackerNews.CLI.MediatR.Commands.PostEntity
 			_entityApiClient = entityApiClient;
 		}
 
-		public Task<TGetModel> PostEntity(PostEntityCommand<TPostModel, TGetModel> request)
+		public virtual Task<TGetModel> Handle(TRequest request, CancellationToken cancellationToken)
 		{
 			return _entityApiClient.PostAsync(request.PostModel);
 		}

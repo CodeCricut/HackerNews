@@ -6,6 +6,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
@@ -23,7 +24,10 @@ namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
 		public IFileOptions FileOptions { get; }
 	}
 
-	public class WriteEntityPageCommandHandler<TGetModel> where TGetModel : GetModelDto
+	public class WriteEntityPageCommandHandler<TRequest, TGetModel> :
+		IRequestHandler<TRequest>
+		where TRequest : WriteEntityPageCommand<TGetModel>
+		where TGetModel : GetModelDto
 	{
 		private readonly IEntityWriter<TGetModel> _entityWriter;
 
@@ -32,12 +36,13 @@ namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
 			_entityWriter = entityWriter;
 		}
 
-		public Task WriteEntityPageAsync(WriteEntityPageCommand<TGetModel> request)
+		public virtual async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
 		{
-			if (!string.IsNullOrEmpty(request.FileOptions.FileLocation))
-				return _entityWriter.WriteEntityPageAsync(request.FileOptions.FileLocation, request.EntityPage);
 
-			return Task.CompletedTask;
+			if (!string.IsNullOrEmpty(request.FileOptions.FileLocation))
+				await _entityWriter.WriteEntityPageAsync(request.FileOptions.FileLocation, request.EntityPage);
+
+			return Unit.Value;
 		}
 	}
 }

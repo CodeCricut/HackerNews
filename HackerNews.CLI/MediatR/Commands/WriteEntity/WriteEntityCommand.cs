@@ -23,7 +23,9 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 		public IFileOptions Options { get; }
 	}
 
-	public class WriteEntityCommandHandler<TGetModel> 
+	public class WriteEntityCommandHandler<TRequest, TGetModel> :
+		IRequestHandler<TRequest>
+		where TRequest : WriteEntityCommand<TGetModel>
 		where TGetModel : GetModelDto
 	{
 		private readonly IEntityWriter<TGetModel> _entityWriter;
@@ -33,12 +35,12 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 			_entityWriter = entityWriter;
 		}
 
-		public Task WriteEntity(WriteEntityCommand<TGetModel> request)
+		public virtual async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
 		{
 			if (!string.IsNullOrEmpty(request.Options.FileLocation))
-				return _entityWriter.WriteEntityAsync(request.Options.FileLocation, request.Entity);
+				await _entityWriter.WriteEntityAsync(request.Options.FileLocation, request.Entity);
 
-			return Task.CompletedTask;
+			return Unit.Value;
 		}
 	}
 }

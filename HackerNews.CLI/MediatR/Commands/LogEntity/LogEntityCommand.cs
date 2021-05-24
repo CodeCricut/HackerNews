@@ -5,6 +5,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.MediatR.Commands.PrintEntity
@@ -23,7 +24,10 @@ namespace HackerNews.CLI.MediatR.Commands.PrintEntity
 	}
 
 
-	public class LogEntityCommandHandler<TGetModel> where TGetModel : GetModelDto
+	public class LogEntityCommandHandler<TRequest, TGetModel> :
+		IRequestHandler<TRequest>
+		where TRequest : LogEntityCommand<TGetModel>
+		where TGetModel : GetModelDto
 	{
 		private readonly IEntityLogger<TGetModel> _entityLogger;
 
@@ -32,12 +36,13 @@ namespace HackerNews.CLI.MediatR.Commands.PrintEntity
 			_entityLogger = entityLogger;
 		}
 
-		public Task PrintEntity(LogEntityCommand<TGetModel> command)
+		public virtual Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
 		{
-			if (command.Options.Print)
-				_entityLogger.LogEntity(command.Entity);
+			// TODO: maybe extract this logic out somewhere so that you can use it without using a request
+			if (request.Options.Print)
+				_entityLogger.LogEntity(request.Entity);
 
-			return Task.CompletedTask;
+			return Unit.Task;
 		}
 	}
 }

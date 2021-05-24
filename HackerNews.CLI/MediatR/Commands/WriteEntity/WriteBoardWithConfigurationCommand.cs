@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 {
-	public class WriteBoardWithConfigurationCommand : WriteEntityCommand<GetBoardModel>, IRequest
+	public class WriteBoardWithConfigurationCommand : WriteEntityCommand<GetBoardModel>
 	{
 		public WriteBoardWithConfigurationCommand(
 			GetBoardModel entity, 
@@ -26,7 +26,8 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 		public IBoardInclusionOptions InclusionOptions { get; }
 	}
 
-	public class WriteBoardCommandWithConfigurationHandler : WriteEntityCommandHandler<GetBoardModel>, IRequestHandler<WriteBoardWithConfigurationCommand>
+	public class WriteBoardCommandWithConfigurationHandler : 
+		WriteEntityCommandHandler<WriteBoardWithConfigurationCommand, GetBoardModel>
 	{
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _entityWriter;
 
@@ -35,13 +36,11 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 			_entityWriter = entityWriter;
 		}
 
-		public Task<Unit> Handle(WriteBoardWithConfigurationCommand request, CancellationToken cancellationToken)
+		public override Task<Unit> Handle(WriteBoardWithConfigurationCommand request, CancellationToken cancellationToken)
 		{
 			_entityWriter.Configure(request.InclusionOptions.ToInclusionConfiguration());
 
-			WriteEntity(request);
-
-			return Unit.Task;
+			return base.Handle(request, cancellationToken);
 		}
 	}
 }

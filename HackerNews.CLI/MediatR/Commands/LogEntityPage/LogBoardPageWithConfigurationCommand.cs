@@ -28,8 +28,7 @@ namespace HackerNews.CLI.MediatR.Commands.LogEntityPage
 	}
 
 	public class LogBoardPageWithConfigurationCommandHandler : 
-		LogEntityPageCommandHandler<GetBoardModel>,
-		IRequestHandler<LogBoardPageWithConfigurationCommand>
+		LogEntityPageCommandHandler<LogBoardPageWithConfigurationCommand, GetBoardModel>,
 	{
 		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _entityLogger;
 
@@ -39,13 +38,12 @@ namespace HackerNews.CLI.MediatR.Commands.LogEntityPage
 			_entityLogger = entityLogger;
 		}
 
-		public Task<Unit> Handle(LogBoardPageWithConfigurationCommand request, CancellationToken cancellationToken)
+		public override Task<Unit> Handle(LogBoardPageWithConfigurationCommand request, CancellationToken cancellationToken)
 		{
 			var inclusionConfig = request.InclusionOptions.ToInclusionConfiguration();
+			_entityLogger.Configure(inclusionConfig);
 
-			base.PrintEntities(request);
-
-			return Unit.Task;
+			return base.Handle(request, cancellationToken);
 		}
 	}
 }

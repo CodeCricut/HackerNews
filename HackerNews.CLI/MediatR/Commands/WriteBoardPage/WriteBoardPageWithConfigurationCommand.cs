@@ -26,8 +26,8 @@ namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
 		public IBoardInclusionOptions InclusionOptions { get; }
 	}
 
-	public class WriteBoardPageWithConfigurationCommandHandler : WriteEntityPageCommandHandler<GetBoardModel>,
-		IRequestHandler<WriteBoardPageWithConfigurationCommand>
+	public class WriteBoardPageWithConfigurationCommandHandler : 
+		WriteEntityPageCommandHandler<WriteBoardPageWithConfigurationCommand, GetBoardModel>,
 	{
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _entityWriter;
 
@@ -37,12 +37,10 @@ namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
 			_entityWriter = entityWriter;
 		}
 
-		public async Task<Unit> Handle(WriteBoardPageWithConfigurationCommand request, CancellationToken cancellationToken)
+		public override Task<Unit> Handle(WriteBoardPageWithConfigurationCommand request, CancellationToken cancellationToken)
 		{
 			_entityWriter.Configure(request.InclusionOptions.ToInclusionConfiguration());
-			await base.WriteEntityPageAsync(request);
-
-			return Unit.Value;
+			return base.Handle(request, cancellationToken);
 		}
 	}
 }

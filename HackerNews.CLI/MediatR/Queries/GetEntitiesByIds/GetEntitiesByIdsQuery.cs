@@ -6,6 +6,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HackerNews.CLI.MediatR.Queries.GetEntitiesByIds
@@ -24,7 +25,9 @@ namespace HackerNews.CLI.MediatR.Queries.GetEntitiesByIds
 		public IPageOptions PageOptions { get; }
 	}
 
-	public abstract class GetEntitiesByIdsQueryHandler<TGetModel> 
+	public abstract class GetEntitiesByIdsQueryHandler<TRequest, TGetModel> :
+		IRequestHandler<TRequest, PaginatedList<TGetModel>>
+		where TRequest : GetEntitiesByIdsQuery<TGetModel>
 		where TGetModel : GetModelDto
 	{
 		private readonly IEntityFinder<TGetModel> _entityFinder;
@@ -34,7 +37,7 @@ namespace HackerNews.CLI.MediatR.Queries.GetEntitiesByIds
 			_entityFinder = entityFinder;
 		}
 
-		public Task<PaginatedList<TGetModel>> GetEntitiesByIdsAsync(GetEntitiesByIdsQuery<TGetModel> request)
+		public virtual Task<PaginatedList<TGetModel>> Handle(TRequest request, CancellationToken cancellationToken)
 		{
 			// TODO: create extension method
 			var pagingParams = new PagingParams(request.PageOptions.PageNumber, request.PageOptions.PageNumber);

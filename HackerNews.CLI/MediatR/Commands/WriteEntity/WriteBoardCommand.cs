@@ -17,18 +17,11 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 		}
 	}
 
-	public class WriteBoardCommandHandler : WriteEntityCommandHandler<GetBoardModel>,
-		IRequestHandler<WriteBoardCommand>
+	public class WriteBoardCommandHandler : 
+		WriteEntityCommandHandler<WriteBoardCommand, GetBoardModel>,
 	{
 		public WriteBoardCommandHandler(IEntityWriter<GetBoardModel> entityWriter) : base(entityWriter)
 		{
-		}
-
-		public Task<Unit> Handle(WriteBoardCommand request, CancellationToken cancellationToken)
-		{
-			base.WriteEntity(request);
-
-			return Unit.Task;
 		}
 	}
 }

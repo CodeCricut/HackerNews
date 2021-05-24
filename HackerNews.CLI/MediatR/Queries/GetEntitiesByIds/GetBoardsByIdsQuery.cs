@@ -11,22 +11,17 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.MediatR.Queries.GetEntitiesByIds
 {
-	public class GetBoardsByIdsQuery : GetEntitiesByIdsQuery<GetBoardModel>, IRequest<PaginatedList<GetBoardModel>>
+	public class GetBoardsByIdsQuery : GetEntitiesByIdsQuery<GetBoardModel>
 	{
 		public GetBoardsByIdsQuery(IIdListOptions idsOptions, IPageOptions pageOptions) : base(idsOptions, pageOptions)
 		{
 		}
 	}
 
-	public class GetBoardsByIdsQueryHandler : GetEntitiesByIdsQueryHandler<GetBoardModel>
+	public class GetBoardsByIdsQueryHandler : GetEntitiesByIdsQueryHandler<GetBoardsByIdsQuery, GetBoardModel>
 	{
 		public GetBoardsByIdsQueryHandler(IEntityFinder<GetBoardModel> entityFinder) : base(entityFinder)
 		{
-		}
-
-		public Task<PaginatedList<GetBoardModel>> Handle(GetBoardsByIdsQuery request, CancellationToken cancellationToken)
-		{
-			return base.GetEntitiesByIdsAsync(request);
 		}
 	}
 }

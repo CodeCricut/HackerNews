@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace HackerNews.CLI.MediatR.Commands.PrintEntity
 {
 
-	public class LogBoardWithConfigurationCommand : LogEntityCommand<GetBoardModel>, IRequest
+	public class LogBoardWithConfigurationCommand : LogEntityCommand<GetBoardModel>
 	{
 		public LogBoardWithConfigurationCommand(GetBoardModel entity, 
 			IPrintOptions printOptions,
@@ -27,7 +27,7 @@ namespace HackerNews.CLI.MediatR.Commands.PrintEntity
 		public IBoardInclusionOptions InclusionOpts { get; }
 	}
 
-	public class LogBoardWithConfigurationCommandHandler : LogEntityCommandHandler<GetBoardModel>, IRequestHandler<LogBoardWithConfigurationCommand>
+	public class LogBoardWithConfigurationCommandHandler : LogEntityCommandHandler<LogBoardWithConfigurationCommand, GetBoardModel>
 	{
 		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _entityLogger;
 
@@ -36,13 +36,11 @@ namespace HackerNews.CLI.MediatR.Commands.PrintEntity
 			_entityLogger = entityLogger;
 		}
 
-		public Task<Unit> Handle(LogBoardWithConfigurationCommand request, CancellationToken cancellationToken)
+		public override Task<Unit> Handle(LogBoardWithConfigurationCommand request, CancellationToken cancellationToken)
 		{
 			_entityLogger.Configure(request.InclusionOpts.ToInclusionConfiguration());
-			
-			PrintEntity(request);
 
-			return Unit.Task;
+			return base.Handle(request, cancellationToken);
 		}
 	}
 }
