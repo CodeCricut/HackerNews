@@ -5,13 +5,15 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Loggers
 {
-	public abstract class ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration> : IConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>
+	public abstract class ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration> 
+		: IConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>
 	{
 		private readonly ILogger<ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>> _logger;
 		private readonly IEntityInclusionReader<TEntityInclusionConfiguration, TGetModel> _entityInclusionReader;
 		private TEntityInclusionConfiguration _inclusionConfig;
 
-		public ConfigurableEntityLogger(ILogger<ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>> logger,
+		public ConfigurableEntityLogger(
+			ILogger<ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>> logger,
 			IEntityInclusionReader<TEntityInclusionConfiguration, TGetModel> articleInclusionReader,
 			TEntityInclusionConfiguration inclusionConfig)
 		{
@@ -22,12 +24,12 @@ namespace HackerNews.CLI.Loggers
 			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
-		public void Configure(TEntityInclusionConfiguration config)
-		{
-			_logger.LogTrace("Configuring " + this.GetType().Name);
+		//public void Configure(TEntityInclusionConfiguration config)
+		//{
+		//	_logger.LogTrace("Configuring " + this.GetType().Name);
 
-			_inclusionConfig = config;
-		}
+		//	_inclusionConfig = config;
+		//}
 
 		public void LogEntity(TGetModel entity)
 		{
