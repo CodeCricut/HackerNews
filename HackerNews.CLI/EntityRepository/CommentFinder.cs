@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.EntityRepository
 {
-	public class GetCommentRepository : IGetEntityRepository<GetCommentModel>
+	public class CommentFinder : IEntityFinder<GetCommentModel>
 	{
 		private readonly IEntityApiClient<PostCommentModel, GetCommentModel> _entityApiClient;
-		private readonly ILogger<GetCommentRepository> _logger;
+		private readonly ILogger<CommentFinder> _logger;
 
-		public GetCommentRepository(IEntityApiClient<PostCommentModel, GetCommentModel> entityApiClient,
-			ILogger<GetCommentRepository> logger)
+		public CommentFinder(IEntityApiClient<PostCommentModel, GetCommentModel> entityApiClient,
+			ILogger<CommentFinder> logger)
 		{
 			_entityApiClient = entityApiClient;
 			_logger = logger;

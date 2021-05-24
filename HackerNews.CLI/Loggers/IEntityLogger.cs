@@ -10,6 +10,6 @@ namespace HackerNews.CLI.Loggers
 
 	public interface IConfigurableEntityLogger<TGetModel, TIncludeConfiguration> : IEntityLogger<TGetModel>
 	{
-		//void Configure(TIncludeConfiguration config);
+		void Configure(TIncludeConfiguration config);
 	}
 }

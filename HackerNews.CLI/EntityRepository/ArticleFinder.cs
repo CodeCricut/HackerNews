@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.EntityRepository
 {
-	public class GetArticleRepository : IGetEntityRepository<GetArticleModel>
+	public class ArticleFinder : IEntityFinder<GetArticleModel>
 	{
 		private readonly IEntityApiClient<PostArticleModel, GetArticleModel> _entityApiClient;
-		private readonly ILogger<GetArticleRepository> _logger;
+		private readonly ILogger<ArticleFinder> _logger;
 
-		public GetArticleRepository(IEntityApiClient<PostArticleModel, GetArticleModel> entityApiClient, ILogger<GetArticleRepository> logger)
+		public ArticleFinder(IEntityApiClient<PostArticleModel, GetArticleModel> entityApiClient, ILogger<ArticleFinder> logger)
 		{
 			_entityApiClient = entityApiClient;
 			_logger = logger;

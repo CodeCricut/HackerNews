@@ -24,12 +24,12 @@ namespace HackerNews.CLI.Verbs.GetEntity
 		private readonly ILogger<GetVerbProcessor<TGetModel, TOptions>> _logger;
 		private readonly IVerbositySetter _appConfigurator;
 
-		protected IGetEntityRepository<TGetModel> EntityRepository { get; private set; }
+		protected IEntityFinder<TGetModel> EntityRepository { get; private set; }
 		protected IEntityLogger<TGetModel> EntityLogger { get; private set; }
 		protected IEntityWriter<TGetModel> EntityWriter { get; private set; }
 
 		public GetVerbProcessor(
-			IGetEntityRepository<TGetModel> entityRepository,
+			IEntityFinder<TGetModel> entityRepository,
 			IEntityLogger<TGetModel> entityLogger,
 			IEntityWriter<TGetModel> entityWriter,
 			ILogger<GetVerbProcessor<TGetModel, TOptions>> logger,

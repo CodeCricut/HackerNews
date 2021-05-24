@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.EntityRepository
 {
-	public class GetBoardRepository : IGetEntityRepository<GetBoardModel>
+	public class BoardFinder : IEntityFinder<GetBoardModel>
 	{
 		private readonly IEntityApiClient<PostBoardModel, GetBoardModel> _entityApiClient;
-		private readonly ILogger<GetBoardRepository> _logger;
+		private readonly ILogger<BoardFinder> _logger;
 
-		public GetBoardRepository(IEntityApiClient<PostBoardModel, GetBoardModel> entityApiClient,
-			ILogger<GetBoardRepository> logger)
+		public BoardFinder(IEntityApiClient<PostBoardModel, GetBoardModel> entityApiClient,
+			ILogger<BoardFinder> logger)
 		{
 			_entityApiClient = entityApiClient;
 			_logger = logger;

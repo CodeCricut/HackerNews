@@ -14,14 +14,14 @@ namespace HackerNews.CLI.Requests.GetCommentById
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> _entityLogger;
 		private readonly IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> _entityWriter;
-		private readonly IGetEntityRepository<GetCommentModel> _getEntityRepo;
+		private readonly IEntityFinder<GetCommentModel> _getEntityRepo;
 
 		public GetCommentByIdRequestFactory(
 			ILogger<GetCommentByIdRequest> logger,
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter,
-			IGetEntityRepository<GetCommentModel> getEntityRepo
+			IEntityFinder<GetCommentModel> getEntityRepo
 			)
 		{
 			_logger = logger;

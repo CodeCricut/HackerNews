@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.EntityRepository
 {
-	public class GetPublicUserRepository : IGetEntityRepository<GetPublicUserModel>
+	public class PublicUserFinder : IEntityFinder<GetPublicUserModel>
 	{
 		private readonly IEntityApiClient<RegisterUserModel, GetPublicUserModel> _entityApiClient;
-		private readonly ILogger<GetPublicUserRepository> _logger;
+		private readonly ILogger<PublicUserFinder> _logger;
 
-		public GetPublicUserRepository(IEntityApiClient<RegisterUserModel, GetPublicUserModel> entityApiClient,
-			ILogger<GetPublicUserRepository> logger)
+		public PublicUserFinder(IEntityApiClient<RegisterUserModel, GetPublicUserModel> entityApiClient,
+			ILogger<PublicUserFinder> logger)
 		{
 			_entityApiClient = entityApiClient;
 			_logger = logger;

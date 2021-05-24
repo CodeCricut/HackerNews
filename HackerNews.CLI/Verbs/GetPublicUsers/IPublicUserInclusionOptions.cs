@@ -1,6 +1,8 @@
-﻿namespace HackerNews.CLI.Verbs.GetPublicUsers
+﻿using HackerNews.CLI.Verbs.GetEntity;
+
+namespace HackerNews.CLI.Verbs.GetPublicUsers
 {
-	public interface IPublicUserInclusionOptions
+	public interface IPublicUserInclusionOptions : IAllInclusionOptions
 	{
 		public bool IncludeId { get; set; }
 		public bool IncludeUsername { get; set; }

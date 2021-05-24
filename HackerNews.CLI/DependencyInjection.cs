@@ -74,10 +74,10 @@ namespace HackerNews.CLI
 			services.AddSingleton<IEntityWriter<GetPublicUserModel>, PublicUserCsvWriter>();
 			services.AddSingleton<IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration>, PublicUserCsvWriter>();
 
-			services.AddSingleton<IGetEntityRepository<GetBoardModel>, GetBoardRepository>();
-			services.AddSingleton<IGetEntityRepository<GetArticleModel>, GetArticleRepository>();
-			services.AddSingleton<IGetEntityRepository<GetCommentModel>, GetCommentRepository>();
-			services.AddSingleton<IGetEntityRepository<GetPublicUserModel>, GetPublicUserRepository>();
+			services.AddSingleton<IEntityFinder<GetBoardModel>, BoardFinder>();
+			services.AddSingleton<IEntityFinder<GetArticleModel>, ArticleFinder>();
+			services.AddSingleton<IEntityFinder<GetCommentModel>, CommentFinder>();
+			services.AddSingleton<IEntityFinder<GetPublicUserModel>, PublicUserFinder>();
 
 			services.AddSingleton<IEntityReader<GetBoardModel>, BoardInclusionReader>();
 			services.AddSingleton<IEntityReader<GetArticleModel>, ArticleInclusionReader>();

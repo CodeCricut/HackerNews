@@ -19,7 +19,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _configBoardLogger;
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _configBoardWriter;
-		private readonly IGetEntityRepository<GetBoardModel> _getBoardRepo;
+		private readonly IEntityFinder<GetBoardModel> _getBoardRepo;
 		private readonly BoardInclusionConfiguration _boardInclusionConfiguration;
 		private readonly bool _verbose;
 		private readonly bool _print;
@@ -32,7 +32,7 @@ namespace HackerNews.CLI.Requests.GetBoards
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> configBoardLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> configBoardWriter,
-			IGetEntityRepository<GetBoardModel> getBoardRepo,
+			IEntityFinder<GetBoardModel> getBoardRepo,
 
 			BoardInclusionConfiguration boardInclusionConfiguration,
 			bool verbose,

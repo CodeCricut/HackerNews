@@ -17,7 +17,7 @@ namespace HackerNews.CLI.Requests.GetCommentById
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> _entityLogger;
 		private readonly IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> _entityWriter;
-		private readonly IGetEntityRepository<GetCommentModel> _getCommentModel;
+		private readonly IEntityFinder<GetCommentModel> _getCommentModel;
 		private readonly CommentInclusionConfiguration _commentInclusiononfiguration;
 		private readonly bool _verbose;
 		private readonly bool _print;
@@ -29,7 +29,7 @@ namespace HackerNews.CLI.Requests.GetCommentById
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetCommentModel, CommentInclusionConfiguration> entityWriter,
-			IGetEntityRepository<GetCommentModel> getCommentModel,
+			IEntityFinder<GetCommentModel> getCommentModel,
 
 			CommentInclusionConfiguration commentInclusiononfiguration,
 			bool verbose,

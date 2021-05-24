@@ -13,14 +13,14 @@ namespace HackerNews.CLI.Verbs.GetBoardById
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> _entityLogger;
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _entityWriter;
-		private readonly IGetEntityRepository<GetBoardModel> _getBoardRepo;
+		private readonly IEntityFinder<GetBoardModel> _getBoardRepo;
 
 		public GetBoardByIdRequestFactory(
 			ILogger<GetBoardByIdRequest> logger,
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> entityWriter,
-			IGetEntityRepository<GetBoardModel> getBoardRepo)
+			IEntityFinder<GetBoardModel> getBoardRepo)
 		{
 			_logger = logger;
 			_verbositySetter = verbositySetter;

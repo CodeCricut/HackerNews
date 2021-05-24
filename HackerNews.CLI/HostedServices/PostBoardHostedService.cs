@@ -1,5 +1,12 @@
-﻿using HackerNews.CLI.Options;
+﻿using HackerNews.CLI.MediatR.Commands.LogEntity;
+using HackerNews.CLI.MediatR.Commands.PostEntity;
+using HackerNews.CLI.MediatR.Commands.PrintEntity;
+using HackerNews.CLI.MediatR.Commands.SetVerbosity;
+using HackerNews.CLI.MediatR.Commands.SignIn;
+using HackerNews.CLI.MediatR.Commands.WriteEntity;
+using HackerNews.CLI.Options;
 using HackerNews.CLI.Requests.PostBoard;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,24 +15,32 @@ namespace HackerNews.CLI.HostedServices
 {
 	public class PostBoardHostedService : IHostedService
 	{
-		private readonly PostBoardRequest _request;
+		private readonly PostBoardOptions _options;
+		private readonly IMediator _mediator;
 
 		public PostBoardHostedService(PostBoardOptions options,
-			PostBoardRequestBuilder requestBuilder)
+			IMediator mediator)
 		{
-			_request = requestBuilder
-				.Configure(options)
-				.Build();
+			_options = options;
+			_mediator = mediator;
 		}
 
-		public Task StartAsync(CancellationToken cancellationToken)
+		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			return _request.ExecuteAsync();
+			await _mediator.Send(new SetVerbosityCommand(_options));
+
+			bool signInSuccessful = await _mediator.Send(new SignInCommand(_options));
+			if (!signInSuccessful) return;
+
+			var postedBoard = await _mediator.Send(new PostBoardCommand(_options));
+
+			await _mediator.Send(new LogBoardCommand(postedBoard, _options));
+			await _mediator.Send(new WriteBoardCommand(postedBoard, _options));
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			return _request.CancelAsync(cancellationToken);
+			return Task.CompletedTask;
 		}
 	}
 }

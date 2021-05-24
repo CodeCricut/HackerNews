@@ -14,14 +14,14 @@ namespace HackerNews.CLI.Requests.GetArticleById
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> _entityLogger;
 		private readonly IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> _entityWriter;
-		private readonly IGetEntityRepository<GetArticleModel> _getArticleRepo;
+		private readonly IEntityFinder<GetArticleModel> _getArticleRepo;
 
 		public GetArticleByIdRequestFactory(
 			ILogger<GetArticleByIdRequest> logger,
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> entityWriter,
-			IGetEntityRepository<GetArticleModel> getArticleRepo)
+			IEntityFinder<GetArticleModel> getArticleRepo)
 		{
 			_logger = logger;
 			_verbositySetter = verbositySetter;

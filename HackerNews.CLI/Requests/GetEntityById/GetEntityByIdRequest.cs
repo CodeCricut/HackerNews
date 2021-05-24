@@ -18,7 +18,7 @@ namespace HackerNews.CLI.Requests.GetEntityById
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<TGetModel, TInclusionConfig> _entityLogger;
 		private readonly IConfigurableEntityWriter<TGetModel, TInclusionConfig> _entityWriter;
-		private readonly IGetEntityRepository<TGetModel> _getEntityRepository;
+		private readonly IEntityFinder<TGetModel> _getEntityRepository;
 		private readonly TInclusionConfig _entityInclusionConfig;
 		private readonly bool _verbose;
 		private readonly bool _print;
@@ -30,7 +30,7 @@ namespace HackerNews.CLI.Requests.GetEntityById
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<TGetModel, TInclusionConfig> entityLogger,
 			IConfigurableEntityWriter<TGetModel, TInclusionConfig> entityWriter,
-			IGetEntityRepository<TGetModel> getEntityRepository,
+			IEntityFinder<TGetModel> getEntityRepository,
 
 			TInclusionConfig entityInclusionConfig,
 

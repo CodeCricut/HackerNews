@@ -18,7 +18,7 @@ namespace HackerNews.CLI.Requests.EntityRequest
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IEntityLogger<TGetModel> _entityLogger;
 		private readonly IEntityWriter<TGetModel> _entityWriter;
-		private readonly IGetEntityRepository<TGetModel> _getEntityRepo;
+		private readonly IEntityFinder<TGetModel> _getEntityRepo;
 		private readonly IGetEntityByIdOptions _options;
 
 		public GetEntityByIdRequest(
@@ -28,7 +28,7 @@ namespace HackerNews.CLI.Requests.EntityRequest
 			
 			IEntityLogger<TGetModel> entityLogger,
 			IEntityWriter<TGetModel> entityWriter,
-			IGetEntityRepository<TGetModel> getEntityRepo,
+			IEntityFinder<TGetModel> getEntityRepo,
 			IGetEntityByIdOptions options
 			)
 		{

@@ -15,9 +15,9 @@ namespace HackerNews.CLI.Requests.GetEntityRequest
 	public class GetEntityByIdRequest<TEntity> : IGetEntityRequest<TEntity>
 	{
 		private readonly int _id;
-		private readonly IGetEntityRepository<TEntity> _getRepo;
+		private readonly IEntityFinder<TEntity> _getRepo;
 
-		public GetEntityByIdRequest(int id, IGetEntityRepository<TEntity> getRepo)
+		public GetEntityByIdRequest(int id, IEntityFinder<TEntity> getRepo)
 		{
 			_id = id;
 			_getRepo = getRepo;

@@ -24,12 +24,12 @@ namespace HackerNews.CLI.Loggers
 			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
-		//public void Configure(TEntityInclusionConfiguration config)
-		//{
-		//	_logger.LogTrace("Configuring " + this.GetType().Name);
+		public void Configure(TEntityInclusionConfiguration config)
+		{
+			_logger.LogTrace("Configuring " + this.GetType().Name);
 
-		//	_inclusionConfig = config;
-		//}
+			_inclusionConfig = config;
+		}
 
 		public void LogEntity(TGetModel entity)
 		{

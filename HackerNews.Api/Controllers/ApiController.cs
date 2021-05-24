@@ -8,7 +8,7 @@ namespace HackerNews.Api.Controllers
 	/// A base controller for all API Controllers.
 	/// </summary>
 	public class ApiController : ControllerBase
-	{
+	{ 
 		private IMediator _mediator;
 		protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 	}

@@ -17,7 +17,7 @@ namespace HackerNews.CLI.Requests.GetArticleById
 		private readonly IVerbositySetter _verbositySetter;
 		private readonly IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> _entityLogger;
 		private readonly IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> _entityWriter;
-		private readonly IGetEntityRepository<GetArticleModel> _getArticleRepo;
+		private readonly IEntityFinder<GetArticleModel> _getArticleRepo;
 		private readonly ArticleInclusionConfiguration _articleInclusionConfiguration;
 		private readonly bool _verbose;
 		private readonly bool _print;
@@ -29,7 +29,7 @@ namespace HackerNews.CLI.Requests.GetArticleById
 			IVerbositySetter verbositySetter,
 			IConfigurableEntityLogger<GetArticleModel, ArticleInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetArticleModel, ArticleInclusionConfiguration> entityWriter,
-			IGetEntityRepository<GetArticleModel> getArticleRepo,
+			IEntityFinder<GetArticleModel> getArticleRepo,
 
 			ArticleInclusionConfiguration articleInclusionConfiguration,
 			bool verbose,

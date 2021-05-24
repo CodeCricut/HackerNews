@@ -21,7 +21,7 @@ namespace HackerNews.CLI.Verbs.GetPublicUsers
 		private readonly IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration> _configEntityLogger;
 		private readonly IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> _configEntityWriter;
 
-		public GetPublicUserProcessor(IGetEntityRepository<GetPublicUserModel> entityRepository,
+		public GetPublicUserProcessor(IEntityFinder<GetPublicUserModel> entityRepository,
 			IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration> entityLogger,
 			IConfigurableEntityWriter<GetPublicUserModel, PublicUserInclusionConfiguration> entityWriter,
 			ILogger<GetPublicUserProcessor> logger,
