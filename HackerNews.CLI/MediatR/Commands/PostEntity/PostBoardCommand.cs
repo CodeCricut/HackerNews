@@ -10,34 +10,18 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.MediatR.Commands.PostEntity
 {
-	public class PostBoardCommand : IRequest<GetBoardModel>
-		// : PostEntityCommand<PostBoardModel, GetBoardModel>
+	public class PostBoardCommand : PostEntityCommand<PostBoardModel, GetBoardModel>
 	{
-		public PostBoardCommand(IPostBoardOptions options) // : base(postModel)
+		public PostBoardCommand(PostBoardModel postModel) : base(postModel)
 		{
-			Options = options;
 		}
-
-		public IPostBoardOptions Options { get; }
 	}
 
-	public class PostBoardCommandHandler : PostEntityCommandHandler<PostBoardModel, GetBoardModel>,
-		IRequestHandler<PostBoardCommand, GetBoardModel>
+	public class PostBoardCommandHandler : 
+		PostEntityCommandHandler<PostBoardCommand, PostBoardModel, GetBoardModel>
 	{
 		public PostBoardCommandHandler(IEntityApiClient<PostBoardModel, GetBoardModel> entityApiClient) : base(entityApiClient)
 		{
-		}
-
-		public Task<GetBoardModel> Handle(PostBoardCommand request, CancellationToken cancellationToken)
-		{
-			// TODO; converter
-			PostBoardModel board = new PostBoardModel()
-			{
-				Title = request.Options.Title,
-				Description = request.Options.Description
-			};
-
-			return base.PostEntity(board);
 		}
 	}
 }
