@@ -23,6 +23,8 @@ namespace HackerNews.CLI.Output
 		{
 			services.AddSingleton<IVerbositySetter, VerbositySetter>();
 
+			services.AddSingleton<IJwtLogger, JwtLogger>();
+
 			services.AddTransient<IEntityLogger<GetBoardModel>, BoardLogger>()
 			.AddTransient<IConfigurableEntityLogger<GetBoardModel, BoardInclusionConfiguration>, ConfigurableBoardLogger>();
 

@@ -26,17 +26,11 @@ namespace HackerNews.CLI
 			using IHost host = builder.Build();
 			try
 			{
-				var logger = host?.Services.GetService<ILogger<Program>>();
-				logger.LogTrace("Starting host...");
 				await host.StartAsync();
 			}
 			catch (Exception ex)
 			{
-				var logger = host?.Services.GetService<ILogger<Program>>();
-				if (logger != null)
-					logger.LogError(ex.Message);
-				else
-					Console.WriteLine($"FATAL ERROR: {ex.Message}");
+				LogFatalError(host, ex);
 				return 1;
 			}
 
@@ -44,7 +38,7 @@ namespace HackerNews.CLI
 		}
 
 		/// <summary>
-		/// Build a host responsible for encapsulating app resources such as:
+		/// <see cref="IHost"/> is responsible for encapsulating app resources such as:
 		///		*	- services
 		///		*	- logging
 		///		*	- configuration
@@ -96,7 +90,16 @@ namespace HackerNews.CLI
 
 			services.AddSerilogLogger(configuration);
 
-			services.RegisterHostedServiceForVerb(_args);
+			services.RegisterHostedServices(_args);
+		}
+
+		private static void LogFatalError(IHost host, Exception ex)
+		{
+			var logger = host?.Services.GetService<ILogger<Program>>();
+			if (logger != null)
+				logger.LogError(ex.Message);
+			else
+				Console.WriteLine($"FATAL ERROR: {ex.Message}");
 		}
 	}
 }
