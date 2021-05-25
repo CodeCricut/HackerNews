@@ -1,11 +1,6 @@
-﻿using HackerNews.CLI.MediatR.Commands.LogEntity;
-using HackerNews.CLI.MediatR.Commands.PostEntity;
-using HackerNews.CLI.MediatR.Commands.SetVerbosity;
-using HackerNews.CLI.MediatR.Commands.SignIn;
-using HackerNews.CLI.MediatR.Commands.WriteEntity;
+﻿using HackerNews.CLI.ApplicationRequests;
 using HackerNews.CLI.Options;
-using HackerNews.CLI.Util;
-using MediatR;
+using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,26 +10,19 @@ namespace HackerNews.CLI.HostedServices
 	public class PostBoardHostedService : IHostedService
 	{
 		private readonly PostBoardOptions _options;
-		private readonly IMediator _mediator;
+		private readonly IPostEntityRequestAggregator<PostBoardModel, GetBoardModel> _postAggreg;
 
 		public PostBoardHostedService(PostBoardOptions options,
-			IMediator mediator)
+			IPostEntityRequestAggregator<PostBoardModel, GetBoardModel> postAggreg)
 		{
 			_options = options;
-			_mediator = mediator;
+			_postAggreg = postAggreg;
 		}
 
-		public async Task StartAsync(CancellationToken cancellationToken)
+		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			await _mediator.Send(new SetVerbosityCommand(_options));
-
-			bool signInSuccessful = await _mediator.Send(new SignInCommand(_options));
-			if (!signInSuccessful) return;
-
-			var postedBoard = await _mediator.Send(new PostBoardCommand(_options.ToPostModel()));
-
-			await _mediator.Send(new LogBoardCommand(postedBoard, _options));
-			await _mediator.Send(new WriteBoardCommand(postedBoard, _options));
+			var postBoardRequest = new PostBoardRequest(_options);
+			return _postAggreg.HandleAsync(postBoardRequest);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)

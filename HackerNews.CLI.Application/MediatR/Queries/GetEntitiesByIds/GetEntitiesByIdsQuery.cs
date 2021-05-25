@@ -37,7 +37,9 @@ namespace HackerNews.CLI.MediatR.Queries.GetEntitiesByIds
 		public virtual Task<PaginatedList<TGetModel>> Handle(TRequest request, CancellationToken cancellationToken)
 		{
 			// TODO: create extension method
-			var pagingParams = new PagingParams(request.PageOptions.PageNumber, request.PageOptions.PageNumber);
+			var pagingParams = new PagingParams();
+			if (request.PageOptions.PageNumber > 0) pagingParams.PageNumber = request.PageOptions.PageNumber;
+			if (request.PageOptions.PageSize > 0) pagingParams.PageSize = request.PageOptions.PageSize;
 			return _entityFinder.GetByIdsAsync(request.IdsOptions.Ids, pagingParams);
 		}
 	}
