@@ -10,11 +10,11 @@ namespace HackerNews.CLI.HostedServices
 	public class GetBoardByIdHostedService : IHostedService
 	{
 		private readonly GetBoardByIdOptions _options;
-		private readonly IGetEntityRequestAggregator<GetBoardModel> _getRequestAggreg;
+		private readonly IGetEntityRequestHandler<GetBoardModel> _getRequestAggreg;
 
 		public GetBoardByIdHostedService(
 			GetBoardByIdOptions options,
-			IGetEntityRequestAggregator<GetBoardModel> getRequestAggreg
+			IGetEntityRequestHandler<GetBoardModel> getRequestAggreg
 			)
 		{
 			_options = options;

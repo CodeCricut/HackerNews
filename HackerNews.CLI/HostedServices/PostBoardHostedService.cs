@@ -10,10 +10,10 @@ namespace HackerNews.CLI.HostedServices
 	public class PostBoardHostedService : IHostedService
 	{
 		private readonly PostBoardOptions _options;
-		private readonly IPostEntityRequestAggregator<PostBoardModel, GetBoardModel> _postAggreg;
+		private readonly IPostEntityRequestHandler<PostBoardModel, GetBoardModel> _postAggreg;
 
 		public PostBoardHostedService(PostBoardOptions options,
-			IPostEntityRequestAggregator<PostBoardModel, GetBoardModel> postAggreg)
+			IPostEntityRequestHandler<PostBoardModel, GetBoardModel> postAggreg)
 		{
 			_options = options;
 			_postAggreg = postAggreg;

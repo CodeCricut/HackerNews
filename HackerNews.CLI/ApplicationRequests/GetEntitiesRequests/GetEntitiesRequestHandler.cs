@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.ApplicationRequests.GetEntitiesRequests
 {
-	public interface IGetEntitiesRequestAggregator<TGetModel>
+	public interface IGetEntitiesRequestHandler<TGetModel>
 		where TGetModel : GetModelDto
 	{
 		Task HandleAsync(IGetEntitiesRequest<TGetModel> request);
 	}
 
-	public class GetEntitiesRequestAggregator<TGetModel> : IGetEntitiesRequestAggregator<TGetModel>
+	public class GetEntitiesRequestHandler<TGetModel> : IGetEntitiesRequestHandler<TGetModel>
 		where TGetModel : GetModelDto
 	{
 		private readonly IMediator _mediator;
 
-		public GetEntitiesRequestAggregator(IMediator mediator)
+		public GetEntitiesRequestHandler(IMediator mediator)
 		{
 			_mediator = mediator;
 		}
