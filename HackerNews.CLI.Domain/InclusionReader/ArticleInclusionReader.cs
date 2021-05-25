@@ -17,6 +17,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 			_logger.LogTrace("Created " + this.GetType().Name);
 		}
 
+#pragma warning disable IDE1006
 		private static readonly string ID = "ID";
 		private static readonly string TYPE = "TYPE";
 		private static readonly string USER_ID = "USER ID";
@@ -30,6 +31,8 @@ namespace HackerNews.CLI.InclusionConfiguration
 		private static readonly string BOARD_ID = "BOARD ID";
 		private static readonly string DELETED = "DELETED";
 		private static readonly string ASSOCIATED_IMAGE_ID = "ASSOCIATED IMAGE ID";
+#pragma warning restore IDE1006
+
 		private readonly ILogger<ArticleInclusionReader> _logger;
 
 		public IEnumerable<string> ReadAllKeys()
