@@ -1,14 +1,8 @@
-﻿using HackerNews.CLI.Configuration;
-using HackerNews.CLI.EntityRepository;
-using HackerNews.CLI.FileWriters;
-using HackerNews.CLI.Loggers;
-using HackerNews.CLI.Options.Verbs;
+﻿using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common;
-using HackerNews.Domain.Common.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +19,7 @@ namespace HackerNews.CLI.MediatR
 		public IIdOptions Options { get; }
 	}
 
-	public class GetEntityByIdQueryHandler<TRequest, TGetModel> : 
+	public class GetEntityByIdQueryHandler<TRequest, TGetModel> :
 		IRequestHandler<TRequest, TGetModel>
 		where TRequest : GetEntityByIdQuery<TGetModel>
 		where TGetModel : GetModelDto

@@ -5,9 +5,6 @@ using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models.Boards;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +13,7 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 	public class WriteBoardWithConfigurationCommand : WriteEntityCommand<GetBoardModel>
 	{
 		public WriteBoardWithConfigurationCommand(
-			GetBoardModel entity, 
+			GetBoardModel entity,
 			IFileOptions options,
 			IBoardInclusionOptions inclusionOptions) : base(entity, options)
 		{
@@ -26,7 +23,7 @@ namespace HackerNews.CLI.MediatR.Commands.WriteEntity
 		public IBoardInclusionOptions InclusionOptions { get; }
 	}
 
-	public class WriteBoardCommandWithConfigurationHandler : 
+	public class WriteBoardCommandWithConfigurationHandler :
 		WriteEntityCommandHandler<WriteBoardWithConfigurationCommand, GetBoardModel>
 	{
 		private readonly IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration> _entityWriter;

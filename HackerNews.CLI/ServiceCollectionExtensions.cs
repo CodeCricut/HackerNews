@@ -1,7 +1,6 @@
 ﻿using CommandLine;
 using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Options;
-using HackerNews.CLI.Options.Verbs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -53,15 +52,15 @@ namespace HackerNews.CLI
 					services.AddHostedService<PostBoardHostedService>();
 					break;
 
-				case GetArticleByIdOptions opts:
-					services.AddSingleton(opts);
-					services.AddHostedService<GetArticleByIdHostedService>();
-					break;
+					//case GetArticleByIdOptions opts:
+					//	services.AddSingleton(opts);
+					//	services.AddHostedService<GetArticleByIdHostedService>();
+					//	break;
 
-				case GetCommentByIdOptions opts:
-					services.AddSingleton(opts);
-					services.AddHostedService<GetCommentByIdHostedService>();
-					break;
+					//case GetCommentByIdOptions opts:
+					//	services.AddSingleton(opts);
+					//	services.AddHostedService<GetCommentByIdHostedService>();
+					//	break;
 
 
 					//case GetArticleOptions a:

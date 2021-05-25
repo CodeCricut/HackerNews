@@ -3,12 +3,8 @@ using HackerNews.CLI.Loggers;
 using HackerNews.CLI.Util;
 using HackerNews.CLI.Verbs.GetBoards;
 using HackerNews.CLI.Verbs.GetEntity;
-using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models.Boards;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +13,7 @@ namespace HackerNews.CLI.MediatR.Commands.PrintEntity
 
 	public class LogBoardWithConfigurationCommand : LogEntityCommand<GetBoardModel>
 	{
-		public LogBoardWithConfigurationCommand(GetBoardModel entity, 
+		public LogBoardWithConfigurationCommand(GetBoardModel entity,
 			IPrintOptions printOptions,
 			IBoardInclusionOptions inclusionOpts) : base(entity, printOptions)
 		{

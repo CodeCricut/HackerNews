@@ -3,13 +3,6 @@ using HackerNews.CLI.EntityRepository;
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
-using HackerNews.CLI.Requests.GetArticleById;
-using HackerNews.CLI.Requests.GetBoards;
-using HackerNews.CLI.Requests.GetCommentById;
-using HackerNews.CLI.Requests.PostBoard;
-using HackerNews.CLI.Verbs.GetBoardById;
-using HackerNews.CLI.Verbs.GetEntity;
-using HackerNews.CLI.Verbs.GetPublicUsers;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
@@ -41,8 +34,8 @@ namespace HackerNews.CLI
 			services.AddTransient<IEntityLogger<GetCommentModel>, CommentLogger>()
 				.AddTransient<IConfigurableEntityLogger<GetCommentModel, CommentInclusionConfiguration>, ConfigurableCommentLogger>();
 
-			services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
-				.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
+			//services.AddSingleton<IGetPublicUserProcessor, GetPublicUserProcessor>()
+			//	.AddSingleton<IGetVerbProcessor<GetPublicUserModel, GetPublicUsersOptions>, GetPublicUserProcessor>();
 			services.AddTransient<IEntityLogger<GetPublicUserModel>, PublicUserLogger>()
 				.AddTransient<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, ConfigurablePublicUserLogger>();
 
@@ -95,21 +88,6 @@ namespace HackerNews.CLI
 			services.AddTransient<ArticleInclusionConfiguration>();
 			services.AddTransient<CommentInclusionConfiguration>();
 			services.AddTransient<PublicUserInclusionConfiguration>();
-
-			services.AddTransient<GetBoardByIdRequestBuilder>();
-			services.AddTransient<GetBoardByIdRequestFactory>();
-
-			services.AddTransient<GetBoardsRequestBuilder>();
-			services.AddTransient<GetBoardsRequestFactory>();
-
-			services.AddTransient<GetArticleByIdRequestBuilder>();
-			services.AddTransient<GetArticleByIdRequestFactory>();
-
-			services.AddTransient<PostBoardRequestBuilder>();
-			services.AddTransient<PostBoardRequestFactory>();
-
-			services.AddTransient<GetCommentByIdRequestBuilder>();
-			services.AddTransient<GetCommentByIdRequestFactory>();
 
 			return services;
 		}

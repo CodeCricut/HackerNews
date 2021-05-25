@@ -4,8 +4,6 @@ using HackerNews.Domain.Common.Models.Users;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

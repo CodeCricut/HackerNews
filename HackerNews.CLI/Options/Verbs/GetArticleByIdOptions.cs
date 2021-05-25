@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using HackerNews.CLI.Verbs.GetEntity;
 
 namespace HackerNews.CLI.Options.Verbs
 {

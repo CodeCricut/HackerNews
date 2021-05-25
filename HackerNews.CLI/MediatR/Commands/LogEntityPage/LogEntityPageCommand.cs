@@ -3,9 +3,6 @@ using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +33,7 @@ namespace HackerNews.CLI.MediatR.Commands.LogEntities
 			_entityLogger = entityLogger;
 		}
 
-		public Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
+		public virtual Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
 		{
 			if (request.PrintOptions.Print)
 				_entityLogger.LogEntityPage(request.EntityPage);

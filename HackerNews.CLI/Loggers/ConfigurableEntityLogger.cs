@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace HackerNews.CLI.Loggers
 {
-	public abstract class ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration> 
+	public abstract class ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>
 		: IConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>
 	{
 		private readonly ILogger<ConfigurableEntityLogger<TGetModel, TEntityInclusionConfiguration>> _logger;

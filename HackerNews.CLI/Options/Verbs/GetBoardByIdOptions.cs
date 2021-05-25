@@ -1,7 +1,6 @@
 ﻿using CommandLine;
 using HackerNews.CLI.Options.Verbs;
 using HackerNews.CLI.Verbs.GetBoards;
-using HackerNews.CLI.Verbs.GetEntity;
 
 namespace HackerNews.CLI.Options
 {

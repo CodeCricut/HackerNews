@@ -1,11 +1,8 @@
 ﻿using HackerNews.CLI.MediatR.Commands.PrintEntity;
 using HackerNews.CLI.MediatR.Commands.SetVerbosity;
 using HackerNews.CLI.MediatR.Commands.WriteEntity;
-using HackerNews.CLI.MediatR.Queries.GetEntitiesByIds;
 using HackerNews.CLI.MediatR.Queries.GetEntityById;
 using HackerNews.CLI.Options;
-using HackerNews.CLI.Requests.EntityRequest;
-using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using MediatR;
 using Microsoft.Extensions.Hosting;
@@ -33,11 +30,11 @@ namespace HackerNews.CLI.HostedServices
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			await _mediator.Send(new SetVerbosityCommand(_options));
-			
+
 			GetBoardModel board = await _mediator.Send(new GetBoardByIdQuery(_options));
-			
+
 			await _mediator.Send(new LogBoardWithConfigurationCommand(board, _options, _options));
-			
+
 			await _mediator.Send(new WriteBoardWithConfigurationCommand(board, _options, _options));
 
 		}

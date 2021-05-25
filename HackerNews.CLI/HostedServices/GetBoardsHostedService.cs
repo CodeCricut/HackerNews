@@ -3,7 +3,6 @@ using HackerNews.CLI.MediatR.Commands.SetVerbosity;
 using HackerNews.CLI.MediatR.Commands.WriteBoardPage;
 using HackerNews.CLI.MediatR.Queries.GetEntitiesByIds;
 using HackerNews.CLI.Options;
-using HackerNews.CLI.Requests.GetBoards;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 using MediatR;

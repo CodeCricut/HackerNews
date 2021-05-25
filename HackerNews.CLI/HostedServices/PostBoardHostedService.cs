@@ -1,11 +1,10 @@
 ﻿using HackerNews.CLI.MediatR.Commands.LogEntity;
 using HackerNews.CLI.MediatR.Commands.PostEntity;
-using HackerNews.CLI.MediatR.Commands.PrintEntity;
 using HackerNews.CLI.MediatR.Commands.SetVerbosity;
 using HackerNews.CLI.MediatR.Commands.SignIn;
 using HackerNews.CLI.MediatR.Commands.WriteEntity;
 using HackerNews.CLI.Options;
-using HackerNews.CLI.Requests.PostBoard;
+using HackerNews.CLI.Util;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
@@ -32,7 +31,7 @@ namespace HackerNews.CLI.HostedServices
 			bool signInSuccessful = await _mediator.Send(new SignInCommand(_options));
 			if (!signInSuccessful) return;
 
-			var postedBoard = await _mediator.Send(new PostBoardCommand(_options));
+			var postedBoard = await _mediator.Send(new PostBoardCommand(_options.ToPostModel()));
 
 			await _mediator.Send(new LogBoardCommand(postedBoard, _options));
 			await _mediator.Send(new WriteBoardCommand(postedBoard, _options));

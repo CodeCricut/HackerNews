@@ -1,11 +1,10 @@
 ﻿using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Options;
 using HackerNews.CLI.Verbs.GetBoards;
-using HackerNews.CLI.Verbs.GetPublicUsers;
 
 namespace HackerNews.CLI.Util
 {
-	public static class GetVerbOptionsExtensions
+	public static class InclusionOptionsExtensions
 	{
 		public static BoardInclusionConfiguration ToInclusionConfiguration(this IBoardInclusionOptions options)
 		{
