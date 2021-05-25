@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Domain.Options;
 using HackerNews.CLI.Options.Verbs;
 using HackerNews.CLI.Requests.Configuration;
 using HackerNews.CLI.Verbs.GetEntity;
@@ -8,11 +9,8 @@ namespace HackerNews.CLI.Options
 	[Verb("post-board")]
 	public class PostBoardOptions :
 		IVerbOptions,
-		ILoginOptions,
 		IPostBoardOptions,
-		IVerbosityOptions,
-		IPrintOptions,
-		IFileOptions
+		IPostEntityOptions
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }
