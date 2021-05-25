@@ -1,4 +1,5 @@
 ﻿using HackerNews.ApiConsumer;
+using HackerNews.CLI.Application;
 using HackerNews.CLI.DataAccess;
 using HackerNews.CLI.Domain;
 using HackerNews.CLI.Output;
@@ -90,6 +91,7 @@ namespace HackerNews.CLI
 				.AddCliDomain(configuration)
 				.AddCliDataAccess(configuration)
 				.AddCliOutput(configuration)
+				.AddCliApplication(configuration)
 				.AddCli(configuration);
 
 			services.AddSerilogLogger(configuration);

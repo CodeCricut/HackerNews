@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.Output", "Ha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.DataAccess", "HackerNews.CLI.DataAccess\HackerNews.CLI.DataAccess.csproj", "{DE830F21-51E3-43F6-82D4-0573933A3043}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.Application", "HackerNews.CLI.Application\HackerNews.CLI.Application.csproj", "{15F62C5C-B570-4303-A550-A40110711A5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{DE830F21-51E3-43F6-82D4-0573933A3043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE830F21-51E3-43F6-82D4-0573933A3043}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE830F21-51E3-43F6-82D4-0573933A3043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F62C5C-B570-4303-A550-A40110711A5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F62C5C-B570-4303-A550-A40110711A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F62C5C-B570-4303-A550-A40110711A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F62C5C-B570-4303-A550-A40110711A5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

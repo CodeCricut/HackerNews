@@ -1,8 +1,6 @@
 ﻿using HackerNews.CLI.Loggers;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace HackerNews.CLI
 {
@@ -13,7 +11,6 @@ namespace HackerNews.CLI
 			//services.AddSingleton<IGetBoardProcessor, GetBoardProcessor>()
 			//	.AddSingleton<IGetVerbProcessor<GetBoardModel, GetBoardsOptions>, GetBoardProcessor>();
 
-			services.AddMediatR(Assembly.GetExecutingAssembly());
 
 			services.AddSingleton<IJwtLogger, JwtLogger>();
 

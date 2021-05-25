@@ -1,5 +1,4 @@
-﻿using HackerNews.CLI.EntityRepository;
-using HackerNews.CLI.InclusionConfiguration;
+﻿using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
