@@ -93,58 +93,6 @@ namespace HackerNews.CLI
 			}
 		}
 
-		/// <summary>
-		/// Register the Serilog <see cref="ILogger{TCategoryName}"/> dependency and configure it using the <paramref name="configuration"/>.
-		/// </summary>
-		/// <param name="services"></param>
-		/// <param name="configuration"></param>
-		/// <returns>The service collection for chaining.</returns>
-		public static IServiceCollection AddSerilogLogger(this IServiceCollection services, IConfiguration configuration)
-		{
-			// LoggingLevelSwitch is used to dynamically change the minimum logging level of logger.
-			string defaultLevelStr = configuration.GetSection("Serilog:MinimumLevel:Default")?.Value;
-			LogEventLevel defaultLevel = Enum.Parse<LogEventLevel>(defaultLevelStr);
-
-			var levelSwitch = new LoggingLevelSwitch();
-			levelSwitch.MinimumLevel = defaultLevel;
-
-			services.AddSingleton(levelSwitch);
-
-			var logger = new LoggerConfiguration()
-						.ReadFrom.Configuration(configuration)
-						.Enrich.FromLogContext()
-						.MinimumLevel.ControlledBy(levelSwitch) // Allows you to dynamically change log level
-						.CreateLogger();
-
-			return services.AddLogging(config =>
-			{
-				config.ClearProviders();
-				config.AddProvider(new SerilogLoggerProvider(logger));
-
-				config.SetMinimumLevel(LogLevel.Trace); // This is the absolute minimum level, which can be overriden by Serilog
-			});
-		}
-
-		/// <summary>
-		/// Register a basic console <see cref="Microsoft.Extensions.Logging.ILogger"/> to the service collection.
-		/// </summary>
-		/// <param name="services"></param>
-		/// <param name="configuration"></param>
-		/// <returns></returns>
-		public static IServiceCollection AddBasicLogger(this IServiceCollection services, IConfiguration configuration)
-		{
-			return services.AddLogging(logging =>
-			{
-				logging.ClearProviders();
-				logging.AddConsole(config =>
-				{
-					config.IncludeScopes = false;
-					config.TimestampFormat = "hh:mm:ss";
-				});
-
-				logging.AddConfiguration(configuration.GetSection("Logging"));
-			});
-		}
 
 	}
 }
