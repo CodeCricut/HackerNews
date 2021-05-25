@@ -2,16 +2,9 @@
 using HackerNews.CLI.Domain;
 using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Options;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using Serilog.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Reflection;
 
 
 namespace HackerNews.CLI

@@ -1,13 +1,11 @@
-﻿using HackerNews.CLI.InclusionConfiguration;
+﻿using HackerNews.CLI.EntityRepository;
+using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
 using HackerNews.Domain.Common.Models.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Domain
 {
@@ -26,6 +24,11 @@ namespace HackerNews.CLI.Domain
 			services.AddSingleton<IEntityInclusionReader<ArticleInclusionConfiguration, GetArticleModel>, ArticleInclusionReader>();
 			services.AddSingleton<IEntityInclusionReader<CommentInclusionConfiguration, GetCommentModel>, CommentInclusionReader>();
 			services.AddSingleton<IEntityInclusionReader<PublicUserInclusionConfiguration, GetPublicUserModel>, PublicUserInclusionReader>();
+
+			services.AddTransient<BoardInclusionConfiguration>();
+			services.AddTransient<ArticleInclusionConfiguration>();
+			services.AddTransient<CommentInclusionConfiguration>();
+			services.AddTransient<PublicUserInclusionConfiguration>();
 
 			return services;
 		}

@@ -1,14 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.14" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.10" />
@@ -17,15 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HackerNews.ApiConsumer\HackerNews.ApiConsumer.csproj" />
-    <ProjectReference Include="..\HackerNews.CLI.DataAccess\HackerNews.CLI.DataAccess.csproj" />
     <ProjectReference Include="..\HackerNews.CLI.Domain\HackerNews.CLI.Domain.csproj" />
-    <ProjectReference Include="..\HackerNews.CLI.Output\HackerNews.CLI.Output.csproj" />
-    <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

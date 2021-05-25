@@ -1,4 +1,5 @@
 ﻿using HackerNews.ApiConsumer;
+using HackerNews.CLI.DataAccess;
 using HackerNews.CLI.Domain;
 using HackerNews.CLI.Output;
 using HackerNews.Domain;
@@ -87,6 +88,7 @@ namespace HackerNews.CLI
 			services.AddDomain(configuration)
 				.AddApiConsumer(configuration)
 				.AddCliDomain(configuration)
+				.AddCliDataAccess(configuration)
 				.AddCliOutput(configuration)
 				.AddCli(configuration);
 

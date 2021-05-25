@@ -1,9 +1,6 @@
 ﻿using Application.IntegrationTests.Common;
 using HackerNews.Application.Articles.Commands.DeleteArticle;
-using HackerNews.Domain.Entities;
-using HackerNews.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using System.Threading.Tasks;
 using Xunit;
 

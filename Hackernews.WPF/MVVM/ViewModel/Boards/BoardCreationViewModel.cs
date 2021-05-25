@@ -4,8 +4,6 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.Messages.Application;
-using HackerNews.WPF.MessageBus.Messages.ViewModel.EntityCreationWindow;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -59,14 +57,14 @@ namespace Hackernews.WPF.MVVM.ViewModel.Boards
 		public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
 
-		public BoardCreationViewModel(IEventAggregator ea, 
+		public BoardCreationViewModel(IEventAggregator ea,
 			IViewManager viewManager,
 			IBoardApiClient boardApiClient)
 		{
 			_ea = ea;
 			_viewManager = viewManager;
 			_boardApiClient = boardApiClient;
-			
+
 			CreateBoardCommand = new AsyncDelegateCommand(CreateBoardAsync, CanCreateBoard);
 			OpenCommand = new DelegateCommand(_ => OpenWindow());
 			CloseCommand = new DelegateCommand(_ => CloseWindow());

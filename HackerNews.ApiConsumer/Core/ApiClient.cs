@@ -97,7 +97,7 @@ namespace HackerNews.ApiConsumer.Core
 			response.EnsureSuccessStatusCode();
 
 			var content = await response.Content.ReadAsAsync<PaginatedList<TEntity>>();
-			
+
 			if (content == null) _logger.LogWarning($"GET response {_httpClient.BaseAddress}{endpoint} could not be parsed as {typeof(PaginatedList<TEntity>).GetType().Name}.");
 
 			return content;

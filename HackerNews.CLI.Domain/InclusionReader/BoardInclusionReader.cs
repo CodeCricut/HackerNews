@@ -10,7 +10,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 		IEntityReader<GetBoardModel>,
 		IEntityInclusionReader<BoardInclusionConfiguration, GetBoardModel>
 	{
-		#pragma warning disable IDE1006
+#pragma warning disable IDE1006
 		private static readonly string ID = "ID";
 		private static readonly string TITLE = "TITLE";
 		private static readonly string DESCRIPTION = "DESCRIPTION";
@@ -21,7 +21,7 @@ namespace HackerNews.CLI.InclusionConfiguration
 		private static readonly string ARTICLE_IDS = "ARTICLE IDS";
 		private static readonly string DELETED = "DELETED";
 		private static readonly string BOARD_IMAGE_ID = "BOARD IMAGE ID";
-	#pragma warning restore IDE1006
+#pragma warning restore IDE1006
 
 		private readonly ILogger<BoardInclusionReader> _logger;
 

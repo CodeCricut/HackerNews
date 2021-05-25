@@ -14,8 +14,6 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HackerNews.CLI.Output
 {

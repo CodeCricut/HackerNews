@@ -5,13 +5,10 @@ using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
 using HackerNews.WPF.MessageBus.Core;
-using HackerNews.WPF.MessageBus.Messages.Application;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.EntityCreationWindow;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Hackernews.WPF.MVVM.ViewModel.Articles
@@ -51,7 +48,7 @@ namespace Hackernews.WPF.MVVM.ViewModel.Articles
 		public ICommand OpenCommand { get; }
 		public ICommand CloseCommand { get; }
 
-		public ArticleCreationViewModel(GetBoardModel parentBoard, 
+		public ArticleCreationViewModel(GetBoardModel parentBoard,
 			IEventAggregator ea,
 			IViewManager viewManager,
 			IArticleApiClient articleApiClient)
