@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using HackerNews.CLI.Domain;
 using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Options;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,9 @@ namespace HackerNews.CLI
 	{
 		public static IServiceCollection RegisterHostedServiceForVerb(this IServiceCollection services, string[] args)
 		{
-			var types = LoadVerbs();
+			IVerbAccessor verbAccessor = services.BuildServiceProvider().GetRequiredService<IVerbAccessor>();
+
+			Type[] types = verbAccessor.GetVerbTypes().ToArray();
 
 			Parser.Default.ParseArguments(args, types)
 				.WithParsed(o => RegisterHostedService(o, services))
@@ -28,12 +31,12 @@ namespace HackerNews.CLI
 			return services;
 		}
 
-		private static Type[] LoadVerbs()
-		{
-			// Load all verb types using Reflection.
-			return Assembly.GetExecutingAssembly().GetTypes()
-				.Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
-		}
+		//private static Type[] LoadVerbs()
+		//{
+		//	// Load all verb types using Reflection.
+		//	return Assembly.GetExecutingAssembly().GetTypes()
+		//		.Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
+		//}
 
 		private static void RegisterHostedService(object verb, IServiceCollection services)
 		{

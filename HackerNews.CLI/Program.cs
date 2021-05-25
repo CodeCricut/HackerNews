@@ -1,4 +1,5 @@
 ﻿using HackerNews.ApiConsumer;
+using HackerNews.CLI.Domain;
 using HackerNews.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,10 +85,10 @@ namespace HackerNews.CLI
 
 			services.AddDomain(configuration)
 				.AddApiConsumer(configuration)
+				.AddCliDomain(configuration)
 				.AddCli(configuration);
 
 			services.AddSerilogLogger(configuration);
-			//services.AddBasicLogger(configuration);
 
 			services.RegisterHostedServiceForVerb(_args);
 		}
