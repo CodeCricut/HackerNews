@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.Application.MediatR.Commands.LogEntityPage
+namespace HackerNews.CLI.Application.MediatR.Commands.LogEntityPageWithConfiguration
 {
 	public class LogEntityPageCommand<TGetModel, TInclusionConfiguration> : IRequest
 		where TGetModel : GetModelDto
