@@ -2,6 +2,7 @@
 using HackerNews.CLI.FileWriters;
 using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Loggers;
+using HackerNews.CLI.Output.FileWriters;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
 using HackerNews.Domain.Common.Models.Comments;
@@ -38,6 +39,7 @@ namespace HackerNews.CLI.Output
 				.AddTransient<IConfigurableEntityLogger<GetPublicUserModel, PublicUserInclusionConfiguration>, ConfigurablePublicUserLogger>();
 
 			services.AddSingleton<IFileWriter, FileWriter>();
+			services.AddSingleton<ICsvFileWriter, CsvFileWriter>();
 
 			services.AddSingleton<IEntityWriter<GetBoardModel>, BoardCsvWriter>();
 			services.AddSingleton<IConfigurableEntityWriter<GetBoardModel, BoardInclusionConfiguration>, BoardCsvWriter>();
