@@ -68,6 +68,15 @@ namespace HackerNews.CLI
 					services.AddSingleton(opts);
 					services.AddHostedService<PostCommentHostedService>();
 					break;
+
+				case GetPublicUserByIdOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<GetPublicUserByIdHostedService>();
+					break;
+				case GetPublicUsersOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<GetPublicUsersHostedService>();
+					break;
 			}
 		}
 	}
