@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using HackerNews.CLI.Domain;
+using HackerNews.CLI.Domain.Verbs;
 using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Options;
 using HackerNews.CLI.Options.Verbs;
@@ -37,13 +38,17 @@ namespace HackerNews.CLI
 					services.AddSingleton(opts);
 					services.AddHostedService<GetBoardsHostedService>();
 					break;
+				case PostBoardOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<PostBoardHostedService>();
+					break;
 				case GetArticleByIdOptions opts:
 					services.AddSingleton(opts);
 					services.AddHostedService<GetArticleByIdHostedService>();
 					break;
-				case PostBoardOptions opts:
+				case GetArticlesOptions opts:
 					services.AddSingleton(opts);
-					services.AddHostedService<PostBoardHostedService>();
+					services.AddHostedService<GetArticlesHostedService>();
 					break;
 			}
 		}
