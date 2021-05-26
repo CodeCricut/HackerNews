@@ -42,6 +42,7 @@ namespace HackerNews.CLI
 					services.AddSingleton(opts);
 					services.AddHostedService<PostBoardHostedService>();
 					break;
+
 				case GetArticleByIdOptions opts:
 					services.AddSingleton(opts);
 					services.AddHostedService<GetArticleByIdHostedService>();
@@ -53,6 +54,19 @@ namespace HackerNews.CLI
 				case PostArticleOptions opts:
 					services.AddSingleton(opts);
 					services.AddHostedService<PostArticleHostedService>();
+					break;
+
+				case GetCommentByIdOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<GetCommentByIdHostedService>();
+					break;
+				case GetCommentsOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<GetCommentsHostedService>();
+					break;
+				case PostCommentOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<PostCommentHostedService>();
 					break;
 			}
 		}

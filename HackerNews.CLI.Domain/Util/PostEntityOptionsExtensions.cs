@@ -2,6 +2,7 @@
 using HackerNews.CLI.Requests.Configuration;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Common.Models.Comments;
 
 namespace HackerNews.CLI.Util
 {
@@ -24,6 +25,16 @@ namespace HackerNews.CLI.Util
 				Text = options.Text,
 				Type = options.Type,
 				BoardId = options.BoardId
+			};
+		}
+
+		public static PostCommentModel ToPostModel(this IPostCommentOptions options)
+		{
+			return new PostCommentModel()
+			{
+				Text = options.Text,
+				ParentArticleId = options.ArticleId,
+				ParentCommentId = options.CommentId
 			};
 		}
 	}
