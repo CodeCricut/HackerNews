@@ -4,13 +4,13 @@ namespace HackerNews.CLI.Domain.Verbs
 {
 	public interface IPostArticleOptions
 	{
-		[Option("Type", HelpText = "The type to assign to the article being posted (news, opinion, meta, question)")]
+		[Option("type", Required = true, HelpText = "The type to assign to the article being posted (news, opinion, meta, question)")]
 		string Type { get; set; }
-		[Option("Title", HelpText = "The title to assign to the article being posted")]
+		[Option("title", Required = true, HelpText = "The title to assign to the article being posted")]
 		string Title { get; set; }
-		[Option("Text", HelpText = "The text to assign to the article being posted")]
+		[Option("text", Required = true, HelpText = "The text to assign to the article being posted")]
 		string Text { get; set; }
-		[Option("BoardId", HelpText = "The id of the parent board to assign to the article being posted")]
+		[Option("boardId", Required = true, HelpText = "The id of the parent board to assign to the article being posted")]
 		int BoardId { get; set; }
 	}
 }

@@ -50,6 +50,10 @@ namespace HackerNews.CLI
 					services.AddSingleton(opts);
 					services.AddHostedService<GetArticlesHostedService>();
 					break;
+				case PostArticleOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<PostArticleHostedService>();
+					break;
 			}
 		}
 	}
