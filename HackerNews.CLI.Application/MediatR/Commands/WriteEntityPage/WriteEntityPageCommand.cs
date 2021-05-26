@@ -6,7 +6,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
+namespace HackerNews.CLI.MediatR.Commands.WriteEntityPage
 {
 	public class WriteEntityPageCommand<TGetModel> : IRequest
 		where TGetModel : GetModelDto

@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 
 namespace HackerNews.CLI.ApplicationRequests.GetEntityRequests
 {
-	public interface IGetEntityRequestHandler<TGetModel>
+	public interface IGetEntityRequestHandler<TGetModel, TInclusionConfiguration>
 		where TGetModel : GetModelDto
 	{
-		Task HandleAsync(IGetEntityRequest<TGetModel> request);
+		Task HandleAsync(IGetEntityRequest<TGetModel, TInclusionConfiguration> request);
 	}
 
-	public class GetEntityRequestHandler<TGetModel> : IGetEntityRequestHandler<TGetModel>
+	public class GetEntityRequestHandler<TGetModel, TInclusionConfiguration> : 
+		IGetEntityRequestHandler<TGetModel, TInclusionConfiguration>
 		where TGetModel : GetModelDto
 	{
 		private readonly IMediator _mediator;
@@ -20,7 +21,7 @@ namespace HackerNews.CLI.ApplicationRequests.GetEntityRequests
 			_mediator = mediator;
 		}
 
-		public async Task HandleAsync(IGetEntityRequest<TGetModel> request)
+		public async Task HandleAsync(IGetEntityRequest<TGetModel, TInclusionConfiguration> request)
 		{
 			await _mediator.Send(request.CreateVerbosityCommand());
 

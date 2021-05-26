@@ -11,7 +11,8 @@ namespace HackerNews.CLI.ApplicationRequests
 		Task HandleAsync(IPostEntityRequest<TPostModel, TGetModel> request);
 	}
 
-	public class PostEntityRequestHandler<TPostModel, TGetModel> : IPostEntityRequestHandler<TPostModel, TGetModel>
+	public class PostEntityRequestHandler<TPostModel, TGetModel> : 
+		IPostEntityRequestHandler<TPostModel, TGetModel>
 		where TPostModel : PostModelDto
 		where TGetModel : GetModelDto
 	{

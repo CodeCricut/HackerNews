@@ -10,8 +10,8 @@ namespace HackerNews.CLI
 	{
 		public static IServiceCollection AddCli(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddSingleton(typeof(IGetEntityRequestHandler<>), typeof(GetEntityRequestHandler<>));
-			services.AddSingleton(typeof(IGetEntitiesRequestHandler<>), typeof(GetEntitiesRequestHandler<>));
+			services.AddSingleton(typeof(IGetEntityRequestHandler<,>), typeof(GetEntityRequestHandler<,>));
+			services.AddSingleton(typeof(IGetEntitiesRequestHandler<,>), typeof(GetEntitiesRequestHandler<,>));
 			services.AddSingleton(typeof(IPostEntityRequestHandler<,>), typeof(PostEntityRequestHandler<,>));
 
 			return services;

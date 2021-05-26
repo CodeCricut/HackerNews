@@ -3,7 +3,7 @@ using HackerNews.CLI.Verbs.GetEntity;
 using HackerNews.Domain.Common.Models;
 using HackerNews.Domain.Common.Models.Boards;
 
-namespace HackerNews.CLI.MediatR.Commands.WriteBoardPage
+namespace HackerNews.CLI.MediatR.Commands.WriteEntityPage
 {
 	public class WriteBoardPageCommand : WriteEntityPageCommand<GetBoardModel>
 	{

@@ -1,4 +1,5 @@
-﻿using HackerNews.CLI.MediatR.Commands.LogEntity;
+﻿using HackerNews.CLI.InclusionConfiguration;
+using HackerNews.CLI.MediatR.Commands.LogEntity;
 using HackerNews.CLI.MediatR.Commands.PostEntity;
 using HackerNews.CLI.MediatR.Commands.SetVerbosity;
 using HackerNews.CLI.MediatR.Commands.SignIn;
@@ -15,6 +16,7 @@ namespace HackerNews.CLI.ApplicationRequests
 		public CreateSignInCommand CreateSignInCommand { get; }
 		public CreatePostCommand<PostBoardModel, GetBoardModel> CreatePostCommand { get; }
 		public CreateLogEntityCommand<GetBoardModel> CreateLogCommand { get; }
+		
 		public CreateWriteEntityCommand<GetBoardModel> CreateWriteCommand { get; }
 
 		public PostBoardRequest(PostBoardOptions opts)

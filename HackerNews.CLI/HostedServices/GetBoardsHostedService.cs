@@ -1,4 +1,5 @@
 ﻿using HackerNews.CLI.ApplicationRequests.GetEntitiesRequests;
+using HackerNews.CLI.InclusionConfiguration;
 using HackerNews.CLI.Options;
 using HackerNews.Domain.Common.Models.Boards;
 using Microsoft.Extensions.Hosting;
@@ -10,11 +11,11 @@ namespace HackerNews.CLI.HostedServices
 	public class GetBoardsHostedService : IHostedService
 	{
 		private readonly GetBoardsOptions _options;
-		private readonly IGetEntitiesRequestHandler<GetBoardModel> _requestAggreg;
+		private readonly IGetEntitiesRequestHandler<GetBoardModel, BoardInclusionConfiguration> _requestAggreg;
 
 		public GetBoardsHostedService(
 			GetBoardsOptions options,
-			IGetEntitiesRequestHandler<GetBoardModel> requestAggreg
+			IGetEntitiesRequestHandler<GetBoardModel, BoardInclusionConfiguration> requestAggreg
 			)
 		{
 			_options = options;
