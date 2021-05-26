@@ -2,6 +2,7 @@
 using HackerNews.CLI.Domain;
 using HackerNews.CLI.HostedServices;
 using HackerNews.CLI.Options;
+using HackerNews.CLI.Options.Verbs;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -35,6 +36,10 @@ namespace HackerNews.CLI
 				case GetBoardsOptions opts:
 					services.AddSingleton(opts);
 					services.AddHostedService<GetBoardsHostedService>();
+					break;
+				case GetArticleByIdOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<GetArticleByIdHostedService>();
 					break;
 				case PostBoardOptions opts:
 					services.AddSingleton(opts);
