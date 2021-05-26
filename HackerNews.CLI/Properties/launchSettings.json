@@ -2,7 +2,7 @@
   "profiles": {
     "HackerNews.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "get-users --ids 1 2 --all -v -p"
+      "commandLineArgs": "register --username \"cliuser2\" --password \"cliuser2\" --firstname \"cli user fn\" --lastname \"cli user ln\" -v"
     }
   }
 }

@@ -77,6 +77,11 @@ namespace HackerNews.CLI
 					services.AddSingleton(opts);
 					services.AddHostedService<GetPublicUsersHostedService>();
 					break;
+
+				case RegisterOptions opts:
+					services.AddSingleton(opts);
+					services.AddHostedService<RegisterHostedService>();
+					break;
 			}
 		}
 	}

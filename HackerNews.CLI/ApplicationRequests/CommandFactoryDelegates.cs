@@ -11,6 +11,8 @@ using HackerNews.CLI.MediatR.Commands.WriteEntityPage;
 using HackerNews.CLI.MediatR.Commands.WriteEntity;
 using HackerNews.Domain.Common;
 using HackerNews.Domain.Common.Models;
+using HackerNews.CLI.Application.MediatR.Commands.Register;
+using HackerNews.CLI.Application.MediatR.Commands.LogJwt;
 
 namespace HackerNews.CLI.ApplicationRequests
 {
@@ -18,10 +20,13 @@ namespace HackerNews.CLI.ApplicationRequests
 
 	public delegate SignInCommand CreateSignInCommand();
 
+	public delegate RegisterCommand CreateRegisterCommand();
+
+	public delegate LogJwtCommand CreateLogJwtCommand(Jwt jwt);
+
 	public delegate PostEntityCommand<TPostModel, TGetModel> CreatePostCommand<TPostModel, TGetModel>()
 		where TPostModel : PostModelDto
 		where TGetModel : GetModelDto;
-
 
 	public delegate LogEntityCommand<TGetModel> CreateLogEntityCommand<TGetModel>(TGetModel model)
 		where TGetModel : GetModelDto;
