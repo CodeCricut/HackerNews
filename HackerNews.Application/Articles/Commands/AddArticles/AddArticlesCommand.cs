@@ -31,22 +31,43 @@ namespace HackerNews.Application.Articles.Commands.AddArticles
 
 		public override async Task<IEnumerable<GetArticleModel>> Handle(AddArticlesCommand request, CancellationToken cancellationToken)
 		{
+			User user = await GetUser();
+			IEnumerable<Article> articles = MapToArticles(request.PostArticleModels, user);
+			IEnumerable<Article> addedArticles = await AddArticlesToDatabase(articles);
+			IEnumerable<GetArticleModel> articleModels = MapToModels(addedArticles);
+			return articleModels;
+		}
+
+		private async Task<User> GetUser()
+		{
 			var userId = _currentUserService.UserId;
 			if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
 			var user = await UnitOfWork.Users.GetEntityAsync(userId);
+			return user;
+		}
 
-			var articles = Mapper.Map<IEnumerable<Article>>(request.PostArticleModels);
+		private IEnumerable<Article> MapToArticles(IEnumerable<PostArticleModel> postModels, User user)
+		{
+			var articles = Mapper.Map<IEnumerable<Article>>(postModels);
 			foreach (var article in articles)
 			{
 				article.PostDate = DateTime.Now;
 				article.UserId = user.Id;
 			}
 
+			return articles;
+		}
+
+		private async Task<IEnumerable<Article>> AddArticlesToDatabase(IEnumerable<Article> articles)
+		{
 			var addedArticles = await UnitOfWork.Articles.AddEntititesAsync(articles);
 
-			// My first bug caught by a integration test... brings a tear to my eye >_<
-			UnitOfWork.SaveChanges(); // missing before
+			UnitOfWork.SaveChanges();
+			return addedArticles;
+		}
 
+		private IEnumerable<GetArticleModel> MapToModels(IEnumerable<Article> addedArticles)
+		{
 			return Mapper.Map<IEnumerable<GetArticleModel>>(addedArticles);
 		}
 	}

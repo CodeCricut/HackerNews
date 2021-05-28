@@ -32,25 +32,47 @@ namespace HackerNews.Application.Articles.Commands.DeleteArticle
 
 		public override async Task<bool> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
 		{
-			var userId = _currentUserService.UserId;
-			var user = (await UnitOfWork.Users.GetEntityAsync(userId));
+			var user = await GetUser();
 
-			if (!await UnitOfWork.Articles.EntityExistsAsync(request.Id)) throw new NotFoundException();
+			await VerifyArticleExists(request.Id);
+			Article article = await GetArticle(request.Id);
 
-			var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
+			await VerifyUserCanDelete(user, article);
 
-			// Verify user can delete entity
-			var userOwnsEntity = article.UserId != userId;
+			bool successful = await DeleteArticle(request.Id);
+			return successful;
+		}
+
+		private async Task<bool> DeleteArticle(int articleId)
+		{
+			var successful = await UnitOfWork.Articles.DeleteEntityAsync(articleId);
+			UnitOfWork.SaveChanges();
+			return successful;
+		}
+
+		private async Task VerifyUserCanDelete(User user, Article article)
+		{
+			var userOwnsEntity = article.UserId != _currentUserService.UserId;
 			var userHasAdminAccess = await _articleOperationValidator.CanDeleteEntityAsync(article, user.AdminLevel);
 
 			if (!(userOwnsEntity || userHasAdminAccess))
 				throw new UnauthorizedException();
+		}
 
-			// Delete article and save.
-			var successful = await UnitOfWork.Articles.DeleteEntityAsync(request.Id);
-			UnitOfWork.SaveChanges();
+		private async Task<Article> GetArticle(int articleId)
+		{
+			return await UnitOfWork.Articles.GetEntityAsync(articleId);
+		}
 
-			return successful;
+		private async Task VerifyArticleExists(int articleId)
+		{
+			if (!await UnitOfWork.Articles.EntityExistsAsync(articleId)) throw new NotFoundException();
+		}
+
+		private Task<User> GetUser()
+		{
+			var userId = _currentUserService.UserId;
+			return UnitOfWork.Users.GetEntityAsync(userId);
 		}
 	}
 }

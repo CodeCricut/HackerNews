@@ -32,20 +32,49 @@ namespace HackerNews.Application.Articles.Commands.AddImage
 
 		public override async Task<GetArticleModel> Handle(AddArticleImageCommand request, CancellationToken cancellationToken)
 		{
-			// Verify logged in
-			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId))
+			await VerifyLoggedIn();
+
+			Article article = await GetArticle(request.ArticleId);
+
+			VerifyArticleExists(article);
+
+			VerifyUserCreatedArticle(article);
+
+			await CreateArticleImage(request.ImageModel, article);
+
+			// Return updated article
+			return MapArticleToModel(article);
+		}
+
+		private async Task VerifyLoggedIn()
+		{
+			if (!await IsLoggedIn())
 				throw new UnauthorizedException();
-			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
-
-			// Verify article exists
-			var article = await UnitOfWork.Articles.GetEntityAsync(request.ArticleId);
+		}
+		
+		private Task<bool> IsLoggedIn()
+		{
+			return UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId);
+		}
+		
+		private static void VerifyArticleExists(Article article)
+		{
 			if (article == null) throw new NotFoundException();
-
-			// Verify user created article
+		}
+		
+		private void VerifyUserCreatedArticle(Article article)
+		{
 			if (article.UserId != _currentUserService.UserId) throw new UnauthorizedException();
+		}
 
-			// Create image
-			var imageToAdd = Mapper.Map<Image>(request.ImageModel);
+		private async Task<Article> GetArticle(int articleId)
+		{
+			return await UnitOfWork.Articles.GetEntityAsync(articleId);
+		}
+		
+		private async Task CreateArticleImage(PostImageModel imageModel, Article article)
+		{
+			var imageToAdd = Mapper.Map<Image>(imageModel);
 			imageToAdd.ArticleId = article.Id;
 
 			await UnitOfWork.Images.AddEntityAsync(imageToAdd);
@@ -55,8 +84,10 @@ namespace HackerNews.Application.Articles.Commands.AddImage
 
 			// Save
 			UnitOfWork.SaveChanges();
+		}
 
-			// Return updated article
+		private GetArticleModel MapArticleToModel(Article article)
+		{
 			return Mapper.Map<GetArticleModel>(article);
 		}
 	}
