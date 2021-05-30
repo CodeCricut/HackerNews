@@ -30,24 +30,18 @@ namespace HackerNews.Application.Articles.Commands.AddArticle
 
 		public override async Task<GetArticleModel> Handle(AddArticleCommand request, CancellationToken cancellationToken)
 		{
-			await ThrowIfNotLoggedIn();
+			if (! await IsLoggedIn())
+				throw new UnauthorizedException("Unable to add article; User is not logged in.");
+
 			Article article = await CreateArticle(request.PostArticleModel);
 			Article addedArticle = await AddArticle(article);
 			GetArticleModel getArticleModel = MapToModel(addedArticle);
 			return getArticleModel;
 		}
 
-		private GetArticleModel MapToModel(Article addedArticle)
+		private Task<bool> IsLoggedIn()
 		{
-			return Mapper.Map<GetArticleModel>(addedArticle);
-		}
-
-		private async Task<Article> AddArticle(Article article)
-		{
-			var addedArticle = await UnitOfWork.Articles.AddEntityAsync(article);
-
-			UnitOfWork.SaveChanges();
-			return addedArticle;
+			return UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId);
 		}
 
 		private async Task<Article> CreateArticle(PostArticleModel postArticleModel)
@@ -60,11 +54,17 @@ namespace HackerNews.Application.Articles.Commands.AddArticle
 			return article;
 		}
 
-		private async Task ThrowIfNotLoggedIn()
+		private async Task<Article> AddArticle(Article article)
 		{
-			bool userLoggedIn = await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId);
-			if (!userLoggedIn)
-				throw new UnauthorizedException("Unable to add article; User is not logged in.");
+			var addedArticle = await UnitOfWork.Articles.AddEntityAsync(article);
+
+			UnitOfWork.SaveChanges();
+			return addedArticle;
+		}
+
+		private GetArticleModel MapToModel(Article addedArticle)
+		{
+			return Mapper.Map<GetArticleModel>(addedArticle);
 		}
 	}
 }

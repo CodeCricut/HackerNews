@@ -27,121 +27,192 @@ namespace HackerNews.Application.Articles.Commands.VoteArticle
 
 	public class VoteArticleCommandHandler : DatabaseRequestHandler<VoteArticleCommand, GetArticleModel>
 	{
+		private const int UPVOTE_KARMA_DELTA = 1;
+		private const int DOWNVOTE_KARMA_DELTA = -1;
+
+		private User _currentUser;
+		private User _articleOwner;
+		private Article _article;
+
 		public VoteArticleCommandHandler(IUnitOfWork unitOfWork, IMediator mediator, IMapper mapper, ICurrentUserService currentUserService) : base(unitOfWork, mediator, mapper, currentUserService)
 		{
 		}
 
 		public override async Task<GetArticleModel> Handle(VoteArticleCommand request, CancellationToken cancellationToken)
 		{
-			var userId = _currentUserService.UserId;
-			if (!await UnitOfWork.Users.EntityExistsAsync(userId)) throw new UnauthorizedException();
-			var currentUser = await UnitOfWork.Users.GetEntityAsync(userId);
-
-			if (!await UnitOfWork.Articles.EntityExistsAsync(request.ArticleId)) throw new NotFoundException();
-			var article = await UnitOfWork.Articles.GetEntityAsync(request.ArticleId);
-
-			if (!await UnitOfWork.Users.EntityExistsAsync(article.UserId)) throw new NotFoundException();
-			var articleUser = await UnitOfWork.Users.GetEntityAsync(article.UserId);
+			await InitializeFields(request);
 
 			if (request.Upvote)
-			{
-				// if the user has liked the entity, unlike it (not dislike)
-				if (UserLikedEntity(currentUser, article))
-					UnlikeEntity(currentUser, articleUser, article);
-				// if the user hasn't liked the entity, like it
-				else
-				{
-					// if the user dislike the entity, un-dislike it then like it
-					if (UserDislikedEntity(currentUser, article))
-						UndislikeEntity(currentUser, articleUser, article);
-					LikeEntity(currentUser, articleUser, article);
-				}
-			}
+				HandleUpvoteRequest();
 			else
-			{
-				// if the user has dislike the entity, un-dislike it (not like)
-				if (UserDislikedEntity(currentUser, article))
-					UndislikeEntity(currentUser, articleUser, article);
-				// if the user hasn't disliked the entity, dislike it
-				else
-				{
-					// if the user liked the entity, unlike it then dislike it
-					if (UserLikedEntity(currentUser, article))
-						UnlikeEntity(currentUser, articleUser, article);
-					DislikeEntity(currentUser, articleUser, article);
-				}
-			}
+				HandleDownvoteRequest();
 
-			// Save changes and return model.
 			UnitOfWork.SaveChanges();
-
-			return Mapper.Map<GetArticleModel>(article);
+			return Mapper.Map<GetArticleModel>(_article);
 		}
 
-		private static bool UserDislikedEntity(User currentUser, Article article)
+		private async Task InitializeFields(VoteArticleCommand request)
 		{
-			return article.UsersDisliked.FirstOrDefault(ud => ud.UserId == currentUser.Id) != null;
+			_currentUser = await GetCurrentUser();
+			_article = await GetArticleById(request.ArticleId);
+			_articleOwner = await GetUserById(_article.UserId);
 		}
 
-		private static bool UserLikedEntity(User currentUser, Article article)
+		private void HandleUpvoteRequest()
 		{
-			return article.UsersLiked.FirstOrDefault(ul => ul.UserId == currentUser.Id) != null;
+			if (UserUpvotedArticle(_currentUser, _article))
+				RemoveUserVoteOnArticle();
+			else
+				RemoveVoteThenUpvoteArticle();
 		}
 
-		private static void UndislikeEntity(User currentUser, User articleUser, Article article)
+		private void HandleDownvoteRequest()
 		{
-			article.Karma++;
-
-			articleUser.Karma++;
-
-			var joinEntity = article.UsersDisliked.FirstOrDefault(ud => ud.UserId == currentUser.Id);
-
-			article.UsersDisliked.Remove(joinEntity);
-			currentUser.DislikedArticles.Remove(joinEntity);
+			if (UserDownvotedArticle(_currentUser, _article))
+				UnDownvoteArticle();
+			else
+				RemoveVoteThenDownvoteArticle();
 		}
 
-		private static void DislikeEntity(User currentUser, User articleUser, Article article)
+		private bool UserUpvotedArticle(User user, Article article)
 		{
-			var userDislike = new UserArticleDislikes
+			return GetUserArticleLike(user, article) != null;
+		}
+
+		private bool UserDownvotedArticle(User user, Article article)
+		{
+			return GetUserArticleDislike(user, article) != null;
+		}
+
+		private void RemoveVoteThenUpvoteArticle()
+		{
+			RemoveUserVoteOnArticle();
+			UpvoteArticle();
+		}
+		
+		private void RemoveVoteThenDownvoteArticle()
+		{
+			RemoveUserVoteOnArticle();
+			DownvoteArticle();
+		}
+
+		private void RemoveUserVoteOnArticle()
+		{
+			if (UserUpvotedArticle(_currentUser, _article))
+				UnUpvoteEntity();
+			if (UserDownvotedArticle(_currentUser, _article))
+				UnDownvoteArticle();
+		}
+
+		private void UpvoteArticle()
+		{
+			AddKarmaToUserAndArticle(UPVOTE_KARMA_DELTA, _articleOwner, _article);
+			AddLikeToUserAndArticle(_currentUser, _article);
+		}
+
+		private void DownvoteArticle()
+		{
+			AddKarmaToUserAndArticle(DOWNVOTE_KARMA_DELTA, _articleOwner, _article);
+			AddDislikeToUserAndArticle(_currentUser, _article);
+		}
+
+		private void UnUpvoteEntity()
+		{
+			AddKarmaToUserAndArticle(DOWNVOTE_KARMA_DELTA, _articleOwner, _article);
+			RemoveLikeFromUserAndArticle(_currentUser, _article);
+		}
+
+		private void UnDownvoteArticle()
+		{
+			AddKarmaToUserAndArticle(UPVOTE_KARMA_DELTA, _articleOwner, _article);
+			RemoveDislikeFromUserAndArticle(_currentUser, _article);
+		}
+
+		private async Task<User> GetUserById(int userId)
+		{
+			if (!await UnitOfWork.Users.EntityExistsAsync(userId))
+				throw new NotFoundException();
+
+			return await UnitOfWork.Users.GetEntityAsync(userId);
+		}
+
+		private async Task<Article> GetArticleById(int articleId)
+		{
+			if (!await UnitOfWork.Articles.EntityExistsAsync(articleId)) throw new NotFoundException();
+			var article = await UnitOfWork.Articles.GetEntityAsync(articleId);
+			return article;
+		}
+
+		private async Task<User> GetCurrentUser()
+		{
+			var userId = _currentUserService.UserId;
+			if (!await UnitOfWork.Users.EntityExistsAsync(userId))
+				throw new UnauthorizedException();
+
+			return await GetUserById(userId);
+		}
+
+		private UserArticleDislikes GetUserArticleDislike(User user, Article article)
+		{
+			return article.UsersDisliked.FirstOrDefault(ud => ud.UserId == user.Id);
+		}
+
+		private UserArticleLikes GetUserArticleLike(User user, Article article)
+		{
+			return article.UsersLiked.FirstOrDefault(ud => ud.UserId == user.Id);
+		}
+
+		private void AddLikeToUserAndArticle(User user, Article article)
+		{
+			var like = CreateUserArticleLike(user, article);
+			_article.UsersLiked.Add(like);
+			_currentUser.LikedArticles.Add(like);
+		}
+
+		private void RemoveLikeFromUserAndArticle(User user, Article article)
+		{
+			var like = article.UsersLiked.FirstOrDefault(ul => ul.UserId == user.Id);
+
+			user.LikedArticles.Remove(like);
+			article.UsersLiked.Remove(like);
+		}
+
+		private void AddDislikeToUserAndArticle(User user, Article article)
+		{
+			var dislike = CreateUserArticleDislike(user, article);
+			user.DislikedArticles.Add(dislike);
+			article.UsersDisliked.Add(dislike);
+		}
+
+		private void RemoveDislikeFromUserAndArticle(User user, Article article)
+		{
+			var dislike = GetUserArticleDislike(user, article);
+			article.UsersDisliked.Remove(dislike);
+			user.DislikedArticles.Remove(dislike);
+		}
+
+		private void AddKarmaToUserAndArticle(int karmaToAdd, User user, Article article)
+		{
+			article.Karma += karmaToAdd;
+			user.Karma += karmaToAdd;
+		}
+
+		private UserArticleLikes CreateUserArticleLike(User user, Article article)
+		{
+			return new UserArticleLikes
 			{
 				Article = article,
-				User = currentUser
+				User = user
 			};
-
-			article.Karma--;
-
-			articleUser.Karma--;
-
-			article.UsersDisliked.Add(userDislike);
-			currentUser.DislikedArticles.Add(userDislike);
 		}
 
-		private static void UnlikeEntity(User currentUser, User articleUser, Article article)
+		private UserArticleDislikes CreateUserArticleDislike(User user, Article article)
 		{
-			article.Karma--;
-
-			articleUser.Karma--;
-
-			var joinEntity = article.UsersLiked.FirstOrDefault(ul => ul.UserId == currentUser.Id);
-
-			article.UsersLiked.Remove(joinEntity);
-			currentUser.LikedArticles.Remove(joinEntity);
-		}
-
-		private static void LikeEntity(User currentUser, User articleUser, Article article)
-		{
-			var userLike = new UserArticleLikes
+			return new UserArticleDislikes
 			{
+				User = user,
 				Article = article,
-				User = currentUser
 			};
-
-			article.Karma++;
-
-			articleUser.Karma++;
-
-			article.UsersLiked.Add(userLike);
-			currentUser.LikedArticles.Add(userLike);
 		}
 	}
 }
