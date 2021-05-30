@@ -53,7 +53,7 @@ for (let i = 0; i < menuToggles.length; i++) {
 }
 
 // Articles
-async function upvoteArticle(articleId, jwt, voteArrowElement) {
+async function upvoteArticle(baseAddress, articleId, jwt, voteArrowElement) {
     // Update the style
     const karmaElement = voteArrowElement.nextElementSibling;
     const downvoteArrowElement = karmaElement.nextElementSibling;
@@ -73,7 +73,7 @@ async function upvoteArticle(articleId, jwt, voteArrowElement) {
     clearDownvote(downvoteArrowElement);
 
     // Send a server update request
-    await fetch(`https://localhost:44300/api/articles/vote?articleId=${articleId}&upvote=true`, {
+    await fetch(`${baseAddress}api/articles/vote?articleId=${articleId}&upvote=true`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -90,7 +90,7 @@ function clearUpvote(voteArrowElement) {
     }
 }
 
-async function downvoteArticle(articleId, jwt, voteArrowElement) {
+async function downvoteArticle(baseAddress, articleId, jwt, voteArrowElement) {
     // Update styles
     const karmaElement = voteArrowElement.previousElementSibling;
     const upvoteArrowElement = karmaElement.previousElementSibling;
@@ -109,7 +109,7 @@ async function downvoteArticle(articleId, jwt, voteArrowElement) {
     clearUpvote(upvoteArrowElement);
 
     // Send server req
-    const rawResponse = await fetch(`https://localhost:44300/api/articles/vote?articleId=${articleId}&upvote=false`, {
+    const rawResponse = await fetch(`${baseAddress}api/articles/vote?articleId=${articleId}&upvote=false`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',

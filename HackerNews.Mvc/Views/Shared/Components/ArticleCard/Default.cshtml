@@ -12,7 +12,7 @@
                <text>class="upvote"</text>
            }
 
-           onclick="upvoteArticle('@Model.Article.Id', '@Model.Jwt', this)"><i class="fas fa-caret-up"></i></a>
+           onclick="upvoteArticle('@Model.BaseUrl', '@Model.Article.Id', '@Model.Jwt', this)"><i class="fas fa-caret-up"></i></a>
         }
         
         <p>@Model.Article.Karma</p>
@@ -29,7 +29,7 @@
                 <text>class="downvote"</text>
            }
 
-           onclick="downvoteArticle('@Model.Article.Id', '@Model.Jwt', this)"><i class="fas fa-caret-down"></i></a>
+           onclick="downvoteArticle('@Model.BaseUrl', '@Model.Article.Id', '@Model.Jwt', this)"><i class="fas fa-caret-down"></i></a>
         }
     </div>
     <div class="content-col">

@@ -9,6 +9,7 @@ using HackerNews.Mvc.Services;
 using HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +19,16 @@ namespace HackerNews.Mvc.ViewComponents
 	{
 		private readonly IMediator _mediator;
 		private readonly IApiSignInManager _apiJwtManager;
+		private readonly string _baseUrl;
 
-		public ArticleCardViewComponent(IMediator mediator, IApiSignInManager apiAccountClient)
+		public ArticleCardViewComponent(IMediator mediator, 
+			IApiSignInManager apiAccountClient,
+			IConfiguration config)
 		{
 			_mediator = mediator;
 			_apiJwtManager = apiAccountClient;
+
+			_baseUrl = config.GetValue<string>("ApiBaseAddress");
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync(GetArticleModel articleModel, string imageDataUrl, bool displayText = false)
@@ -65,7 +71,8 @@ namespace HackerNews.Mvc.ViewComponents
 				UserDownvoted = userDownvoted,
 				UserCreatedArticle = userCreatedArticle,
 				ImageDataUrl = imageDataUrl,
-				DisplayText = displayText
+				DisplayText = displayText,
+				BaseUrl = _baseUrl
 			};
 			return View(viewModel);
 		}

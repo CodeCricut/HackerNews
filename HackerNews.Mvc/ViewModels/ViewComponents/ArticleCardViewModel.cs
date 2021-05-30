@@ -13,6 +13,8 @@ namespace HackerNews.Mvc.ViewModels.ViewComponents.ArticleCard
 		public string Jwt { get; set; }
 		public bool DisplayText { get; set; }
 
+		public string BaseUrl { get; set; }
+
 		// TODO: properly bind value and add js action to make save button work
 		public bool LoggedIn { get; set; }
 		public bool Saved { get; set; }
