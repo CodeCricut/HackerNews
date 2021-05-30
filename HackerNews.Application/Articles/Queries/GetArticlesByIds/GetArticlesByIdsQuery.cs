@@ -39,14 +39,19 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesByIds
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesByIdsQuery request, CancellationToken cancellationToken)
 		{
-			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
-			var articlesByIds = articles.Where(article => request.Ids.Contains(article.Id));
+			Queryable<Article> articlesByIds = await GetArticlesByIds(request.Ids);
 
 			articlesByIds = _deletedEntityValidator.ValidateEntityQuerable(articlesByIds, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			var paginatedArticles = await articlesByIds.PaginatedListAsync(request.PagingParams);
 
 			return paginatedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
+		}
+
+		private async Task<IQueryable<Article>> GetArticlesByIds(IEnumerable<int> ids)
+		{
+			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
+			return articles.Where(article => ids.Contains(article.Id));
 		}
 	}
 }

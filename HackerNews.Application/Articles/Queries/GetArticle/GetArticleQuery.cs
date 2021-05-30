@@ -33,12 +33,18 @@ namespace HackerNews.Application.Articles.Queries.GetArticle
 
 		public override async Task<GetArticleModel> Handle(GetArticleQuery request, CancellationToken cancellationToken)
 		{
-			var article = await UnitOfWork.Articles.GetEntityAsync(request.Id);
-			if (article == null) throw new NotFoundException();
+			Article article = await GetArticleById(request.Id);
 
 			article = _deletedEntityValidator.ValidateEntity(article, Domain.Common.DeletedEntityPolicy.OWNER);
 
 			return Mapper.Map<GetArticleModel>(article);
+		}
+
+		private async Task<Article> GetArticleById(int articleId)
+		{
+			var article = await UnitOfWork.Articles.GetEntityAsync(articleId);
+			if (article == null) throw new NotFoundException();
+			return article;
 		}
 	}
 }

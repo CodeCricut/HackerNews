@@ -37,18 +37,23 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesBySearch
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesBySearchQuery request, CancellationToken cancellationToken)
 		{
-			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
-			var searchArticles = articles.Where(a =>
-				a.Title.Contains(request.SearchTerm) ||
-				a.Text.Contains(request.SearchTerm)
-			);
+			IQueryable<Article> searchArticles = await GetArticlesBySearch(request.SearchTerm);
 
 			searchArticles = _deletedEntityValidator.ValidateEntityQuerable(searchArticles, Domain.Common.DeletedEntityPolicy.OWNER);
 
-			var paginatedSearchedArticles = await PaginatedList<Article>.CreateAsync(searchArticles,
-				request.PagingParams.PageNumber, request.PagingParams.PageSize);
+			var paginatedSearchedArticles = await searchArticles.PaginatedListAsync(request.PagingParams);
 
 			return paginatedSearchedArticles.ToMappedPagedList<Article, GetArticleModel>(Mapper);
+		}
+
+		private async Task<IQueryable<Article>> GetArticlesBySearch(string searchTerm)
+		{
+			var articles = await UnitOfWork.Articles.GetEntitiesAsync();
+			var searchArticles = articles.Where(a =>
+				a.Title.Contains(searchTerm) ||
+				a.Text.Contains(searchTerm)
+			);
+			return searchArticles;
 		}
 	}
 }
