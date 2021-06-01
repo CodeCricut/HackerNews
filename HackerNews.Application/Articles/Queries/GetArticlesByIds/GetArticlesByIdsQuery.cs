@@ -39,7 +39,7 @@ namespace HackerNews.Application.Articles.Queries.GetArticlesByIds
 
 		public override async Task<PaginatedList<GetArticleModel>> Handle(GetArticlesByIdsQuery request, CancellationToken cancellationToken)
 		{
-			Queryable<Article> articlesByIds = await GetArticlesByIds(request.Ids);
+			IQueryable<Article> articlesByIds = await GetArticlesByIds(request.Ids);
 
 			articlesByIds = _deletedEntityValidator.ValidateEntityQuerable(articlesByIds, Domain.Common.DeletedEntityPolicy.OWNER);
 
