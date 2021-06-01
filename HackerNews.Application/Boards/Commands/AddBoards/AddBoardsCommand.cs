@@ -32,28 +32,66 @@ namespace HackerNews.Application.Boards.Commands.AddBoards
 
 		public override async Task<IEnumerable<GetBoardModel>> Handle(AddBoardsCommand request, CancellationToken cancellationToken)
 		{
-			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			IEnumerable<Board> boards = MapModelsToBoards(request.PostBoardModels);
 
-			if (user == null) throw new UnauthorizedException();
+			User user = await GetUser();
 
-			var boards = Mapper.Map<IEnumerable<Board>>(request.PostBoardModels);
 			foreach (var board in boards)
+				ApplySpecialBoardProperties(board, user);
+
+			IEnumerable<Board> addedBoards = await AddBoards(boards);
+
+			return MapBoardsToModels(addedBoards);
+		}
+
+		private IEnumerable<Board> MapModelsToBoards(IEnumerable<PostBoardModel> models)
+		{
+			return Mapper.Map<IEnumerable<Board>>(models);
+		}
+
+		private void ApplySpecialBoardProperties(Board board, User user)
+		{
+			ApplyCreateDateAsNow(board);
+			AddUserAsCreator(user, board);
+			AddUserAsBoardModerator(user, board);
+		}
+
+		private async Task<User> GetUser()
+		{
+			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			if (user == null) throw new UnauthorizedException();
+			return user;
+		}
+
+		private static void ApplyCreateDateAsNow(Board board)
+		{
+			board.CreateDate = DateTime.Now;
+		}
+
+		private static void AddUserAsCreator(User user, Board board)
+		{
+			board.Creator = user;
+		}
+
+		private static void AddUserAsBoardModerator(User user, Board board)
+		{
+			var boardUser = new BoardUserModerator
 			{
-				board.CreateDate = DateTime.Now;
-				board.Creator = user;
+				Board = board,
+				User = user
+			};
+			board.Moderators.Add(boardUser);
+		}
 
-				// Add creator to moderators
-				var boardUser = new BoardUserModerator
-				{
-					Board = board,
-					User = user
-				};
-				board.Moderators.Add(boardUser);
-			}
-
+		private async Task<IEnumerable<Board>> AddBoards(IEnumerable<Board> boards)
+		{
 			var addedBoards = await UnitOfWork.Boards.AddEntititesAsync(boards);
 			UnitOfWork.SaveChanges();
+			return addedBoards;
+		}
 
+		private IEnumerable<GetBoardModel> MapBoardsToModels(IEnumerable<Board> addedBoards)
+		{
 			return Mapper.Map<IEnumerable<GetBoardModel>>(addedBoards);
 		}
 	}

@@ -32,28 +32,56 @@ namespace HackerNews.Application.Boards.Commands.AddImage
 
 		public override async Task<GetBoardModel> Handle(AddBoardImageCommand request, CancellationToken cancellationToken)
 		{
-			// Verify logged in
+			await VerifyLoggedIn();
+
+			Board board = await GetBoardById(request.BoardId);
+
+			VerifyUserCreatedBoard(board);
+
+			var imageToAdd = MapModelToImage(request.ImageModel);
+
+			await AddImage(imageToAdd, board);
+
+			UnitOfWork.SaveChanges();
+
+			return MapBoardToModel(board);
+		}
+
+		private async Task VerifyLoggedIn()
+		{
 			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId))
 				throw new UnauthorizedException();
+		}
 
-			// Verify board exists
-			Board board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
+		private async Task<Board> GetBoardById(int boardId)
+		{
+			Board board = await UnitOfWork.Boards.GetEntityAsync(boardId);
 			if (board == null) throw new NotFoundException();
+			return board;
+		}
 
-			// Verify user created board
+		private void VerifyUserCreatedBoard(Board board)
+		{
 			if (board.Creator.Id != _currentUserService.UserId) throw new UnauthorizedException();
+		}
 
-			// Create image
-			var imageToAdd = Mapper.Map<Image>(request.ImageModel);
+		private Image MapModelToImage(PostImageModel imageModel)
+		{
+			return Mapper.Map<Image>(imageModel);
+		}
+
+		private async Task AddImage(Image imageToAdd, Board board)
+		{
 			imageToAdd.BoardId = board.Id;
 
 			await UnitOfWork.Images.AddEntityAsync(imageToAdd);
 
 			// Add image to board
 			board.BoardImage = imageToAdd;
+		}
 
-			// Save
-			UnitOfWork.SaveChanges();
+		private GetBoardModel MapBoardToModel(Board board)
+		{
 
 			// Return updated board
 			return Mapper.Map<GetBoardModel>(board);

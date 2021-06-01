@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
@@ -30,24 +31,57 @@ namespace HackerNews.Application.Boards.Commands.AddSubscriber
 
 		public override async Task<GetBoardModel> Handle(AddSubscriberCommand request, CancellationToken cancellationToken)
 		{
+			User currentUser = await GetCurrentUser();
+
+			Board board = await GetBoardById(request.BoardId);
+
+			if (UserIsSubscribedToBoard(currentUser, board))
+				RemoveExistingSubscriberFromBoard(currentUser, board);
+			else
+				AddUserToBoardSubscribers(currentUser, board);
+
+			UnitOfWork.SaveChanges();
+
+			return MapBoardToModel(board);
+		}
+
+		private async Task<User> GetCurrentUser()
+		{
 			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
-			var user = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			return currentUser;
+		}
 
-			if (!await UnitOfWork.Boards.EntityExistsAsync(request.BoardId)) throw new NotFoundException();
-			var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
+		private async Task<Board> GetBoardById(int boardId)
+		{
+			if (!await UnitOfWork.Boards.EntityExistsAsync(boardId)) throw new NotFoundException();
+			var board = await UnitOfWork.Boards.GetEntityAsync(boardId);
+			return board;
+		}
 
-			// Remove if already subbed.
-			var existingSubscriber = board.Subscribers.FirstOrDefault(s => s.UserId == user.Id);
-			if (existingSubscriber != null)
+		private bool UserIsSubscribedToBoard(User user, Board board)
+		{
+			return board.Subscribers.Any(s => s.UserId == user.Id);
+		}
+
+		private static void RemoveExistingSubscriberFromBoard(User currentUser, Board board)
+		{
+			var existingSubscriber = new BoardUserSubscriber()
 			{
-				board.Subscribers.Remove(existingSubscriber);
-				user.BoardsSubscribed.Remove(existingSubscriber);
+				Board = board,
+				User = currentUser
+			};
+			RemoveBoardUserSubscriberRelationship(currentUser, board, existingSubscriber);
+		}
 
-				UnitOfWork.SaveChanges();
-				return Mapper.Map<GetBoardModel>(board);
-			}
+		private static void RemoveBoardUserSubscriberRelationship(User user, Board board, BoardUserSubscriber existingSubscriber)
+		{
+			board.Subscribers.Remove(existingSubscriber);
+			user.BoardsSubscribed.Remove(existingSubscriber);
+		}
 
-			// Add sub.
+		private static void AddUserToBoardSubscribers(User user, Board board)
+		{
 			var boardUserSubscriber = new BoardUserSubscriber
 			{
 				Board = board,
@@ -56,9 +90,10 @@ namespace HackerNews.Application.Boards.Commands.AddSubscriber
 
 			board.Subscribers.Add(boardUserSubscriber);
 			user.BoardsSubscribed.Add(boardUserSubscriber);
+		}
 
-			UnitOfWork.SaveChanges();
-
+		private GetBoardModel MapBoardToModel(Board board)
+		{
 			return Mapper.Map<GetBoardModel>(board);
 		}
 	}

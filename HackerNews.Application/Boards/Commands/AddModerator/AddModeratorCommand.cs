@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Entities.JoinEntities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
@@ -32,30 +33,77 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 
 		public override async Task<GetBoardModel> Handle(AddModeratorCommand request, CancellationToken cancellationToken)
 		{
+			User currentUser = await GetCurrentUser();
+
+			Board board = await GetBoardById(request.BoardId);
+			User boardModerator = await GetUserById(request.ModeratorId);
+
+			// TODO; maybe this should be the responsibility of a dedicated class
+			VerifyUserCanAddModerator(currentUser, board);
+
+			if (UserIsModeratingBoard(boardModerator, board))
+				RemoveExistingModeratorFromBoard(boardModerator, board);
+			else
+				AddUserToBoardModerators(boardModerator, board);
+
+			UnitOfWork.SaveChanges();
+
+			return MapBoardToModel(board);
+		}
+
+		private async Task<User> GetCurrentUser()
+		{
 			if (!await UnitOfWork.Users.EntityExistsAsync(_currentUserService.UserId)) throw new UnauthorizedException();
 			var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			return currentUser;
+		}
 
-			var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
-			var newModerator = await UnitOfWork.Users.GetEntityAsync(request.ModeratorId);
+		private async Task<Board> GetBoardById(int boardId)
+		{
+			var board = await UnitOfWork.Boards.GetEntityAsync(boardId);
+			if (board == null) throw new NotFoundException();
+			return board;
+		}
 
-			if (board == null || newModerator == null) throw new NotFoundException();
+		private async Task<User> GetUserById(int moderatorId)
+		{
+			var user = await UnitOfWork.Users.GetEntityAsync(moderatorId);
+			if (user == null) throw new NotFoundException();
+			return user;
+		}
 
-			// If the current user isn't a moderator of the sub or creator...
-			if (board.Creator.Id != currentUser.Id && board.Moderators.FirstOrDefault(boardUserModerator => boardUserModerator.UserId == currentUser.Id) == null)
+		private void VerifyUserCanAddModerator(User currentUser, Board board)
+		{
+			if (UserOwnsBoard(currentUser, board) &&
+							!UserIsModeratingBoard(currentUser, board))
 				throw new UnauthorizedException();
+		}
 
-			// Remove the moderator if already moderating the board.
-			var existingModerator = board.Moderators.FirstOrDefault(bu => bu.UserId == request.ModeratorId);
-			if (existingModerator != null)
-			{
-				board.Moderators.Remove(existingModerator);
-				newModerator.BoardsModerating.Remove(existingModerator);
+		private static bool UserOwnsBoard(User currentUser, Board board)
+		{
+			return board.Creator.Id != currentUser.Id;
+		}
 
-				UnitOfWork.SaveChanges();
-				return Mapper.Map<GetBoardModel>(board);
-			}
+		private static bool UserIsModeratingBoard(User user, Board board)
+		{
+			return board.Moderators.Any(bu => bu.UserId == user.Id);
+		}
 
-			// Add the moderator.
+		private void RemoveExistingModeratorFromBoard(User existingModerator, Board board)
+		{
+			BoardUserModerator boardUserMod = board.Moderators.First(bu => bu.UserId == existingModerator.Id);
+
+			RemoveBoardUserModeratorRelationship(board, existingModerator, boardUserMod);
+		}
+
+		private void RemoveBoardUserModeratorRelationship(Board board, User newModerator, BoardUserModerator existingModerator)
+		{
+			board.Moderators.Remove(existingModerator);
+			newModerator.BoardsModerating.Remove(existingModerator);
+		}
+
+		private static void AddUserToBoardModerators(User newModerator, Board board)
+		{
 			var boardUserModerator = new BoardUserModerator
 			{
 				Board = board,
@@ -64,9 +112,10 @@ namespace HackerNews.Application.Boards.Commands.AddModerator
 
 			board.Moderators.Add(boardUserModerator);
 			newModerator.BoardsModerating.Add(boardUserModerator);
+		}
 
-			UnitOfWork.SaveChanges();
-
+		private GetBoardModel MapBoardToModel(Board board)
+		{
 			return Mapper.Map<GetBoardModel>(board);
 		}
 	}

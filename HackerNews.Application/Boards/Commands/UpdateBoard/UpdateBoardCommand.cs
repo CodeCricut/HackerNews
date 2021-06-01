@@ -2,6 +2,7 @@
 using HackerNews.Application.Common.Interfaces;
 using HackerNews.Application.Common.Requests;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.Domain.Entities;
 using HackerNews.Domain.Exceptions;
 using HackerNews.Domain.Interfaces;
 using MediatR;
@@ -32,28 +33,61 @@ namespace HackerNews.Application.Boards.Commands.UpdateBoard
 
 		public override async Task<GetBoardModel> Handle(UpdateBoardCommand request, CancellationToken cancellationToken)
 		{
-			var userId = _currentUserService.UserId;
-			var currentUser = await UnitOfWork.Boards.GetEntityAsync(userId);
-			if (currentUser == null) throw new UnauthorizedAccessException();
+			User currentUser = await GetCurrentUser();
 
-			// Verify entity trying to update exists.
-			if (!await UnitOfWork.Boards.EntityExistsAsync(request.BoardId)) throw new NotFoundException();
+			Board board = await GetBoardById(request.BoardId);
 
-			// Verify user created board or has moderation privileges.
-			var board = await UnitOfWork.Boards.GetEntityAsync(request.BoardId);
-			if (board.Creator.Id != currentUser.Id &&
-				board.Moderators.FirstOrDefault(m => m.UserId == currentUser.Id) == null)
+			if (!UserCanUpdateBoard(currentUser, board))
 				throw new UnauthorizedException();
 
-			// Update properties
-			var updateModel = request.PostBoardModel;
-			board.Description = updateModel.Description;
-
-			// Update and save.
-			await UnitOfWork.Boards.UpdateEntityAsync(request.BoardId, board);
-			UnitOfWork.SaveChanges();
+			await UpdateBoardWithUpdateModel(board, request.PostBoardModel);
 
 			return Mapper.Map<GetBoardModel>(board);
+		}
+
+		private async Task<User> GetCurrentUser()
+		{
+			var currentUser = await UnitOfWork.Users.GetEntityAsync(_currentUserService.UserId);
+			if (currentUser == null) throw new UnauthorizedAccessException();
+			return currentUser;
+		}
+
+		private async Task<Board> GetBoardById(int boardId)
+		{
+			if (!await UnitOfWork.Boards.EntityExistsAsync(boardId)) throw new NotFoundException();
+			var board = await UnitOfWork.Boards.GetEntityAsync(boardId);
+			return board;
+		}
+
+		private static bool UserCanUpdateBoard(User currentUser, Board board)
+		{
+			return board.Creator.Id == currentUser.Id ||
+							board.Moderators.Any(m => m.UserId == currentUser.Id);
+		}
+
+		private async Task UpdateBoardWithUpdateModel(Board board, PostBoardModel updateModel)
+		{
+			Board sourceBoard = MapPostModelToBoard(updateModel);
+
+			ApplyUpdatedSourceProperties(board, sourceBoard);
+
+			await UpdateBoardAndSave(board);
+		}
+
+		private Board MapPostModelToBoard(PostBoardModel postModel)
+		{
+			return Mapper.Map<Board>(postModel);
+		}
+
+		private static void ApplyUpdatedSourceProperties(Board board, Board sourceBoard)
+		{
+			board.Description = sourceBoard.Description;
+		}
+
+		private async Task UpdateBoardAndSave(Board board)
+		{
+			await UnitOfWork.Boards.UpdateEntityAsync(board.Id, board);
+			UnitOfWork.SaveChanges();
 		}
 	}
 }
