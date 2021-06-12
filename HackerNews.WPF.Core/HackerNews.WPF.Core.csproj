@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Elwood.ConsoleFramework" Version="0.0.3" />
+    <PackageReference Include="Elwood.Binding" Version="0.0.3" />
+    <PackageReference Include="Elwood.Xaml" Version="0.0.3" />
+  </ItemGroup>
+
 </Project>

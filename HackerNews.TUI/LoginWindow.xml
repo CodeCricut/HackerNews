@@ -1,0 +1,36 @@
+﻿<Window Title="LoginWindow"
+        xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
+        xmlns:x="http://consoleframework.org/xaml.xsd"
+        MinWidth="10" 
+        >
+  <Window.Resources>
+    <int x:Key="1" x:Id="fieldMinWidth">30</int>
+  </Window.Resources>
+  
+  <Grid Margin="5,0" VerticalAlignment="Center">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="2"/>
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <!--Header-->
+    <Panel Orientation="Vertical" VerticalAlignment="Top">
+      <TextBlock>Hacker News</TextBlock>
+      <TextBlock>Administrative Panel V1</TextBlock>
+    </Panel>
+
+    <Panel Orientation="Vertical" VerticalAlignment="Top" Margin="0,2">
+      <TextBlock >Username</TextBlock>
+      <TextBox Text="{Binding Username, Mode=TwoWay}" MinWidth="{Ref fieldMinWidth}"/>
+      <TextBlock >Password</TextBlock>
+      <TextBox Text="{Binding Password, Mode=TwoWay}" MinWidth="{Ref fieldMinWidth}"/>
+    </Panel>
+
+    <Button Command="{Binding LoginCommand}">Login</Button>
+
+  </Grid>
+</Window>

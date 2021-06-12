@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace HackerNews.WPF.Core.Commands
 {
-	public class DelegateCommand : ICommand
+	public class DelegateCommand : ICommand, ConsoleFramework.Events.ICommand
 	{
 		private readonly Action<object> _execute;
 		private readonly Func<bool> _canExecute;

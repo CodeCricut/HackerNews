@@ -6,8 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="main.xml" />
-    <EmbeddedResource Include="main.xml">
+
+    <None Remove="LoginWindow.xml" />
+    <EmbeddedResource Include="LoginWindow.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

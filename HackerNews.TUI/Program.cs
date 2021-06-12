@@ -8,11 +8,12 @@ namespace HackerNews.TUI
 	{
 		public static void Main(string[] args)
 		{
-			var vm = new MainViewModel();
-
 			var windowsHost = new WindowsHost();
-			Window mainWindow = (Window)ConsoleApplication.LoadFromXaml("HackerNews.TUI.main.xml", vm);
-			windowsHost.Show(mainWindow);
+			
+			var vm = new LoginWindowViewModel();
+			var loginWindow = (Window)ConsoleApplication.LoadFromXaml("HackerNews.TUI.LoginWindow.xml", vm);
+			
+			windowsHost.Show(loginWindow);
 			ConsoleApplication.Instance.Run(windowsHost);
 		}
 	}
