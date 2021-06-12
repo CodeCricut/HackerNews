@@ -6,7 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-
+    <None Remove="windows-host.xml" />
+    <EmbeddedResource Include="windows-host.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Remove="LoginWindow.xml" />
     <EmbeddedResource Include="LoginWindow.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

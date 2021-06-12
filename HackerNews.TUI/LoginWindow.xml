@@ -1,5 +1,4 @@
 ﻿<Window Title="LoginWindow"
-        xmlns:viewmodels="clr-namespace:Hackernews.WPF.ViewModels"
         xmlns:x="http://consoleframework.org/xaml.xsd"
         MinWidth="10" 
         >
