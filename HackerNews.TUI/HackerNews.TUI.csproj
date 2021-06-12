@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="main.xml" />
+    <EmbeddedResource Include="main.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elwood.ConsoleFramework" Version="0.0.3" />
+    <PackageReference Include="Elwood.Binding" Version="0.0.3" />
+    <PackageReference Include="Elwood.Xaml" Version="0.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HackerNews.WPF.Core\HackerNews.WPF.Core.csproj" />
+  </ItemGroup>
+
+</Project>

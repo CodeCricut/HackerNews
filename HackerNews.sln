@@ -27,17 +27,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.ApiConsumer", "H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.CLI", "HackerNews.CLI\HackerNews.CLI.csproj", "{4A16DC86-59F0-4DEF-A3C8-0CBDE7CD6E50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.Domain", "HackerNews.CLI.Domain\HackerNews.CLI.Domain.csproj", "{6B12E7DE-CC6B-4C5A-A4F0-9702D178EF0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.CLI.Domain", "HackerNews.CLI.Domain\HackerNews.CLI.Domain.csproj", "{6B12E7DE-CC6B-4C5A-A4F0-9702D178EF0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.Output", "HackerNews.CLI.Output\HackerNews.CLI.Output.csproj", "{E714B387-3D31-40C3-A267-8E91F0E9A25E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.CLI.Output", "HackerNews.CLI.Output\HackerNews.CLI.Output.csproj", "{E714B387-3D31-40C3-A267-8E91F0E9A25E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.DataAccess", "HackerNews.CLI.DataAccess\HackerNews.CLI.DataAccess.csproj", "{DE830F21-51E3-43F6-82D4-0573933A3043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.CLI.DataAccess", "HackerNews.CLI.DataAccess\HackerNews.CLI.DataAccess.csproj", "{DE830F21-51E3-43F6-82D4-0573933A3043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.CLI.Application", "HackerNews.CLI.Application\HackerNews.CLI.Application.csproj", "{15F62C5C-B570-4303-A550-A40110711A5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.CLI.Application", "HackerNews.CLI.Application\HackerNews.CLI.Application.csproj", "{15F62C5C-B570-4303-A550-A40110711A5D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{641ACD2E-E68C-419E-9D3D-083D5E3864E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{F2621324-7A44-48DF-9AE1-5F354237FB72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.TUI", "HackerNews.TUI\HackerNews.TUI.csproj", "{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -241,6 +243,18 @@ Global
 		{15F62C5C-B570-4303-A550-A40110711A5D}.Release|x64.Build.0 = Release|Any CPU
 		{15F62C5C-B570-4303-A550-A40110711A5D}.Release|x86.ActiveCfg = Release|Any CPU
 		{15F62C5C-B570-4303-A550-A40110711A5D}.Release|x86.Build.0 = Release|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Debug|x64.Build.0 = Debug|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Debug|x86.Build.0 = Debug|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Release|x64.ActiveCfg = Release|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Release|x64.Build.0 = Release|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{ACCD634A-5DC5-4A21-AA7B-E468C4392E2C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

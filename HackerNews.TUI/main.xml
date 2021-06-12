@@ -1,0 +1,6 @@
+﻿<Window MinHeight="10" MinWidth="25" xmlns:x="http://consoleframework.org/xaml.xsd">
+  <Panel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <TextBlock Text="{Binding Path=MyText, Mode=OneWay}"/>
+    <Button Command="{Binding ChangeTextCommand, Mode=OneWay}">Change text!</Button>
+  </Panel>
+</Window>
