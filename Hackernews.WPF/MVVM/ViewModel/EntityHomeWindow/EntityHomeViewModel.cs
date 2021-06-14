@@ -2,6 +2,7 @@
 using Hackernews.WPF.MVVM.ViewModel.Boards;
 using Hackernews.WPF.Services;
 using HackerNews.WPF.Core.Commands;
+using HackerNews.WPF.Core.Services;
 using HackerNews.WPF.Core.ViewModel;
 using System.Windows.Input;
 

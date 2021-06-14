@@ -2,6 +2,7 @@
 using Hackernews.WPF.Services;
 using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.WPF.Core.Services;
 using HackerNews.WPF.MessageBus.Core;
 
 namespace Hackernews.WPF.Factories.ViewModels
