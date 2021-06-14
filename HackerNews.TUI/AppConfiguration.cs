@@ -15,7 +15,7 @@ namespace HackerNews.TUI
 			var config = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile(AppDomain.CurrentDomain.BaseDirectory + "appsettings.json",
-					optional: true, reloadOnChange: true)
+					optional: false, reloadOnChange: true)
 				.Build();
 
 			return config;
