@@ -12,12 +12,14 @@ namespace HackerNews.TUI.Services
 	class ViewManager : IViewManager
 	{
 		private readonly ILogger<ViewManager> _logger;
+		private readonly WindowsHost _windowsHost;
 
 		private readonly Dictionary<BaseViewModel, Window> _activeViews = new();
 
-		public ViewManager(ILogger<ViewManager> logger)
+		public ViewManager(ILogger<ViewManager> logger, WindowsHost windowsHost)
 		{
 			_logger = logger;
+			_windowsHost = windowsHost;
 		}
 
 		public bool Show<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
@@ -34,7 +36,7 @@ namespace HackerNews.TUI.Services
 
 				var view = (Window)ConsoleApplication.LoadFromXaml(viewFileLoc, viewModel);
 
-				GetWindowsHost().Show(view);
+				_windowsHost.Show(view);
 
 				_activeViews.Add(viewModel, view);
 
@@ -65,14 +67,9 @@ namespace HackerNews.TUI.Services
 
 			var view = _activeViews.GetValueOrDefault(viewModel);
 
-			GetWindowsHost().CloseWindow(view);
+			_windowsHost.CloseWindow(view);
 
 			return _activeViews.Remove(viewModel);
-		}
-
-		private WindowsHost GetWindowsHost()
-		{
-			return App.Instance.WindowsHost;
 		}
 	}
 }

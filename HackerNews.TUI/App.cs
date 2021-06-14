@@ -34,8 +34,6 @@ namespace HackerNews.TUI
 
 		public IServiceProvider Services { get; init; }
 
-		public WindowsHost WindowsHost { get; init; } // TODO: register as singleton
-
 		public App()
 		{
 			var serviceCollection = new ServiceCollection();
@@ -44,19 +42,17 @@ namespace HackerNews.TUI
 			serviceCollection.AddTUI(config);
 
 			Services = serviceCollection.BuildServiceProvider();
-
-			WindowsHost = (WindowsHost)ConsoleApplication.LoadFromXaml("HackerNews.TUI.windows-host.xml", null); // TODO: load with config file and/or reflection.
 		}
-
 
 		public void Run()
 		{
 			var viewManager = Services.GetRequiredService<IViewManager>();
+			var windowsHost = Services.GetRequiredService<WindowsHost>();
 
 			var vm = new LoginWindowViewModel();
 			viewManager.Show(vm);
 
-			ConsoleApplication.Instance.Run(WindowsHost);
+			ConsoleApplication.Instance.Run(windowsHost);
 		}
 
 	}

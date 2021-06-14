@@ -1,4 +1,6 @@
-﻿using HackerNews.TUI.Services;
+﻿using ConsoleFramework;
+using ConsoleFramework.Controls;
+using HackerNews.TUI.Services;
 using HackerNews.WPF.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +14,17 @@ namespace HackerNews.TUI
 			services.AddLogging();
 
 			services.AddSingleton<IViewManager, ViewManager>();
+			WindowsHost windowsHost = GetWindowsHost();
+
+			services.AddSingleton(windowsHost);
 
 			return services;
+		}
+
+		private static WindowsHost GetWindowsHost()
+		{
+			return (WindowsHost)ConsoleApplication.LoadFromXaml("HackerNews.TUI.windows-host.xml", null);
+			// TODO: load with config file and/or reflection.
 		}
 	}
 }
