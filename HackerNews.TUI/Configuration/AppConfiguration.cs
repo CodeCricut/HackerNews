@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HackerNews.TUI
+namespace HackerNews.TUI.Configuration
 {
 	public static class AppConfiguration
 	{

@@ -1,14 +1,15 @@
 ﻿using ConsoleFramework;
 using ConsoleFramework.Controls;
-using HackerNews.TUI.Configuration;
 using HackerNews.TUI.Services;
 using HackerNews.WPF.Core.Services;
+using HackerNews.WPF.Core.ViewModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Scrutor;
 using System;
 
-namespace HackerNews.TUI
+namespace HackerNews.TUI.Configuration
 {
 	public static class DependencyInjection
 	{
@@ -18,10 +19,23 @@ namespace HackerNews.TUI
 			services.AddLogging();
 
 			services.AddSingleton<IViewManager, ViewManager>();
-			
+
+			// Register all vms
+			services.AddViewModels();
+
 			services.AddWindowsHost();
 
 			return services;
+		}
+
+		private static void AddViewModels(this IServiceCollection services)
+		{
+			services.Scan(scan =>
+							scan.FromCallingAssembly()
+								.AddClasses(c => c.AssignableTo<BaseViewModel>()) // 1. Find the concrete vms
+								.UsingRegistrationStrategy(RegistrationStrategy.Skip) // 2. Define how to handle duplicates
+								  .AsSelf() // 2. Specify which services they are registered as
+								  .WithTransientLifetime());  // 3. Set the lifetime for the services
 		}
 
 		private static void AddWindowsHost(this IServiceCollection services)

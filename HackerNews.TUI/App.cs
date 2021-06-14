@@ -1,5 +1,6 @@
 ﻿using ConsoleFramework;
 using ConsoleFramework.Controls;
+using HackerNews.TUI.Configuration;
 using HackerNews.WPF.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -48,9 +49,9 @@ namespace HackerNews.TUI
 		{
 			var viewManager = Services.GetRequiredService<IViewManager>();
 			var windowsHost = Services.GetRequiredService<WindowsHost>();
-
-			var vm = new LoginWindowViewModel();
-			viewManager.Show(vm);
+			var loginVm = Services.GetRequiredService<LoginWindowViewModel>();
+			
+			viewManager.Show(loginVm);
 
 			ConsoleApplication.Instance.Run(windowsHost);
 		}
