@@ -1,5 +1,6 @@
 ﻿using ConsoleFramework;
 using ConsoleFramework.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace HackerNews.TUI
@@ -8,6 +9,11 @@ namespace HackerNews.TUI
 	{
 		public static void Main(string[] args)
 		{
+			var services = new ServiceCollection();
+			var config = AppConfiguration.GetServiceConfiguration();
+
+			services.AddTUI(config);
+
 			var windowsHost = (WindowsHost)ConsoleApplication.LoadFromXaml("HackerNews.TUI.windows-host.xml", null);
 
 			var vm = new LoginWindowViewModel();
