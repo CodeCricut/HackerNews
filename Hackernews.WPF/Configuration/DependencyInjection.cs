@@ -36,7 +36,6 @@ namespace Hackernews.WPF.Configuration
 			services.AddSingleton<PrivateUserViewModel>();
 
 
-			services.AddSingleton<IEventAggregator, EventAggregator>();
 
 			services.AddSingleton<IViewManager, ViewManager>();
 
