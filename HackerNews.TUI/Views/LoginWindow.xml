@@ -23,6 +23,8 @@
     </Panel>
 
     <Panel Orientation="Vertical" VerticalAlignment="Top" Margin="0,2">
+      <TextBlock Color="Red" Text="{Binding WarningMessage}"/>
+      <TextBlock Color="Blue" Text="{Binding LoadingMessage}"/>
       <TextBlock >Username</TextBlock>
       <TextBox Text="{Binding Username, Mode=TwoWay}" MinWidth="{Ref fieldMinWidth}"/>
       <TextBlock >Password</TextBlock>

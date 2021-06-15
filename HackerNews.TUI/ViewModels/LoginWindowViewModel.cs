@@ -10,6 +10,21 @@ namespace HackerNews.TUI.ViewModels
 {
 	public class LoginWindowViewModel : BaseViewModel
 	{
+		private string _loadingMessage;
+		public string LoadingMessage
+		{
+			get { return _loadingMessage; }
+			set { Set(ref _loadingMessage, value); }
+		}
+
+		private string _warningMessage;
+		public string WarningMessage
+		{
+			get { return _warningMessage; }
+			set { Set(ref _warningMessage, value); }
+		}
+
+
 		private string _username;
 		public string Username
 		{
@@ -42,12 +57,17 @@ namespace HackerNews.TUI.ViewModels
 		{
 			_loginCommand = new AsyncDelegateCommand(LoginAsync, CanLogin);
 			_signInManager = signInManager;
+
+			NotLoading();
 		}
 
 		public bool CanLogin(object _ = null) => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password));
 
 		private async Task LoginAsync(object _ = null)
 		{
+			Loading();
+			NoWarning();
+
 			try
 			{
 				var loginModel = new LoginModel() { UserName = Username, Password = Password };
@@ -55,7 +75,32 @@ namespace HackerNews.TUI.ViewModels
 			}
 			catch (Exception)
 			{
+				Warning();
 			}
+			finally
+			{
+				NotLoading();
+			}
+		}
+
+		private void NotLoading()
+		{
+			LoadingMessage = string.Empty;
+		}
+
+		private void Loading()
+		{
+			LoadingMessage = "Loading...";
+		}
+
+		private void Warning()
+		{
+			WarningMessage = "Invalid credentials.";
+		}
+
+		private void NoWarning()
+		{
+			WarningMessage = string.Empty;
 		}
 	}
 }
