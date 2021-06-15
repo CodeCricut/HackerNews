@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HackerNews.WPF.MessageBus.Core
+namespace HackerNews.MessageBus.Core
 {
 	/// <summary>
 	/// Functionality interface for an Event Aggregator.

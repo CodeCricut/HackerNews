@@ -1,8 +1,8 @@
 ﻿using Hackernews.WPF.MVVM.ViewModel;
 using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
+using HackerNews.MessageBus.Core;
 using HackerNews.WPF.Core.Services;
-using HackerNews.WPF.MessageBus.Core;
 
 namespace Hackernews.WPF.Factories.ViewModels
 {

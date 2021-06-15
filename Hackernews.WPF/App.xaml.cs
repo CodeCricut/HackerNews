@@ -2,9 +2,9 @@
 using Hackernews.WPF.Helpers;
 using Hackernews.WPF.Services;
 using HackerNews.ApiConsumer;
+using HackerNews.MessageBus;
+using HackerNews.MessageBus.Core;
 using HackerNews.WPF.Core;
-using HackerNews.WPF.MessageBus;
-using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.Application;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;

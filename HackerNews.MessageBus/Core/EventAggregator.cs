@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace HackerNews.WPF.MessageBus.Core
+namespace HackerNews.MessageBus.Core
 {
 	// <summary>
 	/// Central event dispatcher used to send application messages to registered handlers
@@ -33,7 +33,7 @@ namespace HackerNews.WPF.MessageBus.Core
 			if (mSynchronizationContext != null)
 			{
 				mSynchronizationContext.Send(
-					m => Dispatch<T>((T)m),
+					m => Dispatch((T)m),
 					message);
 			}
 			else
@@ -57,7 +57,7 @@ namespace HackerNews.WPF.MessageBus.Core
 			if (mSynchronizationContext != null)
 			{
 				mSynchronizationContext.Post(
-					m => Dispatch<T>((T)m),
+					m => Dispatch((T)m),
 					message);
 			}
 			else

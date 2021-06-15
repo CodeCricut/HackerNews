@@ -2,10 +2,10 @@
 using HackerNews.ApiConsumer.EntityClients;
 using HackerNews.Domain.Common.Models.Articles;
 using HackerNews.Domain.Common.Models.Boards;
+using HackerNews.MessageBus.Core;
 using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.Services;
 using HackerNews.WPF.Core.ViewModel;
-using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.EntityCreationWindow;
 using System;
 using System.Collections.ObjectModel;

@@ -1,6 +1,6 @@
-﻿using HackerNews.WPF.Core.Commands;
+﻿using HackerNews.MessageBus.Core;
+using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
-using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.ViewModel.MainWindow;
 using System.Windows.Input;
 

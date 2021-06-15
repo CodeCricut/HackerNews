@@ -33,7 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HackerNews.ApiConsumer\HackerNews.ApiConsumer.csproj" />
     <ProjectReference Include="..\HackerNews.Domain\HackerNews.Domain.csproj" />
-    <ProjectReference Include="..\HackerNews.WPF.MessageBus\HackerNews.WPF.MessageBus.csproj" />
+    <ProjectReference Include="..\HackerNews.MessageBus\HackerNews.MessageBus.csproj" />
   </ItemGroup>
 
   <ItemGroup>

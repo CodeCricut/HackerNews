@@ -1,8 +1,8 @@
-﻿using HackerNews.WPF.MessageBus.Core;
+﻿using HackerNews.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HackerNews.WPF.MessageBus
+namespace HackerNews.MessageBus
 {
 	public static class DependencyInjection
 	{

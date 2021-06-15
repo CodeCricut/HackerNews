@@ -1,7 +1,7 @@
 ﻿using Hackernews.WPF.Factories.ViewModels;
 using HackerNews.ApiConsumer.Core;
+using HackerNews.MessageBus.Core;
 using HackerNews.WPF.Core;
-using HackerNews.WPF.MessageBus.Core;
 using HackerNews.WPF.MessageBus.Messages.Application;
 using System.Threading.Tasks;
 

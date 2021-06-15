@@ -4,7 +4,6 @@ using Hackernews.WPF.Services;
 using Hackernews.WPF.ViewModels;
 using HackerNews.WPF.Core.Services;
 using HackerNews.WPF.Core.ViewModel;
-using HackerNews.WPF.MessageBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
