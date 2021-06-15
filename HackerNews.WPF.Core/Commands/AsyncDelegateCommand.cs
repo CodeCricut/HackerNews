@@ -4,12 +4,12 @@ using System.Windows.Input;
 
 namespace HackerNews.WPF.Core.Commands
 {
-	public class AsyncDelegateCommand : ICommand
+	public class AsyncDelegateCommand : ICommand, ConsoleFramework.Events.ICommand
 	{
 		private readonly Func<object, Task> _execute;
 		private readonly Func<object, bool> _canExecute;
 
-		public AsyncDelegateCommand(Func<object, Task> execute, Func<object, bool> canExecute = null)
+		public AsyncDelegateCommand(Func<object, Task> execute, Func<object, bool> canExecute = null) 
 		{
 			_execute = execute;
 			_canExecute = canExecute;

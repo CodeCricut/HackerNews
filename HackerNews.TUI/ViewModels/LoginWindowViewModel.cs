@@ -1,4 +1,7 @@
-﻿using HackerNews.WPF.Core.Commands;
+﻿using ConsoleFramework.Events;
+using HackerNews.ApiConsumer.Core;
+using HackerNews.Domain.Common.Models.Users;
+using HackerNews.WPF.Core.Commands;
 using HackerNews.WPF.Core.ViewModel;
 using System;
 using System.Threading.Tasks;
@@ -7,13 +10,6 @@ namespace HackerNews.TUI.ViewModels
 {
 	public class LoginWindowViewModel : BaseViewModel
 	{
-		private string _textboxMinWidth;
-		public string TextBoxMinWidth
-		{
-			get { return _textboxMinWidth; }
-			set { Set(ref _textboxMinWidth, value); }
-		}
-
 		private string _username;
 		public string Username
 		{
@@ -21,31 +17,45 @@ namespace HackerNews.TUI.ViewModels
 			set
 			{
 				Set(ref _username, value);
-				//LoginCommand.CanExecuteChanged?.Invoke(this, EventArgs.Empty); // TODO: determine how to use WPF ICommand
+				_loginCommand.RaiseCanExecuteChanged();
 			}
 		}
 
 		private string _password;
+
 		public string Password
 		{
 			get { return _password; }
-			set { Set(ref _password, value); }
+			set
+			{
+				Set(ref _password, value);
+				_loginCommand.RaiseCanExecuteChanged();
+			}
 		}
 
-		public ConsoleFramework.Events.ICommand LoginCommand { get; init; }
+		private AsyncDelegateCommand _loginCommand;
+		public ICommand LoginCommand { get => _loginCommand; }
 
-		public LoginWindowViewModel()
+		private readonly ISignInManager _signInManager;
+
+		public LoginWindowViewModel(ISignInManager signInManager)
 		{
-			TextBoxMinWidth = "40";
-			LoginCommand = new DelegateCommand(Login, CanLogin);
+			_loginCommand = new AsyncDelegateCommand(LoginAsync, CanLogin);
+			_signInManager = signInManager;
 		}
 
-		public bool CanLogin() => true;
-		//!(string.IsNullOrEmpty(Username) || Password?.Length <= 0);
+		public bool CanLogin(object _ = null) => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password));
 
-		private void Login(object _ = null)
+		private async Task LoginAsync(object _ = null)
 		{
+			try
+			{
+				var loginModel = new LoginModel() { UserName = Username, Password = Password };
+				await _signInManager.SignInAsync(loginModel);
+			}
+			catch (Exception)
+			{
+			}
 		}
-
 	}
 }

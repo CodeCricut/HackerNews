@@ -1,14 +1,12 @@
 ﻿using ConsoleFramework;
 using ConsoleFramework.Controls;
+using HackerNews.ApiConsumer;
+using HackerNews.MessageBus;
 using HackerNews.TUI.Configuration;
 using HackerNews.TUI.ViewModels;
 using HackerNews.WPF.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HackerNews.TUI
 {
@@ -38,12 +36,14 @@ namespace HackerNews.TUI
 
 		public App()
 		{
-			var serviceCollection = new ServiceCollection();
+			var services = new ServiceCollection();
 			var config = AppConfiguration.GetServiceConfiguration();
 
-			serviceCollection.AddTUI(config);
+			services.AddTUI(config);
+			services.AddMessageBus(config);
+			services.AddApiConsumer(config);
 
-			Services = serviceCollection.BuildServiceProvider();
+			Services = services.BuildServiceProvider();
 		}
 
 		public void Run()

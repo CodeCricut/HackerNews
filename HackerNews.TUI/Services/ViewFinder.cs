@@ -23,7 +23,14 @@ namespace HackerNews.TUI.Services
 			string viewName = GetViewName(viewModel);
 			string viewFileLoc = $"{viewModel.GetType().Assembly.GetName().Name}.Views.{viewName}.xml"; // TODO: extract to IViewLocator
 
-			return (Window)ConsoleApplication.LoadFromXaml(viewFileLoc, viewModel);
+			try
+			{
+				return (Window)ConsoleApplication.LoadFromXaml(viewFileLoc, viewModel);
+			}
+			catch (Exception e)
+			{
+				throw new ViewNotLoadedException($"Could not load view at ${viewFileLoc}", e);
+			}
 		}
 
 		private static string GetViewName<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel

@@ -29,7 +29,7 @@
       <TextBox Text="{Binding Password, Mode=TwoWay}" MinWidth="{Ref fieldMinWidth}"/>
     </Panel>
 
-    <Button Command="{Binding LoginCommand}">Login</Button>
+    <Button Command="{Binding LoginCommand, Mode=OneWay}">Login</Button>
 
   </Grid>
 </Window>
