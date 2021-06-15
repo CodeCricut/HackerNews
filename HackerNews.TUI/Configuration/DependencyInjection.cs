@@ -53,7 +53,7 @@ namespace HackerNews.TUI.Configuration
 
 			string currentAssemblyName = windowsHostOpts.GetType().Assembly.GetName().Name;
 
-			return (WindowsHost)ConsoleApplication.LoadFromXaml($"{currentAssemblyName}.{windowsHostOpts.FileName}", null);
+			return (WindowsHost)ConsoleApplication.LoadFromXaml($"{currentAssemblyName}.Views.{windowsHostOpts.FileName}", null);
 		}
 
 		private static IServiceProvider GetUnfinishedServiceProvider(this IServiceCollection services)

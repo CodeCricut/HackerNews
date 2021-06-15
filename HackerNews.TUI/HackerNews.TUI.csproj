@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <None Remove="windows-host.xml" />
-    <EmbeddedResource Include="windows-host.xml">
+    <EmbeddedResource Include="Views\windows-host.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -24,7 +24,7 @@
   
   <ItemGroup>
     <None Remove="LoginWindow.xml" />
-    <EmbeddedResource Include="LoginWindow.xml">
+    <EmbeddedResource Include="Views\LoginWindow.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

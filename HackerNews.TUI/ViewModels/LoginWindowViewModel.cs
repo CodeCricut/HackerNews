@@ -3,7 +3,7 @@ using HackerNews.WPF.Core.ViewModel;
 using System;
 using System.Threading.Tasks;
 
-namespace HackerNews.TUI
+namespace HackerNews.TUI.ViewModels
 {
 	public class LoginWindowViewModel : BaseViewModel
 	{
@@ -18,7 +18,8 @@ namespace HackerNews.TUI
 		public string Username
 		{
 			get { return _username; }
-			set { 
+			set
+			{
 				Set(ref _username, value);
 				//LoginCommand.CanExecuteChanged?.Invoke(this, EventArgs.Empty); // TODO: determine how to use WPF ICommand
 			}
@@ -40,7 +41,7 @@ namespace HackerNews.TUI
 		}
 
 		public bool CanLogin() => true;
-			//!(string.IsNullOrEmpty(Username) || Password?.Length <= 0);
+		//!(string.IsNullOrEmpty(Username) || Password?.Length <= 0);
 
 		private void Login(object _ = null)
 		{

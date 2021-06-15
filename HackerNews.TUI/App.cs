@@ -1,6 +1,7 @@
 ﻿using ConsoleFramework;
 using ConsoleFramework.Controls;
 using HackerNews.TUI.Configuration;
+using HackerNews.TUI.ViewModels;
 using HackerNews.WPF.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;

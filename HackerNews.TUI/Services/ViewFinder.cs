@@ -21,7 +21,7 @@ namespace HackerNews.TUI.Services
 			if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 			
 			string viewName = GetViewName(viewModel);
-			string viewFileLoc = $"{viewModel.GetType().Assembly.GetName().Name}.{viewName}.xml"; // TODO: extract to IViewLocator
+			string viewFileLoc = $"{viewModel.GetType().Assembly.GetName().Name}.Views.{viewName}.xml"; // TODO: extract to IViewLocator
 
 			return (Window)ConsoleApplication.LoadFromXaml(viewFileLoc, viewModel);
 		}
