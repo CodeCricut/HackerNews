@@ -19,6 +19,7 @@ namespace HackerNews.TUI.Configuration
 			services.AddLogging();
 
 			services.AddSingleton<IViewManager, ViewManager>();
+			services.AddSingleton<IViewFinder, ViewFinder>();
 
 			// Register all vms
 			services.AddViewModels();

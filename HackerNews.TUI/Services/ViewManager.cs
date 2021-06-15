@@ -1,11 +1,9 @@
-﻿using ConsoleFramework;
-using ConsoleFramework.Controls;
+﻿using ConsoleFramework.Controls;
 using HackerNews.WPF.Core.Services;
 using HackerNews.WPF.Core.ViewModel;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace HackerNews.TUI.Services
 {
@@ -13,13 +11,15 @@ namespace HackerNews.TUI.Services
 	{
 		private readonly ILogger<ViewManager> _logger;
 		private readonly WindowsHost _windowsHost;
+		private readonly IViewFinder _viewFinder;
 
 		private readonly Dictionary<BaseViewModel, Window> _activeViews = new();
 
-		public ViewManager(ILogger<ViewManager> logger, WindowsHost windowsHost)
+		public ViewManager(ILogger<ViewManager> logger, WindowsHost windowsHost, IViewFinder viewFinder)
 		{
 			_logger = logger;
 			_windowsHost = windowsHost;
+			_viewFinder = viewFinder;
 		}
 
 		public bool Show<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
@@ -30,15 +30,11 @@ namespace HackerNews.TUI.Services
 
 			try
 			{
-				string viewName = GetViewName(viewModel);
+				var window = _viewFinder.FindWindowForViewModel(viewModel);
 
-				string viewFileLoc = $"{viewModel.GetType().GetTypeInfo().Assembly.GetName().Name}.{viewName}.xml"; // TODO: extract to IViewLocator
+				_windowsHost.Show(window);
 
-				var view = (Window)ConsoleApplication.LoadFromXaml(viewFileLoc, viewModel);
-
-				_windowsHost.Show(view);
-
-				_activeViews.Add(viewModel, view);
+				_activeViews.Add(viewModel, window);
 
 				return true;
 			}
@@ -48,18 +44,7 @@ namespace HackerNews.TUI.Services
 				return false;
 			}
 		}
-
-		private static string GetViewName<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
-		{
-			string viewName = viewModel.GetType().Name;
-			int index = viewName.ToLower().IndexOf("viewmodel");
-			if (index > 0)
-			{
-				viewName = viewName.Remove(index);
-			}
-
-			return viewName;
-		}
+		
 
 		public bool Close(BaseViewModel viewModel)
 		{
