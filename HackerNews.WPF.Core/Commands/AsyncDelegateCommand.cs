@@ -9,7 +9,7 @@ namespace HackerNews.WPF.Core.Commands
 		private readonly Func<object, Task> _execute;
 		private readonly Func<object, bool> _canExecute;
 
-		public AsyncDelegateCommand(Func<object, Task> execute, Func<object, bool> canExecute = null) 
+		public AsyncDelegateCommand(Func<object, Task> execute, Func<object, bool> canExecute = null)
 		{
 			_execute = execute;
 			_canExecute = canExecute;

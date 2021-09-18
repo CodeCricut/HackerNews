@@ -1,38 +1,31 @@
 # HackerNews
 
-## N-Tier Architecture
+HackerNews is a social media site similar to [Reddit](https://www.reddit.com) and [Y Combinator's HackerNews](https://news.ycombinator.com/).
+Users can enjoy all the functionality expected of social media these days such as creating and viewing other users'
+posts from a convenient website interface.
 
-This project utilizes N-Tier Architecture. It is split up into 6 main layers:
+### Sub Projects
 
-1. Domain
-2. Infrastructure
-3. Application
-4. Web
-5. Api
-6. MVC
+HackerNews is more than just a website; it is a full-stack app that really consists of many subprojects, including
 
-### Domain Layer
+-   a website rendered server-side with [ASP.NET MVC](https://dotnet.microsoft.com/apps/aspnet/mvc)
+-   a desktop app built with [Windows Presentation Foundation (WPF)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/overview/)
+-   a REST API backend built with [ASP.NET Web API](https://dotnet.microsoft.com/apps/aspnet/apis)
+-   a command-line interface (CLI) tool used to interact with the REST API from the console
 
-The domain layer contains all domain-entities that are common to all projects in the solution. It has both the entities that are relevant to the database, and models that rae relevant to the reading and writing of those entities.
+### Key Features
 
-It also contains repository interfaces that provide an abstract way of reading and writing to the database.
+-   secure register and login functionality
+-   persistence to a database
+-   ability for users to create, view, update, and delete boards, posts, and comments
+-   ability for users to upvote, downvote, and save other users' content
+-   clean and modular solution architecture
+-   unit and integration tests to ensure functional correctness
 
-### Infrastructure Layer
+## Website Video Demo
 
-The infrastructure layer is responsible for bridging the gap between the abstract database interfaces provided by the domain layer, and an actual database. In this application, EF Core is used to interact with a localdb SQL Server.
+[![A video demo of the website](./resources/WebsiteDemoThumb.png)](https://vimeo.com/607892078)
 
-### Application Layer
+## Desktop App Video Demo
 
-The application uses the CQRS pattern to perform operations on the database. The application layer is responsible for housing this behavior. It also provides a number of interfaces that are application-specific (not general enough for domain layer.)
-
-### Web Layer
-
-The web layer houses common authentication and authorization logic that is shared between different web project types. It implements some application-specific interfaces declared in the application layer.
-
-### API Layer
-
-The API layer is a typical ASP.NET Core API project that references all of the aforementioned projects to provide a public-facing API for interacting with the database on a data-level.
-
-### MVC Layer
-
-The MVC layer is a typical ASP.NET Core MVC project that references all of the aforementioned projects (less the API project) to provide a public-facing website that has basic CRUD functionality.
+[![A video demo of the desktop app](./resources/WPFDemoThumb.png)](https://vimeo.com/607913151)
